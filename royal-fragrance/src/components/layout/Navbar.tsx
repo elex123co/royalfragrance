@@ -3,6 +3,7 @@
 import Link from "next/link";
 import { useState } from "react";
 import { Menu, X, ShoppingBag, User } from "lucide-react";
+import { useCart } from "@/context/CartContext";
 
 const links = [
   { href: "/shop", label: "Shop" },
@@ -13,6 +14,7 @@ const links = [
 
 export default function Navbar() {
   const [open, setOpen] = useState(false);
+  const { itemCount } = useCart();
 
   return (
     <header className="sticky top-0 z-50 border-b border-espresso/10 bg-cream/90 backdrop-blur-md">
@@ -47,9 +49,14 @@ export default function Navbar() {
           <Link
             href="/cart"
             aria-label="Cart"
-            className="text-espresso transition hover:text-caramel"
+            className="relative text-espresso transition hover:text-caramel"
           >
             <ShoppingBag size={20} />
+            {itemCount > 0 && (
+              <span className="absolute -right-2 -top-2 flex h-4 w-4 items-center justify-center rounded-full bg-caramel text-[10px] font-medium text-cream">
+                {itemCount}
+              </span>
+            )}
           </Link>
         </div>
 
@@ -80,7 +87,7 @@ export default function Navbar() {
                 Account
               </Link>
               <Link href="/cart" className="text-sm text-espresso">
-                Cart
+                Cart {itemCount > 0 && `(${itemCount})`}
               </Link>
             </div>
           </nav>

@@ -1,9 +1,9 @@
-import { sampleProducts } from "@/data/sample-products";
 import { ProductCard } from "@/components/ui/ProductCard";
 import { LinkButton } from "@/components/ui/Button";
+import { getFeaturedProducts } from "@/lib/data/products";
 
-export function FeaturedProducts() {
-  const featured = sampleProducts.filter((p) => p.featured);
+export async function FeaturedProducts() {
+  const featured = await getFeaturedProducts();
 
   return (
     <section className="bg-brand-100/40 py-24">

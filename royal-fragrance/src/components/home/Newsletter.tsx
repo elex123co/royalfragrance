@@ -13,8 +13,12 @@ export function Newsletter() {
     e.preventDefault();
     setStatus("loading");
     try {
-      // TODO: wire to /api/newsletter route -> Supabase `newsletter_subscribers`
-      await new Promise((r) => setTimeout(r, 600));
+      const res = await fetch("/api/newsletter", {
+        method: "POST",
+        headers: { "Content-Type": "application/json" },
+        body: JSON.stringify({ email }),
+      });
+      if (!res.ok) throw new Error("failed");
       setStatus("success");
       setEmail("");
     } catch {

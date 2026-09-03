@@ -359,3 +359,37 @@ create policy "Customers see own orders" on orders
 -- model. Before production: add matching INSERT/UPDATE policies scoped to
 -- role, add admin-full-access policies to every table, and verify webhook /
 -- server-side writes use the service-role key (which bypasses RLS by design).
+
+-- ----------------------------------------------------------------------------
+-- AUTO-PROVISION PROFILE ROW ON SIGNUP
+-- Registration collects name/phone via Supabase Auth's raw_user_meta_data;
+-- this trigger mirrors that into `public.users` (and `public.customers` for
+-- the default role) as soon as the auth.users row is created, so the app
+-- never has to insert into `users` directly from the client.
+-- ----------------------------------------------------------------------------
+create or replace function public.handle_new_user()
+returns trigger
+language plpgsql
+security definer set search_path = public
+as $$
+begin
+  insert into public.users (id, name, email, phone, role)
+  values (
+    new.id,
+    coalesce(new.raw_user_meta_data ->> 'name', new.email),
+    new.email,
+    new.raw_user_meta_data ->> 'phone',
+    coalesce((new.raw_user_meta_data ->> 'role')::user_role, 'customer')
+  );
+
+  if coalesce((new.raw_user_meta_data ->> 'role')::user_role, 'customer') = 'customer' then
+    insert into public.customers (user_id) values (new.id);
+  end if;
+
+  return new;
+end;
+$$;
+
+create trigger on_auth_user_created
+  after insert on auth.users
+  for each row execute procedure public.handle_new_user();
