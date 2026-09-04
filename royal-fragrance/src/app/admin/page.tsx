@@ -1,6 +1,9 @@
 import { createAdminClient } from "@/lib/supabase/server";
 import { formatNaira } from "@/lib/utils/currency";
 
+// Always fetch live data — admin dashboards must never serve a stale build-time snapshot.
+export const dynamic = "force-dynamic";
+
 export const metadata = { title: "Admin Overview — Royal Fragrance" };
 
 async function getStats() {

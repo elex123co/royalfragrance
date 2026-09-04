@@ -1,6 +1,9 @@
 import { getCategories } from "@/lib/data/categories";
 import { ProductForm } from "@/components/admin/ProductForm";
 
+// Always fetch live data — admin dashboards must never serve a stale build-time snapshot.
+export const dynamic = "force-dynamic";
+
 export const metadata = { title: "New Product — Admin — Royal Fragrance" };
 
 export default async function NewProductPage() {

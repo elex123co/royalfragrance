@@ -2,6 +2,9 @@ import { createAdminClient } from "@/lib/supabase/server";
 import { formatNaira } from "@/lib/utils/currency";
 import { OrderStatusSelect } from "@/components/admin/OrderStatusSelect";
 
+// Always fetch live data — admin dashboards must never serve a stale build-time snapshot.
+export const dynamic = "force-dynamic";
+
 export const metadata = { title: "Orders — Admin — Royal Fragrance" };
 
 export default async function AdminOrdersPage() {

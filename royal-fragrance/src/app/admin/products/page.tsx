@@ -4,6 +4,9 @@ import { formatNaira } from "@/lib/utils/currency";
 import { Plus } from "lucide-react";
 import { ProductRowActions } from "@/components/admin/ProductRowActions";
 
+// Always fetch live data — admin dashboards must never serve a stale build-time snapshot.
+export const dynamic = "force-dynamic";
+
 export const metadata = { title: "Products — Admin — Royal Fragrance" };
 
 export default async function AdminProductsPage() {

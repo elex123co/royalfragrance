@@ -2,6 +2,9 @@ import { createAdminClient } from "@/lib/supabase/server";
 import { formatNaira } from "@/lib/utils/currency";
 import { VendorRowActions } from "@/components/admin/VendorRowActions";
 
+// Always fetch live data — admin dashboards must never serve a stale build-time snapshot.
+export const dynamic = "force-dynamic";
+
 export const metadata = { title: "Vendors — Admin — Royal Fragrance" };
 
 export default async function AdminVendorsPage() {

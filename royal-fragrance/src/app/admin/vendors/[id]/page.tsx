@@ -4,6 +4,9 @@ import { getVendorDashboardData } from "@/lib/data/vendor";
 import { formatNaira } from "@/lib/utils/currency";
 import { InventoryTransferForm } from "@/components/admin/InventoryTransferForm";
 
+// Always fetch live data — admin dashboards must never serve a stale build-time snapshot.
+export const dynamic = "force-dynamic";
+
 export const metadata = { title: "Vendor Detail — Admin — Royal Fragrance" };
 
 export default async function AdminVendorDetailPage({
