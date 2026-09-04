@@ -37,16 +37,10 @@ function LoginForm() {
       return;
     }
 
-    // Route by actual role rather than always landing on /account — an
-    // explicit ?redirect= (set by middleware when a protected page bounced
-    // you to /login) always wins over the role default.
-    const explicitRedirect = searchParams.get("redirect");
-    if (explicitRedirect) {
-      router.push(explicitRedirect);
-      router.refresh();
-      return;
-    }
-
+    // Always fetch the real role first — never blindly trust an explicit
+    // ?redirect= param, since a stale one (e.g. from an earlier bounce to
+    // /login?redirect=/account) would otherwise override where an admin
+    // or vendor should actually land.
     const { data: profile } = await supabase
       .from("users")
       .select("role")
@@ -55,12 +49,22 @@ function LoginForm() {
 
     setLoading(false);
 
-    const destination =
+    const explicitRedirect = searchParams.get("redirect");
+    const roleHome =
       profile?.role === "admin"
         ? "/admin"
         : profile?.role === "vendor"
           ? "/vendor"
           : "/account";
+
+    // Only honor the explicit redirect if it actually points into the
+    // account's own area — an admin's stray "redirect=/account" gets
+    // overridden by their real role home; a genuine deep link like
+    // "redirect=/admin/orders" is still respected.
+    const destination =
+      explicitRedirect && explicitRedirect.startsWith(roleHome)
+        ? explicitRedirect
+        : roleHome;
 
     router.push(destination);
     router.refresh();
