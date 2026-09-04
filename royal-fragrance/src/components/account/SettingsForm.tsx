@@ -1,6 +1,7 @@
 "use client";
 
 import { useState } from "react";
+import { useRouter } from "next/navigation";
 import { Button } from "@/components/ui/Button";
 import { updateProfile } from "@/lib/actions/customer";
 
@@ -13,18 +14,29 @@ export function SettingsForm({
   initialPhone: string;
   email: string;
 }) {
+  const router = useRouter();
   const [name, setName] = useState(initialName);
   const [phone, setPhone] = useState(initialPhone);
   const [submitting, setSubmitting] = useState(false);
   const [saved, setSaved] = useState(false);
+  const [error, setError] = useState<string | null>(null);
 
   async function handleSubmit(e: React.FormEvent) {
     e.preventDefault();
     setSubmitting(true);
     setSaved(false);
-    await updateProfile({ name, phone });
+    setError(null);
+
+    const result = await updateProfile({ name, phone });
+
     setSubmitting(false);
+
+    if (!result.success) {
+      setError(result.error ?? "Could not save changes. Please try again.");
+      return;
+    }
     setSaved(true);
+    router.refresh();
   }
 
   return (
@@ -67,6 +79,11 @@ export function SettingsForm({
       </div>
 
       {saved && <p className="text-sm text-green-700">Saved.</p>}
+      {error && (
+        <p className="rounded-lg bg-red-50 px-4 py-2 text-sm text-red-700">
+          {error}
+        </p>
+      )}
 
       <Button type="submit" disabled={submitting}>
         {submitting ? "Saving…" : "Save Changes"}

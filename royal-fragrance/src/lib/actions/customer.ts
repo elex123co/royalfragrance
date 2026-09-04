@@ -127,8 +127,10 @@ export async function updateProfile(input: ProfileInput) {
 
   if (error) return { success: false, error: error.message };
 
-  revalidatePath("/account/settings");
-  revalidatePath("/account");
+  // Revalidate the layout too, not just the settings page — the sidebar's
+  // "Welcome back" greeting is rendered in layout.tsx and needs a fresh
+  // profile fetch, not just the settings route itself.
+  revalidatePath("/account", "layout");
   return { success: true };
 }
 
