@@ -1,5 +1,5 @@
 import Link from "next/link";
-import Image from "next/image";
+import { BrandImage } from "@/components/ui/BrandImage";
 import { createClient } from "@/lib/supabase/server";
 import {
   getOrders,
@@ -164,10 +164,9 @@ export default async function AccountOverviewPage() {
                 className="group"
               >
                 <div className="relative aspect-square overflow-hidden rounded-xl bg-brand-100">
-                  <Image
+                  <BrandImage
                     src={item.image}
                     alt={item.name}
-                    fill
                     className="object-cover transition group-hover:scale-105"
                   />
                 </div>
@@ -196,10 +195,9 @@ export default async function AccountOverviewPage() {
           {recommended.map((p) => (
             <Link key={p.id} href={`/product/${p.slug}`} className="group">
               <div className="relative aspect-square overflow-hidden rounded-xl bg-brand-100">
-                <Image
+                <BrandImage
                   src={p.image}
                   alt={p.name}
-                  fill
                   className="object-cover transition group-hover:scale-105"
                 />
               </div>
@@ -241,10 +239,9 @@ export default async function AccountOverviewPage() {
                 className="group"
               >
                 <div className="relative aspect-square overflow-hidden rounded-xl bg-brand-100">
-                  <Image
-                    src={w.products?.product_images?.[0]?.url ?? "/images/placeholder.jpg"}
+                  <BrandImage
+                    src={w.products?.product_images?.[0]?.url}
                     alt={w.products?.name ?? "Fragrance"}
-                    fill
                     className="object-cover transition group-hover:scale-105"
                   />
                 </div>

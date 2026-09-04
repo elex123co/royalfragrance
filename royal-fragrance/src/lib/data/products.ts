@@ -19,7 +19,7 @@ function mapRow(row: any): Product {
       row.product_variants?.[0]?.price != null
         ? Number(row.product_variants[0].price)
         : Number(row.base_price ?? 0),
-    image: row.product_images?.[0]?.url ?? "/images/placeholder.jpg",
+    image: row.product_images?.[0]?.url ?? "",
     notes: row.fragrance_notes ?? undefined,
     variants: (row.product_variants ?? []).map((v: any) => ({
       id: v.id,

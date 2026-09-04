@@ -1,8 +1,8 @@
 import { notFound } from "next/navigation";
-import Image from "next/image";
 import { getProductBySlug, getAllProducts } from "@/lib/data/products";
 import { ProductPurchasePanel } from "@/components/shop/ProductPurchasePanel";
 import { ProductCard } from "@/components/ui/ProductCard";
+import { BrandImage } from "@/components/ui/BrandImage";
 import { WishlistToggle } from "@/components/shop/WishlistToggle";
 import { createClient } from "@/lib/supabase/server";
 import { isWishlisted } from "@/lib/data/account";
@@ -40,11 +40,9 @@ export default async function ProductPage({
       <div className="mx-auto max-w-7xl px-5 lg:px-8">
         <div className="grid gap-12 lg:grid-cols-2">
           <div className="relative aspect-square overflow-hidden rounded-xl2 shadow-premium">
-            <Image
+            <BrandImage
               src={product.image}
               alt={product.name}
-              fill
-              priority
               className="object-cover"
             />
           </div>

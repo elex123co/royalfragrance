@@ -1,16 +1,20 @@
-import Image from "next/image";
+import { Sparkle } from "lucide-react";
 
 export function BrandIntro() {
   return (
     <section className="bg-cream py-24">
       <div className="mx-auto grid max-w-7xl items-center gap-14 px-5 lg:grid-cols-2 lg:px-8">
-        <div className="relative aspect-square overflow-hidden rounded-xl2 shadow-premium">
-          <Image
-            src="https://images.unsplash.com/photo-1592945403244-b3fbafd7f539?w=900&q=80"
-            alt="Curated Royal Fragrance perfume collection"
-            fill
-            className="object-cover"
-          />
+        <div className="relative flex aspect-square items-center justify-center overflow-hidden rounded-xl2 bg-brand-gradient shadow-premium">
+          <div className="text-center">
+            <Sparkle
+              className="mx-auto text-caramel/70"
+              size={64}
+              strokeWidth={1}
+            />
+            <p className="mt-4 font-display text-xl tracking-wide text-cream/70">
+              Royal Fragrance
+            </p>
+          </div>
         </div>
 
         <div>

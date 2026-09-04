@@ -1,5 +1,5 @@
 import { LinkButton } from "@/components/ui/Button";
-import Image from "next/image";
+import { Sparkle } from "lucide-react";
 
 export function Hero() {
   return (
@@ -36,14 +36,17 @@ export function Hero() {
 
         <div className="relative mx-auto aspect-[3/4] w-full max-w-md animate-fade-in">
           <div className="glass absolute inset-0 rounded-xl2" />
-          <div className="relative h-full w-full overflow-hidden rounded-xl2">
-            <Image
-              src="https://images.unsplash.com/photo-1541643600914-78b084683601?w=900&q=80"
-              alt="Royal Fragrance signature perfume bottle"
-              fill
-              priority
-              className="object-cover"
-            />
+          <div className="relative flex h-full w-full items-center justify-center overflow-hidden rounded-xl2 bg-brand-gradient">
+            <div className="text-center">
+              <Sparkle
+                className="mx-auto text-caramel/70"
+                size={56}
+                strokeWidth={1}
+              />
+              <p className="mt-4 font-display text-lg tracking-wide text-cream/70">
+                Royal Fragrance
+              </p>
+            </div>
           </div>
         </div>
       </div>

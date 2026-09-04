@@ -15,8 +15,7 @@ export const sampleProducts: Product[] = [
       "Oud Noir opens with smoked oud and dark spice, settling into a rich amber and leather base built for the confident and unforgettable.",
     category: "Oud",
     price: 45000,
-    image:
-      "https://images.unsplash.com/photo-1541643600914-78b084683601?w=800&q=80",
+    image: "", // placeholder — replace with real product photography via /admin/products
     notes: {
       top: ["Smoked Oud", "Black Pepper"],
       heart: ["Rose", "Saffron"],
@@ -34,8 +33,7 @@ export const sampleProducts: Product[] = [
       "A radiant, honeyed amber fragrance layered with vanilla and warm musk — designed for evenings that linger.",
     category: "Unisex Fragrances",
     price: 38000,
-    image:
-      "https://images.unsplash.com/photo-1592945403244-b3fbafd7f539?w=800&q=80",
+    image: "", // placeholder — replace with real product photography via /admin/products
     notes: {
       top: ["Bergamot", "Cardamom"],
       heart: ["Amber", "Vanilla"],
@@ -53,8 +51,7 @@ export const sampleProducts: Product[] = [
       "Velvet Musk is quiet luxury — creamy musk, soft florals, and skin-close warmth for everyday elegance.",
     category: "Women's Fragrances",
     price: 32000,
-    image:
-      "https://images.unsplash.com/photo-1610461888750-10bfc601b874?w=800&q=80",
+    image: "", // placeholder — replace with real product photography via /admin/products
     notes: {
       top: ["Pear", "Jasmine"],
       heart: ["White Musk", "Iris"],
@@ -72,8 +69,7 @@ export const sampleProducts: Product[] = [
       "A magnetic blend of caramel, tobacco leaf and warm spice — Caramel Blaze is built for the unforgettable entrance.",
     category: "Men's Fragrances",
     price: 41000,
-    image:
-      "https://images.unsplash.com/photo-1595425964272-3730f4b60c33?w=800&q=80",
+    image: "", // placeholder — replace with real product photography via /admin/products
     notes: {
       top: ["Cinnamon", "Bergamot"],
       heart: ["Caramel", "Tobacco"],

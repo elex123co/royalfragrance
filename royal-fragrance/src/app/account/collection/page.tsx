@@ -1,4 +1,4 @@
-import Image from "next/image";
+import { BrandImage } from "@/components/ui/BrandImage";
 import Link from "next/link";
 import { createClient } from "@/lib/supabase/server";
 import { getCollection } from "@/lib/data/account";
@@ -39,10 +39,9 @@ export default async function CollectionPage() {
               className="group rounded-xl2 border border-espresso/10 bg-white/60 p-3"
             >
               <div className="relative aspect-square overflow-hidden rounded-xl bg-brand-100">
-                <Image
+                <BrandImage
                   src={item.image}
                   alt={item.name}
-                  fill
                   className="object-cover transition group-hover:scale-105"
                 />
               </div>

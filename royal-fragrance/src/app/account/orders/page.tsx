@@ -1,4 +1,4 @@
-import Image from "next/image";
+import { BrandImage } from "@/components/ui/BrandImage";
 import { createClient } from "@/lib/supabase/server";
 import { getOrders } from "@/lib/data/account";
 import { formatNaira } from "@/lib/utils/currency";
@@ -60,10 +60,9 @@ export default async function OrdersPage() {
                 {(order.order_items ?? []).map((item: any) => (
                   <div key={item.id} className="flex items-center gap-3">
                     <div className="relative h-12 w-12 shrink-0 overflow-hidden rounded-lg bg-brand-100">
-                      <Image
-                        src={item.products?.product_images?.[0]?.url ?? "/images/placeholder.jpg"}
+                      <BrandImage
+                        src={item.products?.product_images?.[0]?.url}
                         alt={item.products?.name ?? "Fragrance"}
-                        fill
                         className="object-cover"
                       />
                     </div>
@@ -95,7 +94,7 @@ export default async function OrdersPage() {
                       variantId: item.variant_id ?? undefined,
                       slug: item.products?.slug ?? "",
                       name: item.products?.name ?? "Fragrance",
-                      image: item.products?.product_images?.[0]?.url ?? "/images/placeholder.jpg",
+                      image: item.products?.product_images?.[0]?.url ?? "",
                       price: item.unit_price,
                       quantity: item.quantity,
                     }))}

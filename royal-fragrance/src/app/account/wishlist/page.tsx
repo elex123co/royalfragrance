@@ -1,4 +1,4 @@
-import Image from "next/image";
+import { BrandImage } from "@/components/ui/BrandImage";
 import Link from "next/link";
 import { createClient } from "@/lib/supabase/server";
 import { getWishlist } from "@/lib/data/account";
@@ -45,10 +45,9 @@ export default async function WishlistPage() {
                 <RemoveWishlistButton productId={w.product_id} />
                 <Link href={`/product/${product?.slug}`}>
                   <div className="relative aspect-square overflow-hidden rounded-xl bg-brand-100">
-                    <Image
-                      src={product?.product_images?.[0]?.url ?? "/images/placeholder.jpg"}
+                    <BrandImage
+                      src={product?.product_images?.[0]?.url}
                       alt={product?.name ?? "Fragrance"}
-                      fill
                       className="object-cover"
                     />
                   </div>

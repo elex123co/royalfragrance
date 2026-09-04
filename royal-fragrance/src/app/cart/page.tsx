@@ -1,10 +1,10 @@
 "use client";
 
-import Image from "next/image";
 import Link from "next/link";
 import { useCart } from "@/context/CartContext";
 import { formatNaira } from "@/lib/utils/currency";
 import { LinkButton } from "@/components/ui/Button";
+import { BrandImage } from "@/components/ui/BrandImage";
 import { Trash2 } from "lucide-react";
 
 export default function CartPage() {
@@ -40,10 +40,9 @@ export default function CartPage() {
                   href={`/product/${item.slug}`}
                   className="relative h-24 w-24 shrink-0 overflow-hidden rounded-xl bg-brand-100"
                 >
-                  <Image
+                  <BrandImage
                     src={item.image}
                     alt={item.name}
-                    fill
                     className="object-cover"
                   />
                 </Link>

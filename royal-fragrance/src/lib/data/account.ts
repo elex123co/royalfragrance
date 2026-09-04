@@ -47,7 +47,7 @@ export async function getCollection(userId: string) {
           productId: item.product_id,
           name: product.name,
           slug: product.slug,
-          image: product.product_images?.[0]?.url ?? "/images/placeholder.jpg",
+          image: product.product_images?.[0]?.url ?? "",
           purchasedAt,
           timesPurchased: (existing?.timesPurchased ?? 0) + 1,
         });
