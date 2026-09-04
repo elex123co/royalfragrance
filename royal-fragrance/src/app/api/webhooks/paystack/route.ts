@@ -56,7 +56,7 @@ export async function POST(request: Request) {
 
   const { data: order } = await supabase
     .from("orders")
-    .select("id")
+    .select("id, customer_id, order_number")
     .eq("order_number", orderNumber)
     .maybeSingle();
 
@@ -110,6 +110,14 @@ export async function POST(request: Request) {
       entity_id: order.id,
       metadata: { reference, amountNaira },
     });
+
+    if (order.customer_id) {
+      await supabase.from("notifications").insert({
+        user_id: order.customer_id,
+        message: `Your order ${order.order_number} has been confirmed.`,
+        link: `/order-confirmation?order=${order.order_number}`,
+      });
+    }
   }
 
   return NextResponse.json({ received: true });

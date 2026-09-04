@@ -40,7 +40,7 @@ export default function Navbar() {
 
         <div className="hidden items-center gap-4 md:flex">
           <Link
-            href="/login"
+            href="/account"
             aria-label="Account"
             className="text-espresso transition hover:text-caramel"
           >
@@ -83,7 +83,7 @@ export default function Navbar() {
               </Link>
             ))}
             <div className="flex gap-6 pt-2">
-              <Link href="/login" className="text-sm text-espresso">
+              <Link href="/account" className="text-sm text-espresso">
                 Account
               </Link>
               <Link href="/cart" className="text-sm text-espresso">

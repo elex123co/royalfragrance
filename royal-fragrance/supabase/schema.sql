@@ -355,6 +355,14 @@ create policy "Vendors see own handovers" on product_handovers
 create policy "Customers see own orders" on orders
   for select using (customer_id = auth.uid());
 
+-- Customers must be able to read and update their own profile row —
+-- without this, every logged-in customer's account page renders blank.
+create policy "Users can view own profile" on users
+  for select using (id = auth.uid());
+
+create policy "Users can update own profile" on users
+  for update using (id = auth.uid());
+
 -- NOTE: The policies above are a starting sketch, not a complete security
 -- model. Before production: add matching INSERT/UPDATE policies scoped to
 -- role, add admin-full-access policies to every table, and verify webhook /
@@ -393,3 +401,72 @@ $$;
 create trigger on_auth_user_created
   after insert on auth.users
   for each row execute procedure public.handle_new_user();
+
+-- ----------------------------------------------------------------------------
+-- CUSTOMER DASHBOARD — "My Royal Experience"
+-- Wishlist, saved addresses, scent profile, and in-app notifications that
+-- power the personalized customer dashboard (see /account/*).
+-- ----------------------------------------------------------------------------
+
+create table wishlist_items (
+  id uuid primary key default gen_random_uuid(),
+  user_id uuid not null references users (id) on delete cascade,
+  product_id uuid not null references products (id) on delete cascade,
+  created_at timestamptz not null default now(),
+  unique (user_id, product_id)
+);
+
+create table customer_addresses (
+  id uuid primary key default gen_random_uuid(),
+  user_id uuid not null references users (id) on delete cascade,
+  label text not null,             -- "Home", "Office", etc.
+  state text not null,
+  city text not null,
+  address text not null,
+  is_default boolean not null default false,
+  created_at timestamptz not null default now()
+);
+
+-- Simple rule-based scent profile — no ML needed. preferred_families holds
+-- free-text tags (e.g. "Woody", "Oud", "Floral") matched against each
+-- product's fragrance_notes to drive "Recommended For You".
+create table scent_profiles (
+  user_id uuid primary key references users (id) on delete cascade,
+  preferred_families text[] not null default '{}',
+  occasions text[] not null default '{}',
+  intensity text,
+  updated_at timestamptz not null default now()
+);
+
+create table notifications (
+  id uuid primary key default gen_random_uuid(),
+  user_id uuid not null references users (id) on delete cascade,
+  message text not null,
+  link text,
+  read boolean not null default false,
+  created_at timestamptz not null default now()
+);
+
+create index idx_wishlist_user on wishlist_items (user_id);
+create index idx_addresses_user on customer_addresses (user_id);
+create index idx_notifications_user on notifications (user_id, read);
+
+alter table wishlist_items enable row level security;
+alter table customer_addresses enable row level security;
+alter table scent_profiles enable row level security;
+alter table notifications enable row level security;
+
+create policy "Users manage own wishlist" on wishlist_items
+  for all using (user_id = auth.uid());
+
+create policy "Users manage own addresses" on customer_addresses
+  for all using (user_id = auth.uid());
+
+create policy "Users manage own scent profile" on scent_profiles
+  for all using (user_id = auth.uid());
+
+create policy "Users see own notifications" on notifications
+  for select using (user_id = auth.uid());
+
+create policy "Users update own notifications" on notifications
+  for update using (user_id = auth.uid());

@@ -3,6 +3,9 @@ import Image from "next/image";
 import { getProductBySlug, getAllProducts } from "@/lib/data/products";
 import { ProductPurchasePanel } from "@/components/shop/ProductPurchasePanel";
 import { ProductCard } from "@/components/ui/ProductCard";
+import { WishlistToggle } from "@/components/shop/WishlistToggle";
+import { createClient } from "@/lib/supabase/server";
+import { isWishlisted } from "@/lib/data/account";
 
 export async function generateMetadata({
   params,
@@ -25,6 +28,12 @@ export default async function ProductPage({
   const related = all
     .filter((p) => p.category === product.category && p.id !== product.id)
     .slice(0, 4);
+
+  const supabase = createClient();
+  const {
+    data: { user },
+  } = await supabase.auth.getUser();
+  const wishlisted = user ? await isWishlisted(user.id, product.id) : false;
 
   return (
     <section className="bg-cream py-16">
@@ -78,7 +87,18 @@ export default async function ProductPage({
               </div>
             )}
 
-            <ProductPurchasePanel product={product} />
+            <div className="flex items-start gap-3">
+              <div className="flex-1">
+                <ProductPurchasePanel product={product} />
+              </div>
+              <div className="mt-8">
+                <WishlistToggle
+                  productId={product.id}
+                  initialWishlisted={wishlisted}
+                  isLoggedIn={!!user}
+                />
+              </div>
+            </div>
           </div>
         </div>
 

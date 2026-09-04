@@ -28,19 +28,41 @@ function LoginForm() {
     setError(null);
 
     const supabase = createClient();
-    const { error: authError } = await supabase.auth.signInWithPassword({
-      email,
-      password,
-    });
+    const { data: signInData, error: authError } =
+      await supabase.auth.signInWithPassword({ email, password });
 
-    setLoading(false);
-
-    if (authError) {
-      setError(authError.message);
+    if (authError || !signInData.user) {
+      setLoading(false);
+      setError(authError?.message ?? "Sign in failed");
       return;
     }
 
-    router.push(searchParams.get("redirect") ?? "/account");
+    // Route by actual role rather than always landing on /account — an
+    // explicit ?redirect= (set by middleware when a protected page bounced
+    // you to /login) always wins over the role default.
+    const explicitRedirect = searchParams.get("redirect");
+    if (explicitRedirect) {
+      router.push(explicitRedirect);
+      router.refresh();
+      return;
+    }
+
+    const { data: profile } = await supabase
+      .from("users")
+      .select("role")
+      .eq("id", signInData.user.id)
+      .single();
+
+    setLoading(false);
+
+    const destination =
+      profile?.role === "admin"
+        ? "/admin"
+        : profile?.role === "vendor"
+          ? "/vendor"
+          : "/account";
+
+    router.push(destination);
     router.refresh();
   }
 
