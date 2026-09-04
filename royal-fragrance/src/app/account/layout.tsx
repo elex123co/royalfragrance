@@ -12,6 +12,7 @@ import {
 import { createClient } from "@/lib/supabase/server";
 import { getNotifications, getProfile } from "@/lib/data/account";
 import { LogoutButton } from "@/components/account/LogoutButton";
+import { MobileDashboardNav } from "@/components/account/MobileDashboardNav";
 
 const navItems = [
   { href: "/account", label: "Overview", icon: LayoutDashboard },
@@ -46,14 +47,13 @@ export default async function AccountLayout({
   return (
     <div className="bg-cream">
       <div className="mx-auto flex min-h-[80vh] max-w-7xl gap-8 px-5 py-10 lg:px-8">
+        {/* Desktop sidebar */}
         <aside className="hidden w-64 shrink-0 lg:block">
           <div className="sticky top-24 rounded-xl2 bg-brand-gradient p-5 text-cream shadow-premium">
-            <div className="mb-1 flex items-center gap-2">
-              <span className="text-xs uppercase tracking-widest text-sand">
-                My Royal Experience
-              </span>
-            </div>
-            <p className="mb-6 font-display text-lg">
+            <span className="text-xs uppercase tracking-widest text-sand">
+              My Royal Experience
+            </span>
+            <p className="mb-6 mt-1 font-display text-lg">
               Welcome back, {firstName}
             </p>
 
@@ -83,21 +83,24 @@ export default async function AccountLayout({
           </div>
         </aside>
 
-        <div className="min-w-0 flex-1">
-          <nav className="mb-6 flex gap-3 overflow-x-auto lg:hidden">
-            {navItems.map(({ href, label }) => (
-              <Link
-                key={href}
-                href={href}
-                className="whitespace-nowrap rounded-full border border-espresso/15 px-4 py-1.5 text-sm text-espresso"
-              >
-                {label}
-              </Link>
-            ))}
-          </nav>
+        <div className="min-w-0 flex-1 pb-20 lg:pb-0">
+          {/* Mobile branded header — same identity as the desktop sidebar,
+              just shown inline instead of hidden behind a hamburger */}
+          <div className="mb-6 rounded-xl2 bg-brand-gradient p-5 text-cream shadow-premium lg:hidden">
+            <span className="text-xs uppercase tracking-widest text-sand">
+              My Royal Experience
+            </span>
+            <p className="mt-1 font-display text-xl">
+              Welcome back, {firstName}
+            </p>
+          </div>
+
           {children}
         </div>
       </div>
+
+      {/* Mobile bottom tab bar replaces the old horizontal pill scroll */}
+      <MobileDashboardNav unreadCount={unreadCount} />
     </div>
   );
 }
