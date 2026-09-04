@@ -4,11 +4,13 @@ import {
   Package,
   ShoppingCart,
   Users,
+  Tag,
 } from "lucide-react";
 
 const navItems = [
   { href: "/admin", label: "Overview", icon: LayoutDashboard },
   { href: "/admin/products", label: "Products", icon: Package },
+  { href: "/admin/categories", label: "Categories", icon: Tag },
   { href: "/admin/orders", label: "Orders", icon: ShoppingCart },
   { href: "/admin/vendors", label: "Vendors", icon: Users },
 ];

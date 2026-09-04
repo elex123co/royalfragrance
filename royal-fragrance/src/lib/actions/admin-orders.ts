@@ -1,7 +1,7 @@
 "use server";
 
 import { revalidatePath } from "next/cache";
-import { createAdminClient } from "@/lib/supabase/server";
+import { requireAdmin } from "./require-admin";
 
 const VALID_STATUSES = [
   "order_received",
@@ -27,7 +27,7 @@ export async function updateOrderStatus(
   orderId: string,
   status: (typeof VALID_STATUSES)[number]
 ) {
-  const supabase = createAdminClient();
+  const { admin: supabase } = await requireAdmin();
 
   const { data: order, error } = await supabase
     .from("orders")

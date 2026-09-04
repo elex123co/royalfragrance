@@ -1,6 +1,7 @@
 import { NextResponse } from "next/server";
 import { createAdminClient } from "@/lib/supabase/server";
 import { getPaymentProvider } from "@/lib/payments";
+import { confirmOrderPaidAndDeductStock } from "@/lib/orders/confirm-payment";
 
 /**
  * Paystack webhook receiver.
@@ -99,25 +100,7 @@ export async function POST(request: Request) {
   }
 
   if (order) {
-    await supabase
-      .from("orders")
-      .update({ payment_status: "paid", order_status: "payment_confirmed" })
-      .eq("id", order.id);
-
-    await supabase.from("audit_logs").insert({
-      action: "order.payment_confirmed",
-      entity_type: "order",
-      entity_id: order.id,
-      metadata: { reference, amountNaira },
-    });
-
-    if (order.customer_id) {
-      await supabase.from("notifications").insert({
-        user_id: order.customer_id,
-        message: `Your order ${order.order_number} has been confirmed.`,
-        link: `/order-confirmation?order=${order.order_number}`,
-      });
-    }
+    await confirmOrderPaidAndDeductStock(supabase, order.id);
   }
 
   return NextResponse.json({ received: true });

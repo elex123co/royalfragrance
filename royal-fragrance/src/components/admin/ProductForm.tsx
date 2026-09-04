@@ -1,13 +1,16 @@
 "use client";
 
-import { useState } from "react";
+import { useState, useRef } from "react";
 import { useRouter } from "next/navigation";
+import Image from "next/image";
+import { X, Upload } from "lucide-react";
 import { Button } from "@/components/ui/Button";
 import {
   createProduct,
   updateProduct,
   type ProductInput,
 } from "@/lib/actions/admin-products";
+import { uploadProductImage } from "@/lib/actions/admin-upload";
 
 interface Category {
   id: string;
@@ -30,6 +33,7 @@ function slugify(name: string) {
 
 export function ProductForm({ categories, productId, initial }: ProductFormProps) {
   const router = useRouter();
+  const fileInputRef = useRef<HTMLInputElement>(null);
   const [form, setForm] = useState<ProductInput>({
     name: initial?.name ?? "",
     slug: initial?.slug ?? "",
@@ -38,13 +42,17 @@ export function ProductForm({ categories, productId, initial }: ProductFormProps
     categoryId: initial?.categoryId ?? null,
     basePrice: initial?.basePrice ?? 0,
     status: initial?.status ?? "draft",
-    imageUrl: initial?.imageUrl ?? "",
+    images: initial?.images ?? [],
     variants: initial?.variants?.length
       ? initial.variants
       : [{ size: "50ml", price: 0, stock: 0 }],
   });
   const [error, setError] = useState<string | null>(null);
   const [submitting, setSubmitting] = useState(false);
+  const [uploading, setUploading] = useState(false);
+  const [uploadError, setUploadError] = useState<string | null>(null);
+
+  const totalStock = form.variants.reduce((sum, v) => sum + v.stock, 0);
 
   function updateVariant(index: number, patch: Partial<ProductInput["variants"][0]>) {
     setForm((f) => ({
@@ -61,14 +69,48 @@ export function ProductForm({ categories, productId, initial }: ProductFormProps
   }
 
   function removeVariant(index: number) {
+    if (form.variants.length <= 1) return; // always keep at least one
     setForm((f) => ({
       ...f,
       variants: f.variants.filter((_, i) => i !== index),
     }));
   }
 
+  async function handleFileSelect(e: React.ChangeEvent<HTMLInputElement>) {
+    const files = e.target.files;
+    if (!files || files.length === 0) return;
+
+    setUploading(true);
+    setUploadError(null);
+
+    for (const file of Array.from(files)) {
+      const data = new FormData();
+      data.append("file", file);
+      const result = await uploadProductImage(data);
+
+      if (!result.success || !result.url) {
+        setUploadError(result.error ?? `Could not upload ${file.name}`);
+        continue;
+      }
+      setForm((f) => ({ ...f, images: [...f.images, result.url!] }));
+    }
+
+    setUploading(false);
+    if (fileInputRef.current) fileInputRef.current.value = "";
+  }
+
+  function removeImage(index: number) {
+    setForm((f) => ({ ...f, images: f.images.filter((_, i) => i !== index) }));
+  }
+
   async function handleSubmit(e: React.FormEvent) {
     e.preventDefault();
+
+    if (form.variants.some((v) => !v.size.trim())) {
+      setError("Every size/variant needs a name (e.g. \"50ml\" or \"One Size\").");
+      return;
+    }
+
     setSubmitting(true);
     setError(null);
 
@@ -151,6 +193,15 @@ export function ProductForm({ categories, productId, initial }: ProductFormProps
               </option>
             ))}
           </select>
+          {categories.length === 0 && (
+            <p className="mt-1 text-xs text-rich/50">
+              No categories yet —{" "}
+              <a href="/admin/categories" className="text-caramel underline">
+                add one first
+              </a>
+              .
+            </p>
+          )}
         </div>
 
         <div>
@@ -164,37 +215,91 @@ export function ProductForm({ categories, productId, initial }: ProductFormProps
             }
             className="w-full rounded-lg border border-espresso/15 px-4 py-2.5 text-sm focus:border-caramel focus:outline-none"
           >
-            <option value="draft">Draft</option>
+            <option value="draft">Draft (hidden from shop)</option>
             <option value="active">Active</option>
             <option value="out_of_stock">Out of Stock</option>
           </select>
+          <p className="mt-1 text-xs text-rich/50">
+            Active/Out of Stock are kept in sync with total stock ({totalStock}{" "}
+            available) automatically — this is just your intent when stock is 0.
+          </p>
         </div>
       </div>
 
       <TextField
-        label="Base Price (₦, used if no variants)"
+        label="Base Price (₦) — fallback display price"
         type="number"
         value={String(form.basePrice)}
         onChange={(v) => setForm((f) => ({ ...f, basePrice: Number(v) || 0 }))}
       />
 
-      <TextField
-        label="Image URL"
-        value={form.imageUrl}
-        onChange={(v) => setForm((f) => ({ ...f, imageUrl: v }))}
-      />
+      <div>
+        <label className="mb-1.5 block text-sm font-medium text-espresso">
+          Product Photos
+        </label>
+
+        {form.images.length > 0 && (
+          <div className="mb-3 flex flex-wrap gap-3">
+            {form.images.map((url, i) => (
+              <div
+                key={url + i}
+                className="relative h-20 w-20 overflow-hidden rounded-lg border border-espresso/10"
+              >
+                <Image src={url} alt={`Photo ${i + 1}`} fill className="object-cover" />
+                <button
+                  type="button"
+                  onClick={() => removeImage(i)}
+                  className="absolute right-1 top-1 flex h-5 w-5 items-center justify-center rounded-full bg-espresso/80 text-cream"
+                  aria-label="Remove image"
+                >
+                  <X size={12} />
+                </button>
+              </div>
+            ))}
+          </div>
+        )}
+
+        <input
+          ref={fileInputRef}
+          type="file"
+          accept="image/png,image/jpeg,image/webp,image/avif"
+          multiple
+          onChange={handleFileSelect}
+          className="hidden"
+          id="product-photo-upload"
+        />
+        <label
+          htmlFor="product-photo-upload"
+          className="flex w-fit cursor-pointer items-center gap-2 rounded-full border border-espresso/20 px-4 py-2 text-sm text-espresso transition hover:border-espresso"
+        >
+          <Upload size={14} />
+          {uploading ? "Uploading…" : "Upload Photos"}
+        </label>
+        <p className="mt-1 text-xs text-rich/50">
+          JPG, PNG, WEBP, or AVIF — up to 5MB each. First photo is the main image.
+        </p>
+        {uploadError && (
+          <p className="mt-1 text-xs text-red-600">{uploadError}</p>
+        )}
+      </div>
 
       <div>
         <div className="mb-2 flex items-center justify-between">
-          <label className="text-sm font-medium text-espresso">Variants</label>
+          <label className="text-sm font-medium text-espresso">
+            Sizes &amp; Stock
+          </label>
           <button
             type="button"
             onClick={addVariant}
             className="text-xs text-caramel underline"
           >
-            + Add variant
+            + Add size
           </button>
         </div>
+        <p className="mb-2 text-xs text-rich/50">
+          No real size options? Just use one row labeled &ldquo;One Size&rdquo;
+          with your total quantity in Stock.
+        </p>
         <div className="space-y-2">
           {form.variants.map((v, i) => (
             <div key={i} className="flex items-center gap-2">
@@ -213,6 +318,7 @@ export function ProductForm({ categories, productId, initial }: ProductFormProps
               />
               <input
                 type="number"
+                min={0}
                 placeholder="Stock"
                 value={v.stock}
                 onChange={(e) => updateVariant(i, { stock: Number(e.target.value) })}
@@ -221,7 +327,8 @@ export function ProductForm({ categories, productId, initial }: ProductFormProps
               <button
                 type="button"
                 onClick={() => removeVariant(i)}
-                className="text-rich/40 hover:text-red-600"
+                disabled={form.variants.length <= 1}
+                className="text-rich/40 hover:text-red-600 disabled:cursor-not-allowed disabled:opacity-30"
               >
                 ✕
               </button>
@@ -234,7 +341,7 @@ export function ProductForm({ categories, productId, initial }: ProductFormProps
         <p className="rounded-lg bg-red-50 px-4 py-2 text-sm text-red-700">{error}</p>
       )}
 
-      <Button type="submit" disabled={submitting}>
+      <Button type="submit" disabled={submitting || uploading}>
         {submitting ? "Saving…" : productId ? "Save Changes" : "Create Product"}
       </Button>
     </form>

@@ -325,9 +325,25 @@ alter table orders enable row level security;
 alter table order_items enable row level security;
 alter table audit_logs enable row level security;
 
--- Admins: full access (assumes a `role` claim synced to auth via users table)
+-- Checks admin status without re-triggering RLS on `users` itself — a
+-- policy that queries the same table it protects via a plain subquery
+-- causes "infinite recursion detected in policy" on every request.
+-- SECURITY DEFINER runs this with the function owner's privileges, which
+-- bypasses RLS for this internal lookup only.
+create or replace function public.is_admin()
+returns boolean
+language sql
+security definer
+set search_path = public
+as $$
+  select exists (
+    select 1 from public.users where id = auth.uid() and role = 'admin'
+  );
+$$;
+
+-- Admins: full access
 create policy "Admins full access users" on users
-  for all using (exists (select 1 from users u where u.id = auth.uid() and u.role = 'admin'));
+  for all using (public.is_admin());
 
 -- Vendors: can only see their own records
 create policy "Vendors see own vendor row" on vendors
@@ -362,6 +378,54 @@ create policy "Users can view own profile" on users
 
 create policy "Users can update own profile" on users
   for update using (id = auth.uid());
+
+-- Storefront catalog & content tables: public can browse, only admins can
+-- write. Previously these had RLS disabled entirely, which meant any
+-- authenticated client could insert/update/delete them directly via the
+-- Supabase API — this closes that gap.
+alter table categories enable row level security;
+alter table products enable row level security;
+alter table product_images enable row level security;
+alter table product_variants enable row level security;
+alter table delivery_zones enable row level security;
+alter table testimonials enable row level security;
+alter table newsletter_subscribers enable row level security;
+
+create policy "Anyone can view categories" on categories
+  for select using (true);
+create policy "Admins manage categories" on categories
+  for all using (public.is_admin());
+
+create policy "Anyone can view products" on products
+  for select using (true);
+create policy "Admins manage products" on products
+  for all using (public.is_admin());
+
+create policy "Anyone can view product images" on product_images
+  for select using (true);
+create policy "Admins manage product images" on product_images
+  for all using (public.is_admin());
+
+create policy "Anyone can view product variants" on product_variants
+  for select using (true);
+create policy "Admins manage product variants" on product_variants
+  for all using (public.is_admin());
+
+create policy "Anyone can view delivery zones" on delivery_zones
+  for select using (true);
+create policy "Admins manage delivery zones" on delivery_zones
+  for all using (public.is_admin());
+
+create policy "Anyone can view published testimonials" on testimonials
+  for select using (published = true or public.is_admin());
+create policy "Admins manage testimonials" on testimonials
+  for all using (public.is_admin());
+
+-- No public policies on newsletter_subscribers — only the server-side
+-- /api/newsletter route (service-role client) writes to it, and only
+-- admins should ever read the list.
+create policy "Admins view newsletter subscribers" on newsletter_subscribers
+  for select using (public.is_admin());
 
 -- NOTE: The policies above are a starting sketch, not a complete security
 -- model. Before production: add matching INSERT/UPDATE policies scoped to
@@ -470,3 +534,25 @@ create policy "Users see own notifications" on notifications
 
 create policy "Users update own notifications" on notifications
   for update using (user_id = auth.uid());
+
+-- ----------------------------------------------------------------------------
+-- PRODUCT IMAGE STORAGE
+-- Public bucket for product photography uploaded via the admin dashboard.
+-- Uploads happen server-side through a service-role client, which bypasses
+-- these policies — they exist as defense-in-depth for any direct access.
+-- ----------------------------------------------------------------------------
+insert into storage.buckets (id, name, public)
+values ('product-images', 'product-images', true)
+on conflict (id) do nothing;
+
+create policy "Public read product images" on storage.objects
+  for select using (bucket_id = 'product-images');
+
+create policy "Admins upload product images" on storage.objects
+  for insert with check (bucket_id = 'product-images' and public.is_admin());
+
+create policy "Admins update product images" on storage.objects
+  for update using (bucket_id = 'product-images' and public.is_admin());
+
+create policy "Admins delete product images" on storage.objects
+  for delete using (bucket_id = 'product-images' and public.is_admin());

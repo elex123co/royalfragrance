@@ -1,5 +1,6 @@
 import { createAdminClient } from "@/lib/supabase/server";
 import { getPaymentProvider } from "@/lib/payments";
+import { confirmOrderPaidAndDeductStock } from "@/lib/orders/confirm-payment";
 import { formatNaira } from "@/lib/utils/currency";
 import { LinkButton } from "@/components/ui/Button";
 import { CheckCircle2, Clock } from "lucide-react";
@@ -57,10 +58,7 @@ export default async function OrderConfirmationPage({
       const provider = getPaymentProvider();
       const verification = await provider.verifyPayment(orderNumber);
       if (verification.status === "success") {
-        await supabase
-          .from("orders")
-          .update({ payment_status: "paid", order_status: "payment_confirmed" })
-          .eq("id", order.id);
+        await confirmOrderPaidAndDeductStock(supabase, order.id);
         paymentStatus = "paid";
       }
     } catch {

@@ -1,13 +1,13 @@
 "use server";
 
 import { revalidatePath } from "next/cache";
-import { createAdminClient } from "@/lib/supabase/server";
+import { requireAdmin } from "./require-admin";
 import { getPaymentProvider } from "@/lib/payments";
 
 type VendorStatus = "pending_approval" | "active" | "suspended" | "inactive";
 
 export async function setVendorStatus(vendorId: string, status: VendorStatus) {
-  const supabase = createAdminClient();
+  const { admin: supabase } = await requireAdmin();
 
   const update: Record<string, unknown> = { status };
   if (status === "active") {
@@ -39,7 +39,7 @@ export async function setVendorStatus(vendorId: string, status: VendorStatus) {
  * (spec section 35), and the vendor can still be approved without one.
  */
 export async function provisionCollectionAccount(vendorId: string) {
-  const supabase = createAdminClient();
+  const { admin: supabase } = await requireAdmin();
 
   const { data: vendor } = await supabase
     .from("vendors")

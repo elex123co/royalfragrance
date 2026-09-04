@@ -1,7 +1,7 @@
 "use server";
 
 import { revalidatePath } from "next/cache";
-import { createAdminClient } from "@/lib/supabase/server";
+import { requireAdmin } from "./require-admin";
 
 export interface TransferInput {
   vendorId: string;
@@ -21,7 +21,7 @@ export async function transferInventoryToVendor(input: TransferInput) {
     return { success: false, error: "Quantity must be greater than zero" };
   }
 
-  const supabase = createAdminClient();
+  const { admin: supabase } = await requireAdmin();
 
   const { data: existing } = await supabase
     .from("vendor_inventory")

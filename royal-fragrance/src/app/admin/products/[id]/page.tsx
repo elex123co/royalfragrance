@@ -41,7 +41,9 @@ export default async function EditProductPage({
           categoryId: product.category_id,
           basePrice: Number(product.base_price),
           status: product.status,
-          imageUrl: product.product_images?.[0]?.url ?? "",
+          images: (product.product_images ?? [])
+            .sort((a: any, b: any) => a.position - b.position)
+            .map((img: any) => img.url),
           variants: (product.product_variants ?? []).map((v: any) => ({
             size: v.size,
             price: Number(v.price),

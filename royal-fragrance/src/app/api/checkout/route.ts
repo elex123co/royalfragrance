@@ -54,6 +54,32 @@ export async function POST(request: Request) {
 
   const supabase = createAdminClient();
 
+  // Validate stock BEFORE creating the order — prevents overselling on
+  // items that have sold out between the customer adding to cart and
+  // checking out.
+  const itemsWithVariant = items.filter((i) => i.variantId);
+  if (itemsWithVariant.length > 0) {
+    const { data: variants } = await supabase
+      .from("product_variants")
+      .select("id, stock, size")
+      .in(
+        "id",
+        itemsWithVariant.map((i) => i.variantId!)
+      );
+
+    for (const item of itemsWithVariant) {
+      const variant = variants?.find((v) => v.id === item.variantId);
+      if (!variant || variant.stock < item.quantity) {
+        return NextResponse.json(
+          {
+            error: `${item.name}${variant ? ` (${variant.size})` : ""} — only ${variant?.stock ?? 0} left in stock. Please update your cart.`,
+          },
+          { status: 409 }
+        );
+      }
+    }
+  }
+
   // Persist the order + items BEFORE redirecting to payment, so we have a
   // record even if the customer abandons checkout. Delivery fee is snapshot
   // at order time so future pricing changes never alter historical orders.
