@@ -5,7 +5,7 @@ const GROQ_URL = "https://api.groq.com/openai/v1/chat/completions";
 // the code can go stale without warning. Set GROQ_MODEL in your env to
 // whatever currently shows up at https://api.groq.com/openai/v1/models
 // for your account if the default below ever 404s.
-const DEFAULT_MODEL = "llama-3.1-8b-instant";
+const DEFAULT_MODEL = "openai/gpt-oss-120b";
 
 interface ChatMessage {
   role: "system" | "user" | "assistant";
