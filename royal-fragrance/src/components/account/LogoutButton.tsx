@@ -1,17 +1,17 @@
 "use client";
 
-import { useRouter } from "next/navigation";
 import { LogOut } from "lucide-react";
 import { createClient } from "@/lib/supabase/client";
 
 export function LogoutButton() {
-  const router = useRouter();
-
   async function handleLogout() {
     const supabase = createClient();
     await supabase.auth.signOut();
-    router.push("/");
-    router.refresh();
+    // A hard navigation, not router.push — Next's client-side Router
+    // Cache can otherwise keep serving a previous session's rendered
+    // pages after switching accounts, which is exactly what caused
+    // "stuck in normal user features until I clear cache."
+    window.location.href = "/";
   }
 
   return (

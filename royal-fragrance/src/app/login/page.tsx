@@ -1,7 +1,7 @@
 "use client";
 
 import { useState, Suspense } from "react";
-import { useRouter, useSearchParams } from "next/navigation";
+import { useSearchParams } from "next/navigation";
 import Link from "next/link";
 import { createClient } from "@/lib/supabase/client";
 import { Button } from "@/components/ui/Button";
@@ -15,7 +15,6 @@ export default function LoginPage() {
 }
 
 function LoginForm() {
-  const router = useRouter();
   const searchParams = useSearchParams();
   const [email, setEmail] = useState("");
   const [password, setPassword] = useState("");
@@ -66,8 +65,10 @@ function LoginForm() {
         ? explicitRedirect
         : roleHome;
 
-    router.push(destination);
-    router.refresh();
+    // A hard navigation, not router.push — ensures a completely fresh
+    // server render for the new session rather than risking Next's
+    // client-side Router Cache serving a previous account's cached pages.
+    window.location.href = destination;
   }
 
   return (

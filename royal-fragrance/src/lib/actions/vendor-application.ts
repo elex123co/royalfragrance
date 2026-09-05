@@ -3,12 +3,11 @@
 import { createAdminClient } from "@/lib/supabase/server";
 
 export interface VendorApplicationInput {
-  businessName: string;
-  contactName: string;
+  fullName: string;
   email: string;
   phone: string;
   password: string;
-  notes?: string;
+  notes: string;
 }
 
 export interface VendorApplicationResult {
@@ -37,7 +36,7 @@ export async function applyAsVendor(
     password: input.password,
     email_confirm: true,
     user_metadata: {
-      name: input.contactName,
+      name: input.fullName,
       phone: input.phone,
       role: "vendor",
     },
@@ -52,9 +51,9 @@ export async function applyAsVendor(
   const { error: vendorError } = await supabase.from("vendors").insert({
     user_id: authUser.user.id,
     vendor_code: generateVendorCode(),
-    business_name: input.businessName,
+    business_name: input.fullName,
     status: "pending_approval",
-    onboarding_notes: input.notes ?? null,
+    onboarding_notes: input.notes,
   });
 
   if (vendorError) {
@@ -65,7 +64,7 @@ export async function applyAsVendor(
     action: "vendor.application_submitted",
     entity_type: "vendor",
     entity_id: authUser.user.id,
-    metadata: { businessName: input.businessName },
+    metadata: { fullName: input.fullName },
   });
 
   return { success: true };

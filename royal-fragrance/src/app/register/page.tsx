@@ -1,13 +1,11 @@
 "use client";
 
 import { useState } from "react";
-import { useRouter } from "next/navigation";
 import Link from "next/link";
 import { createClient } from "@/lib/supabase/client";
 import { Button } from "@/components/ui/Button";
 
 export default function RegisterPage() {
-  const router = useRouter();
   const [form, setForm] = useState({
     name: "",
     email: "",
@@ -38,8 +36,9 @@ export default function RegisterPage() {
       return;
     }
 
-    router.push("/account");
-    router.refresh();
+    // Hard navigation for a guaranteed fresh session render — see the
+    // same fix on the login page for why router.push isn't enough here.
+    window.location.href = "/account";
   }
 
   return (

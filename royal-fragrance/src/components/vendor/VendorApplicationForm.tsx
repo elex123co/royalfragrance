@@ -8,8 +8,7 @@ import { applyAsVendor } from "@/lib/actions/vendor-application";
 export function VendorApplicationForm() {
   const router = useRouter();
   const [form, setForm] = useState({
-    businessName: "",
-    contactName: "",
+    fullName: "",
     email: "",
     phone: "",
     password: "",
@@ -59,14 +58,9 @@ export function VendorApplicationForm() {
       <h2 className="font-display text-lg text-espresso">Vendor Application</h2>
 
       <Field
-        label="Business Name"
-        value={form.businessName}
-        onChange={(v) => setForm((f) => ({ ...f, businessName: v }))}
-      />
-      <Field
-        label="Contact Name"
-        value={form.contactName}
-        onChange={(v) => setForm((f) => ({ ...f, contactName: v }))}
+        label="Full Name"
+        value={form.fullName}
+        onChange={(v) => setForm((f) => ({ ...f, fullName: v }))}
       />
       <Field
         label="Email"
@@ -88,9 +82,10 @@ export function VendorApplicationForm() {
 
       <div>
         <label className="mb-1.5 block text-sm font-medium text-espresso">
-          Tell us about your sales network (optional)
+          Tell us about your sales network
         </label>
         <textarea
+          required
           rows={3}
           value={form.notes}
           onChange={(e) => setForm((f) => ({ ...f, notes: e.target.value }))}
