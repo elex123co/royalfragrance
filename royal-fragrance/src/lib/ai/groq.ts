@@ -1,8 +1,11 @@
 const GROQ_URL = "https://api.groq.com/openai/v1/chat/completions";
 
-// Llama 3.3 70B on Groq — strong instruction-following and JSON-mode
-// reliability at very low latency, a good fit for a real-time chat widget.
-const MODEL = "llama-3.3-70b-versatile";
+// Configurable via env rather than hardcoded — Groq's model catalog
+// changes fairly often (deprecations, renames), so a model ID baked into
+// the code can go stale without warning. Set GROQ_MODEL in your env to
+// whatever currently shows up at https://api.groq.com/openai/v1/models
+// for your account if the default below ever 404s.
+const DEFAULT_MODEL = "llama-3.1-8b-instant";
 
 interface ChatMessage {
   role: "system" | "user" | "assistant";
@@ -31,7 +34,7 @@ export async function callGroq(
       "Content-Type": "application/json",
     },
     body: JSON.stringify({
-      model: MODEL,
+      model: process.env.GROQ_MODEL || DEFAULT_MODEL,
       messages,
       temperature: 0.7,
       ...(json ? { response_format: { type: "json_object" } } : {}),
