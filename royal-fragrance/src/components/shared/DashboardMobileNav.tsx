@@ -1,15 +1,20 @@
 "use client";
 
-import { useState } from "react";
+import { useState, type ReactNode } from "react";
 import Link from "next/link";
 import { usePathname } from "next/navigation";
-import { MoreHorizontal, X, type LucideIcon } from "lucide-react";
+import { MoreHorizontal, X } from "lucide-react";
 import { LogoutButton } from "@/components/account/LogoutButton";
 
 export interface NavLink {
   href: string;
   label: string;
-  icon: LucideIcon;
+  /** Pass an already-rendered icon element, e.g. `<Package size={20} />` —
+   * never a bare component reference. This component is a Client
+   * Component; a raw component/function passed as a prop from the Server
+   * Component layouts that use this cannot cross that boundary, but a
+   * rendered element can. */
+  icon: ReactNode;
   badge?: number;
 }
 
@@ -46,7 +51,7 @@ export function DashboardMobileNav({
               </button>
             </div>
             <div className="space-y-1">
-              {moreLinks.map(({ href, label, icon: Icon, badge }) => (
+              {moreLinks.map(({ href, label, icon, badge }) => (
                 <Link
                   key={href}
                   href={href}
@@ -54,7 +59,7 @@ export function DashboardMobileNav({
                   className="flex items-center justify-between rounded-lg px-3 py-3 text-sm text-espresso hover:bg-espresso/5"
                 >
                   <span className="flex items-center gap-3">
-                    <Icon size={18} />
+                    {icon}
                     {label}
                   </span>
                   {!!badge && (
@@ -73,7 +78,7 @@ export function DashboardMobileNav({
       )}
 
       <nav className="fixed inset-x-0 bottom-0 z-30 flex border-t border-espresso/10 bg-cream/95 backdrop-blur-md lg:hidden">
-        {primaryTabs.map(({ href, label, icon: Icon, badge }) => {
+        {primaryTabs.map(({ href, label, icon, badge }) => {
           const active = pathname === href;
           return (
             <Link
@@ -83,7 +88,7 @@ export function DashboardMobileNav({
                 active ? "text-caramel" : "text-espresso/60"
               }`}
             >
-              <Icon size={20} />
+              {icon}
               {label}
               {!!badge && (
                 <span className="absolute right-5 top-1 flex h-4 w-4 items-center justify-center rounded-full bg-caramel text-[9px] text-espresso">

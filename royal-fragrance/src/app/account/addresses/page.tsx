@@ -1,3 +1,4 @@
+import { redirect } from "next/navigation";
 import { createClient } from "@/lib/supabase/server";
 import { getAddresses } from "@/lib/data/account";
 import { AddressForm } from "@/components/account/AddressForm";
@@ -10,6 +11,8 @@ export default async function AddressesPage() {
   const {
     data: { user },
   } = await supabase.auth.getUser();
+  if (!user) redirect("/login?redirect=/account");
+
   const addresses = await getAddresses(user!.id);
 
   return (

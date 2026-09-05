@@ -1,4 +1,5 @@
 import Link from "next/link";
+import { redirect } from "next/navigation";
 import { createClient } from "@/lib/supabase/server";
 import { getNotifications } from "@/lib/data/account";
 import { MarkAllReadButton } from "@/components/account/MarkAllReadButton";
@@ -10,6 +11,8 @@ export default async function NotificationsPage() {
   const {
     data: { user },
   } = await supabase.auth.getUser();
+  if (!user) redirect("/login?redirect=/account");
+
   const notifications = await getNotifications(user!.id);
   const hasUnread = notifications.some((n) => !n.read);
 

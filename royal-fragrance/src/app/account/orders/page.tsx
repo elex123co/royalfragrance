@@ -1,4 +1,5 @@
 import { BrandImage } from "@/components/ui/BrandImage";
+import { redirect } from "next/navigation";
 import { createClient } from "@/lib/supabase/server";
 import { getOrders } from "@/lib/data/account";
 import { formatNaira } from "@/lib/utils/currency";
@@ -22,6 +23,8 @@ export default async function OrdersPage() {
   const {
     data: { user },
   } = await supabase.auth.getUser();
+  if (!user) redirect("/login?redirect=/account");
+
   const orders = await getOrders(user!.id);
 
   return (

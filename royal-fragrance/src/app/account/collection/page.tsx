@@ -1,5 +1,6 @@
 import { BrandImage } from "@/components/ui/BrandImage";
 import Link from "next/link";
+import { redirect } from "next/navigation";
 import { createClient } from "@/lib/supabase/server";
 import { getCollection } from "@/lib/data/account";
 
@@ -10,6 +11,8 @@ export default async function CollectionPage() {
   const {
     data: { user },
   } = await supabase.auth.getUser();
+  if (!user) redirect("/login?redirect=/account");
+
   const collection = await getCollection(user!.id);
 
   return (

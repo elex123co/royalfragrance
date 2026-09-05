@@ -1,3 +1,4 @@
+import { redirect } from "next/navigation";
 import { createClient } from "@/lib/supabase/server";
 import { getScentProfile, summarizeScentProfile } from "@/lib/data/account";
 import { ScentProfileQuiz } from "@/components/account/ScentProfileQuiz";
@@ -9,6 +10,8 @@ export default async function ScentProfilePage() {
   const {
     data: { user },
   } = await supabase.auth.getUser();
+  if (!user) redirect("/login?redirect=/account");
+
   const profile = await getScentProfile(user!.id);
   const summary = summarizeScentProfile(profile);
 

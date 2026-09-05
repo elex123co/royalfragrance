@@ -1,5 +1,6 @@
 import { BrandImage } from "@/components/ui/BrandImage";
 import Link from "next/link";
+import { redirect } from "next/navigation";
 import { createClient } from "@/lib/supabase/server";
 import { getWishlist } from "@/lib/data/account";
 import { formatNaira } from "@/lib/utils/currency";
@@ -12,6 +13,8 @@ export default async function WishlistPage() {
   const {
     data: { user },
   } = await supabase.auth.getUser();
+  if (!user) redirect("/login?redirect=/account");
+
   const wishlist = await getWishlist(user!.id);
 
   return (

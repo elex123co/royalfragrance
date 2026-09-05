@@ -1,5 +1,6 @@
 import Link from "next/link";
 import { BrandImage } from "@/components/ui/BrandImage";
+import { redirect } from "next/navigation";
 import { createClient } from "@/lib/supabase/server";
 import {
   getOrders,
@@ -22,6 +23,8 @@ export default async function AccountOverviewPage() {
   const {
     data: { user },
   } = await supabase.auth.getUser();
+  if (!user) redirect("/login?redirect=/account");
+
 
   const [orders, collection, wishlist, scentProfile, recommended] =
     await Promise.all([

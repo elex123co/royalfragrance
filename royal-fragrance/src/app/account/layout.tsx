@@ -49,6 +49,14 @@ export default async function AccountLayout({
     { href: "/account/settings", label: "Account Settings", icon: Settings },
   ];
 
+  // A rendered icon element can cross the server→client prop boundary; a
+  // bare component reference (used above for the desktop sidebar, which
+  // renders inline in this same Server Component) cannot.
+  const mobileNavItems = navItems.map((item) => ({
+    ...item,
+    icon: <item.icon size={20} />,
+  }));
+
   return (
     <div className="bg-cream">
       <div className="mx-auto flex min-h-[80vh] max-w-7xl gap-8 px-5 py-10 lg:px-8">
@@ -102,8 +110,8 @@ export default async function AccountLayout({
       </div>
 
       <DashboardMobileNav
-        primaryTabs={navItems.slice(0, 4)}
-        moreLinks={navItems.slice(4)}
+        primaryTabs={mobileNavItems.slice(0, 4)}
+        moreLinks={mobileNavItems.slice(4)}
       />
     </div>
   );

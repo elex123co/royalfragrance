@@ -18,6 +18,14 @@ const navItems = [
   { href: "/admin/vendors", label: "Vendors", icon: Users },
 ];
 
+// A rendered icon element can cross the server→client prop boundary; a
+// bare component reference (used below for the desktop sidebar, which
+// renders inline in this same Server Component) cannot.
+const mobileNavItems = navItems.map((item) => ({
+  ...item,
+  icon: <item.icon size={20} />,
+}));
+
 export default async function AdminLayout({
   children,
 }: {
@@ -84,8 +92,8 @@ export default async function AdminLayout({
       </div>
 
       <DashboardMobileNav
-        primaryTabs={navItems.slice(0, 4)}
-        moreLinks={navItems.slice(4)}
+        primaryTabs={mobileNavItems.slice(0, 4)}
+        moreLinks={mobileNavItems.slice(4)}
       />
     </div>
   );
