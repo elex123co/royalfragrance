@@ -9,6 +9,8 @@ import {
   Truck,
 } from "lucide-react";
 import { getCurrentVendor } from "@/lib/data/vendor";
+import { LogoutButton } from "@/components/account/LogoutButton";
+import { DashboardMobileNav } from "@/components/shared/DashboardMobileNav";
 
 const navItems = [
   { href: "/vendor", label: "Overview", icon: LayoutDashboard },
@@ -28,49 +30,55 @@ export default async function VendorLayout({
   if (!vendor) redirect("/login?redirect=/vendor");
 
   return (
-    <div className="mx-auto flex min-h-[80vh] max-w-7xl gap-8 px-5 py-10 lg:px-8">
-      <aside className="hidden w-56 shrink-0 lg:block">
-        <div className="sticky top-24 rounded-xl2 border border-espresso/10 bg-white/60 p-4">
-          <p className="mb-1 px-2 text-xs uppercase tracking-widest text-caramel">
-            Vendor
-          </p>
-          <p className="mb-4 px-2 text-sm font-medium text-espresso">
-            {vendor.business_name}
-          </p>
-          {vendor.status !== "active" && (
-            <p className="mb-4 rounded-lg bg-amber-50 px-2 py-1.5 text-xs capitalize text-amber-700">
-              {vendor.status.replaceAll("_", " ")}
-            </p>
-          )}
-          <nav className="space-y-1">
-            {navItems.map(({ href, label, icon: Icon }) => (
-              <Link
-                key={href}
-                href={href}
-                className="flex items-center gap-3 rounded-lg px-3 py-2 text-sm text-rich/80 transition hover:bg-espresso/5 hover:text-espresso"
-              >
-                <Icon size={16} />
-                {label}
-              </Link>
-            ))}
-          </nav>
-        </div>
-      </aside>
+    <div className="bg-cream">
+      <div className="mx-auto flex min-h-[80vh] max-w-7xl gap-8 px-5 py-10 lg:px-8">
+        <aside className="hidden w-64 shrink-0 lg:block">
+          <div className="sticky top-24 rounded-xl2 bg-brand-gradient p-5 text-cream shadow-premium">
+            <span className="text-xs uppercase tracking-widest text-sand">
+              Vendor Workspace
+            </span>
+            <p className="mt-1 font-display text-lg">{vendor.business_name}</p>
+            {vendor.status !== "active" && (
+              <p className="mb-4 mt-3 rounded-lg bg-caramel/20 px-2 py-1.5 text-xs capitalize text-sand">
+                {vendor.status.replaceAll("_", " ")}
+              </p>
+            )}
 
-      <div className="min-w-0 flex-1">
-        <nav className="mb-6 flex gap-4 overflow-x-auto lg:hidden">
-          {navItems.map(({ href, label }) => (
-            <Link
-              key={href}
-              href={href}
-              className="whitespace-nowrap rounded-full border border-espresso/15 px-4 py-1.5 text-sm text-espresso"
-            >
-              {label}
-            </Link>
-          ))}
-        </nav>
-        {children}
+            <nav className={vendor.status !== "active" ? "space-y-1" : "mt-6 space-y-1"}>
+              {navItems.map(({ href, label, icon: Icon }) => (
+                <Link
+                  key={href}
+                  href={href}
+                  className="flex items-center gap-3 rounded-lg px-3 py-2 text-sm text-cream/75 transition hover:bg-cream/10 hover:text-cream"
+                >
+                  <Icon size={16} />
+                  {label}
+                </Link>
+              ))}
+            </nav>
+
+            <div className="mt-4 border-t border-cream/10 pt-4">
+              <LogoutButton />
+            </div>
+          </div>
+        </aside>
+
+        <div className="min-w-0 flex-1 pb-20 lg:pb-0">
+          <div className="mb-6 rounded-xl2 bg-brand-gradient p-5 text-cream shadow-premium lg:hidden">
+            <span className="text-xs uppercase tracking-widest text-sand">
+              Vendor Workspace
+            </span>
+            <p className="mt-1 font-display text-xl">{vendor.business_name}</p>
+          </div>
+
+          {children}
+        </div>
       </div>
+
+      <DashboardMobileNav
+        primaryTabs={navItems.slice(0, 4)}
+        moreLinks={navItems.slice(4)}
+      />
     </div>
   );
 }

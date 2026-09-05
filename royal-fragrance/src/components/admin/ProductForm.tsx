@@ -135,19 +135,11 @@ export function ProductForm({ categories, productId, initial }: ProductFormProps
       onSubmit={handleSubmit}
       className="max-w-2xl space-y-5 rounded-xl2 border border-espresso/10 bg-white/60 p-6"
     >
-      <div className="grid gap-4 sm:grid-cols-2">
-        <TextField
-          label="Product Name"
-          value={form.name}
-          onChange={(v) => setForm((f) => ({ ...f, name: v }))}
-        />
-        <TextField
-          label="Slug"
-          value={form.slug}
-          placeholder={slugify(form.name) || "auto-generated"}
-          onChange={(v) => setForm((f) => ({ ...f, slug: v }))}
-        />
-      </div>
+      <TextField
+        label="Product Name"
+        value={form.name}
+        onChange={(v) => setForm((f) => ({ ...f, name: v }))}
+      />
 
       <div>
         <label className="mb-1.5 block text-sm font-medium text-espresso">
@@ -227,7 +219,7 @@ export function ProductForm({ categories, productId, initial }: ProductFormProps
       </div>
 
       <TextField
-        label="Base Price (₦) — fallback display price"
+        label="Price (₦)"
         type="number"
         value={String(form.basePrice)}
         onChange={(v) => setForm((f) => ({ ...f, basePrice: Number(v) || 0 }))}
@@ -300,38 +292,57 @@ export function ProductForm({ categories, productId, initial }: ProductFormProps
           No real size options? Just use one row labeled &ldquo;One Size&rdquo;
           with your total quantity in Stock.
         </p>
-        <div className="space-y-2">
+        <div className="space-y-3">
           {form.variants.map((v, i) => (
-            <div key={i} className="flex items-center gap-2">
-              <input
-                placeholder="Size (e.g. 50ml)"
-                value={v.size}
-                onChange={(e) => updateVariant(i, { size: e.target.value })}
-                className="flex-1 rounded-lg border border-espresso/15 px-3 py-2 text-sm"
-              />
-              <input
-                type="number"
-                placeholder="Price"
-                value={v.price}
-                onChange={(e) => updateVariant(i, { price: Number(e.target.value) })}
-                className="w-24 rounded-lg border border-espresso/15 px-3 py-2 text-sm"
-              />
-              <input
-                type="number"
-                min={0}
-                placeholder="Stock"
-                value={v.stock}
-                onChange={(e) => updateVariant(i, { stock: Number(e.target.value) })}
-                className="w-20 rounded-lg border border-espresso/15 px-3 py-2 text-sm"
-              />
+            <div
+              key={i}
+              className="relative rounded-lg border border-espresso/15 p-3 pr-9"
+            >
               <button
                 type="button"
                 onClick={() => removeVariant(i)}
                 disabled={form.variants.length <= 1}
-                className="text-rich/40 hover:text-red-600 disabled:cursor-not-allowed disabled:opacity-30"
+                className="absolute right-2 top-2 text-rich/40 hover:text-red-600 disabled:cursor-not-allowed disabled:opacity-30"
+                aria-label="Remove size"
               >
                 ✕
               </button>
+              <div className="grid grid-cols-3 gap-2">
+                <div>
+                  <label className="mb-1 block text-[10px] uppercase tracking-wide text-rich/50">
+                    Size
+                  </label>
+                  <input
+                    placeholder="50ml"
+                    value={v.size}
+                    onChange={(e) => updateVariant(i, { size: e.target.value })}
+                    className="w-full rounded-lg border border-espresso/15 px-2 py-2 text-sm"
+                  />
+                </div>
+                <div>
+                  <label className="mb-1 block text-[10px] uppercase tracking-wide text-rich/50">
+                    Price (₦)
+                  </label>
+                  <input
+                    type="number"
+                    value={v.price}
+                    onChange={(e) => updateVariant(i, { price: Number(e.target.value) })}
+                    className="w-full rounded-lg border border-espresso/15 px-2 py-2 text-sm"
+                  />
+                </div>
+                <div>
+                  <label className="mb-1 block text-[10px] uppercase tracking-wide text-rich/50">
+                    Stock
+                  </label>
+                  <input
+                    type="number"
+                    min={0}
+                    value={v.stock}
+                    onChange={(e) => updateVariant(i, { stock: Number(e.target.value) })}
+                    className="w-full rounded-lg border border-espresso/15 px-2 py-2 text-sm"
+                  />
+                </div>
+              </div>
             </div>
           ))}
         </div>
