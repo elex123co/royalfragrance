@@ -32,7 +32,7 @@ export async function setVendorStatus(vendorId: string, status: VendorStatus) {
   if (status === "active") {
     const { data: vendor } = await supabase
       .from("vendors")
-      .select("users(name, email)")
+      .select("users!user_id(name, email)")
       .eq("user_id", vendorId)
       .single();
     const user = (vendor as any)?.users;
@@ -56,7 +56,7 @@ export async function provisionCollectionAccount(vendorId: string) {
 
   const { data: vendor } = await supabase
     .from("vendors")
-    .select("business_name, users(name, email, phone)")
+    .select("business_name, users!user_id(name, email, phone)")
     .eq("user_id", vendorId)
     .single();
 

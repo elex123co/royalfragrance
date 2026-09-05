@@ -15,7 +15,7 @@ export async function getCurrentVendor() {
   const admin = createAdminClient();
   const { data: vendor } = await admin
     .from("vendors")
-    .select("*, users(name, email, phone)")
+    .select("*, users!user_id(name, email, phone)")
     .eq("user_id", user.id)
     .single();
 

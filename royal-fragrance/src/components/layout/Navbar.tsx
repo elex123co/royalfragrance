@@ -3,6 +3,7 @@
 import Link from "next/link";
 import { usePathname } from "next/navigation";
 import { useState, useEffect } from "react";
+import { createPortal } from "react-dom";
 import {
   Menu,
   X,
@@ -24,8 +25,12 @@ const links = [
 
 export default function Navbar() {
   const [open, setOpen] = useState(false);
+  const [mounted, setMounted] = useState(false);
   const { itemCount } = useCart();
   const pathname = usePathname();
+
+  // Portals need a real document to render into — only true after mount.
+  useEffect(() => setMounted(true), []);
 
   // Close the menu automatically on navigation, and lock background scroll
   // while it's open so the page doesn't scroll behind the overlay.
@@ -37,6 +42,66 @@ export default function Navbar() {
       document.body.style.overflow = "";
     };
   }, [open]);
+
+  const menu = open && (
+    <div className="fixed inset-0 z-[9999] flex flex-col bg-cream md:hidden">
+      <div className="flex items-center justify-between border-b border-espresso/10 px-5 py-4">
+        <Link
+          href="/"
+          onClick={() => setOpen(false)}
+          className="font-display text-xl tracking-wide text-espresso"
+        >
+          Royal <span className="text-caramel">Fragrance</span>
+        </Link>
+        <button
+          className="text-espresso"
+          onClick={() => setOpen(false)}
+          aria-label="Close menu"
+        >
+          <X size={24} />
+        </button>
+      </div>
+
+      <div className="flex-1 overflow-y-auto">
+        <nav className="flex flex-col gap-1 px-5 py-4">
+          {links.map(({ href, label, icon: Icon }) => {
+            const active = pathname === href;
+            return (
+              <Link
+                key={href}
+                href={href}
+                className={`flex items-center gap-4 rounded-xl px-3 py-3.5 text-base font-medium transition ${
+                  active
+                    ? "bg-espresso text-cream"
+                    : "text-espresso hover:bg-espresso/5"
+                }`}
+              >
+                <Icon size={20} />
+                {label}
+              </Link>
+            );
+          })}
+        </nav>
+
+        <div className="mt-2 grid grid-cols-2 gap-3 border-t border-espresso/10 px-5 py-5">
+          <Link
+            href="/account"
+            className="flex flex-col items-center gap-2 rounded-xl border border-espresso/15 py-4 text-sm font-medium text-espresso"
+          >
+            <User size={20} />
+            Account
+          </Link>
+          <Link
+            href="/cart"
+            className="relative flex flex-col items-center gap-2 rounded-xl border border-espresso/15 py-4 text-sm font-medium text-espresso"
+          >
+            <ShoppingBag size={20} />
+            Cart{itemCount > 0 ? ` (${itemCount})` : ""}
+          </Link>
+        </div>
+      </div>
+    </div>
+  );
 
   return (
     <header className="sticky top-0 z-50 border-b border-espresso/10 bg-cream/90 backdrop-blur-md">
@@ -91,69 +156,14 @@ export default function Navbar() {
         </button>
       </div>
 
-      {/* Self-contained full-screen overlay — has its own top bar rather
-          than positioning relative to the header's height, and sits above
-          everything (z-[60] vs the header's z-50) so it can never render
-          underneath the sticky header or depend on its exact height. */}
-      {open && (
-        <div className="fixed inset-0 z-[60] flex flex-col bg-cream md:hidden">
-          <div className="flex items-center justify-between border-b border-espresso/10 px-5 py-4">
-            <Link
-              href="/"
-              onClick={() => setOpen(false)}
-              className="font-display text-xl tracking-wide text-espresso"
-            >
-              Royal <span className="text-caramel">Fragrance</span>
-            </Link>
-            <button
-              className="text-espresso"
-              onClick={() => setOpen(false)}
-              aria-label="Close menu"
-            >
-              <X size={24} />
-            </button>
-          </div>
-
-          <div className="flex-1 overflow-y-auto">
-            <nav className="flex flex-col gap-1 px-5 py-4">
-              {links.map(({ href, label, icon: Icon }) => {
-                const active = pathname === href;
-                return (
-                  <Link
-                    key={href}
-                    href={href}
-                    className={`flex items-center gap-4 rounded-xl px-3 py-3.5 text-base font-medium transition ${
-                      active
-                        ? "bg-espresso text-cream"
-                        : "text-espresso hover:bg-espresso/5"
-                    }`}
-                  >
-                    <Icon size={20} />
-                    {label}
-                  </Link>
-                );
-              })}
-            </nav>
-
-            <div className="mt-2 grid grid-cols-2 gap-3 border-t border-espresso/10 px-5 py-5">
-              <Link
-                href="/account"
-                className="flex flex-col items-center gap-2 rounded-xl border border-espresso/15 py-4 text-sm font-medium text-espresso"
-              >
-                <User size={20} />
-                Account
-              </Link>
-              <Link
-                href="/cart"
-                className="relative flex flex-col items-center gap-2 rounded-xl border border-espresso/15 py-4 text-sm font-medium text-espresso"
-              >
-                <ShoppingBag size={20} />
-                Cart{itemCount > 0 ? ` (${itemCount})` : ""}
-              </Link>
-            </div>
-          </div>
-        </div>
-      )}
+      {/* Rendered via a portal straight into document.body — the header
+          above has backdrop-blur-md, and any filter/backdrop-filter/
+          transform on an ancestor traps position:fixed descendants to
+          that ancestor's box instead of the real viewport. Without the
+          portal, this "full-screen" overlay would actually be squeezed
+          into the header's own ~65px height, which is exactly why it
+          looked like nothing happened when tapping the menu. */}
+      {mounted && menu && createPortal(menu, document.body)}
     </header>
   );
 }

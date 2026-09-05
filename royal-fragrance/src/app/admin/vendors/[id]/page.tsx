@@ -17,7 +17,7 @@ export default async function AdminVendorDetailPage({
   const supabase = createAdminClient();
   const { data: vendor } = await supabase
     .from("vendors")
-    .select("*, users(name, email, phone)")
+    .select("*, users!user_id(name, email, phone)")
     .eq("user_id", params.id)
     .single();
 

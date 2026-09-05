@@ -10,12 +10,16 @@ export const metadata = { title: "Vendors — Admin — Royal Fragrance" };
 export default async function AdminVendorsPage() {
   const supabase = createAdminClient();
 
-  const { data: vendors } = await supabase
+  const { data: vendors, error: vendorsError } = await supabase
     .from("vendors")
     .select(
-      "user_id, business_name, status, vendor_code, users(name, email), vendor_collection_accounts(account_number)"
+      "user_id, business_name, status, vendor_code, users!user_id(name, email), vendor_collection_accounts(account_number)"
     )
     .order("created_at", { ascending: false });
+
+  if (vendorsError) {
+    console.error("Failed to load vendors:", vendorsError);
+  }
 
   // Aggregate collections + sales + inventory per vendor in a couple of
   // queries rather than N+1 round trips.
