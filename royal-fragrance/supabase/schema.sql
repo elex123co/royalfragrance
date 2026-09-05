@@ -556,3 +556,111 @@ create policy "Admins update product images" on storage.objects
 
 create policy "Admins delete product images" on storage.objects
   for delete using (bucket_id = 'product-images' and public.is_admin());
+
+-- ----------------------------------------------------------------------------
+-- ELIZABETH — AUTONOMOUS NEWSLETTER ENGINE
+-- Content types, storylines/characters for continuity, interactive voting,
+-- and a singleton settings row for pause/resume + campaign guidance.
+-- ----------------------------------------------------------------------------
+
+create type newsletter_content_type as enum (
+  'nigerian_humor',
+  'storytelling',
+  'luxury_editorial',
+  'romance',
+  'weekend_energy',
+  'sunday_reflection',
+  'scent_confession',
+  'royal_scent_chronicles'
+);
+
+create type newsletter_status as enum ('draft', 'held_for_review', 'sent', 'failed');
+create type storyline_status as enum ('active', 'paused', 'completed');
+
+create table storylines (
+  id uuid primary key default gen_random_uuid(),
+  title text not null,
+  summary text not null,
+  status storyline_status not null default 'active',
+  current_episode int not null default 0,
+  last_updated_at timestamptz not null default now(),
+  created_at timestamptz not null default now()
+);
+
+create table story_characters (
+  id uuid primary key default gen_random_uuid(),
+  storyline_id uuid not null references storylines (id) on delete cascade,
+  name text not null,
+  description text,
+  personality text
+);
+
+create table newsletters (
+  id uuid primary key default gen_random_uuid(),
+  title text not null,
+  subject text not null,
+  preview_text text,
+  content text not null,               -- HTML body
+  content_type newsletter_content_type not null,
+  tone text,
+  scheduled_for timestamptz,
+  generated_at timestamptz not null default now(),
+  sent_at timestamptz,
+  status newsletter_status not null default 'draft',
+  storyline_id uuid references storylines (id),
+  episode_number int,
+  confession_number int,
+  featured_product_ids uuid[] default '{}',
+  is_interactive boolean not null default false,
+  interactive_question text,
+  interactive_choices jsonb,           -- [{ "key": "A", "label": "..." }, ...]
+  winning_choice text,
+  send_error text,
+  created_at timestamptz not null default now()
+);
+
+create table newsletter_votes (
+  id uuid primary key default gen_random_uuid(),
+  newsletter_id uuid not null references newsletters (id) on delete cascade,
+  choice text not null,
+  voter_email text not null,
+  created_at timestamptz not null default now(),
+  unique (newsletter_id, voter_email)
+);
+
+-- Singleton settings row (always id = 1). Times are display-only in this
+-- version — the real cron schedule lives in netlify/functions and needs a
+-- redeploy to change; automation_enabled is the one control that's live.
+create table newsletter_settings (
+  id int primary key default 1,
+  automation_enabled boolean not null default true,
+  timezone text not null default 'Africa/Lagos',
+  monday_time text not null default '08:00',
+  friday_time text not null default '10:00',
+  sunday_time text not null default '18:00',
+  featured_product_ids uuid[] default '{}',
+  excluded_product_ids uuid[] default '{}',
+  brand_notes text,
+  updated_at timestamptz not null default now(),
+  constraint single_row check (id = 1)
+);
+insert into newsletter_settings (id) values (1) on conflict (id) do nothing;
+
+create index idx_newsletters_status on newsletters (status);
+create index idx_newsletters_storyline on newsletters (storyline_id);
+create index idx_newsletter_votes_newsletter on newsletter_votes (newsletter_id);
+
+alter table storylines enable row level security;
+alter table story_characters enable row level security;
+alter table newsletters enable row level security;
+alter table newsletter_votes enable row level security;
+alter table newsletter_settings enable row level security;
+
+create policy "Admins manage storylines" on storylines for all using (public.is_admin());
+create policy "Admins manage story characters" on story_characters for all using (public.is_admin());
+create policy "Admins manage newsletters" on newsletters for all using (public.is_admin());
+create policy "Admins manage newsletter settings" on newsletter_settings for all using (public.is_admin());
+-- No public policies on newsletter_votes — votes are written server-side
+-- via the service-role client from the public vote-click API route, since
+-- voters click an unauthenticated link from their email.
+create policy "Admins view newsletter votes" on newsletter_votes for select using (public.is_admin());

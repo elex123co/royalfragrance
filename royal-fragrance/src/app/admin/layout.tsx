@@ -5,6 +5,7 @@ import {
   Tag,
   ShoppingCart,
   Users,
+  Mail,
 } from "lucide-react";
 import { createClient } from "@/lib/supabase/server";
 import { LogoutButton } from "@/components/account/LogoutButton";
@@ -16,6 +17,7 @@ const navItems = [
   { href: "/admin/categories", label: "Categories", icon: Tag },
   { href: "/admin/orders", label: "Orders", icon: ShoppingCart },
   { href: "/admin/vendors", label: "Vendors", icon: Users },
+  { href: "/admin/newsletter", label: "Newsletter", icon: Mail },
 ];
 
 // A rendered icon element can cross the server→client prop boundary; a
