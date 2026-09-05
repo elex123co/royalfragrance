@@ -1,3 +1,4 @@
+import Link from "next/link";
 import { createAdminClient } from "@/lib/supabase/server";
 import { formatNaira } from "@/lib/utils/currency";
 import { VendorRowActions } from "@/components/admin/VendorRowActions";
@@ -86,7 +87,12 @@ export default async function AdminVendorsPage() {
               return (
                 <tr key={v.user_id} className="border-b border-espresso/5 last:border-0">
                   <td className="px-4 py-3">
-                    <p className="font-medium text-espresso">{v.business_name}</p>
+                    <Link
+                      href={`/admin/vendors/${v.user_id}`}
+                      className="font-medium text-espresso underline-offset-2 hover:underline"
+                    >
+                      {v.business_name}
+                    </Link>
                     <p className="text-xs text-rich/40">
                       {v.users?.email} · {v.vendor_code}
                     </p>

@@ -1,5 +1,6 @@
 "use client";
 
+import Link from "next/link";
 import { useTransition, useState } from "react";
 import {
   setVendorStatus,
@@ -71,6 +72,12 @@ export function VendorRowActions({
             Set Up Account
           </button>
         )}
+        <Link
+          href={`/admin/vendors/${vendorId}`}
+          className="rounded-full border border-espresso/20 px-3 py-1 text-xs text-espresso hover:bg-espresso/5"
+        >
+          Manage Inventory
+        </Link>
       </div>
       {error && <p className="text-xs text-red-600">{error}</p>}
     </div>
