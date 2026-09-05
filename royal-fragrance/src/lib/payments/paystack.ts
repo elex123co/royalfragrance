@@ -106,6 +106,12 @@ export const paystackProvider: PaymentProvider = {
     // and requires the business to be approved for DVAs on a supported bank
     // (Nigeria only, business must complete additional KYC with Paystack).
     // See: https://paystack.com/docs/payments/dedicated-virtual-accounts/
+    //
+    // Test vs live secret keys behave differently here: with a test key,
+    // Paystack requires preferred_bank to be exactly "test-bank" — a real
+    // bank slug like "wema-bank" only works with a live key. Set
+    // PAYSTACK_PREFERRED_BANK=test-bank in .env while testing, and to a
+    // real bank slug (e.g. wema-bank) once you switch to a live key.
     const customer = await paystackFetch("/customer", {
       method: "POST",
       body: JSON.stringify({
@@ -120,7 +126,7 @@ export const paystackProvider: PaymentProvider = {
       method: "POST",
       body: JSON.stringify({
         customer: customer.data.customer_code,
-        preferred_bank: "wema-bank",
+        preferred_bank: process.env.PAYSTACK_PREFERRED_BANK ?? "test-bank",
       }),
     });
 
