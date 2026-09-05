@@ -1,6 +1,7 @@
 "use server";
 
 import { createAdminClient } from "@/lib/supabase/server";
+import { sendVendorApplicationReceivedEmail } from "@/lib/email/resend";
 
 export interface VendorApplicationInput {
   fullName: string;
@@ -66,6 +67,8 @@ export async function applyAsVendor(
     entity_id: authUser.user.id,
     metadata: { fullName: input.fullName },
   });
+
+  await sendVendorApplicationReceivedEmail(input.email, input.fullName);
 
   return { success: true };
 }

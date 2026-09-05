@@ -3,6 +3,7 @@
 import { revalidatePath } from "next/cache";
 import { requireAdmin } from "./require-admin";
 import { getPaymentProvider } from "@/lib/payments";
+import { sendVendorApprovedEmail } from "@/lib/email/resend";
 
 type VendorStatus = "pending_approval" | "active" | "suspended" | "inactive";
 
@@ -27,6 +28,18 @@ export async function setVendorStatus(vendorId: string, status: VendorStatus) {
     entity_id: vendorId,
     metadata: { newStatus: status },
   });
+
+  if (status === "active") {
+    const { data: vendor } = await supabase
+      .from("vendors")
+      .select("users(name, email)")
+      .eq("user_id", vendorId)
+      .single();
+    const user = (vendor as any)?.users;
+    if (user?.email) {
+      await sendVendorApprovedEmail(user.email, user.name ?? "there");
+    }
+  }
 
   revalidatePath("/admin/vendors");
   return { success: true };
