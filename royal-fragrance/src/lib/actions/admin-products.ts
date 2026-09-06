@@ -54,7 +54,7 @@ export async function createProduct(input: ProductInput) {
       description: input.description,
       short_description: input.shortDescription,
       category_id: input.categoryId,
-      base_price: input.basePrice,
+      base_price: input.variants[0]?.price ?? input.basePrice,
       status,
     })
     .select()
@@ -116,7 +116,7 @@ export async function updateProduct(productId: string, input: ProductInput) {
       description: input.description,
       short_description: input.shortDescription,
       category_id: input.categoryId,
-      base_price: input.basePrice,
+      base_price: input.variants[0]?.price ?? input.basePrice,
       status,
     })
     .eq("id", productId);

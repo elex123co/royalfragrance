@@ -218,13 +218,6 @@ export function ProductForm({ categories, productId, initial }: ProductFormProps
         </div>
       </div>
 
-      <TextField
-        label="Price (₦)"
-        type="number"
-        value={String(form.basePrice)}
-        onChange={(v) => setForm((f) => ({ ...f, basePrice: Number(v) || 0 }))}
-      />
-
       <div>
         <label className="mb-1.5 block text-sm font-medium text-espresso">
           Product Photos

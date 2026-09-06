@@ -44,7 +44,11 @@ export function BrandImage({
       alt={alt}
       fill={fill}
       sizes={sizes}
-      className={className}
+      // object-contain always wins over any object-cover a caller passes —
+      // shows the full uploaded photo without cropping any part of it off,
+      // since admin-uploaded images (especially found/stock photos) aren't
+      // always a clean square crop.
+      className={cn(className, "object-contain")}
     />
   );
 }
