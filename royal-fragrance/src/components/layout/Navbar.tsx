@@ -85,7 +85,7 @@ export default function Navbar() {
 
         <div className="mt-2 grid grid-cols-2 gap-3 border-t border-espresso/10 px-5 py-5">
           <Link
-            href="/account"
+            href="/dashboard"
             className="flex flex-col items-center gap-2 rounded-xl border border-espresso/15 py-4 text-sm font-medium text-espresso"
           >
             <User size={20} />
@@ -127,7 +127,7 @@ export default function Navbar() {
 
         <div className="hidden items-center gap-4 md:flex">
           <Link
-            href="/account"
+            href="/dashboard"
             aria-label="Account"
             className="text-espresso transition hover:text-caramel"
           >
