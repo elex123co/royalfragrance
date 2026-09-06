@@ -9,7 +9,7 @@ import {
   Truck,
 } from "lucide-react";
 import { createClient } from "@/lib/supabase/server";
-import { LogoutButton } from "@/components/account/LogoutButton";
+import { LogoutButton, LogoutIconButton } from "@/components/account/LogoutButton";
 import { DashboardMobileNav } from "@/components/shared/DashboardMobileNav";
 
 const navItems = [
@@ -84,11 +84,14 @@ export default async function AdminLayout({
         </aside>
 
         <div className="min-w-0 flex-1 pb-20 lg:pb-0">
-          <div className="mb-6 rounded-xl2 bg-brand-gradient p-5 text-cream shadow-premium lg:hidden">
-            <span className="text-xs uppercase tracking-widest text-sand">
-              Control Center
-            </span>
-            <p className="mt-1 font-display text-xl">Welcome, {firstName}</p>
+          <div className="mb-6 flex items-start justify-between rounded-xl2 bg-brand-gradient p-5 text-cream shadow-premium lg:hidden">
+            <div>
+              <span className="text-xs uppercase tracking-widest text-sand">
+                Control Center
+              </span>
+              <p className="mt-1 font-display text-xl">Welcome, {firstName}</p>
+            </div>
+            <LogoutIconButton />
           </div>
 
           {children}

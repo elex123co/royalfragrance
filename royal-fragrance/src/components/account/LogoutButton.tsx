@@ -3,17 +3,17 @@
 import { LogOut } from "lucide-react";
 import { createClient } from "@/lib/supabase/client";
 
-export function LogoutButton() {
-  async function handleLogout() {
-    const supabase = createClient();
-    await supabase.auth.signOut();
-    // A hard navigation, not router.push — Next's client-side Router
-    // Cache can otherwise keep serving a previous session's rendered
-    // pages after switching accounts, which is exactly what caused
-    // "stuck in normal user features until I clear cache."
-    window.location.href = "/";
-  }
+async function handleLogout() {
+  const supabase = createClient();
+  await supabase.auth.signOut();
+  // A hard navigation, not router.push — Next's client-side Router
+  // Cache can otherwise keep serving a previous session's rendered
+  // pages after switching accounts, which is exactly what caused
+  // "stuck in normal user features until I clear cache."
+  window.location.href = "/";
+}
 
+export function LogoutButton() {
   return (
     <button
       onClick={handleLogout}
@@ -21,6 +21,23 @@ export function LogoutButton() {
     >
       <LogOut size={16} />
       Logout
+    </button>
+  );
+}
+
+/**
+ * Compact icon-only logout — for the mobile dashboard header, where the
+ * full logout was previously only reachable by tapping "More" in the
+ * bottom nav first, and wasn't obvious to find.
+ */
+export function LogoutIconButton({ className = "" }: { className?: string }) {
+  return (
+    <button
+      onClick={handleLogout}
+      aria-label="Logout"
+      className={`flex h-9 w-9 items-center justify-center rounded-full bg-cream/10 text-cream transition hover:bg-cream/20 ${className}`}
+    >
+      <LogOut size={16} />
     </button>
   );
 }
