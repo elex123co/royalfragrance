@@ -664,3 +664,50 @@ create policy "Admins manage newsletter settings" on newsletter_settings for all
 -- via the service-role client from the public vote-click API route, since
 -- voters click an unauthenticated link from their email.
 create policy "Admins view newsletter votes" on newsletter_votes for select using (public.is_admin());
+
+-- ----------------------------------------------------------------------------
+-- DELIVERY ZONES — ONE ROW PER NIGERIAN STATE
+-- Ensures exactly one fee row per state (upserts are keyed on this) and
+-- seeds all 36 states + FCT with a starter fee the admin can then edit.
+-- ----------------------------------------------------------------------------
+alter table delivery_zones add constraint delivery_zones_state_unique unique (state);
+
+insert into delivery_zones (name, state, fee, active) values
+  ('Abia', 'Abia', 2500, true),
+  ('Adamawa', 'Adamawa', 3500, true),
+  ('Akwa Ibom', 'Akwa Ibom', 3000, true),
+  ('Anambra', 'Anambra', 2500, true),
+  ('Bauchi', 'Bauchi', 3500, true),
+  ('Bayelsa', 'Bayelsa', 3000, true),
+  ('Benue', 'Benue', 3000, true),
+  ('Borno', 'Borno', 4000, true),
+  ('Cross River', 'Cross River', 3000, true),
+  ('Delta', 'Delta', 2500, true),
+  ('Ebonyi', 'Ebonyi', 3000, true),
+  ('Edo', 'Edo', 2500, true),
+  ('Ekiti', 'Ekiti', 2500, true),
+  ('Enugu', 'Enugu', 2500, true),
+  ('FCT (Abuja)', 'FCT', 2500, true),
+  ('Gombe', 'Gombe', 3500, true),
+  ('Imo', 'Imo', 2500, true),
+  ('Jigawa', 'Jigawa', 3500, true),
+  ('Kaduna', 'Kaduna', 3000, true),
+  ('Kano', 'Kano', 3000, true),
+  ('Katsina', 'Katsina', 3500, true),
+  ('Kebbi', 'Kebbi', 3500, true),
+  ('Kogi', 'Kogi', 2500, true),
+  ('Kwara', 'Kwara', 2500, true),
+  ('Lagos', 'Lagos', 2000, true),
+  ('Nasarawa', 'Nasarawa', 3000, true),
+  ('Niger', 'Niger', 3000, true),
+  ('Ogun', 'Ogun', 2000, true),
+  ('Ondo', 'Ondo', 2500, true),
+  ('Osun', 'Osun', 2500, true),
+  ('Oyo', 'Oyo', 2500, true),
+  ('Plateau', 'Plateau', 3000, true),
+  ('Rivers', 'Rivers', 2500, true),
+  ('Sokoto', 'Sokoto', 3500, true),
+  ('Taraba', 'Taraba', 3500, true),
+  ('Yobe', 'Yobe', 3500, true),
+  ('Zamfara', 'Zamfara', 3500, true)
+on conflict (state) do nothing;

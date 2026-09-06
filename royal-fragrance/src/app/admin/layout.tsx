@@ -6,6 +6,7 @@ import {
   ShoppingCart,
   Users,
   Mail,
+  Truck,
 } from "lucide-react";
 import { createClient } from "@/lib/supabase/server";
 import { LogoutButton } from "@/components/account/LogoutButton";
@@ -17,6 +18,7 @@ const navItems = [
   { href: "/admin/categories", label: "Categories", icon: Tag },
   { href: "/admin/orders", label: "Orders", icon: ShoppingCart },
   { href: "/admin/vendors", label: "Vendors", icon: Users },
+  { href: "/admin/delivery-fees", label: "Delivery Fees", icon: Truck },
   { href: "/admin/newsletter", label: "Newsletter", icon: Mail },
 ];
 

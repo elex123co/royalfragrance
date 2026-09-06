@@ -20,7 +20,6 @@ export function CheckoutForm({ zones }: { zones: DeliveryZone[] }) {
     phone: "",
   });
   const [delivery, setDelivery] = useState({
-    state: "",
     city: "",
     address: "",
     zoneId: zones[0]?.id ?? "",
@@ -39,7 +38,13 @@ export function CheckoutForm({ zones }: { zones: DeliveryZone[] }) {
         headers: { "Content-Type": "application/json" },
         body: JSON.stringify({
           customer,
-          delivery: { ...delivery, fee: deliveryFee },
+          delivery: {
+            state: selectedZone?.state ?? selectedZone?.name ?? "",
+            city: delivery.city,
+            address: delivery.address,
+            zoneId: delivery.zoneId,
+            fee: deliveryFee,
+          },
           items: items.map((i) => ({
             productId: i.productId,
             variantId: i.variantId,
@@ -108,11 +113,24 @@ export function CheckoutForm({ zones }: { zones: DeliveryZone[] }) {
 
       {step === "delivery" && (
         <div className="mt-8 space-y-4">
-          <Field
-            label="State"
-            value={delivery.state}
-            onChange={(v) => setDelivery((d) => ({ ...d, state: v }))}
-          />
+          <div>
+            <label className="mb-1.5 block text-sm font-medium text-espresso">
+              State
+            </label>
+            <select
+              value={delivery.zoneId}
+              onChange={(e) =>
+                setDelivery((d) => ({ ...d, zoneId: e.target.value }))
+              }
+              className="w-full rounded-lg border border-espresso/15 px-4 py-2.5 text-sm focus:border-caramel focus:outline-none"
+            >
+              {zones.map((z) => (
+                <option key={z.id} value={z.id}>
+                  {z.name} — {formatNaira(z.fee)} delivery
+                </option>
+              ))}
+            </select>
+          </div>
           <Field
             label="City / Area"
             value={delivery.city}
@@ -124,32 +142,13 @@ export function CheckoutForm({ zones }: { zones: DeliveryZone[] }) {
             onChange={(v) => setDelivery((d) => ({ ...d, address: v }))}
           />
 
-          <div>
-            <label className="mb-1.5 block text-sm font-medium text-espresso">
-              Delivery Zone
-            </label>
-            <select
-              value={delivery.zoneId}
-              onChange={(e) =>
-                setDelivery((d) => ({ ...d, zoneId: e.target.value }))
-              }
-              className="w-full rounded-lg border border-espresso/15 px-4 py-2.5 text-sm focus:border-caramel focus:outline-none"
-            >
-              {zones.map((z) => (
-                <option key={z.id} value={z.id}>
-                  {z.name} — {formatNaira(z.fee)}
-                </option>
-              ))}
-            </select>
-          </div>
-
           <div className="flex gap-3">
             <Button variant="outline" className="border-espresso/20 text-espresso" onClick={() => setStep("customer")}>
               Back
             </Button>
             <Button
               className="flex-1"
-              disabled={!delivery.state || !delivery.city || !delivery.address}
+              disabled={!delivery.zoneId || !delivery.city || !delivery.address}
               onClick={() => setStep("summary")}
             >
               Review Order

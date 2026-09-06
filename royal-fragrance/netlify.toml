@@ -13,3 +13,20 @@
   for = "/api/*"
   [headers.values]
     Cache-Control = "no-store"
+
+# Every page response is dynamic (live Supabase data) — never let a
+# browser or CDN cache it, since a stale cached page is exactly what was
+# causing "I have to clear cache to see my change."
+[[headers]]
+  for = "/*"
+  [headers.values]
+    Cache-Control = "no-store, must-revalidate"
+
+# Next.js's own fingerprinted build assets are safe to cache forever —
+# the filename itself changes whenever the content does, so this rule
+# (being more specific) overrides the blanket one above for these files
+# only, keeping the site fast without reintroducing stale-page issues.
+[[headers]]
+  for = "/_next/static/*"
+  [headers.values]
+    Cache-Control = "public, max-age=31536000, immutable"
