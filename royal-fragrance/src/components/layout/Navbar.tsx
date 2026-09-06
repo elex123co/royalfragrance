@@ -55,7 +55,9 @@ export default function Navbar() {
           onClick={() => setOpen(false)}
           className="flex items-center gap-2 font-display text-xl tracking-wide text-espresso"
         >
-          <Image src={LOGO_URL} alt="Royal Fragrance" width={44} height={44} className="h-11 w-11 object-contain" />
+          <span className="flex h-11 w-11 items-center justify-center rounded-full bg-espresso p-1.5 shadow-sm">
+            <Image src={LOGO_URL} alt="Royal Fragrance" width={36} height={36} className="h-full w-full object-contain" />
+          </span>
         </Link>
         <button
           className="text-espresso"
@@ -114,7 +116,9 @@ export default function Navbar() {
           href="/"
           className="flex items-center gap-2 font-display text-xl tracking-wide text-espresso"
         >
-          <Image src={LOGO_URL} alt="Royal Fragrance" width={44} height={44} className="h-11 w-11 object-contain" />
+          <span className="flex h-11 w-11 items-center justify-center rounded-full bg-espresso p-1.5 shadow-sm">
+            <Image src={LOGO_URL} alt="Royal Fragrance" width={36} height={36} className="h-full w-full object-contain" />
+          </span>
         </Link>
 
         <nav className="hidden items-center gap-8 md:flex">
