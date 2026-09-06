@@ -22,6 +22,13 @@ export const metadata: Metadata = {
   title: "Royal Fragrance — More Than a Fragrance",
   description:
     "Royal Fragrance is a luxury perfume brand delivering carefully selected fragrances today, while building toward becoming an original fragrance house for tomorrow.",
+  icons: {
+    icon: "https://res.cloudinary.com/dtchp470a/image/upload/v1788705368/WhatsApp_Image_2026-09-05_at_17.32.39__1_-removebg-preview_1_qaxnfw.png",
+    shortcut:
+      "https://res.cloudinary.com/dtchp470a/image/upload/v1788705368/WhatsApp_Image_2026-09-05_at_17.32.39__1_-removebg-preview_1_qaxnfw.png",
+    apple:
+      "https://res.cloudinary.com/dtchp470a/image/upload/v1788705368/WhatsApp_Image_2026-09-05_at_17.32.39__1_-removebg-preview_1_qaxnfw.png",
+  },
 };
 
 export default function RootLayout({

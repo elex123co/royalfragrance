@@ -1,6 +1,7 @@
 "use client";
 
 import Link from "next/link";
+import Image from "next/image";
 import { usePathname } from "next/navigation";
 import { useState, useEffect } from "react";
 import { createPortal } from "react-dom";
@@ -15,6 +16,9 @@ import {
   Users,
 } from "lucide-react";
 import { useCart } from "@/context/CartContext";
+
+const LOGO_URL =
+  "https://res.cloudinary.com/dtchp470a/image/upload/v1788705368/WhatsApp_Image_2026-09-05_at_17.32.39__1_-removebg-preview_1_qaxnfw.png";
 
 const links = [
   { href: "/shop", label: "Shop", icon: Store },
@@ -49,8 +53,9 @@ export default function Navbar() {
         <Link
           href="/"
           onClick={() => setOpen(false)}
-          className="font-display text-xl tracking-wide text-espresso"
+          className="flex items-center gap-2 font-display text-xl tracking-wide text-espresso"
         >
+          <Image src={LOGO_URL} alt="Royal Fragrance" width={32} height={32} className="h-8 w-8 object-contain" />
           Royal <span className="text-caramel">Fragrance</span>
         </Link>
         <button
@@ -108,8 +113,9 @@ export default function Navbar() {
       <div className="mx-auto flex max-w-7xl items-center justify-between px-5 py-4 lg:px-8">
         <Link
           href="/"
-          className="font-display text-xl tracking-wide text-espresso"
+          className="flex items-center gap-2 font-display text-xl tracking-wide text-espresso"
         >
+          <Image src={LOGO_URL} alt="Royal Fragrance" width={32} height={32} className="h-8 w-8 object-contain" />
           Royal <span className="text-caramel">Fragrance</span>
         </Link>
 
