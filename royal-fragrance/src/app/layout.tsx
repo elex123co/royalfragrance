@@ -1,10 +1,11 @@
-import type { Metadata } from "next";
+import type { Metadata, Viewport } from "next";
 import { Playfair_Display, Inter } from "next/font/google";
 import "./globals.css";
 import Navbar from "@/components/layout/Navbar";
 import Footer from "@/components/layout/Footer";
 import { CartProvider } from "@/context/CartContext";
 import { AssistantWidget } from "@/components/assistant/AssistantWidget";
+import { InstallPrompt } from "@/components/pwa/InstallPrompt";
 
 const display = Playfair_Display({
   subsets: ["latin"],
@@ -76,6 +77,10 @@ export const metadata: Metadata = {
   },
 };
 
+export const viewport: Viewport = {
+  themeColor: "#1E120C",
+};
+
 export default function RootLayout({
   children,
 }: {
@@ -106,6 +111,7 @@ export default function RootLayout({
           <main>{children}</main>
           <Footer />
           <AssistantWidget />
+          <InstallPrompt />
         </CartProvider>
       </body>
     </html>
