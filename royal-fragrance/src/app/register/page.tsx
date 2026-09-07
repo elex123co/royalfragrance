@@ -2,6 +2,7 @@
 
 import { useState } from "react";
 import Link from "next/link";
+import { Mail } from "lucide-react";
 import { createClient } from "@/lib/supabase/client";
 import { Button } from "@/components/ui/Button";
 
@@ -14,6 +15,7 @@ export default function RegisterPage() {
   });
   const [error, setError] = useState<string | null>(null);
   const [loading, setLoading] = useState(false);
+  const [awaitingConfirmation, setAwaitingConfirmation] = useState(false);
 
   async function handleSubmit(e: React.FormEvent) {
     e.preventDefault();
@@ -21,7 +23,7 @@ export default function RegisterPage() {
     setError(null);
 
     const supabase = createClient();
-    const { error: authError } = await supabase.auth.signUp({
+    const { data, error: authError } = await supabase.auth.signUp({
       email: form.email,
       password: form.password,
       options: {
@@ -36,9 +38,46 @@ export default function RegisterPage() {
       return;
     }
 
-    // Hard navigation for a guaranteed fresh session render — see the
-    // same fix on the login page for why router.push isn't enough here.
+    // When email confirmation is required, Supabase returns a user but no
+    // session yet — there's nothing to log into until they click the link
+    // in their inbox. Redirecting to the dashboard here would just bounce
+    // them straight back out with no explanation, which is exactly what
+    // was happening before this fix.
+    if (!data.session) {
+      setAwaitingConfirmation(true);
+      return;
+    }
+
+    // Confirmation isn't required on this project — a session came back
+    // immediately, so log them straight in.
     window.location.href = "/account";
+  }
+
+  if (awaitingConfirmation) {
+    return (
+      <section className="flex min-h-[70vh] items-center justify-center bg-cream px-5 py-16">
+        <div className="w-full max-w-md rounded-xl2 border border-espresso/10 bg-white/60 p-8 text-center shadow-premium-sm">
+          <Mail className="mx-auto text-caramel" size={40} />
+          <h1 className="mt-4 font-display text-2xl text-espresso">
+            Check Your Email
+          </h1>
+          <p className="mt-3 text-sm text-rich/70">
+            We've sent a confirmation link to <strong>{form.email}</strong>.
+            Click it to activate your account, then come back and sign in.
+          </p>
+          <p className="mt-4 text-xs text-rich/50">
+            Didn't get it? Check spam, or{" "}
+            <button
+              onClick={() => setAwaitingConfirmation(false)}
+              className="text-caramel underline"
+            >
+              try again
+            </button>
+            .
+          </p>
+        </div>
+      </section>
+    );
   }
 
   return (
