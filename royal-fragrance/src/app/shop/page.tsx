@@ -4,7 +4,12 @@ import { categories } from "@/data/sample-products";
 import { ProductCard } from "@/components/ui/ProductCard";
 import { ShopFilters } from "@/components/shop/ShopFilters";
 
-export const metadata = { title: "Shop — Royal Fragrance" };
+export const metadata = {
+  title: "Shop",
+  description:
+    "Browse Royal Fragrance's full collection — Men's, Women's, Unisex, and Oud fragrances. Shop premium perfumes online across Nigeria with secure checkout and fast delivery.",
+  alternates: { canonical: "https://royalfragrancegallery.com/shop" },
+};
 
 interface ShopPageProps {
   searchParams: {

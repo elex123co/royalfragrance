@@ -1,7 +1,12 @@
 import { LinkButton } from "@/components/ui/Button";
 import { FlaskConical, Sparkles, Fingerprint, Rocket } from "lucide-react";
 
-export const metadata = { title: "The Future of Royal Fragrance" };
+export const metadata = {
+  title: "The Future of Royal Fragrance",
+  description:
+    "We're not just curating fragrances — we're building toward becoming an original perfume house with a signature scent identity of our own. Discover where Royal Fragrance is headed.",
+  alternates: { canonical: "https://royalfragrancegallery.com/future" },
+};
 
 const milestones = [
   {

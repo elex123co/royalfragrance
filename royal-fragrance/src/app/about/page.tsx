@@ -1,7 +1,12 @@
 import { LinkButton } from "@/components/ui/Button";
 import { Gem, Heart, ShieldCheck, Sparkle } from "lucide-react";
 
-export const metadata = { title: "Our Story — Royal Fragrance" };
+export const metadata = {
+  title: "Our Story",
+  description:
+    "Royal Fragrance began with a belief that a scent should feel like a signature. Discover who we are, what we curate today, and the fragrance house we're building for tomorrow.",
+  alternates: { canonical: "https://royalfragrancegallery.com/about" },
+};
 
 const values = [
   {

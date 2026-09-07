@@ -1,7 +1,12 @@
 import { VendorApplicationForm } from "@/components/vendor/VendorApplicationForm";
 import { Wallet, PackageCheck, LineChart, Users } from "lucide-react";
 
-export const metadata = { title: "Become a Vendor — Royal Fragrance" };
+export const metadata = {
+  title: "Become a Vendor",
+  description:
+    "Sell Royal Fragrance products through your own network. Get a personal vendor dashboard, track sales, manage inventory, and grow with a premium fragrance brand.",
+  alternates: { canonical: "https://royalfragrancegallery.com/become-a-vendor" },
+};
 
 const perks = [
   {
