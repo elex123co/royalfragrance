@@ -24,15 +24,17 @@ export function BrandIntro() {
             Fragrance, chosen with intention.
           </h2>
           <p className="mt-6 text-rich/80">
-            Royal Fragrance began with a simple belief: a scent should feel
-            like a signature, not an accessory. Every fragrance in our
-            collection is carefully selected for its character, quality, and
-            staying power.
+            We're a fragrance brand built around discovery and distinction.
+            We carefully hand-pick fragrances for their character; from the
+            oud that lingers, to the musk that feels like skin, to the scent
+            that becomes uniquely yours.
           </p>
           <p className="mt-4 text-rich/80">
-            We believe fragrance is memory, identity, and presence — worn
-            quietly, remembered loudly. That belief shapes everything we
-            curate today, and everything we intend to create tomorrow.
+            But Royal Fragrance is more about finding a fragrance you love.
+            Every order is an opportunity to earn your trust through
+            quality, honest descriptions, transparent pricing, and a
+            fragrance experience that lives up to its description. That's
+            the standard we hold ourselves to today.
           </p>
         </div>
       </div>

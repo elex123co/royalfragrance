@@ -24,9 +24,9 @@ export function Hero() {
             Royal Fragrance
           </span>
           <h1 className="font-display text-4xl leading-tight sm:text-5xl lg:text-6xl">
-            A Scent for Today.
+            Wear the Scent of
             <br />
-            <span className="text-caramel">A Vision for Tomorrow.</span>
+            <span className="text-caramel">Royalty.</span>
           </h1>
           <p className="mt-6 max-w-lg text-base text-cream/75 sm:text-lg">
             We currently curate exceptional fragrances for those who value
