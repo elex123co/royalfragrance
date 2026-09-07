@@ -2,8 +2,15 @@ import { Resend } from "resend";
 import type { SupabaseClient } from "@supabase/supabase-js";
 
 const FROM_ADDRESS =
-  process.env.RESEND_FROM_EMAIL ?? "Elizabeth at Royal Fragrance <onboarding@resend.dev>";
+  process.env.RESEND_FROM_EMAIL ?? "Elizabeth <onboarding@resend.dev>";
 
+/**
+ * Deliberately styled like a personal letter, not a marketing template —
+ * Gmail's Promotions-tab classifier weighs heavily-styled CTA buttons,
+ * a loud branded header, and "ad-like" visual structure. Plain paragraphs
+ * and text links read as a real message, which also just fits Elizabeth's
+ * actual voice better than a corporate newsletter shell would.
+ */
 function renderEmailHtml(params: {
   content: string;
   newsletterId: string;
@@ -16,31 +23,29 @@ function renderEmailHtml(params: {
 
   const choicesHtml =
     params.isInteractive && params.interactiveChoices
-      ? `<div style="margin-top:24px; padding:20px; background:#F8F2EB; border-radius:16px;">
-           <p style="font-weight:600; margin:0 0 12px;">${params.interactiveQuestion ?? "What happens next?"}</p>
+      ? `<p style="margin-top:20px;">${params.interactiveQuestion ?? "What happens next?"}</p>
+         <p style="margin-top:8px;">
            ${params.interactiveChoices
              .map(
-               (c) => `<a href="${siteUrl}/api/newsletter/vote?newsletter=${params.newsletterId}&choice=${encodeURIComponent(c.key)}&email=${encodeURIComponent(params.voterEmail)}"
-                 style="display:inline-block; margin:4px 8px 4px 0; padding:10px 18px; background:#1E120C; color:#E8D7C5; text-decoration:none; border-radius:999px; font-size:14px;">
-                 ${c.key} — ${c.label}
-               </a>`
+               (c) =>
+                 `<a href="${siteUrl}/api/newsletter/vote?newsletter=${params.newsletterId}&choice=${encodeURIComponent(c.key)}&email=${encodeURIComponent(params.voterEmail)}"
+                   style="color:#4A2C20; text-decoration:underline;">${c.key} — ${c.label}</a>`
              )
-             .join("")}
-         </div>`
+             .join("<br/>")}
+         </p>`
       : "";
 
   return `
-    <div style="font-family: sans-serif; max-width: 560px; margin: 0 auto; padding: 32px 24px; color: #1E120C; background: #E8D7C5;">
-      <p style="font-size: 12px; letter-spacing: 2px; text-transform: uppercase; color: #A66A43; margin: 0 0 16px;">
-        Royal Fragrance
-      </p>
+    <div style="font-family: Georgia, 'Times New Roman', serif; max-width: 560px; margin: 0 auto; padding: 28px 20px; color: #1E120C; font-size: 16px; line-height: 1.6;">
       ${params.content}
       ${choicesHtml}
-      <p style="margin-top: 32px; font-size: 13px; color: #70452F;">
-        Until next time,<br/>Elizabeth 👑
+      <p style="margin-top: 28px;">
+        Until next time,<br/>Elizabeth
       </p>
-      <p style="margin-top: 24px; font-size: 11px; color: #A66A43;">
-        <a href="${siteUrl}/newsletter/${params.newsletterId}" style="color:#A66A43;">Read online</a>
+      <p style="margin-top: 20px; font-size: 13px; color: #70452F;">
+        <a href="${siteUrl}/newsletter/${params.newsletterId}" style="color:#70452F;">Read this online</a> —
+        and if you'd like these in your main inbox rather than Promotions, dragging this
+        email into Primary (or replying once) tends to teach Gmail to keep it there.
       </p>
     </div>
   `;
