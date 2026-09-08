@@ -3,7 +3,7 @@
 import { useState, useRef } from "react";
 import { useRouter } from "next/navigation";
 import Image from "next/image";
-import { X, Upload } from "lucide-react";
+import { X, Upload, Sparkles } from "lucide-react";
 import { Button } from "@/components/ui/Button";
 import {
   createProduct,
@@ -11,6 +11,7 @@ import {
   type ProductInput,
 } from "@/lib/actions/admin-products";
 import { uploadProductImage } from "@/lib/actions/admin-upload";
+import { generateProductDescription } from "@/lib/actions/admin-ai";
 
 interface Category {
   id: string;
@@ -51,6 +52,9 @@ export function ProductForm({ categories, productId, initial }: ProductFormProps
   const [submitting, setSubmitting] = useState(false);
   const [uploading, setUploading] = useState(false);
   const [uploadError, setUploadError] = useState<string | null>(null);
+  const [aiHints, setAiHints] = useState("");
+  const [generatingDescription, setGeneratingDescription] = useState(false);
+  const [aiError, setAiError] = useState<string | null>(null);
 
   const totalStock = form.variants.reduce((sum, v) => sum + v.stock, 0);
 
@@ -73,6 +77,31 @@ export function ProductForm({ categories, productId, initial }: ProductFormProps
     setForm((f) => ({
       ...f,
       variants: f.variants.filter((_, i) => i !== index),
+    }));
+  }
+
+  async function handleGenerateDescription() {
+    setGeneratingDescription(true);
+    setAiError(null);
+
+    const categoryName = categories.find((c) => c.id === form.categoryId)?.name ?? "";
+    const result = await generateProductDescription({
+      name: form.name,
+      category: categoryName,
+      hints: aiHints,
+    });
+
+    setGeneratingDescription(false);
+
+    if (!result.success) {
+      setAiError(result.error ?? "Could not generate right now.");
+      return;
+    }
+
+    setForm((f) => ({
+      ...f,
+      shortDescription: result.shortDescription ?? f.shortDescription,
+      description: result.description ?? f.description,
     }));
   }
 
@@ -140,6 +169,35 @@ export function ProductForm({ categories, productId, initial }: ProductFormProps
         value={form.name}
         onChange={(v) => setForm((f) => ({ ...f, name: v }))}
       />
+
+      <div>
+        <div className="mb-1.5 flex items-center justify-between">
+          <label className="block text-sm font-medium text-espresso">
+            AI Description Assist
+          </label>
+        </div>
+        <div className="flex gap-2">
+          <input
+            value={aiHints}
+            onChange={(e) => setAiHints(e.target.value)}
+            placeholder="Optional: notes to mention, e.g. woody, vanilla, unisex"
+            className="flex-1 rounded-lg border border-espresso/15 px-4 py-2.5 text-sm focus:border-caramel focus:outline-none"
+          />
+          <button
+            type="button"
+            onClick={handleGenerateDescription}
+            disabled={generatingDescription || !form.name.trim()}
+            className="flex shrink-0 items-center gap-1.5 rounded-full border border-caramel px-4 py-2 text-sm text-caramel transition hover:bg-caramel/10 disabled:cursor-not-allowed disabled:opacity-40"
+          >
+            <Sparkles size={14} />
+            {generatingDescription ? "Writing…" : "Generate"}
+          </button>
+        </div>
+        {aiError && <p className="mt-1 text-xs text-red-600">{aiError}</p>}
+        <p className="mt-1 text-xs text-rich/50">
+          Fills in both fields below — you can edit the result before saving.
+        </p>
+      </div>
 
       <div>
         <label className="mb-1.5 block text-sm font-medium text-espresso">
