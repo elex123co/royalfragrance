@@ -14,7 +14,7 @@ export default async function AdminVendorsPage() {
   const { data: vendors, error: vendorsError } = await supabase
     .from("vendors")
     .select(
-      "user_id, business_name, status, vendor_code, users!user_id(name, email), vendor_collection_accounts(account_number)"
+      "user_id, business_name, status, vendor_code, vendor_type, ambassador_level, is_student, university, primary_platform, audience_size, users!user_id(name, email), vendor_collection_accounts(account_number)"
     )
     .order("created_at", { ascending: false });
 
@@ -42,6 +42,10 @@ export default async function AdminVendorsPage() {
     .select("vendor_id")
     .is("handover_date", null);
 
+  const { data: commissions } = await supabase
+    .from("vendor_commissions")
+    .select("vendor_id, amount");
+
   function sumFor(vendorId: string) {
     const collections = (transactions ?? [])
       .filter((t) => t.vendor_id === vendorId)
@@ -53,7 +57,10 @@ export default async function AdminVendorsPage() {
     const pendingHandovers = (handovers ?? []).filter(
       (h) => h.vendor_id === vendorId
     ).length;
-    return { collections, salesCount, inventoryLeft, pendingHandovers };
+    const earnings = (commissions ?? [])
+      .filter((c) => c.vendor_id === vendorId)
+      .reduce((sum, c) => sum + Number(c.amount), 0);
+    return { collections, salesCount, inventoryLeft, pendingHandovers, earnings };
   }
 
   return (
@@ -65,10 +72,13 @@ export default async function AdminVendorsPage() {
           <thead>
             <tr className="border-b border-espresso/10 text-xs uppercase tracking-wide text-rich/50">
               <th className="px-4 py-3">Vendor</th>
+              <th className="px-4 py-3">Type</th>
               <th className="px-4 py-3">Status</th>
+              <th className="px-4 py-3">Profile</th>
               <th className="px-4 py-3">Collection Account</th>
               <th className="px-4 py-3">Total Collections</th>
               <th className="px-4 py-3">Sales</th>
+              <th className="px-4 py-3">Earnings</th>
               <th className="px-4 py-3">Inventory</th>
               <th className="px-4 py-3">Pending Handovers</th>
               <th className="px-4 py-3"></th>
@@ -77,7 +87,7 @@ export default async function AdminVendorsPage() {
           <tbody>
             {(!vendors || vendors.length === 0) && (
               <tr>
-                <td colSpan={8} className="px-4 py-8 text-center text-rich/50">
+                <td colSpan={11} className="px-4 py-8 text-center text-rich/50">
                   No vendor applications yet.
                 </td>
               </tr>
@@ -98,6 +108,24 @@ export default async function AdminVendorsPage() {
                     </p>
                   </td>
                   <td className="px-4 py-3">
+                    {v.vendor_type ? (
+                      <span
+                        className={`rounded-full px-2.5 py-1 text-xs capitalize ${
+                          v.vendor_type === "physical"
+                            ? "bg-blue-100 text-blue-700"
+                            : "bg-purple-100 text-purple-700"
+                        }`}
+                      >
+                        {v.vendor_type}
+                      </span>
+                    ) : (
+                      <span className="text-xs text-rich/40">—</span>
+                    )}
+                    {v.ambassador_level && (
+                      <p className="mt-1 text-xs text-caramel">{v.ambassador_level}</p>
+                    )}
+                  </td>
+                  <td className="px-4 py-3">
                     <span
                       className={`rounded-full px-2.5 py-1 text-xs capitalize ${
                         v.status === "active"
@@ -110,6 +138,11 @@ export default async function AdminVendorsPage() {
                       {v.status.replaceAll("_", " ")}
                     </span>
                   </td>
+                  <td className="px-4 py-3 text-xs text-rich/60">
+                    {v.is_student && <p>🎓 {v.university || "Student"}</p>}
+                    {v.primary_platform && <p>{v.primary_platform}</p>}
+                    {v.audience_size && <p>{v.audience_size} reach</p>}
+                  </td>
                   <td className="px-4 py-3 text-rich/70">
                     {v.vendor_collection_accounts?.[0]?.account_number ?? "—"}
                   </td>
@@ -117,12 +150,14 @@ export default async function AdminVendorsPage() {
                     {formatNaira(stats.collections)}
                   </td>
                   <td className="px-4 py-3 text-rich/70">{stats.salesCount}</td>
+                  <td className="px-4 py-3 text-rich/70">{formatNaira(stats.earnings)}</td>
                   <td className="px-4 py-3 text-rich/70">{stats.inventoryLeft}</td>
                   <td className="px-4 py-3 text-rich/70">{stats.pendingHandovers}</td>
                   <td className="px-4 py-3">
                     <VendorRowActions
                       vendorId={v.user_id}
                       status={v.status}
+                      vendorType={v.vendor_type}
                       hasCollectionAccount={
                         !!v.vendor_collection_accounts?.[0]?.account_number
                       }

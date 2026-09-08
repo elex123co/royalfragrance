@@ -5,6 +5,8 @@ import { useRouter } from "next/navigation";
 import { Button } from "@/components/ui/Button";
 import { applyAsVendor } from "@/lib/actions/vendor-application";
 
+const PLATFORMS = ["Instagram", "TikTok", "X (Twitter)", "Facebook", "YouTube", "WhatsApp Status", "Other"];
+
 export function VendorApplicationForm() {
   const router = useRouter();
   const [form, setForm] = useState({
@@ -13,6 +15,11 @@ export function VendorApplicationForm() {
     phone: "",
     password: "",
     notes: "",
+    isStudent: false,
+    university: "",
+    primaryPlatform: PLATFORMS[0],
+    audienceSize: "",
+    promotionCommitment: false,
   });
   const [status, setStatus] = useState<"idle" | "loading" | "success" | "error">(
     "idle"
@@ -21,6 +28,10 @@ export function VendorApplicationForm() {
 
   async function handleSubmit(e: React.FormEvent) {
     e.preventDefault();
+    if (!form.promotionCommitment) {
+      setError("Please confirm you're willing to actively promote our products.");
+      return;
+    }
     setStatus("loading");
     setError(null);
 
@@ -55,7 +66,7 @@ export function VendorApplicationForm() {
       onSubmit={handleSubmit}
       className="space-y-4 rounded-xl2 border border-espresso/10 bg-white/60 p-6 shadow-premium-sm sm:p-8"
     >
-      <h2 className="font-display text-lg text-espresso">Vendor Application</h2>
+      <h2 className="font-display text-lg text-espresso">Vendor & Ambassador Application</h2>
 
       <Field
         label="Full Name"
@@ -80,6 +91,46 @@ export function VendorApplicationForm() {
         onChange={(v) => setForm((f) => ({ ...f, password: v }))}
       />
 
+      <label className="flex items-center gap-2 text-sm text-rich/80">
+        <input
+          type="checkbox"
+          checked={form.isStudent}
+          onChange={(e) => setForm((f) => ({ ...f, isStudent: e.target.checked }))}
+        />
+        I'm currently a student
+      </label>
+
+      {form.isStudent && (
+        <Field
+          label="Which university?"
+          value={form.university}
+          onChange={(v) => setForm((f) => ({ ...f, university: v }))}
+        />
+      )}
+
+      <div>
+        <label className="mb-1.5 block text-sm font-medium text-espresso">
+          Where do you have the most influence?
+        </label>
+        <select
+          value={form.primaryPlatform}
+          onChange={(e) => setForm((f) => ({ ...f, primaryPlatform: e.target.value }))}
+          className="w-full rounded-lg border border-espresso/15 px-4 py-2.5 text-sm focus:border-caramel focus:outline-none"
+        >
+          {PLATFORMS.map((p) => (
+            <option key={p} value={p}>
+              {p}
+            </option>
+          ))}
+        </select>
+      </div>
+
+      <Field
+        label="Roughly how many people can you reach there? (e.g. followers, group size)"
+        value={form.audienceSize}
+        onChange={(v) => setForm((f) => ({ ...f, audienceSize: v }))}
+      />
+
       <div>
         <label className="mb-1.5 block text-sm font-medium text-espresso">
           Tell us about your sales network
@@ -92,6 +143,17 @@ export function VendorApplicationForm() {
           className="w-full rounded-lg border border-espresso/15 px-4 py-2.5 text-sm focus:border-caramel focus:outline-none"
         />
       </div>
+
+      <label className="flex items-start gap-2 text-sm text-rich/80">
+        <input
+          type="checkbox"
+          className="mt-1"
+          checked={form.promotionCommitment}
+          onChange={(e) => setForm((f) => ({ ...f, promotionCommitment: e.target.checked }))}
+        />
+        I commit to actively promoting Royal Fragrance products on the
+        platform I selected above, not just selling passively.
+      </label>
 
       {error && (
         <p className="rounded-lg bg-red-50 px-4 py-2 text-sm text-red-700">

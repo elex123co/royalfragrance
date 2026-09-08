@@ -1,7 +1,10 @@
 "use server";
 
 import { createAdminClient } from "@/lib/supabase/server";
-import { sendVendorApplicationReceivedEmail } from "@/lib/email/resend";
+import {
+  sendVendorApplicationReceivedEmail,
+  sendAdminVendorApplicationAlert,
+} from "@/lib/email/resend";
 
 export interface VendorApplicationInput {
   fullName: string;
@@ -9,6 +12,11 @@ export interface VendorApplicationInput {
   phone: string;
   password: string;
   notes: string;
+  isStudent: boolean;
+  university: string;
+  primaryPlatform: string;
+  audienceSize: string;
+  promotionCommitment: boolean;
 }
 
 export interface VendorApplicationResult {
@@ -55,6 +63,11 @@ export async function applyAsVendor(
     business_name: input.fullName,
     status: "pending_approval",
     onboarding_notes: input.notes,
+    is_student: input.isStudent,
+    university: input.isStudent ? input.university : null,
+    primary_platform: input.primaryPlatform,
+    audience_size: input.audienceSize,
+    promotion_commitment: input.promotionCommitment,
   });
 
   if (vendorError) {
@@ -69,6 +82,19 @@ export async function applyAsVendor(
   });
 
   await sendVendorApplicationReceivedEmail(input.email, input.fullName);
+
+  const adminEmail = process.env.ADMIN_NOTIFICATION_EMAIL;
+  if (adminEmail) {
+    await sendAdminVendorApplicationAlert(adminEmail, {
+      fullName: input.fullName,
+      email: input.email,
+      phone: input.phone,
+      isStudent: input.isStudent,
+      university: input.university,
+      primaryPlatform: input.primaryPlatform,
+      audienceSize: input.audienceSize,
+    });
+  }
 
   return { success: true };
 }

@@ -7,27 +7,31 @@ import {
   ClipboardList,
   Package,
   Truck,
+  Link2,
+  Wallet2,
 } from "lucide-react";
 import { getCurrentVendor } from "@/lib/data/vendor";
 import { LogoutButton, LogoutIconButton } from "@/components/account/LogoutButton";
 import { DashboardMobileNav } from "@/components/shared/DashboardMobileNav";
 
-const navItems = [
+const physicalNavItems = [
   { href: "/vendor", label: "Overview", icon: LayoutDashboard },
   { href: "/vendor/collection-account", label: "Collection Account", icon: Wallet },
   { href: "/vendor/transactions", label: "Transactions", icon: Receipt },
   { href: "/vendor/sales", label: "Sales", icon: ClipboardList },
   { href: "/vendor/inventory", label: "Inventory", icon: Package },
   { href: "/vendor/handovers", label: "Handovers", icon: Truck },
+  { href: "/vendor/earnings", label: "Earnings", icon: Wallet2 },
 ];
 
-// A rendered icon element can cross the server→client prop boundary; a
-// bare component reference (used below for the desktop sidebar, which
-// renders inline in this same Server Component) cannot.
-const mobileNavItems = navItems.map((item) => ({
-  ...item,
-  icon: <item.icon size={20} />,
-}));
+// Affiliate vendors never handle physical stock or customer payments
+// directly, so collection accounts, transactions, inventory, and
+// handovers are all irrelevant to them — they get links + earnings only.
+const affiliateNavItems = [
+  { href: "/vendor", label: "Overview", icon: LayoutDashboard },
+  { href: "/vendor/links", label: "My Links", icon: Link2 },
+  { href: "/vendor/earnings", label: "Earnings", icon: Wallet2 },
+];
 
 export default async function VendorLayout({
   children,
@@ -37,15 +41,25 @@ export default async function VendorLayout({
   const vendor = await getCurrentVendor();
   if (!vendor) redirect("/login?redirect=/vendor");
 
+  const navItems = vendor.vendor_type === "affiliate" ? affiliateNavItems : physicalNavItems;
+
+  const mobileNavItems = navItems.map((item) => ({
+    ...item,
+    icon: <item.icon size={20} />,
+  }));
+
   return (
     <div className="bg-cream">
       <div className="mx-auto flex min-h-[80vh] max-w-7xl gap-8 px-5 py-10 lg:px-8">
         <aside className="hidden w-64 shrink-0 lg:block">
           <div className="sticky top-24 rounded-xl2 bg-brand-gradient p-5 text-cream shadow-premium">
             <span className="text-xs uppercase tracking-widest text-sand">
-              Vendor Workspace
+              Vendor Workspace{vendor.vendor_type ? ` — ${vendor.vendor_type === "affiliate" ? "Ambassador" : "Physical"}` : ""}
             </span>
             <p className="mt-1 font-display text-lg">{vendor.business_name}</p>
+            {vendor.ambassador_level && (
+              <p className="text-xs text-caramel">{vendor.ambassador_level}</p>
+            )}
             {vendor.status !== "active" && (
               <p className="mb-4 mt-3 rounded-lg bg-caramel/20 px-2 py-1.5 text-xs capitalize text-sand">
                 {vendor.status.replaceAll("_", " ")}

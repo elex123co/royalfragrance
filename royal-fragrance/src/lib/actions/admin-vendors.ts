@@ -6,13 +6,25 @@ import { getPaymentProvider } from "@/lib/payments";
 import { sendVendorApprovedEmail } from "@/lib/email/resend";
 
 type VendorStatus = "pending_approval" | "active" | "suspended" | "inactive";
+type VendorTypeValue = "physical" | "affiliate";
 
-export async function setVendorStatus(vendorId: string, status: VendorStatus) {
+/**
+ * `vendorType` is required when approving (status === "active") — this is
+ * the admin's own call about whether to trust this person with physical
+ * inventory, made at the moment of approval, not something the applicant
+ * declares themselves.
+ */
+export async function setVendorStatus(
+  vendorId: string,
+  status: VendorStatus,
+  vendorType?: VendorTypeValue
+) {
   const { admin: supabase } = await requireAdmin();
 
   const update: Record<string, unknown> = { status };
   if (status === "active") {
     update.approved_at = new Date().toISOString();
+    if (vendorType) update.vendor_type = vendorType;
   }
 
   const { error } = await supabase
@@ -26,7 +38,7 @@ export async function setVendorStatus(vendorId: string, status: VendorStatus) {
     action: "vendor.status_changed",
     entity_type: "vendor",
     entity_id: vendorId,
-    metadata: { newStatus: status },
+    metadata: { newStatus: status, vendorType },
   });
 
   if (status === "active") {
@@ -41,6 +53,17 @@ export async function setVendorStatus(vendorId: string, status: VendorStatus) {
     }
   }
 
+  revalidatePath("/admin/vendors");
+  return { success: true };
+}
+
+export async function setAmbassadorLevel(vendorId: string, level: string) {
+  const { admin: supabase } = await requireAdmin();
+  const { error } = await supabase
+    .from("vendors")
+    .update({ ambassador_level: level || null })
+    .eq("user_id", vendorId);
+  if (error) return { success: false, error: error.message };
   revalidatePath("/admin/vendors");
   return { success: true };
 }

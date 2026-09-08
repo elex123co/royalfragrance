@@ -14,8 +14,11 @@ import {
   BookOpen,
   Sparkles,
   Users,
+  LogIn,
+  UserPlus,
 } from "lucide-react";
 import { useCart } from "@/context/CartContext";
+import { createClient } from "@/lib/supabase/client";
 
 const LOGO_URL =
   "https://res.cloudinary.com/dtchp470a/image/upload/v1788705368/WhatsApp_Image_2026-09-05_at_17.32.39__1_-removebg-preview_1_qaxnfw.png";
@@ -30,14 +33,11 @@ const links = [
 export default function Navbar() {
   const [open, setOpen] = useState(false);
   const [mounted, setMounted] = useState(false);
+  const [loggedIn, setLoggedIn] = useState<boolean | null>(null); // null = still checking
   const { itemCount } = useCart();
   const pathname = usePathname();
 
-  // Portals need a real document to render into — only true after mount.
   useEffect(() => setMounted(true), []);
-
-  // Close the menu automatically on navigation, and lock background scroll
-  // while it's open so the page doesn't scroll behind the overlay.
   useEffect(() => setOpen(false), [pathname]);
   useEffect(() => {
     if (!open) return;
@@ -46,6 +46,22 @@ export default function Navbar() {
       document.body.style.overflow = "";
     };
   }, [open]);
+
+  // A single ambiguous "Account" icon didn't tell new visitors that
+  // creating an account was even an option — they'd tap it, land on
+  // login, and have no obvious path to sign up. Knowing whether someone
+  // is actually logged in lets us show "Login" + "Sign Up" as two
+  // distinct, honest options instead of one guess-and-hope icon.
+  useEffect(() => {
+    const supabase = createClient();
+    supabase.auth.getUser().then(({ data }) => setLoggedIn(!!data.user));
+    const {
+      data: { subscription },
+    } = supabase.auth.onAuthStateChange((_event, session) => {
+      setLoggedIn(!!session?.user);
+    });
+    return () => subscription.unsubscribe();
+  }, []);
 
   const menu = open && (
     <div className="fixed inset-0 z-[9999] flex flex-col bg-cream md:hidden">
@@ -90,13 +106,32 @@ export default function Navbar() {
         </nav>
 
         <div className="mt-2 grid grid-cols-2 gap-3 border-t border-espresso/10 px-5 py-5">
-          <Link
-            href="/dashboard"
-            className="flex flex-col items-center gap-2 rounded-xl border border-espresso/15 py-4 text-sm font-medium text-espresso"
-          >
-            <User size={20} />
-            Account
-          </Link>
+          {loggedIn ? (
+            <Link
+              href="/dashboard"
+              className="flex flex-col items-center gap-2 rounded-xl border border-espresso/15 py-4 text-sm font-medium text-espresso"
+            >
+              <User size={20} />
+              My Account
+            </Link>
+          ) : (
+            <>
+              <Link
+                href="/login"
+                className="flex flex-col items-center gap-2 rounded-xl border border-espresso/15 py-4 text-sm font-medium text-espresso"
+              >
+                <LogIn size={20} />
+                Login
+              </Link>
+              <Link
+                href="/register"
+                className="flex flex-col items-center gap-2 rounded-xl border border-caramel bg-caramel/10 py-4 text-sm font-medium text-espresso"
+              >
+                <UserPlus size={20} />
+                Sign Up
+              </Link>
+            </>
+          )}
           <Link
             href="/cart"
             className="relative flex flex-col items-center gap-2 rounded-xl border border-espresso/15 py-4 text-sm font-medium text-espresso"
@@ -133,14 +168,32 @@ export default function Navbar() {
           ))}
         </nav>
 
-        <div className="hidden items-center gap-4 md:flex">
-          <Link
-            href="/dashboard"
-            aria-label="Account"
-            className="text-espresso transition hover:text-caramel"
-          >
-            <User size={20} />
-          </Link>
+        <div className="hidden items-center gap-5 md:flex">
+          {loggedIn === false && (
+            <Link
+              href="/login"
+              className="text-sm font-medium text-rich transition hover:text-espresso"
+            >
+              Login
+            </Link>
+          )}
+          {loggedIn === false && (
+            <Link
+              href="/register"
+              className="rounded-full bg-espresso px-4 py-1.5 text-sm font-medium text-cream transition hover:bg-rich"
+            >
+              Sign Up
+            </Link>
+          )}
+          {loggedIn && (
+            <Link
+              href="/dashboard"
+              aria-label="Account"
+              className="text-espresso transition hover:text-caramel"
+            >
+              <User size={20} />
+            </Link>
+          )}
           <Link
             href="/cart"
             aria-label="Cart"
@@ -164,13 +217,6 @@ export default function Navbar() {
         </button>
       </div>
 
-      {/* Rendered via a portal straight into document.body — the header
-          above has backdrop-blur-md, and any filter/backdrop-filter/
-          transform on an ancestor traps position:fixed descendants to
-          that ancestor's box instead of the real viewport. Without the
-          portal, this "full-screen" overlay would actually be squeezed
-          into the header's own ~65px height, which is exactly why it
-          looked like nothing happened when tapping the menu. */}
       {mounted && menu && createPortal(menu, document.body)}
     </header>
   );

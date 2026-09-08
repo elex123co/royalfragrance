@@ -77,3 +77,34 @@ export async function sendVendorApprovedEmail(to: string, name: string) {
     ),
   });
 }
+
+export async function sendAdminVendorApplicationAlert(
+  to: string,
+  applicant: {
+    fullName: string;
+    email: string;
+    phone: string;
+    isStudent: boolean;
+    university: string;
+    primaryPlatform: string;
+    audienceSize: string;
+  }
+) {
+  const siteUrl = process.env.NEXT_PUBLIC_SITE_URL ?? "https://royalfragrance.netlify.app";
+  await sendEmail({
+    to,
+    subject: `New vendor application: ${applicant.fullName}`,
+    html: wrapper(
+      "New Vendor Application",
+      `<p>${applicant.fullName} just applied to become a Royal Fragrance vendor.</p>
+       <p>
+         Email: ${applicant.email}<br/>
+         Phone: ${applicant.phone}<br/>
+         Student: ${applicant.isStudent ? `Yes — ${applicant.university || "university not given"}` : "No"}<br/>
+         Primary platform: ${applicant.primaryPlatform || "not given"}<br/>
+         Audience size: ${applicant.audienceSize || "not given"}
+       </p>
+       <p><a href="${siteUrl}/admin/vendors" style="display:inline-block; margin-top:12px; padding:10px 20px; background:#1E120C; color:#E8D7C5; text-decoration:none; border-radius:999px;">Review in Admin</a></p>`
+    ),
+  });
+}

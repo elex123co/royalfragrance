@@ -3,6 +3,7 @@ import { createAdminClient } from "@/lib/supabase/server";
 import { getVendorDashboardData } from "@/lib/data/vendor";
 import { formatNaira } from "@/lib/utils/currency";
 import { InventoryTransferForm } from "@/components/admin/InventoryTransferForm";
+import { AmbassadorLevelForm } from "@/components/admin/AmbassadorLevelForm";
 
 // Always fetch live data — admin dashboards must never serve a stale build-time snapshot.
 export const dynamic = "force-dynamic";
@@ -42,7 +43,55 @@ export default async function AdminVendorDetailPage({
       <p className="mb-6 text-sm text-rich/60">
         {vendor.users?.email} · {vendor.vendor_code} ·{" "}
         <span className="capitalize">{vendor.status.replaceAll("_", " ")}</span>
+        {vendor.vendor_type && (
+          <>
+            {" · "}
+            <span className="capitalize">{vendor.vendor_type}</span>
+          </>
+        )}
       </p>
+
+      <div className="mb-6 rounded-xl2 border border-espresso/10 bg-white/60 p-6">
+        <h2 className="mb-3 font-display text-lg text-espresso">Applicant Profile</h2>
+        <div className="grid gap-2 text-sm text-rich/80 sm:grid-cols-2">
+          <p>
+            <span className="text-rich/50">Student:</span>{" "}
+            {vendor.is_student ? `Yes — ${vendor.university || "university not given"}` : "No"}
+          </p>
+          <p>
+            <span className="text-rich/50">Primary platform:</span>{" "}
+            {vendor.primary_platform || "—"}
+          </p>
+          <p>
+            <span className="text-rich/50">Audience size:</span>{" "}
+            {vendor.audience_size || "—"}
+          </p>
+          <p>
+            <span className="text-rich/50">Committed to promote:</span>{" "}
+            {vendor.promotion_commitment ? "Yes" : "No"}
+          </p>
+        </div>
+        {vendor.onboarding_notes && (
+          <p className="mt-3 text-sm text-rich/70">
+            <span className="text-rich/50">Notes:</span> {vendor.onboarding_notes}
+          </p>
+        )}
+
+        <div className="mt-4 border-t border-espresso/10 pt-4">
+          <label className="mb-1.5 block text-sm font-medium text-espresso">
+            Ambassador Level
+          </label>
+          <AmbassadorLevelForm vendorId={params.id} initialLevel={vendor.ambassador_level} />
+        </div>
+      </div>
+
+      {vendor.vendor_type === "affiliate" && (
+        <div className="mb-6 rounded-xl2 border border-caramel/30 bg-caramel/10 p-5 text-sm text-espresso">
+          This is an affiliate vendor — they don't handle physical inventory,
+          so there's nothing to assign below. Their sales come through
+          referral links and are tracked automatically.
+        </div>
+      )}
 
       <div className="grid gap-6 lg:grid-cols-2">
         <div className="rounded-xl2 border border-espresso/10 bg-white/60 p-6">

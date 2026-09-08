@@ -1,4 +1,5 @@
 import { NextResponse } from "next/server";
+import { cookies } from "next/headers";
 import { z } from "zod";
 import { createAdminClient } from "@/lib/supabase/server";
 import { getPaymentProvider } from "@/lib/payments";
@@ -80,6 +81,21 @@ export async function POST(request: Request) {
     }
   }
 
+  // Attribute this order to a vendor's affiliate link, if the customer
+  // arrived via one (see middleware.ts, which sets this cookie from a
+  // ?ref=<vendor_code> URL param). Only active, real vendors count.
+  let referredByVendorId: string | null = null;
+  const refCode = cookies().get("rf_ref")?.value;
+  if (refCode) {
+    const { data: referringVendor } = await supabase
+      .from("vendors")
+      .select("user_id")
+      .eq("vendor_code", refCode)
+      .eq("status", "active")
+      .maybeSingle();
+    referredByVendorId = referringVendor?.user_id ?? null;
+  }
+
   // Persist the order + items BEFORE redirecting to payment, so we have a
   // record even if the customer abandons checkout. Delivery fee is snapshot
   // at order time so future pricing changes never alter historical orders.
@@ -100,6 +116,7 @@ export async function POST(request: Request) {
       payment_status: "pending",
       order_status: "order_received",
       payment_provider: process.env.PAYMENT_PROVIDER ?? "paystack",
+      referred_by_vendor_id: referredByVendorId,
     })
     .select()
     .single();

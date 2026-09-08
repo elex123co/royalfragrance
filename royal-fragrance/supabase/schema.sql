@@ -458,6 +458,13 @@ begin
     insert into public.customers (user_id) values (new.id);
   end if;
 
+  -- Everyone who signs up — customer, vendor, or admin-created — is
+  -- automatically subscribed to Elizabeth's newsletter. No separate
+  -- opt-in step; they can unsubscribe later if the site adds that flow.
+  insert into public.newsletter_subscribers (email)
+  values (new.email)
+  on conflict (email) do nothing;
+
   return new;
 end;
 $$;
@@ -711,3 +718,56 @@ insert into delivery_zones (name, state, fee, active) values
   ('Yobe', 'Yobe', 3500, true),
   ('Zamfara', 'Zamfara', 3500, true)
 on conflict (state) do nothing;
+
+-- ----------------------------------------------------------------------------
+-- BACKFILL: subscribe everyone who signed up before the trigger above
+-- was updated to auto-subscribe on signup.
+-- ----------------------------------------------------------------------------
+insert into newsletter_subscribers (email)
+select email from public.users
+on conflict (email) do nothing;
+
+-- ----------------------------------------------------------------------------
+-- VENDOR AMBASSADOR PROGRAM
+-- Expanded application fields, admin-assigned vendor type (physical stock
+-- vs. affiliate link), referral attribution on orders, and a unified
+-- commission ledger covering both vendor types at a flat 10% rate.
+-- ----------------------------------------------------------------------------
+
+create type vendor_type as enum ('physical', 'affiliate');
+
+alter table vendors add column is_student boolean not null default false;
+alter table vendors add column university text;
+alter table vendors add column primary_platform text;
+alter table vendors add column audience_size text;
+alter table vendors add column promotion_commitment boolean not null default false;
+alter table vendors add column vendor_type vendor_type; -- null until admin decides at approval
+alter table vendors add column ambassador_level text;    -- admin-assigned, not applicant-declared
+
+-- Attribution: which vendor's referral link led to this order, if any.
+alter table orders add column referred_by_vendor_id uuid references vendors (user_id);
+
+-- Unified commission ledger — one row per commission-earning event,
+-- regardless of whether it came from a physical vendor's recorded sale or
+-- an affiliate vendor's referred order. Keeping both in one table makes
+-- "total earnings" a single simple sum for the vendor dashboard.
+create table vendor_commissions (
+  id uuid primary key default gen_random_uuid(),
+  vendor_id uuid not null references vendors (user_id) on delete cascade,
+  source_type text not null check (source_type in ('vendor_sale', 'referral_order')),
+  source_id uuid not null, -- vendor_sales.id or orders.id depending on source_type
+  amount numeric(12,2) not null,
+  rate numeric(4,3) not null default 0.10,
+  created_at timestamptz not null default now()
+);
+
+create index idx_vendor_commissions_vendor on vendor_commissions (vendor_id);
+create index idx_orders_referred_by on orders (referred_by_vendor_id);
+
+alter table vendor_commissions enable row level security;
+
+create policy "Vendors see own commissions" on vendor_commissions
+  for select using (vendor_id = auth.uid());
+
+create policy "Admins manage commissions" on vendor_commissions
+  for all using (public.is_admin());

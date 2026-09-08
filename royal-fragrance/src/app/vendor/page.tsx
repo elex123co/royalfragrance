@@ -1,10 +1,17 @@
+import Link from "next/link";
 import { getCurrentVendor, getVendorDashboardData } from "@/lib/data/vendor";
+import { createAdminClient } from "@/lib/supabase/server";
 import { formatNaira } from "@/lib/utils/currency";
 
 export const metadata = { title: "Vendor Overview — Royal Fragrance" };
 
 export default async function VendorOverviewPage() {
   const vendor = await getCurrentVendor();
+
+  if (vendor!.vendor_type === "affiliate") {
+    return <AffiliateOverview vendorId={vendor!.user_id} businessName={vendor!.business_name} />;
+  }
+
   const data = await getVendorDashboardData(vendor!.user_id);
 
   const today = new Date().toDateString();
@@ -75,6 +82,58 @@ export default async function VendorOverviewPage() {
           </p>
         </div>
       )}
+    </div>
+  );
+}
+
+async function AffiliateOverview({
+  vendorId,
+  businessName,
+}: {
+  vendorId: string;
+  businessName: string;
+}) {
+  const supabase = createAdminClient();
+
+  const [{ data: commissions }, { data: referredOrders }] = await Promise.all([
+    supabase.from("vendor_commissions").select("amount").eq("vendor_id", vendorId),
+    supabase
+      .from("orders")
+      .select("id, payment_status")
+      .eq("referred_by_vendor_id", vendorId),
+  ]);
+
+  const totalEarnings = (commissions ?? []).reduce((sum, c) => sum + Number(c.amount), 0);
+  const paidOrders = (referredOrders ?? []).filter((o) => o.payment_status === "paid").length;
+
+  const cards = [
+    { label: "Total Earnings", value: formatNaira(totalEarnings) },
+    { label: "Referred Orders", value: paidOrders },
+  ];
+
+  return (
+    <div>
+      <h1 className="mb-8 font-display text-2xl text-espresso">
+        Welcome, {businessName}
+      </h1>
+
+      <div className="grid gap-4 sm:grid-cols-2">
+        {cards.map((c) => (
+          <div key={c.label} className="rounded-xl2 border border-espresso/10 bg-white/60 p-5">
+            <p className="text-xs uppercase tracking-wide text-rich/50">{c.label}</p>
+            <p className="mt-2 font-display text-2xl text-espresso">{c.value}</p>
+          </div>
+        ))}
+      </div>
+
+      <div className="mt-8 rounded-xl2 border border-caramel/30 bg-caramel/10 p-5">
+        <p className="text-sm text-espresso">
+          You earn 10% every time someone buys through your personal link.{" "}
+          <Link href="/vendor/links" className="underline">
+            Get your links
+          </Link>
+        </p>
+      </div>
     </div>
   );
 }

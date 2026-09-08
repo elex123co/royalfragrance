@@ -10,10 +10,12 @@ import {
 export function VendorRowActions({
   vendorId,
   status,
+  vendorType,
   hasCollectionAccount,
 }: {
   vendorId: string;
   status: string;
+  vendorType: string | null;
   hasCollectionAccount: boolean;
 }) {
   const [isPending, startTransition] = useTransition();
@@ -29,23 +31,40 @@ export function VendorRowActions({
 
   return (
     <div className="flex flex-col items-start gap-1.5">
-      <div className="flex gap-2">
+      <div className="flex flex-wrap gap-2">
         {status === "pending_approval" && (
-          <button
-            disabled={isPending}
-            onClick={() =>
-              startTransition(() => { setVendorStatus(vendorId, "active"); })
-            }
-            className="rounded-full bg-espresso px-3 py-1 text-xs text-cream hover:bg-rich"
-          >
-            Approve
-          </button>
+          <>
+            <button
+              disabled={isPending}
+              onClick={() =>
+                startTransition(() => {
+                  setVendorStatus(vendorId, "active", "physical");
+                })
+              }
+              className="rounded-full bg-espresso px-3 py-1 text-xs text-cream hover:bg-rich"
+            >
+              Approve — Physical
+            </button>
+            <button
+              disabled={isPending}
+              onClick={() =>
+                startTransition(() => {
+                  setVendorStatus(vendorId, "active", "affiliate");
+                })
+              }
+              className="rounded-full border border-espresso px-3 py-1 text-xs text-espresso hover:bg-espresso/5"
+            >
+              Approve — Affiliate
+            </button>
+          </>
         )}
         {status === "active" && (
           <button
             disabled={isPending}
             onClick={() =>
-              startTransition(() => { setVendorStatus(vendorId, "suspended"); })
+              startTransition(() => {
+                setVendorStatus(vendorId, "suspended");
+              })
             }
             className="rounded-full border border-red-300 px-3 py-1 text-xs text-red-600 hover:bg-red-50"
           >
@@ -56,14 +75,16 @@ export function VendorRowActions({
           <button
             disabled={isPending}
             onClick={() =>
-              startTransition(() => { setVendorStatus(vendorId, "active"); })
+              startTransition(() => {
+                setVendorStatus(vendorId, "active");
+              })
             }
             className="rounded-full bg-espresso px-3 py-1 text-xs text-cream hover:bg-rich"
           >
             Reactivate
           </button>
         )}
-        {status === "active" && !hasCollectionAccount && (
+        {status === "active" && vendorType === "physical" && !hasCollectionAccount && (
           <button
             disabled={isPending}
             onClick={handleProvision}
@@ -72,12 +93,14 @@ export function VendorRowActions({
             Set Up Account
           </button>
         )}
-        <Link
-          href={`/admin/vendors/${vendorId}`}
-          className="rounded-full border border-espresso/20 px-3 py-1 text-xs text-espresso hover:bg-espresso/5"
-        >
-          Manage Inventory
-        </Link>
+        {vendorType === "physical" && (
+          <Link
+            href={`/admin/vendors/${vendorId}`}
+            className="rounded-full border border-espresso/20 px-3 py-1 text-xs text-espresso hover:bg-espresso/5"
+          >
+            Manage Inventory
+          </Link>
+        )}
       </div>
       {error && <p className="text-xs text-red-600">{error}</p>}
     </div>

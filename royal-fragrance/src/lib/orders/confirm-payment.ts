@@ -21,7 +21,7 @@ export async function confirmOrderPaidAndDeductStock(
 ): Promise<{ alreadyConfirmed: boolean }> {
   const { data: order } = await supabase
     .from("orders")
-    .select("id, payment_status, customer_id, order_number")
+    .select("id, payment_status, customer_id, order_number, subtotal, referred_by_vendor_id")
     .eq("id", orderId)
     .single();
 
@@ -90,6 +90,20 @@ export async function confirmOrderPaidAndDeductStock(
       user_id: order.customer_id,
       message: `Your order ${order.order_number} has been confirmed.`,
       link: `/order-confirmation?order=${order.order_number}`,
+    });
+  }
+
+  // 10% affiliate commission on the referring vendor's link — calculated
+  // on product subtotal only, not delivery, since delivery isn't revenue
+  // the vendor helped generate.
+  if (order.referred_by_vendor_id) {
+    const commissionAmount = Number(order.subtotal) * 0.1;
+    await supabase.from("vendor_commissions").insert({
+      vendor_id: order.referred_by_vendor_id,
+      source_type: "referral_order",
+      source_id: orderId,
+      amount: commissionAmount,
+      rate: 0.1,
     });
   }
 
