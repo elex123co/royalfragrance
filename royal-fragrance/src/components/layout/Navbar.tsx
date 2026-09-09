@@ -144,8 +144,16 @@ export default function Navbar() {
     </div>
   );
 
+  const isHome = pathname === "/";
+
   return (
-    <header className="sticky top-0 z-50 border-b border-espresso/10 bg-cream/90 backdrop-blur-md">
+    <header
+      className={
+        isHome
+          ? "fixed inset-x-0 top-0 z-50 border-b border-white/10 bg-black/10 backdrop-blur-md"
+          : "sticky top-0 z-50 border-b border-espresso/10 bg-cream/90 backdrop-blur-md"
+      }
+    >
       <div className="mx-auto flex max-w-7xl items-center justify-between px-5 py-4 lg:px-8">
         <Link
           href="/"
@@ -161,7 +169,11 @@ export default function Navbar() {
             <Link
               key={link.href}
               href={link.href}
-              className="text-sm font-medium tracking-wide text-rich transition hover:text-espresso"
+              className={
+                isHome
+                  ? "text-sm font-medium tracking-wide text-cream/85 transition hover:text-cream"
+                  : "text-sm font-medium tracking-wide text-rich transition hover:text-espresso"
+              }
             >
               {link.label}
             </Link>
@@ -172,7 +184,11 @@ export default function Navbar() {
           {loggedIn === false && (
             <Link
               href="/login"
-              className="text-sm font-medium text-rich transition hover:text-espresso"
+              className={
+                isHome
+                  ? "text-sm font-medium text-cream/85 transition hover:text-cream"
+                  : "text-sm font-medium text-rich transition hover:text-espresso"
+              }
             >
               Login
             </Link>
@@ -180,7 +196,11 @@ export default function Navbar() {
           {loggedIn === false && (
             <Link
               href="/register"
-              className="rounded-full bg-espresso px-4 py-1.5 text-sm font-medium text-cream transition hover:bg-rich"
+              className={
+                isHome
+                  ? "rounded-full border border-cream/40 px-4 py-1.5 text-sm font-medium text-cream transition hover:bg-cream/10"
+                  : "rounded-full bg-espresso px-4 py-1.5 text-sm font-medium text-cream transition hover:bg-rich"
+              }
             >
               Sign Up
             </Link>
@@ -189,7 +209,11 @@ export default function Navbar() {
             <Link
               href="/dashboard"
               aria-label="Account"
-              className="text-espresso transition hover:text-caramel"
+              className={
+                isHome
+                  ? "text-cream/85 transition hover:text-cream"
+                  : "text-espresso transition hover:text-caramel"
+              }
             >
               <User size={20} />
             </Link>
@@ -197,7 +221,11 @@ export default function Navbar() {
           <Link
             href="/cart"
             aria-label="Cart"
-            className="relative text-espresso transition hover:text-caramel"
+            className={
+              isHome
+                ? "relative text-cream/85 transition hover:text-cream"
+                : "relative text-espresso transition hover:text-caramel"
+            }
           >
             <ShoppingBag size={20} />
             {itemCount > 0 && (
@@ -209,7 +237,7 @@ export default function Navbar() {
         </div>
 
         <button
-          className="text-espresso md:hidden"
+          className={isHome ? "text-cream md:hidden" : "text-espresso md:hidden"}
           onClick={() => setOpen(true)}
           aria-label="Open menu"
         >
