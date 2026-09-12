@@ -3,6 +3,7 @@ import { getPaymentProvider } from "@/lib/payments";
 import { confirmOrderPaidAndDeductStock } from "@/lib/orders/confirm-payment";
 import { formatNaira } from "@/lib/utils/currency";
 import { LinkButton } from "@/components/ui/Button";
+import { PurchaseTracker } from "@/components/analytics/PurchaseTracker";
 import { CheckCircle2, Clock } from "lucide-react";
 
 export const metadata = { title: "Order Confirmation — Royal Fragrance" };
@@ -70,6 +71,13 @@ export default async function OrderConfirmationPage({
 
   return (
     <section className="bg-cream py-16">
+      {isPaid && (
+        <PurchaseTracker
+          orderNumber={order.order_number}
+          value={Number(order.total)}
+          contentIds={(order.order_items ?? []).map((i: any) => i.product_id)}
+        />
+      )}
       <div className="mx-auto max-w-2xl px-5 lg:px-8">
         <div className="rounded-xl2 border border-espresso/10 bg-white/60 p-8 text-center shadow-premium-sm">
           {isPaid ? (

@@ -1,10 +1,11 @@
 "use client";
 
-import { useState } from "react";
+import { useState, useEffect } from "react";
 import { useCart } from "@/context/CartContext";
 import { formatNaira } from "@/lib/utils/currency";
 import { Button } from "@/components/ui/Button";
 import type { DeliveryZone } from "@/lib/data/delivery";
+import { trackMetaEvent } from "@/components/analytics/MetaPixel";
 
 type Step = "customer" | "delivery" | "summary";
 
@@ -13,6 +14,17 @@ export function CheckoutForm({ zones }: { zones: DeliveryZone[] }) {
   const [step, setStep] = useState<Step>("customer");
   const [submitting, setSubmitting] = useState(false);
   const [error, setError] = useState<string | null>(null);
+
+  useEffect(() => {
+    trackMetaEvent("InitiateCheckout", {
+      content_ids: items.map((i) => i.productId),
+      num_items: items.reduce((sum, i) => sum + i.quantity, 0),
+      value: subtotal,
+      currency: "NGN",
+    });
+    // Fire once when checkout is entered, not on every re-render as items change.
+    // eslint-disable-next-line react-hooks/exhaustive-deps
+  }, []);
 
   const [customer, setCustomer] = useState({
     fullName: "",

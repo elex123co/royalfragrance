@@ -1,11 +1,12 @@
 "use client";
 
-import { useState } from "react";
+import { useState, useEffect } from "react";
 import { useRouter } from "next/navigation";
 import type { Product } from "@/lib/types/product";
 import { formatNaira } from "@/lib/utils/currency";
 import { useCart } from "@/context/CartContext";
 import { Button } from "@/components/ui/Button";
+import { trackMetaEvent } from "@/components/analytics/MetaPixel";
 
 export function ProductPurchasePanel({ product }: { product: Product }) {
   const router = useRouter();
@@ -22,6 +23,18 @@ export function ProductPurchasePanel({ product }: { product: Product }) {
     product.status === "out_of_stock" ||
     (hasVariants && (selectedVariant?.stock ?? 0) <= 0);
 
+  useEffect(() => {
+    trackMetaEvent("ViewContent", {
+      content_ids: [product.id],
+      content_name: product.name,
+      content_type: "product",
+      value: price,
+      currency: "NGN",
+    });
+    // Only fire once per product page load, not on every variant/price change.
+    // eslint-disable-next-line react-hooks/exhaustive-deps
+  }, [product.id]);
+
   function buildCartItem() {
     return {
       productId: product.id,
@@ -37,10 +50,24 @@ export function ProductPurchasePanel({ product }: { product: Product }) {
 
   function handleAddToCart() {
     addItem(buildCartItem());
+    trackMetaEvent("AddToCart", {
+      content_ids: [product.id],
+      content_name: product.name,
+      content_type: "product",
+      value: price * quantity,
+      currency: "NGN",
+    });
   }
 
   function handleBuyNow() {
     addItem(buildCartItem());
+    trackMetaEvent("AddToCart", {
+      content_ids: [product.id],
+      content_name: product.name,
+      content_type: "product",
+      value: price * quantity,
+      currency: "NGN",
+    });
     router.push("/cart");
   }
 

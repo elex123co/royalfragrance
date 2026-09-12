@@ -5,6 +5,7 @@ import Link from "next/link";
 import { Mail } from "lucide-react";
 import { createClient } from "@/lib/supabase/client";
 import { Button } from "@/components/ui/Button";
+import { trackMetaEvent } from "@/components/analytics/MetaPixel";
 
 export default function RegisterPage() {
   const [form, setForm] = useState({
@@ -37,6 +38,8 @@ export default function RegisterPage() {
       setError(authError.message);
       return;
     }
+
+    trackMetaEvent("CompleteRegistration", { content_name: "Customer Signup" });
 
     // When email confirmation is required, Supabase returns a user but no
     // session yet — there's nothing to log into until they click the link

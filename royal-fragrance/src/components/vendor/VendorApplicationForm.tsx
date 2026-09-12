@@ -4,6 +4,7 @@ import { useState } from "react";
 import { useRouter } from "next/navigation";
 import { Button } from "@/components/ui/Button";
 import { applyAsVendor } from "@/lib/actions/vendor-application";
+import { trackMetaEvent } from "@/components/analytics/MetaPixel";
 
 const PLATFORMS = ["Instagram", "TikTok", "X (Twitter)", "Facebook", "YouTube", "WhatsApp Status", "Other"];
 
@@ -44,6 +45,7 @@ export function VendorApplicationForm() {
     }
 
     setStatus("success");
+    trackMetaEvent("Lead", { content_name: "Vendor Application" });
     setTimeout(() => router.push("/login"), 2500);
   }
 

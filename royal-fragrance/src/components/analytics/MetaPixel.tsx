@@ -12,6 +12,18 @@ declare global {
   }
 }
 
+/**
+ * Fires a Meta Pixel standard event with real data (price, currency, IDs)
+ * pulled from actual app state — not guessed from a clicked button, which
+ * is what Meta's no-code Event Setup Tool would otherwise rely on. Safe
+ * to call before the pixel has loaded; it just silently no-ops.
+ */
+export function trackMetaEvent(eventName: string, params?: Record<string, unknown>) {
+  if (typeof window !== "undefined" && typeof window.fbq === "function") {
+    window.fbq("track", eventName, params);
+  }
+}
+
 export function MetaPixel() {
   const pathname = usePathname();
 
