@@ -1,6 +1,6 @@
 import { Suspense } from "react";
 import { getAllProducts } from "@/lib/data/products";
-import { categories } from "@/data/sample-products";
+import { getCategories } from "@/lib/data/categories";
 import { ProductCard } from "@/components/ui/ProductCard";
 import { ShopFilters } from "@/components/shop/ShopFilters";
 
@@ -10,6 +10,10 @@ export const metadata = {
     "Browse Royal Fragrance's full collection — Men's, Women's, Unisex, and Oud fragrances. Shop premium perfumes online across Nigeria with secure checkout and fast delivery.",
   alternates: { canonical: "https://royalfragrancegallery.com/shop" },
 };
+
+// Always fetch live data — pricing, stock, and discounts change constantly,
+// and a stale build-time snapshot would show outdated products.
+export const dynamic = "force-dynamic";
 
 interface ShopPageProps {
   searchParams: {
@@ -22,7 +26,10 @@ interface ShopPageProps {
 }
 
 export default async function ShopPage({ searchParams }: ShopPageProps) {
-  const allProducts = await getAllProducts();
+  const [allProducts, realCategories] = await Promise.all([
+    getAllProducts(),
+    getCategories(),
+  ]);
 
   let filtered = allProducts;
 
@@ -75,7 +82,7 @@ export default async function ShopPage({ searchParams }: ShopPageProps) {
         </div>
 
         <Suspense fallback={null}>
-          <ShopFilters categories={categories} />
+          <ShopFilters categories={realCategories.map((c) => c.name)} />
         </Suspense>
 
         {filtered.length === 0 ? (
