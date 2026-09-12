@@ -6,6 +6,7 @@ import Footer from "@/components/layout/Footer";
 import { CartProvider } from "@/context/CartContext";
 import { AssistantWidget } from "@/components/assistant/AssistantWidget";
 import { InstallPrompt } from "@/components/pwa/InstallPrompt";
+import { MetaPixel } from "@/components/analytics/MetaPixel";
 
 const display = Playfair_Display({
   subsets: ["latin"],
@@ -51,7 +52,10 @@ export const metadata: Metadata = {
   ],
   authors: [{ name: "Royal Fragrance" }],
   icons: {
-    icon: LOGO_URL,
+    icon: [
+      { url: "/favicon.svg", type: "image/svg+xml" },
+      { url: LOGO_URL, type: "image/png" }, // fallback for browsers without SVG favicon support
+    ],
     shortcut: LOGO_URL,
     apple: LOGO_URL,
   },
@@ -106,6 +110,7 @@ export default function RootLayout({
         />
       </head>
       <body>
+        <MetaPixel />
         <CartProvider>
           <Navbar />
           <main>{children}</main>
