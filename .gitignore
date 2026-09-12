@@ -22,3 +22,7 @@ lerna-debug.log*
 # temp directory
 .temp
 .tmp
+
+# Prevent accidental commits from working in the wrong project's terminal
+*.zip
+/lib/
