@@ -16,6 +16,8 @@ export interface ProductInput {
   status: "active" | "draft" | "out_of_stock";
   images: string[];
   variants: { size: string; price: number; stock: number }[];
+  discountType: "percentage" | "fixed_amount" | null;
+  discountValue: number | null;
 }
 
 /**
@@ -56,6 +58,8 @@ export async function createProduct(input: ProductInput) {
       category_id: input.categoryId,
       base_price: input.variants[0]?.price ?? input.basePrice,
       status,
+      discount_type: input.discountType,
+      discount_value: input.discountValue,
     })
     .select()
     .single();
@@ -118,6 +122,8 @@ export async function updateProduct(productId: string, input: ProductInput) {
       category_id: input.categoryId,
       base_price: input.variants[0]?.price ?? input.basePrice,
       status,
+      discount_type: input.discountType,
+      discount_value: input.discountValue,
     })
     .eq("id", productId);
 

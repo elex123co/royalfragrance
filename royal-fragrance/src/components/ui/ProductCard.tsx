@@ -43,6 +43,11 @@ export function ProductCard({ product }: { product: Product }) {
             Out of Stock
           </span>
         )}
+        {product.originalPrice && !outOfStock && (
+          <span className="absolute left-3 top-3 rounded-full bg-red-600 px-3 py-1 text-xs font-medium tracking-wide text-white">
+            Sale
+          </span>
+        )}
       </div>
 
       <div className="flex flex-1 flex-col gap-1.5 p-4 sm:p-5">
@@ -56,10 +61,17 @@ export function ProductCard({ product }: { product: Product }) {
           {product.shortDescription}
         </p>
 
-        <div className="mt-3 flex items-center justify-between">
-          <span className="font-display text-base text-espresso sm:text-lg">
-            {formatNaira(product.price)}
-          </span>
+        <div className="mt-3 flex items-center gap-2 justify-between">
+          <div className="flex items-baseline gap-2">
+            <span className="font-display text-base text-espresso sm:text-lg">
+              {formatNaira(product.price)}
+            </span>
+            {product.originalPrice && (
+              <span className="text-xs text-rich/40 line-through">
+                {formatNaira(product.originalPrice)}
+              </span>
+            )}
+          </div>
         </div>
 
         <button

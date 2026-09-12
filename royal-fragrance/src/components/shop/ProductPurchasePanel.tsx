@@ -17,6 +17,7 @@ export function ProductPurchasePanel({ product }: { product: Product }) {
 
   const selectedVariant = product.variants?.find((v) => v.id === variantId);
   const price = selectedVariant?.price ?? product.price;
+  const originalPrice = selectedVariant?.originalPrice ?? product.originalPrice;
   const outOfStock =
     product.status === "out_of_stock" ||
     (hasVariants && (selectedVariant?.stock ?? 0) <= 0);
@@ -45,7 +46,12 @@ export function ProductPurchasePanel({ product }: { product: Product }) {
 
   return (
     <div className="mt-8">
-      <p className="font-display text-2xl text-espresso">{formatNaira(price)}</p>
+      <div className="flex items-baseline gap-3">
+        <p className="font-display text-2xl text-espresso">{formatNaira(price)}</p>
+        {originalPrice && (
+          <p className="text-base text-rich/40 line-through">{formatNaira(originalPrice)}</p>
+        )}
+      </div>
 
       {hasVariants && (
         <div className="mt-5">

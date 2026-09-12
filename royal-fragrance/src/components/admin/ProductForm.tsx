@@ -42,6 +42,8 @@ export function ProductForm({ categories, productId, initial }: ProductFormProps
     shortDescription: initial?.shortDescription ?? "",
     categoryId: initial?.categoryId ?? null,
     basePrice: initial?.basePrice ?? 0,
+    discountType: initial?.discountType ?? null,
+    discountValue: initial?.discountValue ?? null,
     status: initial?.status ?? "draft",
     images: initial?.images ?? [],
     variants: initial?.variants?.length
@@ -84,10 +86,9 @@ export function ProductForm({ categories, productId, initial }: ProductFormProps
     setGeneratingDescription(true);
     setAiError(null);
 
-    const categoryName = categories.find((c) => c.id === form.categoryId)?.name ?? "";
     const result = await generateProductDescription({
       name: form.name,
-      category: categoryName,
+      availableCategories: categories.map((c) => c.name),
       hints: aiHints,
     });
 
@@ -98,10 +99,15 @@ export function ProductForm({ categories, productId, initial }: ProductFormProps
       return;
     }
 
+    const suggestedCategoryId = result.suggestedCategory
+      ? categories.find((c) => c.name === result.suggestedCategory)?.id
+      : undefined;
+
     setForm((f) => ({
       ...f,
       shortDescription: result.shortDescription ?? f.shortDescription,
       description: result.description ?? f.description,
+      categoryId: suggestedCategoryId ?? f.categoryId,
     }));
   }
 
@@ -195,7 +201,8 @@ export function ProductForm({ categories, productId, initial }: ProductFormProps
         </div>
         {aiError && <p className="mt-1 text-xs text-red-600">{aiError}</p>}
         <p className="mt-1 text-xs text-rich/50">
-          Fills in both fields below — you can edit the result before saving.
+          Fills in both description fields and picks a category below — you
+          can change any of it before saving.
         </p>
       </div>
 
@@ -274,6 +281,46 @@ export function ProductForm({ categories, productId, initial }: ProductFormProps
             available) automatically — this is just your intent when stock is 0.
           </p>
         </div>
+      </div>
+
+      <div>
+        <label className="mb-1.5 block text-sm font-medium text-espresso">
+          Discount
+        </label>
+        <div className="grid grid-cols-2 gap-3">
+          <select
+            value={form.discountType ?? ""}
+            onChange={(e) =>
+              setForm((f) => ({
+                ...f,
+                discountType: (e.target.value || null) as ProductInput["discountType"],
+              }))
+            }
+            className="rounded-lg border border-espresso/15 px-4 py-2.5 text-sm focus:border-caramel focus:outline-none"
+          >
+            <option value="">No discount</option>
+            <option value="percentage">Percentage off</option>
+            <option value="fixed_amount">Fixed amount off (₦)</option>
+          </select>
+          <input
+            type="number"
+            min={0}
+            disabled={!form.discountType}
+            placeholder={form.discountType === "percentage" ? "e.g. 20" : "e.g. 2000"}
+            value={form.discountValue ?? ""}
+            onChange={(e) =>
+              setForm((f) => ({
+                ...f,
+                discountValue: e.target.value ? Number(e.target.value) : null,
+              }))
+            }
+            className="rounded-lg border border-espresso/15 px-4 py-2.5 text-sm focus:border-caramel focus:outline-none disabled:bg-espresso/5 disabled:text-rich/30"
+          />
+        </div>
+        <p className="mt-1 text-xs text-rich/50">
+          Applies to every size of this product — shown as a strikethrough
+          original price everywhere it's displayed.
+        </p>
       </div>
 
       <div>

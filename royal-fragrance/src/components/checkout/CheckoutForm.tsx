@@ -24,10 +24,33 @@ export function CheckoutForm({ zones }: { zones: DeliveryZone[] }) {
     address: "",
     zoneId: zones[0]?.id ?? "",
   });
+  const [promoInput, setPromoInput] = useState("");
+  const [promoStatus, setPromoStatus] = useState<
+    { applied: false } | { applied: true; code: string; discountAmount: number } | { applied: false; error: string }
+  >({ applied: false });
+  const [applyingPromo, setApplyingPromo] = useState(false);
 
   const selectedZone = zones.find((z) => z.id === delivery.zoneId);
   const deliveryFee = selectedZone?.fee ?? 0;
-  const total = subtotal + deliveryFee;
+  const discountAmount = promoStatus.applied ? promoStatus.discountAmount : 0;
+  const total = subtotal + deliveryFee - discountAmount;
+
+  async function handleApplyPromo() {
+    setApplyingPromo(true);
+    const { applyPromoCode } = await import("@/lib/actions/promo");
+    const result = await applyPromoCode(promoInput, subtotal);
+    setApplyingPromo(false);
+
+    if (!result.valid) {
+      setPromoStatus({ applied: false, error: result.error ?? "Invalid code." });
+      return;
+    }
+    setPromoStatus({
+      applied: true,
+      code: promoInput.toUpperCase(),
+      discountAmount: result.discountAmount ?? 0,
+    });
+  }
 
   async function handlePay() {
     setSubmitting(true);
@@ -52,6 +75,7 @@ export function CheckoutForm({ zones }: { zones: DeliveryZone[] }) {
             price: i.price,
             quantity: i.quantity,
           })),
+          promoCode: promoStatus.applied ? promoStatus.code : undefined,
         }),
       });
 
@@ -173,6 +197,50 @@ export function CheckoutForm({ zones }: { zones: DeliveryZone[] }) {
             ))}
           </div>
 
+          <div className="mt-4">
+            <label className="mb-1.5 block text-sm font-medium text-espresso">
+              Promo Code
+            </label>
+            <div className="flex gap-2">
+              <input
+                value={promoInput}
+                onChange={(e) => setPromoInput(e.target.value.toUpperCase())}
+                placeholder="Enter code"
+                disabled={promoStatus.applied}
+                className="flex-1 rounded-lg border border-espresso/15 px-4 py-2 text-sm uppercase focus:border-caramel focus:outline-none disabled:bg-espresso/5"
+              />
+              {promoStatus.applied ? (
+                <button
+                  type="button"
+                  onClick={() => {
+                    setPromoStatus({ applied: false });
+                    setPromoInput("");
+                  }}
+                  className="rounded-lg border border-espresso/20 px-4 text-sm text-espresso hover:bg-espresso/5"
+                >
+                  Remove
+                </button>
+              ) : (
+                <button
+                  type="button"
+                  onClick={handleApplyPromo}
+                  disabled={applyingPromo || !promoInput.trim()}
+                  className="rounded-lg bg-espresso px-4 text-sm text-cream hover:bg-rich disabled:cursor-not-allowed disabled:opacity-40"
+                >
+                  {applyingPromo ? "Checking…" : "Apply"}
+                </button>
+              )}
+            </div>
+            {promoStatus.applied && (
+              <p className="mt-1.5 text-xs text-green-700">
+                "{promoStatus.code}" applied — {formatNaira(promoStatus.discountAmount)} off
+              </p>
+            )}
+            {!promoStatus.applied && "error" in promoStatus && promoStatus.error && (
+              <p className="mt-1.5 text-xs text-red-600">{promoStatus.error}</p>
+            )}
+          </div>
+
           <div className="mt-4 space-y-2 border-t border-espresso/10 pt-4 text-sm">
             <div className="flex justify-between text-rich/80">
               <span>Product Subtotal</span>
@@ -182,6 +250,12 @@ export function CheckoutForm({ zones }: { zones: DeliveryZone[] }) {
               <span>Delivery Fee ({selectedZone?.name})</span>
               <span>{formatNaira(deliveryFee)}</span>
             </div>
+            {discountAmount > 0 && (
+              <div className="flex justify-between text-green-700">
+                <span>Discount</span>
+                <span>−{formatNaira(discountAmount)}</span>
+              </div>
+            )}
             <div className="flex justify-between border-t border-espresso/10 pt-2 font-display text-lg text-espresso">
               <span>Total</span>
               <span>{formatNaira(total)}</span>

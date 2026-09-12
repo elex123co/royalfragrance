@@ -7,6 +7,7 @@ import {
   Users,
   Mail,
   Truck,
+  Percent,
 } from "lucide-react";
 import { createClient } from "@/lib/supabase/server";
 import { LogoutButton, LogoutIconButton } from "@/components/account/LogoutButton";
@@ -19,6 +20,7 @@ const navItems = [
   { href: "/admin/orders", label: "Orders", icon: ShoppingCart },
   { href: "/admin/vendors", label: "Vendors", icon: Users },
   { href: "/admin/delivery-fees", label: "Delivery Fees", icon: Truck },
+  { href: "/admin/promo-codes", label: "Promo Codes", icon: Percent },
   { href: "/admin/newsletter", label: "Newsletter", icon: Mail },
 ];
 

@@ -49,6 +49,8 @@ export default async function EditProductPage({
             price: Number(v.price),
             stock: v.stock,
           })),
+          discountType: product.discount_type,
+          discountValue: product.discount_value != null ? Number(product.discount_value) : null,
         }}
       />
     </div>

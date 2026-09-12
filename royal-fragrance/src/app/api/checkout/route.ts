@@ -3,6 +3,7 @@ import { cookies } from "next/headers";
 import { z } from "zod";
 import { createAdminClient } from "@/lib/supabase/server";
 import { getPaymentProvider } from "@/lib/payments";
+import { validatePromoCodeServerSide } from "@/lib/utils/promo-validation";
 
 const checkoutSchema = z.object({
   customer: z.object({
@@ -28,6 +29,7 @@ const checkoutSchema = z.object({
       })
     )
     .min(1),
+  promoCode: z.string().optional(),
 });
 
 function generateOrderNumber() {
@@ -47,13 +49,28 @@ export async function POST(request: Request) {
     );
   }
 
-  const { customer, delivery, items } = parsed.data;
+  const { customer, delivery, items, promoCode } = parsed.data;
 
   const subtotal = items.reduce((sum, i) => sum + i.price * i.quantity, 0);
-  const total = subtotal + delivery.fee;
-  const orderNumber = generateOrderNumber();
 
   const supabase = createAdminClient();
+
+  // Re-verify the promo code from scratch here — never trust a discount
+  // amount computed client-side. If the code became invalid between the
+  // customer applying it and submitting (expired, used up, disabled),
+  // checkout simply proceeds without a discount rather than failing.
+  let discountAmount = 0;
+  let promoCodeId: string | null = null;
+  if (promoCode) {
+    const validation = await validatePromoCodeServerSide(supabase, promoCode, subtotal);
+    if (validation.valid) {
+      discountAmount = validation.discountAmount ?? 0;
+      promoCodeId = validation.promoCodeId ?? null;
+    }
+  }
+
+  const total = subtotal + delivery.fee - discountAmount;
+  const orderNumber = generateOrderNumber();
 
   // Validate stock BEFORE creating the order — prevents overselling on
   // items that have sold out between the customer adding to cart and
@@ -117,6 +134,8 @@ export async function POST(request: Request) {
       order_status: "order_received",
       payment_provider: process.env.PAYMENT_PROVIDER ?? "paystack",
       referred_by_vendor_id: referredByVendorId,
+      promo_code_id: promoCodeId,
+      discount_amount: discountAmount,
     })
     .select()
     .single();
@@ -124,6 +143,18 @@ export async function POST(request: Request) {
   if (orderError || !order) {
     console.error("Failed to create order:", orderError);
     return NextResponse.json({ error: "Could not create order" }, { status: 500 });
+  }
+
+  if (promoCodeId) {
+    const { data: current } = await supabase
+      .from("promo_codes")
+      .select("times_used")
+      .eq("id", promoCodeId)
+      .single();
+    await supabase
+      .from("promo_codes")
+      .update({ times_used: (current?.times_used ?? 0) + 1 })
+      .eq("id", promoCodeId);
   }
 
   const orderItemsPayload = items.map((i) => ({

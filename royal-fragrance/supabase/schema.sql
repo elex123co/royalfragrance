@@ -771,3 +771,33 @@ create policy "Vendors see own commissions" on vendor_commissions
 
 create policy "Admins manage commissions" on vendor_commissions
   for all using (public.is_admin());
+
+-- ----------------------------------------------------------------------------
+-- PRODUCT DISCOUNTS & PROMO CODES
+-- Discount lives on the product itself (baked into the price everywhere
+-- it's already displayed — cards, product page, cart, checkout — with zero
+-- extra plumbing needed at those call sites). Promo codes are separate,
+-- redeemed at checkout, validated server-side both at "Apply" time and
+-- again at order-creation time so a tampered client value is never trusted.
+-- ----------------------------------------------------------------------------
+
+alter table products add column discount_type text check (discount_type in ('percentage', 'fixed_amount'));
+alter table products add column discount_value numeric(12,2);
+
+create table promo_codes (
+  id uuid primary key default gen_random_uuid(),
+  code text not null unique,
+  discount_type text not null check (discount_type in ('percentage', 'fixed_amount')),
+  discount_value numeric(12,2) not null,
+  active boolean not null default true,
+  expires_at timestamptz,
+  usage_limit int,
+  times_used int not null default 0,
+  created_at timestamptz not null default now()
+);
+
+alter table orders add column promo_code_id uuid references promo_codes (id);
+alter table orders add column discount_amount numeric(12,2) not null default 0;
+
+alter table promo_codes enable row level security;
+create policy "Admins manage promo codes" on promo_codes for all using (public.is_admin());
