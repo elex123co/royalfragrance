@@ -1,9 +1,16 @@
 "use server";
 
 import { createAdminClient } from "@/lib/supabase/server";
-import { validatePromoCodeServerSide } from "@/lib/utils/promo-validation";
+import {
+  validatePromoCodeServerSide,
+  type CartItemForPromo,
+} from "@/lib/utils/promo-validation";
 
-export async function applyPromoCode(code: string, subtotal: number) {
+export async function applyPromoCode(
+  code: string,
+  items: CartItemForPromo[],
+  customerEmail: string
+) {
   const supabase = createAdminClient();
-  return validatePromoCodeServerSide(supabase, code, subtotal);
+  return validatePromoCodeServerSide(supabase, code, items, customerEmail);
 }

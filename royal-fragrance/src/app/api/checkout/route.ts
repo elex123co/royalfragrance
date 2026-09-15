@@ -62,7 +62,12 @@ export async function POST(request: Request) {
   let discountAmount = 0;
   let promoCodeId: string | null = null;
   if (promoCode) {
-    const validation = await validatePromoCodeServerSide(supabase, promoCode, subtotal);
+    const validation = await validatePromoCodeServerSide(
+      supabase,
+      promoCode,
+      items.map((i) => ({ productId: i.productId, price: i.price, quantity: i.quantity })),
+      customer.email
+    );
     if (validation.valid) {
       discountAmount = validation.discountAmount ?? 0;
       promoCodeId = validation.promoCodeId ?? null;
@@ -155,6 +160,14 @@ export async function POST(request: Request) {
       .from("promo_codes")
       .update({ times_used: (current?.times_used ?? 0) + 1 })
       .eq("id", promoCodeId);
+
+    // Locks this customer out of reusing this specific code again,
+    // independent of the code's own global usage_limit.
+    await supabase.from("promo_code_redemptions").insert({
+      promo_code_id: promoCodeId,
+      customer_email: customer.email.trim().toLowerCase(),
+      order_id: order.id,
+    });
   }
 
   const orderItemsPayload = items.map((i) => ({

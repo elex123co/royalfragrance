@@ -801,3 +801,36 @@ alter table orders add column discount_amount numeric(12,2) not null default 0;
 
 alter table promo_codes enable row level security;
 create policy "Admins manage promo codes" on promo_codes for all using (public.is_admin());
+
+-- ----------------------------------------------------------------------------
+-- PROMO CODE PRODUCT RESTRICTIONS & PER-CUSTOMER SINGLE-USE
+-- A code with linked products only discounts those specific items in the
+-- cart — a customer buying an unrelated product alongside can never have
+-- it discounted by that code. A code with NO linked products behaves as
+-- before (storewide), so existing codes keep working unchanged.
+-- ----------------------------------------------------------------------------
+
+create table promo_code_products (
+  promo_code_id uuid not null references promo_codes (id) on delete cascade,
+  product_id uuid not null references products (id) on delete cascade,
+  primary key (promo_code_id, product_id)
+);
+
+-- Enforces "use one promo code only once" per customer, independent of
+-- (and in addition to) the promo's own global usage_limit.
+create table promo_code_redemptions (
+  id uuid primary key default gen_random_uuid(),
+  promo_code_id uuid not null references promo_codes (id) on delete cascade,
+  customer_email text not null,
+  order_id uuid references orders (id),
+  redeemed_at timestamptz not null default now(),
+  unique (promo_code_id, customer_email)
+);
+
+alter table promo_code_products enable row level security;
+alter table promo_code_redemptions enable row level security;
+
+create policy "Admins manage promo code products" on promo_code_products
+  for all using (public.is_admin());
+create policy "Admins view promo redemptions" on promo_code_redemptions
+  for select using (public.is_admin());

@@ -50,7 +50,11 @@ export function CheckoutForm({ zones }: { zones: DeliveryZone[] }) {
   async function handleApplyPromo() {
     setApplyingPromo(true);
     const { applyPromoCode } = await import("@/lib/actions/promo");
-    const result = await applyPromoCode(promoInput, subtotal);
+    const result = await applyPromoCode(
+      promoInput,
+      items.map((i) => ({ productId: i.productId, price: i.price, quantity: i.quantity })),
+      customer.email
+    );
     setApplyingPromo(false);
 
     if (!result.valid) {
