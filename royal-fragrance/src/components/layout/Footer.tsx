@@ -1,10 +1,10 @@
 import Link from "next/link";
-import { Instagram, Facebook, Twitter } from "lucide-react";
+import { Instagram, Facebook, Twitter, Phone, Mail, MapPin } from "lucide-react";
 
 export default function Footer() {
   return (
     <footer className="bg-espresso text-cream">
-      <div className="mx-auto grid max-w-7xl gap-10 px-5 py-16 lg:grid-cols-4 lg:px-8">
+      <div className="mx-auto grid max-w-7xl gap-10 px-5 py-16 lg:grid-cols-5 lg:px-8">
         <div>
           <h3 className="font-display text-xl">
             Royal <span className="text-caramel">Fragrance</span>
@@ -18,6 +18,33 @@ export default function Footer() {
             <Facebook size={18} className="text-cream/70 hover:text-caramel" />
             <Twitter size={18} className="text-cream/70 hover:text-caramel" />
           </div>
+        </div>
+
+        <div>
+          <h4 className="mb-4 text-sm font-semibold uppercase tracking-widest text-caramel">
+            Contact
+          </h4>
+          <ul className="space-y-3 text-sm text-cream/70">
+            <li className="flex items-start gap-2.5">
+              <Phone size={15} className="mt-0.5 shrink-0 text-caramel" />
+              <a href="tel:+2347040218594" className="hover:text-cream">
+                0704 021 8594
+              </a>
+            </li>
+            <li className="flex items-start gap-2.5">
+              <Mail size={15} className="mt-0.5 shrink-0 text-caramel" />
+              <a
+                href="mailto:oyinkansolaelizabetholutunde@gmail.com"
+                className="break-all hover:text-cream"
+              >
+                oyinkansolaelizabetholutunde@gmail.com
+              </a>
+            </li>
+            <li className="flex items-start gap-2.5">
+              <MapPin size={15} className="mt-0.5 shrink-0 text-caramel" />
+              <span>Block 314, Abesan Estate, Ipaja, Lagos</span>
+            </li>
+          </ul>
         </div>
 
         <FooterColumn
