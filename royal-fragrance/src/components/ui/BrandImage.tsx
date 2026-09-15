@@ -44,11 +44,14 @@ export function BrandImage({
       alt={alt}
       fill={fill}
       sizes={sizes}
-      // object-contain always wins over any object-cover a caller passes —
-      // shows the full uploaded photo without cropping any part of it off,
-      // since admin-uploaded images (especially found/stock photos) aren't
-      // always a clean square crop.
-      className={cn(className, "object-contain")}
+      // object-cover is the sensible default for real product photography
+      // (fills the frame edge-to-edge, no letterboxing). Listed FIRST so
+      // any caller that explicitly wants object-contain (e.g. a logo, or
+      // a photo that genuinely shouldn't be cropped) can still override it
+      // — this used to be forced the other way around, which is why shop
+      // images weren't filling their card despite ProductCard asking for
+      // object-cover.
+      className={cn("object-cover", className)}
     />
   );
 }

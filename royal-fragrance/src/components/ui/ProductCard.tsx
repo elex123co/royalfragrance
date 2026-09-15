@@ -4,6 +4,7 @@ import Link from "next/link";
 import { useState } from "react";
 import type { Product } from "@/lib/types/product";
 import { formatNaira } from "@/lib/utils/currency";
+import { discountLabel } from "@/lib/utils/discount";
 import { useCart } from "@/context/CartContext";
 import { BrandImage } from "@/components/ui/BrandImage";
 
@@ -29,23 +30,25 @@ export function ProductCard({ product }: { product: Product }) {
   return (
     <Link
       href={`/product/${product.slug}`}
-      className="group flex flex-col overflow-hidden rounded-2xl border border-espresso/10 bg-white/70 shadow-premium-sm transition-all duration-500 hover:-translate-y-1 hover:shadow-premium"
+      className="group flex flex-col overflow-hidden rounded-2xl border border-espresso/10 bg-white shadow-premium-sm transition-all duration-500 hover:-translate-y-1.5 hover:shadow-premium"
     >
       <div className="relative aspect-square overflow-hidden bg-brand-100 sm:aspect-[4/5]">
         <BrandImage
           src={product.image}
           alt={product.name}
           sizes="(max-width: 768px) 50vw, 25vw"
-          className="object-cover transition-transform duration-700 group-hover:scale-105"
+          className="object-cover transition-transform duration-700 ease-out group-hover:scale-110"
         />
+        {/* Subtle gloss gradient for a more premium, polished card. */}
+        <div className="pointer-events-none absolute inset-0 bg-gradient-to-t from-black/10 via-transparent to-white/10" />
         {outOfStock && (
           <span className="absolute left-3 top-3 rounded-full bg-espresso/90 px-3 py-1 text-xs tracking-wide text-cream">
             Out of Stock
           </span>
         )}
         {product.originalPrice && !outOfStock && (
-          <span className="absolute left-3 top-3 rounded-full bg-red-600 px-3 py-1 text-xs font-medium tracking-wide text-white">
-            Sale
+          <span className="absolute left-3 top-3 rounded-full bg-red-600 px-3 py-1 text-xs font-medium tracking-wide text-white shadow-sm">
+            {discountLabel(product.discountType ?? null, product.discountValue) ?? "Sale"}
           </span>
         )}
       </div>

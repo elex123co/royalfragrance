@@ -297,8 +297,14 @@ export function ProductForm({
 
       <div>
         <label className="mb-1.5 block text-sm font-medium text-espresso">
-          Discount
+          Public Sale Price
         </label>
+        <p className="mb-1.5 text-xs text-amber-700">
+          ⚠️ This discounts the price for EVERYONE immediately, no promo
+          code needed. Leave as "No discount" unless you want an always-on
+          markdown. For promo-code-only pricing, use Discount Tiers below
+          instead.
+        </p>
         <div className="grid grid-cols-2 gap-3">
           <select
             value={form.discountType ?? ""}
@@ -330,19 +336,20 @@ export function ProductForm({
           />
         </div>
         <p className="mt-1 text-xs text-rich/50">
-          Applies to every size of this product — shown as a strikethrough
-          original price everywhere it's displayed.
+          Visible to every visitor immediately — shown as a strikethrough
+          original price everywhere the price is displayed.
         </p>
       </div>
 
       <div>
         <label className="mb-1.5 block text-sm font-medium text-espresso">
-          Discount Tiers
+          Discount Tiers — Promo Code Only
         </label>
         <p className="mb-2 text-xs text-rich/50">
-          Add as many tiers as you like — e.g. both a 10% and a 15% tier.
-          Any promo code that matches a tier's type and value automatically
-          unlocks it for customers, with no extra setup on the code itself.
+          Hidden by default — the price does NOT change for anyone until
+          they enter a matching promo code at checkout. Add as many tiers
+          as you like (e.g. both a 10% and a 15% tier); any code with a
+          matching type and value automatically unlocks that tier.
         </p>
 
         <div className="space-y-2">
