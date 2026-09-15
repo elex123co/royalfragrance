@@ -18,10 +18,19 @@ interface Category {
   name: string;
 }
 
+interface PromoCode {
+  id: string;
+  code: string;
+  discount_type: "percentage" | "fixed_amount";
+  discount_value: number;
+}
+
 interface ProductFormProps {
   categories: Category[];
   productId?: string;
   initial?: Partial<ProductInput>;
+  allPromoCodes?: PromoCode[];
+  initialPromoCodeIds?: string[];
 }
 
 function slugify(name: string) {
@@ -32,10 +41,17 @@ function slugify(name: string) {
     .replace(/(^-|-$)/g, "");
 }
 
-export function ProductForm({ categories, productId, initial }: ProductFormProps) {
+export function ProductForm({
+  categories,
+  productId,
+  initial,
+  allPromoCodes = [],
+  initialPromoCodeIds = [],
+}: ProductFormProps) {
   const router = useRouter();
   const fileInputRef = useRef<HTMLInputElement>(null);
-  const [form, setForm] = useState<ProductInput>({
+  const [promoCodeIds, setPromoCodeIds] = useState<string[]>(initialPromoCodeIds);
+  const [form, setForm] = useState<Omit<ProductInput, "promoCodeIds">>({
     name: initial?.name ?? "",
     slug: initial?.slug ?? "",
     description: initial?.description ?? "",
@@ -149,7 +165,7 @@ export function ProductForm({ categories, productId, initial }: ProductFormProps
     setSubmitting(true);
     setError(null);
 
-    const payload = { ...form, slug: form.slug || slugify(form.name) };
+    const payload = { ...form, slug: form.slug || slugify(form.name), promoCodeIds };
     const result = productId
       ? await updateProduct(productId, payload)
       : await createProduct(payload);
@@ -321,6 +337,50 @@ export function ProductForm({ categories, productId, initial }: ProductFormProps
           Applies to every size of this product — shown as a strikethrough
           original price everywhere it's displayed.
         </p>
+      </div>
+
+      <div>
+        <label className="mb-1.5 block text-sm font-medium text-espresso">
+          Promo Codes
+        </label>
+        <p className="mb-2 text-xs text-rich/50">
+          Attach one or more existing codes to this product — each will
+          discount only this item when redeemed at checkout, never
+          anything else in the customer's cart.
+        </p>
+        {allPromoCodes.length === 0 ? (
+          <p className="text-xs text-rich/50">
+            No promo codes exist yet —{" "}
+            <a href="/admin/promo-codes" className="text-caramel underline">
+              create one first
+            </a>
+            , then come back here to attach it.
+          </p>
+        ) : (
+          <div className="max-h-40 space-y-1 overflow-y-auto rounded-lg border border-espresso/15 p-2">
+            {allPromoCodes.map((c) => (
+              <label key={c.id} className="flex items-center gap-2 text-sm text-rich/80">
+                <input
+                  type="checkbox"
+                  checked={promoCodeIds.includes(c.id)}
+                  onChange={() =>
+                    setPromoCodeIds((prev) =>
+                      prev.includes(c.id) ? prev.filter((id) => id !== c.id) : [...prev, c.id]
+                    )
+                  }
+                />
+                <span className="font-mono">{c.code}</span>
+                <span className="text-xs text-rich/50">
+                  (
+                  {c.discount_type === "percentage"
+                    ? `${c.discount_value}% off`
+                    : `₦${c.discount_value.toLocaleString()} off`}
+                  )
+                </span>
+              </label>
+            ))}
+          </div>
+        )}
       </div>
 
       <div>

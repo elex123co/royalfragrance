@@ -18,6 +18,7 @@ export interface ProductInput {
   variants: { size: string; price: number; stock: number }[];
   discountType: "percentage" | "fixed_amount" | null;
   discountValue: number | null;
+  promoCodeIds: string[];
 }
 
 /**
@@ -94,6 +95,15 @@ export async function createProduct(input: ProductInput) {
     metadata: { name: input.name },
   });
 
+  if (input.promoCodeIds.length > 0) {
+    await admin.from("promo_code_products").insert(
+      input.promoCodeIds.map((promoCodeId) => ({
+        product_id: product.id,
+        promo_code_id: promoCodeId,
+      }))
+    );
+  }
+
   revalidatePath("/admin/products");
   revalidatePath("/shop");
   return { success: true, productId: product.id };
@@ -149,6 +159,15 @@ export async function updateProduct(productId: string, input: ProductInput) {
       stock: v.stock,
     }))
   );
+
+  // Replace the full set of linked promo codes — same sync-by-replace
+  // approach as the standalone linker, so both entry points stay consistent.
+  await admin.from("promo_code_products").delete().eq("product_id", productId);
+  if (input.promoCodeIds.length > 0) {
+    await admin.from("promo_code_products").insert(
+      input.promoCodeIds.map((promoCodeId) => ({ product_id: productId, promo_code_id: promoCodeId }))
+    );
+  }
 
   revalidatePath("/admin/products");
   revalidatePath(`/product/${input.slug}`);
