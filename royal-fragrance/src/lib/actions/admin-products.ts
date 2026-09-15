@@ -202,3 +202,22 @@ export async function deleteProduct(productId: string) {
   revalidatePath("/shop");
   return { success: true };
 }
+
+export async function setProductPromoCodes(productId: string, promoCodeIds: string[]) {
+  const { admin } = await requireAdmin();
+
+  // Replace the full set — simplest correct way to sync a checklist-style
+  // selection without diffing adds/removes individually.
+  await admin.from("promo_code_products").delete().eq("product_id", productId);
+
+  if (promoCodeIds.length > 0) {
+    const { error } = await admin.from("promo_code_products").insert(
+      promoCodeIds.map((promoCodeId) => ({ product_id: productId, promo_code_id: promoCodeId }))
+    );
+    if (error) return { success: false, error: error.message };
+  }
+
+  revalidatePath(`/admin/products/${productId}`);
+  revalidatePath("/admin/promo-codes");
+  return { success: true };
+}
