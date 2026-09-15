@@ -834,3 +834,29 @@ create policy "Admins manage promo code products" on promo_code_products
   for all using (public.is_admin());
 create policy "Admins view promo redemptions" on promo_code_redemptions
   for select using (public.is_admin());
+
+-- ----------------------------------------------------------------------------
+-- PRODUCT DISCOUNT TIERS — replaces explicit code-to-product linking
+-- A product can carry multiple discount tiers (e.g. both 10% and 15%). A
+-- promo code is just a generic "X% off" or "₦Y off" key — at checkout, it
+-- automatically unlocks on any product whose tiers include a matching
+-- type+value pair. No manual per-code product picking needed at all.
+-- promo_code_products (the earlier explicit-linking table) is no longer
+-- used by the app; left in place harmlessly rather than dropped.
+-- ----------------------------------------------------------------------------
+
+create table product_discount_tiers (
+  id uuid primary key default gen_random_uuid(),
+  product_id uuid not null references products (id) on delete cascade,
+  discount_type text not null check (discount_type in ('percentage', 'fixed_amount')),
+  discount_value numeric(12,2) not null,
+  created_at timestamptz not null default now(),
+  unique (product_id, discount_type, discount_value)
+);
+
+alter table product_discount_tiers enable row level security;
+
+create policy "Anyone can view discount tiers" on product_discount_tiers
+  for select using (true);
+create policy "Admins manage discount tiers" on product_discount_tiers
+  for all using (public.is_admin());

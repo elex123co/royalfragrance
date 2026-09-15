@@ -18,19 +18,16 @@ interface Category {
   name: string;
 }
 
-interface PromoCode {
-  id: string;
-  code: string;
-  discount_type: "percentage" | "fixed_amount";
-  discount_value: number;
+interface DiscountTier {
+  discountType: "percentage" | "fixed_amount";
+  discountValue: number;
 }
 
 interface ProductFormProps {
   categories: Category[];
   productId?: string;
   initial?: Partial<ProductInput>;
-  allPromoCodes?: PromoCode[];
-  initialPromoCodeIds?: string[];
+  initialDiscountTiers?: DiscountTier[];
 }
 
 function slugify(name: string) {
@@ -45,13 +42,12 @@ export function ProductForm({
   categories,
   productId,
   initial,
-  allPromoCodes = [],
-  initialPromoCodeIds = [],
+  initialDiscountTiers = [],
 }: ProductFormProps) {
   const router = useRouter();
   const fileInputRef = useRef<HTMLInputElement>(null);
-  const [promoCodeIds, setPromoCodeIds] = useState<string[]>(initialPromoCodeIds);
-  const [form, setForm] = useState<Omit<ProductInput, "promoCodeIds">>({
+  const [discountTiers, setDiscountTiers] = useState<DiscountTier[]>(initialDiscountTiers);
+  const [form, setForm] = useState<Omit<ProductInput, "discountTiers">>({
     name: initial?.name ?? "",
     slug: initial?.slug ?? "",
     description: initial?.description ?? "",
@@ -165,7 +161,7 @@ export function ProductForm({
     setSubmitting(true);
     setError(null);
 
-    const payload = { ...form, slug: form.slug || slugify(form.name), promoCodeIds };
+    const payload = { ...form, slug: form.slug || slugify(form.name), discountTiers };
     const result = productId
       ? await updateProduct(productId, payload)
       : await createProduct(payload);
@@ -341,46 +337,65 @@ export function ProductForm({
 
       <div>
         <label className="mb-1.5 block text-sm font-medium text-espresso">
-          Promo Codes
+          Discount Tiers
         </label>
         <p className="mb-2 text-xs text-rich/50">
-          Attach one or more existing codes to this product — each will
-          discount only this item when redeemed at checkout, never
-          anything else in the customer's cart.
+          Add as many tiers as you like — e.g. both a 10% and a 15% tier.
+          Any promo code that matches a tier's type and value automatically
+          unlocks it for customers, with no extra setup on the code itself.
         </p>
-        {allPromoCodes.length === 0 ? (
-          <p className="text-xs text-rich/50">
-            No promo codes exist yet —{" "}
-            <a href="/admin/promo-codes" className="text-caramel underline">
-              create one first
-            </a>
-            , then come back here to attach it.
-          </p>
-        ) : (
-          <div className="max-h-40 space-y-1 overflow-y-auto rounded-lg border border-espresso/15 p-2">
-            {allPromoCodes.map((c) => (
-              <label key={c.id} className="flex items-center gap-2 text-sm text-rich/80">
-                <input
-                  type="checkbox"
-                  checked={promoCodeIds.includes(c.id)}
-                  onChange={() =>
-                    setPromoCodeIds((prev) =>
-                      prev.includes(c.id) ? prev.filter((id) => id !== c.id) : [...prev, c.id]
+
+        <div className="space-y-2">
+          {discountTiers.map((tier, i) => (
+            <div key={i} className="flex items-center gap-2">
+              <select
+                value={tier.discountType}
+                onChange={(e) =>
+                  setDiscountTiers((prev) =>
+                    prev.map((t, idx) =>
+                      idx === i ? { ...t, discountType: e.target.value as any } : t
                     )
-                  }
-                />
-                <span className="font-mono">{c.code}</span>
-                <span className="text-xs text-rich/50">
-                  (
-                  {c.discount_type === "percentage"
-                    ? `${c.discount_value}% off`
-                    : `₦${c.discount_value.toLocaleString()} off`}
                   )
-                </span>
-              </label>
-            ))}
-          </div>
-        )}
+                }
+                className="rounded-lg border border-espresso/15 px-3 py-2 text-sm"
+              >
+                <option value="percentage">% off</option>
+                <option value="fixed_amount">₦ off</option>
+              </select>
+              <input
+                type="number"
+                min={0}
+                value={tier.discountValue}
+                onChange={(e) =>
+                  setDiscountTiers((prev) =>
+                    prev.map((t, idx) =>
+                      idx === i ? { ...t, discountValue: Number(e.target.value) } : t
+                    )
+                  )
+                }
+                placeholder={tier.discountType === "percentage" ? "15" : "2000"}
+                className="w-28 rounded-lg border border-espresso/15 px-3 py-2 text-sm"
+              />
+              <button
+                type="button"
+                onClick={() => setDiscountTiers((prev) => prev.filter((_, idx) => idx !== i))}
+                className="text-xs text-red-500 hover:underline"
+              >
+                Remove
+              </button>
+            </div>
+          ))}
+        </div>
+
+        <button
+          type="button"
+          onClick={() =>
+            setDiscountTiers((prev) => [...prev, { discountType: "percentage", discountValue: 0 }])
+          }
+          className="mt-2 text-xs text-caramel underline"
+        >
+          + Add tier
+        </button>
       </div>
 
       <div>

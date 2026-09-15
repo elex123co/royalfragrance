@@ -18,7 +18,10 @@ export interface ProductInput {
   variants: { size: string; price: number; stock: number }[];
   discountType: "percentage" | "fixed_amount" | null;
   discountValue: number | null;
-  promoCodeIds: string[];
+  /** Extra promo-code-unlockable tiers, on top of the public sale discount
+   * above — e.g. this product carries both a 10% and a 15% tier, and
+   * whichever matching promo code a customer has unlocks that specific one. */
+  discountTiers: { discountType: "percentage" | "fixed_amount"; discountValue: number }[];
 }
 
 /**
@@ -95,11 +98,12 @@ export async function createProduct(input: ProductInput) {
     metadata: { name: input.name },
   });
 
-  if (input.promoCodeIds.length > 0) {
-    await admin.from("promo_code_products").insert(
-      input.promoCodeIds.map((promoCodeId) => ({
+  if (input.discountTiers.length > 0) {
+    await admin.from("product_discount_tiers").insert(
+      input.discountTiers.map((t) => ({
         product_id: product.id,
-        promo_code_id: promoCodeId,
+        discount_type: t.discountType,
+        discount_value: t.discountValue,
       }))
     );
   }
@@ -160,12 +164,16 @@ export async function updateProduct(productId: string, input: ProductInput) {
     }))
   );
 
-  // Replace the full set of linked promo codes — same sync-by-replace
-  // approach as the standalone linker, so both entry points stay consistent.
-  await admin.from("promo_code_products").delete().eq("product_id", productId);
-  if (input.promoCodeIds.length > 0) {
-    await admin.from("promo_code_products").insert(
-      input.promoCodeIds.map((promoCodeId) => ({ product_id: productId, promo_code_id: promoCodeId }))
+  // Replace the full set of discount tiers — simplest correct way to sync
+  // a variable-length list without diffing individual adds/removes.
+  await admin.from("product_discount_tiers").delete().eq("product_id", productId);
+  if (input.discountTiers.length > 0) {
+    await admin.from("product_discount_tiers").insert(
+      input.discountTiers.map((t) => ({
+        product_id: productId,
+        discount_type: t.discountType,
+        discount_value: t.discountValue,
+      }))
     );
   }
 
@@ -222,21 +230,3 @@ export async function deleteProduct(productId: string) {
   return { success: true };
 }
 
-export async function setProductPromoCodes(productId: string, promoCodeIds: string[]) {
-  const { admin } = await requireAdmin();
-
-  // Replace the full set — simplest correct way to sync a checklist-style
-  // selection without diffing adds/removes individually.
-  await admin.from("promo_code_products").delete().eq("product_id", productId);
-
-  if (promoCodeIds.length > 0) {
-    const { error } = await admin.from("promo_code_products").insert(
-      promoCodeIds.map((promoCodeId) => ({ product_id: productId, promo_code_id: promoCodeId }))
-    );
-    if (error) return { success: false, error: error.message };
-  }
-
-  revalidatePath(`/admin/products/${productId}`);
-  revalidatePath("/admin/promo-codes");
-  return { success: true };
-}

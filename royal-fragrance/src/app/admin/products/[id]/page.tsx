@@ -14,22 +14,20 @@ export default async function EditProductPage({
   params: { id: string };
 }) {
   const supabase = createAdminClient();
-  const [{ data: product }, categories, { data: allPromoCodes }, { data: linkedCodes }] =
-    await Promise.all([
-      supabase
-        .from("products")
-        .select(
-          "*, product_images(url, position), product_variants(id, size, price, stock)"
-        )
-        .eq("id", params.id)
-        .single(),
-      getCategories(),
-      supabase
-        .from("promo_codes")
-        .select("id, code, discount_type, discount_value")
-        .order("code"),
-      supabase.from("promo_code_products").select("promo_code_id").eq("product_id", params.id),
-    ]);
+  const [{ data: product }, categories, { data: tiers }] = await Promise.all([
+    supabase
+      .from("products")
+      .select(
+        "*, product_images(url, position), product_variants(id, size, price, stock)"
+      )
+      .eq("id", params.id)
+      .single(),
+    getCategories(),
+    supabase
+      .from("product_discount_tiers")
+      .select("discount_type, discount_value")
+      .eq("product_id", params.id),
+  ]);
 
   if (!product) notFound();
 
@@ -39,8 +37,10 @@ export default async function EditProductPage({
       <ProductForm
         categories={categories}
         productId={product.id}
-        allPromoCodes={allPromoCodes ?? []}
-        initialPromoCodeIds={(linkedCodes ?? []).map((l) => l.promo_code_id)}
+        initialDiscountTiers={(tiers ?? []).map((t) => ({
+          discountType: t.discount_type,
+          discountValue: Number(t.discount_value),
+        }))}
         initial={{
           name: product.name,
           slug: product.slug,

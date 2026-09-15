@@ -20,11 +20,11 @@ export interface CartItemForPromo {
  * one source of truth so a tampered client-side discount can never be
  * trusted into an actual order.
  *
- * A code with linked products (promo_code_products) only discounts the
- * matching items in the cart — never the whole order — so a customer
- * can never get an unrelated product discounted by a code that wasn't
- * meant for it. A code with no linked products applies storewide, same
- * as before this restriction existed.
+ * A promo code is a generic "X% off" or "₦Y off" key. It automatically
+ * applies to any cart item whose product has a matching discount tier
+ * (same type + same value) in product_discount_tiers — a product can
+ * carry several tiers (e.g. both 10% and 15%), and each tier's matching
+ * code unlocks it independently. There's no per-code product picking.
  *
  * customerEmail is required and checked against promo_code_redemptions
  * so a single customer can never redeem the same code twice, regardless
@@ -68,19 +68,18 @@ export async function validatePromoCodeServerSide(
     return { valid: false, error: "You've already used this code." };
   }
 
-  const { data: linkedProducts } = await supabase
-    .from("promo_code_products")
+  const cartProductIds = [...new Set(items.map((i) => i.productId))];
+  const { data: matchingTiers } = await supabase
+    .from("product_discount_tiers")
     .select("product_id")
-    .eq("promo_code_id", promo.id);
+    .eq("discount_type", promo.discount_type)
+    .eq("discount_value", promo.discount_value)
+    .in("product_id", cartProductIds);
 
-  const linkedIds = (linkedProducts ?? []).map((p) => p.product_id);
+  const eligibleProductIds = new Set((matchingTiers ?? []).map((t) => t.product_id));
+  const eligibleItems = items.filter((i) => eligibleProductIds.has(i.productId));
 
-  // No linked products at all = storewide code, same behavior as before
-  // this feature existed. Otherwise, only matching items count.
-  const eligibleItems =
-    linkedIds.length === 0 ? items : items.filter((i) => linkedIds.includes(i.productId));
-
-  if (linkedIds.length > 0 && eligibleItems.length === 0) {
+  if (eligibleItems.length === 0) {
     return {
       valid: false,
       error: "This code doesn't apply to any items in your cart.",

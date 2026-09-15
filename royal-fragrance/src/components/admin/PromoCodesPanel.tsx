@@ -21,11 +21,6 @@ interface PromoCode {
   created_at: string;
 }
 
-interface Product {
-  id: string;
-  name: string;
-}
-
 function randomCode() {
   const chars = "ABCDEFGHJKLMNPQRSTUVWXYZ23456789";
   let code = "ROYAL-";
@@ -33,28 +28,15 @@ function randomCode() {
   return code;
 }
 
-export function PromoCodesPanel({
-  codes,
-  products,
-  linksByCode,
-}: {
-  codes: PromoCode[];
-  products: Product[];
-  linksByCode: Record<string, { id: string; name: string }[]>;
-}) {
+export function PromoCodesPanel({ codes }: { codes: PromoCode[] }) {
   const router = useRouter();
   const [code, setCode] = useState(randomCode());
   const [discountType, setDiscountType] = useState<"percentage" | "fixed_amount">("percentage");
   const [discountValue, setDiscountValue] = useState("");
   const [expiresAt, setExpiresAt] = useState("");
   const [usageLimit, setUsageLimit] = useState("");
-  const [productIds, setProductIds] = useState<string[]>([]);
   const [error, setError] = useState<string | null>(null);
   const [saving, setSaving] = useState(false);
-
-  function toggleProduct(id: string) {
-    setProductIds((prev) => (prev.includes(id) ? prev.filter((p) => p !== id) : [...prev, id]));
-  }
 
   async function handleCreate(e: React.FormEvent) {
     e.preventDefault();
@@ -67,7 +49,6 @@ export function PromoCodesPanel({
       discountValue: Number(discountValue),
       expiresAt: expiresAt ? new Date(expiresAt).toISOString() : null,
       usageLimit: usageLimit ? Number(usageLimit) : null,
-      productIds,
     });
 
     setSaving(false);
@@ -81,7 +62,6 @@ export function PromoCodesPanel({
     setDiscountValue("");
     setExpiresAt("");
     setUsageLimit("");
-    setProductIds([]);
     router.refresh();
   }
 
@@ -163,31 +143,11 @@ export function PromoCodesPanel({
           </div>
         </div>
 
-        <div className="mt-4">
-          <p className="mb-1.5 text-sm font-medium text-espresso">
-            Which products can this code discount?
-          </p>
-          <p className="mb-2 text-xs text-rich/50">
-            Leave everything unchecked for a storewide code. Check specific
-            products to lock this code to only ever discount those items —
-            it will never apply to anything else in a customer's cart.
-          </p>
-          <div className="max-h-40 space-y-1 overflow-y-auto rounded-lg border border-espresso/10 p-2">
-            {products.map((p) => (
-              <label key={p.id} className="flex items-center gap-2 text-sm text-rich/80">
-                <input
-                  type="checkbox"
-                  checked={productIds.includes(p.id)}
-                  onChange={() => toggleProduct(p.id)}
-                />
-                {p.name}
-              </label>
-            ))}
-            {products.length === 0 && (
-              <p className="text-xs text-rich/50">No products yet.</p>
-            )}
-          </div>
-        </div>
+        <p className="mt-3 text-xs text-rich/50">
+          This code will automatically work on any product that has a
+          matching discount tier — set tiers from that product's own edit
+          page (Admin → Products → edit → Discount Tiers).
+        </p>
 
         {error && (
           <p className="mt-3 rounded-lg bg-red-50 px-4 py-2 text-sm text-red-700">{error}</p>
@@ -206,53 +166,45 @@ export function PromoCodesPanel({
         </p>
         <div className="space-y-2">
           {codes.length === 0 && <p className="text-sm text-rich/50">No codes yet.</p>}
-          {codes.map((c) => {
-            const linked = linksByCode[c.id] ?? [];
-            return (
-              <div
-                key={c.id}
-                className="flex flex-wrap items-center justify-between gap-2 rounded-xl border border-espresso/10 bg-cream/60 px-4 py-3 text-sm"
-              >
-                <div>
-                  <p className="font-mono font-medium text-espresso">{c.code}</p>
-                  <p className="text-xs text-rich/50">
-                    {c.discount_type === "percentage" ? `${c.discount_value}% off` : `₦${c.discount_value.toLocaleString()} off`}
-                    {" · "}
-                    Used {c.times_used}
-                    {c.usage_limit ? `/${c.usage_limit}` : ""}
-                    {c.expires_at ? ` · Expires ${new Date(c.expires_at).toLocaleDateString()}` : ""}
-                  </p>
-                  <p className="mt-1 text-xs text-caramel">
-                    {linked.length > 0
-                      ? `Restricted to: ${linked.map((l) => l.name).join(", ")}`
-                      : "Applies storewide"}
-                  </p>
-                </div>
-                <div className="flex items-center gap-3">
-                  <button
-                    onClick={async () => {
-                      await togglePromoCodeActive(c.id, !c.active);
-                      router.refresh();
-                    }}
-                    className={`rounded-full px-2.5 py-1 text-xs ${
-                      c.active ? "bg-green-100 text-green-700" : "bg-espresso/10 text-rich/50"
-                    }`}
-                  >
-                    {c.active ? "Active" : "Disabled"}
-                  </button>
-                  <button
-                    onClick={async () => {
-                      await deletePromoCode(c.id);
-                      router.refresh();
-                    }}
-                    className="text-xs text-red-500 hover:underline"
-                  >
-                    Delete
-                  </button>
-                </div>
+          {codes.map((c) => (
+            <div
+              key={c.id}
+              className="flex flex-wrap items-center justify-between gap-2 rounded-xl border border-espresso/10 bg-cream/60 px-4 py-3 text-sm"
+            >
+              <div>
+                <p className="font-mono font-medium text-espresso">{c.code}</p>
+                <p className="text-xs text-rich/50">
+                  {c.discount_type === "percentage" ? `${c.discount_value}% off` : `₦${c.discount_value.toLocaleString()} off`}
+                  {" · "}
+                  Used {c.times_used}
+                  {c.usage_limit ? `/${c.usage_limit}` : ""}
+                  {c.expires_at ? ` · Expires ${new Date(c.expires_at).toLocaleDateString()}` : ""}
+                </p>
               </div>
-            );
-          })}
+              <div className="flex items-center gap-3">
+                <button
+                  onClick={async () => {
+                    await togglePromoCodeActive(c.id, !c.active);
+                    router.refresh();
+                  }}
+                  className={`rounded-full px-2.5 py-1 text-xs ${
+                    c.active ? "bg-green-100 text-green-700" : "bg-espresso/10 text-rich/50"
+                  }`}
+                >
+                  {c.active ? "Active" : "Disabled"}
+                </button>
+                <button
+                  onClick={async () => {
+                    await deletePromoCode(c.id);
+                    router.refresh();
+                  }}
+                  className="text-xs text-red-500 hover:underline"
+                >
+                  Delete
+                </button>
+              </div>
+            </div>
+          ))}
         </div>
       </div>
     </div>
