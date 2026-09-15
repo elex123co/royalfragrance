@@ -20,6 +20,10 @@ export interface Product {
   originalPrice?: number; // set only when a discount is active, for strikethrough display
   discountType?: DiscountType;
   discountValue?: number;
+  /** e.g. "Up to 15% off with code" — set only when the product has at
+   * least one promo-code-only discount tier. Never reveals the actual
+   * code, and never changes the shown price on its own. */
+  promoTierLabel?: string;
   image: string;
   notes?: {
     top?: string[];

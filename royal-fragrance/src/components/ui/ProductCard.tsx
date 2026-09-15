@@ -77,6 +77,12 @@ export function ProductCard({ product }: { product: Product }) {
           </div>
         </div>
 
+        {product.promoTierLabel && (
+          <p className="text-xs font-medium text-caramel">
+            🎟️ {product.promoTierLabel}
+          </p>
+        )}
+
         <button
           type="button"
           onClick={handleAddToCart}

@@ -80,6 +80,12 @@ export function ProductPurchasePanel({ product }: { product: Product }) {
         )}
       </div>
 
+      {product.promoTierLabel && (
+        <p className="mt-1.5 text-sm font-medium text-caramel">
+          🎟️ {product.promoTierLabel}
+        </p>
+      )}
+
       {hasVariants && (
         <div className="mt-5">
           <p className="mb-2 text-sm font-medium text-espresso">Size</p>
