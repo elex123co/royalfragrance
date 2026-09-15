@@ -99,13 +99,23 @@ export async function createProduct(input: ProductInput) {
   });
 
   if (input.discountTiers.length > 0) {
-    await admin.from("product_discount_tiers").insert(
+    const { error: tierError } = await admin.from("product_discount_tiers").insert(
       input.discountTiers.map((t) => ({
         product_id: product.id,
         discount_type: t.discountType,
         discount_value: t.discountValue,
       }))
     );
+    if (tierError) {
+      // The product itself saved fine — don't claim total failure, but
+      // don't silently pretend the tiers saved either, the way this used
+      // to fail quietly.
+      return {
+        success: true,
+        productId: product.id,
+        warning: "Product saved, but discount tiers failed to save: " + tierError.message,
+      };
+    }
   }
 
   revalidatePath("/admin/products");
@@ -167,19 +177,24 @@ export async function updateProduct(productId: string, input: ProductInput) {
   // Replace the full set of discount tiers — simplest correct way to sync
   // a variable-length list without diffing individual adds/removes.
   await admin.from("product_discount_tiers").delete().eq("product_id", productId);
+  let tierWarning: string | undefined;
   if (input.discountTiers.length > 0) {
-    await admin.from("product_discount_tiers").insert(
+    const { error: tierError } = await admin.from("product_discount_tiers").insert(
       input.discountTiers.map((t) => ({
         product_id: productId,
         discount_type: t.discountType,
         discount_value: t.discountValue,
       }))
     );
+    if (tierError) {
+      tierWarning = "Product saved, but discount tiers failed to save: " + tierError.message;
+    }
   }
 
   revalidatePath("/admin/products");
   revalidatePath(`/product/${input.slug}`);
   revalidatePath("/shop");
+  if (tierWarning) return { success: true, warning: tierWarning };
   return { success: true };
 }
 

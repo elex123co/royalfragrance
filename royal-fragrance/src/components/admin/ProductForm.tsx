@@ -173,6 +173,13 @@ export function ProductForm({
       return;
     }
 
+    if ("warning" in result && result.warning) {
+      // Product saved, but something else (e.g. discount tiers) didn't —
+      // tell the admin plainly instead of quietly pretending everything
+      // worked, which is exactly what silently broke this before.
+      alert(result.warning);
+    }
+
     router.push("/admin/products");
     router.refresh();
   }
