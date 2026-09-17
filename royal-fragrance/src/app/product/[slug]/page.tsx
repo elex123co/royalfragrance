@@ -56,6 +56,13 @@ export default async function ProductPage({
     .slice(0, 4);
 
   const supabase = createClient();
+
+  const { data: whatsapp } = await supabase
+    .from("whatsapp_settings")
+    .select("business_phone")
+    .eq("id", 1)
+    .maybeSingle();
+
   const {
     data: { user },
   } = await supabase.auth.getUser();
@@ -145,7 +152,7 @@ export default async function ProductPage({
 
             <div className="flex items-start gap-3">
               <div className="flex-1">
-                <ProductPurchasePanel product={product} />
+                <ProductPurchasePanel product={product} whatsappPhone={whatsapp?.business_phone ?? null} />
               </div>
               <div className="mt-8">
                 <WishlistToggle

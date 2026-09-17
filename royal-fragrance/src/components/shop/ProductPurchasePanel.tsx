@@ -7,8 +7,15 @@ import { formatNaira } from "@/lib/utils/currency";
 import { useCart } from "@/context/CartContext";
 import { Button } from "@/components/ui/Button";
 import { trackMetaEvent } from "@/components/analytics/MetaPixel";
+import { MessageCircle } from "lucide-react";
 
-export function ProductPurchasePanel({ product }: { product: Product }) {
+export function ProductPurchasePanel({
+  product,
+  whatsappPhone,
+}: {
+  product: Product;
+  whatsappPhone?: string | null;
+}) {
   const router = useRouter();
   const { addItem } = useCart();
   const hasVariants = (product.variants?.length ?? 0) > 0;
@@ -168,6 +175,18 @@ export function ProductPurchasePanel({ product }: { product: Product }) {
         >
           Buy Now
         </Button>
+        {whatsappPhone && (
+          <a
+            href={`https://wa.me/${whatsappPhone.replace(/\D/g, "")}?text=${encodeURIComponent(
+              `Hi! I'm interested in ${product.name}.`
+            )}`}
+            target="_blank"
+            rel="noopener noreferrer"
+            className="flex items-center gap-2 rounded-full border border-espresso/20 px-5 py-3 text-sm text-espresso hover:bg-espresso/5"
+          >
+            <MessageCircle size={18} /> Chat on WhatsApp
+          </a>
+        )}
       </div>
     </div>
   );

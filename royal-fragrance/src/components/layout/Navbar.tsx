@@ -26,7 +26,6 @@ const LOGO_URL =
 
 const links = [
   { href: "/shop", label: "Shop", icon: Store },
-  { href: "/combos", label: "Combos", icon: Gift },
   { href: "/about", label: "Our Story", icon: BookOpen },
   { href: "/future", label: "The Future", icon: Sparkles },
   { href: "/become-a-vendor", label: "Become a Vendor", icon: Users },

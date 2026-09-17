@@ -149,7 +149,7 @@ export default async function OrderConfirmationPage({
               <div className="mt-3 flex flex-col gap-2 sm:flex-row">
                 {whatsapp?.business_phone && (
                   <a
-                    href={`https://wa.me/${whatsapp.business_phone}`}
+                    href={`https://wa.me/${whatsapp.business_phone.replace(/\D/g, "")}`}
                     target="_blank"
                     rel="noopener noreferrer"
                     className="flex flex-1 items-center justify-center gap-2 rounded-full bg-espresso px-4 py-2.5 text-sm text-cream hover:bg-rich"
@@ -159,7 +159,11 @@ export default async function OrderConfirmationPage({
                 )}
                 {whatsapp?.group_link && (
                   <a
-                    href={whatsapp.group_link}
+                    href={
+                      whatsapp.group_link.startsWith("http")
+                        ? whatsapp.group_link
+                        : `https://${whatsapp.group_link}`
+                    }
                     target="_blank"
                     rel="noopener noreferrer"
                     className="flex flex-1 items-center justify-center gap-2 rounded-full border border-espresso/20 px-4 py-2.5 text-sm text-espresso hover:bg-espresso/5"

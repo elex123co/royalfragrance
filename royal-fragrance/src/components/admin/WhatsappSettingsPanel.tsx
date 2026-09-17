@@ -59,6 +59,10 @@ export function WhatsappSettingsPanel({ settings }: { settings: Settings | null 
             placeholder="https://chat.whatsapp.com/..."
             className="w-full rounded-lg border border-espresso/15 px-4 py-2.5 text-sm focus:border-caramel focus:outline-none"
           />
+          <p className="mt-1 text-xs text-rich/50">
+            Paste the full link starting with https:// — copy it directly
+            from WhatsApp's "Invite to Group via Link" option.
+          </p>
         </div>
       </div>
 
