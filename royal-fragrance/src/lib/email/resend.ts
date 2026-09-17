@@ -149,3 +149,20 @@ export async function sendAdminNewOrderAlert(
     ),
   });
 }
+
+export async function sendOrderStatusEmail(
+  to: string,
+  order: { orderNumber: string; customerName: string; statusLabel: string }
+) {
+  const siteUrl = process.env.NEXT_PUBLIC_SITE_URL ?? "https://royalfragrance.netlify.app";
+  await sendEmail({
+    to,
+    subject: `Order ${order.orderNumber} update: ${order.statusLabel}`,
+    html: wrapper(
+      "Order Update",
+      `<p>Hi ${order.customerName},</p>
+       <p>Your order <strong>${order.orderNumber}</strong> is now: <strong>${order.statusLabel}</strong>.</p>
+       <p><a href="${siteUrl}/account/orders" style="display:inline-block; margin-top:12px; padding:10px 20px; background:#1E120C; color:#E8D7C5; text-decoration:none; border-radius:999px;">View My Orders</a></p>`
+    ),
+  });
+}

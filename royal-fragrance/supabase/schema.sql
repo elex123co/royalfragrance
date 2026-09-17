@@ -926,3 +926,43 @@ create policy "Anyone can view whatsapp settings" on whatsapp_settings
   for select using (true);
 create policy "Admins manage whatsapp settings" on whatsapp_settings
   for all using (public.is_admin());
+
+-- ----------------------------------------------------------------------------
+-- COMBO PRODUCTS
+-- A combo bundles several different products at one shared price. At
+-- checkout it becomes multiple normal order_items rows under the hood
+-- (the first component carries the full combo price, the rest are priced
+-- at 0 but still deduct stock) — this reuses all existing order, stock-
+-- deduction, and admin order-detail logic with zero further changes.
+-- ----------------------------------------------------------------------------
+
+create table combos (
+  id uuid primary key default gen_random_uuid(),
+  name text not null,
+  slug text not null unique,
+  description text,
+  image text,
+  combo_price numeric(12,2) not null,
+  status text not null default 'active' check (status in ('active', 'draft')),
+  created_at timestamptz not null default now()
+);
+
+create table combo_items (
+  id uuid primary key default gen_random_uuid(),
+  combo_id uuid not null references combos (id) on delete cascade,
+  product_id uuid not null references products (id),
+  variant_id uuid references product_variants (id),
+  quantity int not null default 1 check (quantity > 0)
+);
+
+alter table combos enable row level security;
+alter table combo_items enable row level security;
+
+create policy "Anyone can view active combos" on combos
+  for select using (status = 'active');
+create policy "Admins manage combos" on combos
+  for all using (public.is_admin());
+create policy "Anyone can view combo items" on combo_items
+  for select using (true);
+create policy "Admins manage combo items" on combo_items
+  for all using (public.is_admin());

@@ -1,6 +1,7 @@
 import { createAdminClient } from "@/lib/supabase/server";
 import { formatNaira } from "@/lib/utils/currency";
 import { OrderStatusSelect } from "@/components/admin/OrderStatusSelect";
+import Link from "next/link";
 
 // Always fetch live data — admin dashboards must never serve a stale build-time snapshot.
 export const dynamic = "force-dynamic";
@@ -42,7 +43,9 @@ export default async function AdminOrdersPage() {
             {orders?.map((order) => (
               <tr key={order.id} className="border-b border-espresso/5 last:border-0">
                 <td className="px-4 py-3 font-medium text-espresso">
-                  {order.order_number}
+                  <Link href={`/admin/orders/${order.id}`} className="hover:underline">
+                    {order.order_number}
+                  </Link>
                 </td>
                 <td className="px-4 py-3 text-rich/70">
                   <p>{order.customer_name}</p>

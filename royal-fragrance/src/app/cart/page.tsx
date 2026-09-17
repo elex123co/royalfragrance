@@ -1,14 +1,14 @@
 "use client";
 
 import Link from "next/link";
-import { useCart } from "@/context/CartContext";
+import { useCart, type CartItem } from "@/context/CartContext";
 import { formatNaira } from "@/lib/utils/currency";
 import { LinkButton } from "@/components/ui/Button";
 import { BrandImage } from "@/components/ui/BrandImage";
 import { Trash2 } from "lucide-react";
 
 export default function CartPage() {
-  const { items, removeItem, updateQuantity, subtotal } = useCart();
+  const { items, removeItem, removeCombo, updateQuantity, subtotal } = useCart();
 
   if (items.length === 0) {
     return (
@@ -24,6 +24,17 @@ export default function CartPage() {
     );
   }
 
+  // Combo lines share a comboId and should render as one grouped card
+  // rather than as separate items (one of which would confusingly show
+  // ₦0) — everything else renders individually, unchanged.
+  const individualItems = items.filter((i) => !i.comboId);
+  const comboGroups = new Map<string, CartItem[]>();
+  for (const item of items) {
+    if (!item.comboId) continue;
+    const existing = comboGroups.get(item.comboId) ?? [];
+    comboGroups.set(item.comboId, [...existing, item]);
+  }
+
   return (
     <section className="bg-cream py-16">
       <div className="mx-auto max-w-5xl px-5 lg:px-8">
@@ -31,7 +42,41 @@ export default function CartPage() {
 
         <div className="grid gap-10 lg:grid-cols-3">
           <div className="space-y-4 lg:col-span-2">
-            {items.map((item) => (
+            {[...comboGroups.entries()].map(([comboId, lines]) => {
+              const comboTotal = lines.reduce((sum, l) => sum + l.price * l.quantity, 0);
+              const quantity = lines[0]?.quantity ?? 1;
+              return (
+                <div
+                  key={comboId}
+                  className="rounded-xl2 border border-caramel/40 bg-caramel/5 p-4"
+                >
+                  <div className="mb-2 flex items-start justify-between">
+                    <div>
+                      <p className="text-xs uppercase tracking-widest text-caramel">Combo</p>
+                      <p className="font-display text-espresso">{lines[0]?.comboName}</p>
+                    </div>
+                    <button
+                      onClick={() => removeCombo(comboId)}
+                      className="text-rich/40 transition hover:text-red-600"
+                      aria-label="Remove combo"
+                    >
+                      <Trash2 size={16} />
+                    </button>
+                  </div>
+                  <ul className="mb-3 space-y-1 text-sm text-rich/70">
+                    {lines.map((l, i) => (
+                      <li key={i}>{l.name}{l.size ? ` (${l.size})` : ""}</li>
+                    ))}
+                  </ul>
+                  <div className="flex items-center justify-between text-sm">
+                    <span className="text-rich/60">Qty {quantity}</span>
+                    <span className="font-display text-espresso">{formatNaira(comboTotal)}</span>
+                  </div>
+                </div>
+              );
+            })}
+
+            {individualItems.map((item) => (
               <div
                 key={`${item.productId}-${item.variantId ?? "base"}`}
                 className="flex gap-4 rounded-xl2 border border-espresso/10 bg-white/50 p-4"

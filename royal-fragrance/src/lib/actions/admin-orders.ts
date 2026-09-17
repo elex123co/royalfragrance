@@ -2,6 +2,7 @@
 
 import { revalidatePath } from "next/cache";
 import { requireAdmin } from "./require-admin";
+import { sendOrderStatusEmail } from "@/lib/email/resend";
 
 const VALID_STATUSES = [
   "order_received",
@@ -33,7 +34,7 @@ export async function updateOrderStatus(
     .from("orders")
     .update({ order_status: status })
     .eq("id", orderId)
-    .select("customer_id, order_number")
+    .select("customer_id, order_number, customer_name, customer_email")
     .single();
 
   if (error) return { success: false, error: error.message };
@@ -50,6 +51,14 @@ export async function updateOrderStatus(
       user_id: order.customer_id,
       message: `Your order ${order.order_number} is now ${STATUS_LABELS[status] ?? status}.`,
       link: `/order-confirmation?order=${order.order_number}`,
+    });
+  }
+
+  if (order?.customer_email) {
+    await sendOrderStatusEmail(order.customer_email, {
+      orderNumber: order.order_number,
+      customerName: order.customer_name,
+      statusLabel: STATUS_LABELS[status] ?? status,
     });
   }
 

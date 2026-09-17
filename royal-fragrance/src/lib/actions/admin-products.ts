@@ -239,6 +239,19 @@ export async function updateProductStatus(
 export async function deleteProduct(productId: string) {
   const { admin } = await requireAdmin();
 
+  const { count: orderCount } = await admin
+    .from("order_items")
+    .select("id", { count: "exact", head: true })
+    .eq("product_id", productId);
+
+  if ((orderCount ?? 0) > 0) {
+    return {
+      success: false,
+      error:
+        "This product has real order history and can't be deleted — deleting it would break those past orders' records. Set it to \"Draft\" instead to hide it from the shop while keeping order history intact.",
+    };
+  }
+
   const { error } = await admin.from("products").delete().eq("id", productId);
 
   if (error) return { success: false, error: error.message };

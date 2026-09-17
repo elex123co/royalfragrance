@@ -17,12 +17,32 @@ export interface CartItem {
   size?: string;
   price: number;
   quantity: number;
+  /** Set only for items that were added as part of a combo — used to
+   * visually group and label them together in the cart, and to identify
+   * which one line carries the full combo price (the rest are priced at
+   * 0 but still fulfil and deduct stock normally). */
+  comboId?: string;
+  comboName?: string;
 }
 
 interface CartContextValue {
   items: CartItem[];
   addItem: (item: CartItem) => void;
+  addCombo: (combo: {
+    id: string;
+    name: string;
+    comboPrice: number;
+    items: {
+      productId: string;
+      variantId?: string;
+      productName: string;
+      productSlug: string;
+      productImage: string;
+      quantity: number;
+    }[];
+  }) => void;
   removeItem: (productId: string, variantId?: string) => void;
+  removeCombo: (comboId: string) => void;
   updateQuantity: (productId: string, quantity: number, variantId?: string) => void;
   clearCart: () => void;
   subtotal: number;
@@ -74,8 +94,43 @@ export function CartProvider({ children }: { children: ReactNode }) {
     });
   }
 
+  function addCombo(combo: {
+    id: string;
+    name: string;
+    comboPrice: number;
+    items: {
+      productId: string;
+      variantId?: string;
+      productName: string;
+      productSlug: string;
+      productImage: string;
+      quantity: number;
+    }[];
+  }) {
+    // First component carries the full combo price; the rest are priced
+    // at 0 — this is what lets checkout, stock deduction, and order
+    // records treat combo lines as ordinary order_items with no further
+    // schema or logic changes needed anywhere else.
+    const newLines: CartItem[] = combo.items.map((item, index) => ({
+      productId: item.productId,
+      variantId: item.variantId,
+      slug: item.productSlug,
+      name: item.productName,
+      image: item.productImage,
+      price: index === 0 ? combo.comboPrice : 0,
+      quantity: item.quantity,
+      comboId: combo.id,
+      comboName: combo.name,
+    }));
+    setItems((prev) => [...prev, ...newLines]);
+  }
+
   function removeItem(productId: string, variantId?: string) {
     setItems((prev) => prev.filter((p) => !sameLine(p, productId, variantId)));
+  }
+
+  function removeCombo(comboId: string) {
+    setItems((prev) => prev.filter((p) => p.comboId !== comboId));
   }
 
   function updateQuantity(
@@ -106,7 +161,9 @@ export function CartProvider({ children }: { children: ReactNode }) {
       value={{
         items,
         addItem,
+        addCombo,
         removeItem,
+        removeCombo,
         updateQuantity,
         clearCart,
         subtotal,

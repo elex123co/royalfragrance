@@ -2,6 +2,7 @@
 
 import Link from "next/link";
 import { useTransition } from "react";
+import { useRouter } from "next/navigation";
 import { Pencil, Trash2 } from "lucide-react";
 import {
   deleteProduct,
@@ -17,18 +18,25 @@ export function ProductRowActions({
   slug: string;
   status: "active" | "draft" | "out_of_stock";
 }) {
+  const router = useRouter();
   const [isPending, startTransition] = useTransition();
 
   function handleStatusChange(next: "active" | "draft" | "out_of_stock") {
-    startTransition(() => {
-      updateProductStatus(productId, next);
+    startTransition(async () => {
+      await updateProductStatus(productId, next);
+      router.refresh();
     });
   }
 
   function handleDelete() {
     if (!confirm(`Delete this product? This cannot be undone.`)) return;
-    startTransition(() => {
-      deleteProduct(productId);
+    startTransition(async () => {
+      const result = await deleteProduct(productId);
+      if (!result.success) {
+        alert(result.error ?? "Could not delete this product.");
+        return;
+      }
+      router.refresh();
     });
   }
 
