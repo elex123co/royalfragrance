@@ -13,7 +13,13 @@ export default async function OrderConfirmationPage({
 }: {
   searchParams: { order?: string };
 }) {
-  const orderNumber = searchParams.order;
+  // Monnify appends its own ?paymentReference=... onto whatever redirect
+  // URL we give it, without checking whether that URL already has a "?" —
+  // producing a malformed "?order=X?paymentReference=Y" where everything
+  // after the first "?" (including the second "?") ends up as one long
+  // value for "order". Split defensively so the real order number is
+  // still extracted correctly regardless.
+  const orderNumber = searchParams.order?.split("?")[0];
 
   if (!orderNumber) {
     return (
