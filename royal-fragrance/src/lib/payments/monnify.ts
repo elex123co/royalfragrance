@@ -19,6 +19,13 @@ const BASE_URL =
     ? "https://api.monnify.com"
     : "https://sandbox.monnify.com";
 
+// TEMPORARY diagnostic — same bracket trick as before, to rule out
+// invisible whitespace or a case mismatch in the env value. Remove once
+// the sandbox/live mismatch is confirmed and fixed.
+console.log(
+  `[MONNIFY_ENV diagnostic] raw env value = [${process.env.MONNIFY_ENV}], using BASE_URL = ${BASE_URL}`
+);
+
 function getCredentials() {
   const apiKey = process.env.MONNIFY_API_KEY;
   const secretKey = process.env.MONNIFY_SECRET_KEY;
