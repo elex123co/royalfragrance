@@ -1,12 +1,10 @@
 import { Suspense } from "react";
 import { getAllProducts } from "@/lib/data/products";
 import { getCategories } from "@/lib/data/categories";
-import { getCombos } from "@/lib/data/combos";
 import { getActiveNewUserDiscountPercent } from "@/lib/data/new-user-discount";
 import { ProductCard } from "@/components/ui/ProductCard";
 import { ShopFilters } from "@/components/shop/ShopFilters";
 import { Pagination } from "@/components/shop/Pagination";
-import { ComboCard } from "@/components/shop/ComboCard";
 
 const PRODUCTS_PER_PAGE = 20;
 
@@ -33,10 +31,9 @@ interface ShopPageProps {
 }
 
 export default async function ShopPage({ searchParams }: ShopPageProps) {
-  const [allProducts, realCategories, combos, newUserDiscountPercent] = await Promise.all([
+  const [allProducts, realCategories, newUserDiscountPercent] = await Promise.all([
     getAllProducts(),
     getCategories(),
-    getCombos(),
     getActiveNewUserDiscountPercent(),
   ]);
 
@@ -98,17 +95,6 @@ export default async function ShopPage({ searchParams }: ShopPageProps) {
         <Suspense fallback={null}>
           <ShopFilters categories={realCategories.map((c) => c.name)} />
         </Suspense>
-
-        {combos.length > 0 && currentPage === 1 && !searchParams.q && !searchParams.category && (
-          <div className="mt-10">
-            <h2 className="mb-4 font-display text-xl text-espresso">Combo Deals</h2>
-            <div className="grid grid-cols-1 gap-5 sm:grid-cols-2 lg:grid-cols-3">
-              {combos.map((combo) => (
-                <ComboCard key={combo.id} combo={combo} />
-              ))}
-            </div>
-          </div>
-        )}
 
         {filtered.length === 0 ? (
           <p className="mt-16 text-center text-rich/60">
