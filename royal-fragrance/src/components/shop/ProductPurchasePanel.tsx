@@ -81,9 +81,25 @@ export function ProductPurchasePanel({ product }: { product: Product }) {
       </div>
 
       {product.promoTierLabel && (
-        <p className="mt-1.5 text-sm font-medium text-caramel">
+        <span className="mt-2 inline-block rounded-full bg-caramel px-3 py-1.5 text-sm font-semibold text-espresso shadow-sm">
           🎟️ {product.promoTierLabel}
-        </p>
+        </span>
+      )}
+
+      {product.colors && product.colors.length > 0 && (
+        <div className="mt-4">
+          <p className="mb-1.5 text-xs uppercase tracking-widest text-rich/50">Colors</p>
+          <div className="flex flex-wrap gap-2">
+            {product.colors.map((color) => (
+              <span
+                key={color}
+                className="rounded-full border border-espresso/15 px-3 py-1 text-xs text-espresso"
+              >
+                {color}
+              </span>
+            ))}
+          </div>
+        </div>
       )}
 
       {hasVariants && (

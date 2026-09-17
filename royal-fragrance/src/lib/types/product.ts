@@ -24,6 +24,7 @@ export interface Product {
    * least one promo-code-only discount tier. Never reveals the actual
    * code, and never changes the shown price on its own. */
   promoTierLabel?: string;
+  colors?: string[];
   image: string;
   notes?: {
     top?: string[];

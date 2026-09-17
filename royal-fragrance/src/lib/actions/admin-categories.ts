@@ -11,12 +11,12 @@ function slugify(name: string) {
     .replace(/(^-|-$)/g, "");
 }
 
-export async function createCategory(name: string) {
+export async function createCategory(name: string, parentCategoryId?: string | null) {
   const { admin } = await requireAdmin();
 
   const { error } = await admin
     .from("categories")
-    .insert({ name, slug: slugify(name) });
+    .insert({ name, slug: slugify(name), parent_category_id: parentCategoryId ?? null });
 
   if (error) return { success: false, error: error.message };
 

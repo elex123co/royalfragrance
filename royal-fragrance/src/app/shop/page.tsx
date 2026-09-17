@@ -3,6 +3,9 @@ import { getAllProducts } from "@/lib/data/products";
 import { getCategories } from "@/lib/data/categories";
 import { ProductCard } from "@/components/ui/ProductCard";
 import { ShopFilters } from "@/components/shop/ShopFilters";
+import { Pagination } from "@/components/shop/Pagination";
+
+const PRODUCTS_PER_PAGE = 20;
 
 export const metadata = {
   title: "Shop",
@@ -22,6 +25,7 @@ interface ShopPageProps {
     sort?: string;
     minPrice?: string;
     maxPrice?: string;
+    page?: string;
   };
 }
 
@@ -69,6 +73,11 @@ export default async function ShopPage({ searchParams }: ShopPageProps) {
       break; // newest first (default order from query)
   }
 
+  const totalPages = Math.max(1, Math.ceil(filtered.length / PRODUCTS_PER_PAGE));
+  const currentPage = Math.min(totalPages, Math.max(1, Number(searchParams.page) || 1));
+  const pageStart = (currentPage - 1) * PRODUCTS_PER_PAGE;
+  const pageItems = filtered.slice(pageStart, pageStart + PRODUCTS_PER_PAGE);
+
   return (
     <section className="bg-cream py-16">
       <div className="mx-auto max-w-7xl px-5 lg:px-8">
@@ -90,11 +99,16 @@ export default async function ShopPage({ searchParams }: ShopPageProps) {
             No fragrances match your filters. Try adjusting your search.
           </p>
         ) : (
-          <div className="mt-10 grid grid-cols-2 gap-5 sm:gap-6 lg:grid-cols-4">
-            {filtered.map((product) => (
-              <ProductCard key={product.id} product={product} />
-            ))}
-          </div>
+          <>
+            <div className="mt-10 grid grid-cols-2 gap-5 sm:gap-6 lg:grid-cols-4">
+              {pageItems.map((product) => (
+                <ProductCard key={product.id} product={product} />
+              ))}
+            </div>
+            <Suspense fallback={null}>
+              <Pagination currentPage={currentPage} totalPages={totalPages} />
+            </Suspense>
+          </>
         )}
       </div>
     </section>

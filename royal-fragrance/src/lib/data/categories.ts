@@ -4,7 +4,7 @@ export async function getCategories() {
   const supabase = createAdminClient();
   const { data } = await supabase
     .from("categories")
-    .select("id, name, slug")
+    .select("id, name, slug, parent_category_id")
     .order("name");
   return data ?? [];
 }

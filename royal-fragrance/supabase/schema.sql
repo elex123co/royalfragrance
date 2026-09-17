@@ -895,3 +895,34 @@ create policy "Admins manage new user discount settings" on new_user_discount_se
 
 alter table vendors add column bvn text;
 alter table vendors add column nin text;
+
+-- ----------------------------------------------------------------------------
+-- SUBCATEGORIES, PRODUCT COLORS, WHATSAPP SETTINGS
+-- ----------------------------------------------------------------------------
+
+-- Subcategories: a category can optionally have a parent, making it a
+-- subcategory nested under a main category. Top-level categories simply
+-- have parent_category_id = null, unchanged from before.
+alter table categories add column parent_category_id uuid references categories (id) on delete set null;
+
+-- Colors: simple descriptive tags shown on a product, not a stock-tracked
+-- variant dimension (unlike size) — a lighter-weight fit for a fragrance
+-- store where "color" is usually about bottle/packaging appearance, not
+-- separately-stocked inventory.
+alter table products add column colors text[] default '{}';
+
+-- Singleton settings row for the WhatsApp prompt shown after checkout.
+create table whatsapp_settings (
+  id int primary key default 1,
+  business_phone text,
+  group_link text,
+  updated_at timestamptz not null default now(),
+  constraint single_row check (id = 1)
+);
+insert into whatsapp_settings (id) values (1) on conflict (id) do nothing;
+
+alter table whatsapp_settings enable row level security;
+create policy "Anyone can view whatsapp settings" on whatsapp_settings
+  for select using (true);
+create policy "Admins manage whatsapp settings" on whatsapp_settings
+  for all using (public.is_admin());

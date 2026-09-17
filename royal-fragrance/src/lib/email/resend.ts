@@ -108,3 +108,44 @@ export async function sendAdminVendorApplicationAlert(
     ),
   });
 }
+
+export async function sendOrderReceivedEmail(
+  to: string,
+  order: { orderNumber: string; customerName: string; total: number }
+) {
+  const siteUrl = process.env.NEXT_PUBLIC_SITE_URL ?? "https://royalfragrance.netlify.app";
+  const formattedTotal = `₦${order.total.toLocaleString()}`;
+  await sendEmail({
+    to,
+    subject: `Your Royal Fragrance order ${order.orderNumber} has been received`,
+    html: wrapper(
+      "Order Received",
+      `<p>Hi ${order.customerName},</p>
+       <p>Thank you — we've received your order <strong>${order.orderNumber}</strong> for ${formattedTotal} and it's now being processed.</p>
+       <p>We'll keep you updated as it moves toward delivery. You can also check its status anytime from your account.</p>
+       <p><a href="${siteUrl}/account/orders" style="display:inline-block; margin-top:12px; padding:10px 20px; background:#1E120C; color:#E8D7C5; text-decoration:none; border-radius:999px;">View My Orders</a></p>`
+    ),
+  });
+}
+
+export async function sendAdminNewOrderAlert(
+  to: string,
+  order: { orderNumber: string; customerName: string; customerEmail: string; total: number }
+) {
+  const siteUrl = process.env.NEXT_PUBLIC_SITE_URL ?? "https://royalfragrance.netlify.app";
+  const formattedTotal = `₦${order.total.toLocaleString()}`;
+  await sendEmail({
+    to,
+    subject: `New order: ${order.orderNumber} — ${formattedTotal}`,
+    html: wrapper(
+      "New Order Received",
+      `<p>A new paid order just came in.</p>
+       <p>
+         Order: ${order.orderNumber}<br/>
+         Customer: ${order.customerName} (${order.customerEmail})<br/>
+         Total: ${formattedTotal}
+       </p>
+       <p><a href="${siteUrl}/admin/orders" style="display:inline-block; margin-top:12px; padding:10px 20px; background:#1E120C; color:#E8D7C5; text-decoration:none; border-radius:999px;">View in Admin</a></p>`
+    ),
+  });
+}

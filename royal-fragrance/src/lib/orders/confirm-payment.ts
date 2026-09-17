@@ -1,4 +1,5 @@
 import type { SupabaseClient } from "@supabase/supabase-js";
+import { sendOrderReceivedEmail, sendAdminNewOrderAlert } from "@/lib/email/resend";
 
 /**
  * Marks an order paid, deducts stock for each item, and keeps each
@@ -21,7 +22,9 @@ export async function confirmOrderPaidAndDeductStock(
 ): Promise<{ alreadyConfirmed: boolean }> {
   const { data: order } = await supabase
     .from("orders")
-    .select("id, payment_status, customer_id, order_number, subtotal, referred_by_vendor_id")
+    .select(
+      "id, payment_status, customer_id, order_number, subtotal, total, customer_name, customer_email, referred_by_vendor_id"
+    )
     .eq("id", orderId)
     .single();
 
@@ -113,6 +116,24 @@ export async function confirmOrderPaidAndDeductStock(
     entity_id: orderId,
     metadata: { orderNumber: order.order_number },
   });
+
+  // Fire-and-forget style — sendEmail() itself never throws, so a failed
+  // or unconfigured send can't block order confirmation from completing.
+  await sendOrderReceivedEmail(order.customer_email, {
+    orderNumber: order.order_number,
+    customerName: order.customer_name,
+    total: Number(order.total),
+  });
+
+  const adminEmail = process.env.ADMIN_NOTIFICATION_EMAIL;
+  if (adminEmail) {
+    await sendAdminNewOrderAlert(adminEmail, {
+      orderNumber: order.order_number,
+      customerName: order.customer_name,
+      customerEmail: order.customer_email,
+      total: Number(order.total),
+    });
+  }
 
   return { alreadyConfirmed: false };
 }

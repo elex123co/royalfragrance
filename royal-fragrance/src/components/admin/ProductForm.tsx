@@ -16,6 +16,7 @@ import { generateProductDescription } from "@/lib/actions/admin-ai";
 interface Category {
   id: string;
   name: string;
+  parent_category_id?: string | null;
 }
 
 interface DiscountTier {
@@ -47,7 +48,9 @@ export function ProductForm({
   const router = useRouter();
   const fileInputRef = useRef<HTMLInputElement>(null);
   const [discountTiers, setDiscountTiers] = useState<DiscountTier[]>(initialDiscountTiers);
-  const [form, setForm] = useState<Omit<ProductInput, "discountTiers">>({
+  const [colors, setColors] = useState<string[]>(initial?.colors ?? []);
+  const [colorInput, setColorInput] = useState("");
+  const [form, setForm] = useState<Omit<ProductInput, "discountTiers" | "colors">>({
     name: initial?.name ?? "",
     slug: initial?.slug ?? "",
     description: initial?.description ?? "",
@@ -161,7 +164,7 @@ export function ProductForm({
     setSubmitting(true);
     setError(null);
 
-    const payload = { ...form, slug: form.slug || slugify(form.name), discountTiers };
+    const payload = { ...form, slug: form.slug || slugify(form.name), discountTiers, colors };
     const result = productId
       ? await updateProduct(productId, payload)
       : await createProduct(payload);
@@ -263,11 +266,20 @@ export function ProductForm({
             className="w-full rounded-lg border border-espresso/15 px-4 py-2.5 text-sm focus:border-caramel focus:outline-none"
           >
             <option value="">Select category</option>
-            {categories.map((c) => (
-              <option key={c.id} value={c.id}>
-                {c.name}
-              </option>
-            ))}
+            {categories
+              .filter((c) => !c.parent_category_id)
+              .map((parent) => (
+                <optgroup key={parent.id} label={parent.name}>
+                  <option value={parent.id}>{parent.name}</option>
+                  {categories
+                    .filter((c) => c.parent_category_id === parent.id)
+                    .map((child) => (
+                      <option key={child.id} value={child.id}>
+                        ↳ {child.name}
+                      </option>
+                    ))}
+                </optgroup>
+              ))}
           </select>
           {categories.length === 0 && (
             <p className="mt-1 text-xs text-rich/50">
@@ -410,6 +422,66 @@ export function ProductForm({
         >
           + Add tier
         </button>
+      </div>
+
+      <div>
+        <label className="mb-1.5 block text-sm font-medium text-espresso">
+          Colors (optional)
+        </label>
+        <p className="mb-2 text-xs text-rich/50">
+          Descriptive tags shown on the product page — e.g. "Gold", "Black
+          Matte". Not tied to separate stock counts like sizes are.
+        </p>
+        <div className="flex gap-2">
+          <input
+            value={colorInput}
+            onChange={(e) => setColorInput(e.target.value)}
+            onKeyDown={(e) => {
+              if (e.key === "Enter") {
+                e.preventDefault();
+                const trimmed = colorInput.trim();
+                if (trimmed && !colors.includes(trimmed)) {
+                  setColors((prev) => [...prev, trimmed]);
+                }
+                setColorInput("");
+              }
+            }}
+            placeholder="e.g. Gold — press Enter to add"
+            className="flex-1 rounded-lg border border-espresso/15 px-4 py-2.5 text-sm focus:border-caramel focus:outline-none"
+          />
+          <button
+            type="button"
+            onClick={() => {
+              const trimmed = colorInput.trim();
+              if (trimmed && !colors.includes(trimmed)) {
+                setColors((prev) => [...prev, trimmed]);
+              }
+              setColorInput("");
+            }}
+            className="shrink-0 rounded-lg border border-espresso/20 px-4 text-sm text-espresso hover:bg-espresso/5"
+          >
+            Add
+          </button>
+        </div>
+        {colors.length > 0 && (
+          <div className="mt-2 flex flex-wrap gap-2">
+            {colors.map((color) => (
+              <span
+                key={color}
+                className="flex items-center gap-1.5 rounded-full bg-espresso/5 px-3 py-1 text-xs text-espresso"
+              >
+                {color}
+                <button
+                  type="button"
+                  onClick={() => setColors((prev) => prev.filter((c) => c !== color))}
+                  className="text-rich/40 hover:text-red-600"
+                >
+                  ✕
+                </button>
+              </span>
+            ))}
+          </div>
+        )}
       </div>
 
       <div>

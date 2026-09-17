@@ -4,7 +4,7 @@ import { confirmOrderPaidAndDeductStock } from "@/lib/orders/confirm-payment";
 import { formatNaira } from "@/lib/utils/currency";
 import { LinkButton } from "@/components/ui/Button";
 import { PurchaseTracker } from "@/components/analytics/PurchaseTracker";
-import { CheckCircle2, Clock } from "lucide-react";
+import { CheckCircle2, Clock, MessageCircle, Users } from "lucide-react";
 
 export const metadata = { title: "Order Confirmation — Royal Fragrance" };
 
@@ -69,6 +69,10 @@ export default async function OrderConfirmationPage({
 
   const isPaid = paymentStatus === "paid";
 
+  const { data: whatsapp } = isPaid
+    ? await supabase.from("whatsapp_settings").select("*").eq("id", 1).maybeSingle()
+    : { data: null };
+
   return (
     <section className="bg-cream py-16">
       {isPaid && (
@@ -127,6 +131,39 @@ export default async function OrderConfirmationPage({
               </p>
             </div>
           </div>
+
+          {isPaid && (whatsapp?.business_phone || whatsapp?.group_link) && (
+            <div className="mt-6 rounded-xl border border-caramel/30 bg-caramel/10 p-5 text-left">
+              <p className="font-display text-base text-espresso">
+                Stay in touch on WhatsApp
+              </p>
+              <p className="mt-1 text-sm text-rich/70">
+                Get updates on your order, new arrivals, and exclusive offers.
+              </p>
+              <div className="mt-3 flex flex-col gap-2 sm:flex-row">
+                {whatsapp?.business_phone && (
+                  <a
+                    href={`https://wa.me/${whatsapp.business_phone}`}
+                    target="_blank"
+                    rel="noopener noreferrer"
+                    className="flex flex-1 items-center justify-center gap-2 rounded-full bg-espresso px-4 py-2.5 text-sm text-cream hover:bg-rich"
+                  >
+                    <MessageCircle size={16} /> Chat With Us
+                  </a>
+                )}
+                {whatsapp?.group_link && (
+                  <a
+                    href={whatsapp.group_link}
+                    target="_blank"
+                    rel="noopener noreferrer"
+                    className="flex flex-1 items-center justify-center gap-2 rounded-full border border-espresso/20 px-4 py-2.5 text-sm text-espresso hover:bg-espresso/5"
+                  >
+                    <Users size={16} /> Join Our Group
+                  </a>
+                )}
+              </div>
+            </div>
+          )}
 
           <div className="mt-8">
             <LinkButton href="/shop">Continue Shopping</LinkButton>

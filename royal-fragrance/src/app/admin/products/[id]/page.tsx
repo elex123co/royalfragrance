@@ -59,6 +59,7 @@ export default async function EditProductPage({
           })),
           discountType: product.discount_type,
           discountValue: product.discount_value != null ? Number(product.discount_value) : null,
+          colors: product.colors ?? [],
         }}
       />
     </div>

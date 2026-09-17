@@ -10,7 +10,7 @@ export default async function AdminCategoriesPage() {
   const supabase = createAdminClient();
   const { data: categories } = await supabase
     .from("categories")
-    .select("id, name, slug, products(count)")
+    .select("id, name, slug, parent_category_id, products(count)")
     .order("name");
 
   return (
@@ -21,6 +21,7 @@ export default async function AdminCategoriesPage() {
           id: c.id,
           name: c.name,
           slug: c.slug,
+          parentCategoryId: c.parent_category_id,
           productCount: c.products?.[0]?.count ?? 0,
         }))}
       />

@@ -94,6 +94,7 @@ function mapRow(row: any, promoTierLabel?: string): Product {
     discountType: discountType ?? undefined,
     discountValue: discountValue ?? undefined,
     promoTierLabel,
+    colors: row.colors ?? [],
     image: row.product_images?.[0]?.url ?? "",
     notes: row.fragrance_notes ?? undefined,
     variants: (row.product_variants ?? []).map((v: any) => {

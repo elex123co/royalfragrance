@@ -186,6 +186,11 @@ export function CheckoutForm({
                 </option>
               ))}
             </select>
+            <p className="mt-1.5 text-xs text-rich/60">
+              {selectedZone?.state === "Lagos"
+                ? "Estimated delivery: 24–48 hours within Lagos."
+                : "Estimated delivery: 1–4 weeks outside Lagos — we aim to get it to you sooner, but it will never take longer than 4 weeks."}
+            </p>
           </div>
           <Field
             label="City / Area"

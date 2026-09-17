@@ -22,6 +22,7 @@ export interface ProductInput {
    * above — e.g. this product carries both a 10% and a 15% tier, and
    * whichever matching promo code a customer has unlocks that specific one. */
   discountTiers: { discountType: "percentage" | "fixed_amount"; discountValue: number }[];
+  colors: string[];
 }
 
 /**
@@ -64,6 +65,7 @@ export async function createProduct(input: ProductInput) {
       status,
       discount_type: input.discountType,
       discount_value: input.discountValue,
+      colors: input.colors,
     })
     .select()
     .single();
@@ -148,6 +150,7 @@ export async function updateProduct(productId: string, input: ProductInput) {
       status,
       discount_type: input.discountType,
       discount_value: input.discountValue,
+      colors: input.colors,
     })
     .eq("id", productId);
 
