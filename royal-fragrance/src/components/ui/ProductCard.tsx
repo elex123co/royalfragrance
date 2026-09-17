@@ -8,7 +8,13 @@ import { discountLabel } from "@/lib/utils/discount";
 import { useCart } from "@/context/CartContext";
 import { BrandImage } from "@/components/ui/BrandImage";
 
-export function ProductCard({ product }: { product: Product }) {
+export function ProductCard({
+  product,
+  newUserDiscountPercent,
+}: {
+  product: Product;
+  newUserDiscountPercent?: number | null;
+}) {
   const { addItem } = useCart();
   const [added, setAdded] = useState(false);
   const outOfStock = product.status === "out_of_stock";
@@ -51,6 +57,11 @@ export function ProductCard({ product }: { product: Product }) {
             {discountLabel(product.discountType ?? null, product.discountValue) ?? "Sale"}
           </span>
         )}
+        {product.promoTierLabel && !outOfStock && (
+          <span className="absolute right-3 top-3 rounded-full bg-caramel px-3 py-1 text-xs font-semibold tracking-wide text-espresso shadow-sm">
+            🎟️ Code Discount
+          </span>
+        )}
       </div>
 
       <div className="flex flex-1 flex-col gap-1.5 p-4 sm:p-5">
@@ -77,9 +88,16 @@ export function ProductCard({ product }: { product: Product }) {
           </div>
         </div>
 
+        {newUserDiscountPercent && !outOfStock && (
+          <p className="text-xs font-bold text-red-600">
+            🎉 New customers: <span className="line-through text-rich/40 font-normal">{formatNaira(product.price)}</span>{" "}
+            {formatNaira(Math.round(product.price * (1 - newUserDiscountPercent / 100)))} ({newUserDiscountPercent}% off)
+          </p>
+        )}
+
         {product.promoTierLabel && (
-          <p className="text-xs font-medium text-caramel">
-            🎟️ {product.promoTierLabel}
+          <p className="text-xs font-semibold text-caramel">
+            {product.promoTierLabel}
           </p>
         )}
 

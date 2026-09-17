@@ -156,6 +156,7 @@ export default async function AdminVendorsPage() {
                   <td className="px-4 py-3">
                     <VendorRowActions
                       vendorId={v.user_id}
+                      vendorName={(v as any).users?.name ?? ""}
                       status={v.status}
                       vendorType={v.vendor_type}
                       hasCollectionAccount={

@@ -9,11 +9,13 @@ import {
 
 export function VendorRowActions({
   vendorId,
+  vendorName,
   status,
   vendorType,
   hasCollectionAccount,
 }: {
   vendorId: string;
+  vendorName: string;
   status: string;
   vendorType: string | null;
   hasCollectionAccount: boolean;
@@ -22,9 +24,14 @@ export function VendorRowActions({
   const [error, setError] = useState<string | null>(null);
 
   function handleProvision() {
+    const accountName = prompt(
+      "Name to put on this vendor's collection account (edit if needed — this is what will show on bank transfers):",
+      vendorName
+    );
+    if (!accountName) return; // cancelled
     setError(null);
     startTransition(async () => {
-      const result = await provisionCollectionAccount(vendorId);
+      const result = await provisionCollectionAccount(vendorId, accountName);
       if (!result.success) setError(result.error ?? "Failed");
     });
   }
@@ -84,7 +91,7 @@ export function VendorRowActions({
             Reactivate
           </button>
         )}
-        {status === "active" && vendorType === "physical" && !hasCollectionAccount && (
+        {status === "active" && vendorType !== "affiliate" && !hasCollectionAccount && (
           <button
             disabled={isPending}
             onClick={handleProvision}
@@ -93,7 +100,7 @@ export function VendorRowActions({
             Set Up Account
           </button>
         )}
-        {vendorType === "physical" && (
+        {vendorType !== "affiliate" && (
           <Link
             href={`/admin/vendors/${vendorId}`}
             className="rounded-full border border-espresso/20 px-3 py-1 text-xs text-espresso hover:bg-espresso/5"

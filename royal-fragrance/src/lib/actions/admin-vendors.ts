@@ -74,7 +74,7 @@ export async function setAmbassadorLevel(vendorId: string, level: string) {
  * failure here is surfaced clearly rather than silently retried forever
  * (spec section 35), and the vendor can still be approved without one.
  */
-export async function provisionCollectionAccount(vendorId: string) {
+export async function provisionCollectionAccount(vendorId: string, accountNameOverride?: string) {
   const { admin: supabase } = await requireAdmin();
 
   const { data: vendor } = await supabase
@@ -86,7 +86,11 @@ export async function provisionCollectionAccount(vendorId: string) {
   if (!vendor) return { success: false, error: "Vendor not found" };
 
   const user = (vendor as any).users;
-  const [firstName, ...rest] = (user?.name ?? "Vendor").split(" ");
+  // Account name is admin-controlled at provisioning time — defaults to
+  // the vendor's registered name split naively into first/last, but an
+  // explicit override (from the admin UI's prompt) always wins, since a
+  // registered name can be a nickname or incomplete.
+  const [firstName, ...rest] = (accountNameOverride || user?.name || "Vendor").split(" ");
 
   try {
     const provider = getPaymentProvider();

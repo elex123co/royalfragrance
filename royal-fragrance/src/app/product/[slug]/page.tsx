@@ -1,5 +1,6 @@
 import { notFound } from "next/navigation";
 import { getProductBySlug, getAllProducts } from "@/lib/data/products";
+import { getActiveNewUserDiscountPercent } from "@/lib/data/new-user-discount";
 import { ProductPurchasePanel } from "@/components/shop/ProductPurchasePanel";
 import { ProductCard } from "@/components/ui/ProductCard";
 import { BrandImage } from "@/components/ui/BrandImage";
@@ -62,6 +63,8 @@ export default async function ProductPage({
     .select("business_phone")
     .eq("id", 1)
     .maybeSingle();
+
+  const newUserDiscountPercent = await getActiveNewUserDiscountPercent();
 
   const {
     data: { user },
@@ -152,7 +155,11 @@ export default async function ProductPage({
 
             <div className="flex items-start gap-3">
               <div className="flex-1">
-                <ProductPurchasePanel product={product} whatsappPhone={whatsapp?.business_phone ?? null} />
+                <ProductPurchasePanel
+                  product={product}
+                  whatsappPhone={whatsapp?.business_phone ?? null}
+                  newUserDiscountPercent={newUserDiscountPercent}
+                />
               </div>
               <div className="mt-8">
                 <WishlistToggle

@@ -2,6 +2,7 @@ import { Suspense } from "react";
 import { getAllProducts } from "@/lib/data/products";
 import { getCategories } from "@/lib/data/categories";
 import { getCombos } from "@/lib/data/combos";
+import { getActiveNewUserDiscountPercent } from "@/lib/data/new-user-discount";
 import { ProductCard } from "@/components/ui/ProductCard";
 import { ShopFilters } from "@/components/shop/ShopFilters";
 import { Pagination } from "@/components/shop/Pagination";
@@ -32,10 +33,11 @@ interface ShopPageProps {
 }
 
 export default async function ShopPage({ searchParams }: ShopPageProps) {
-  const [allProducts, realCategories, combos] = await Promise.all([
+  const [allProducts, realCategories, combos, newUserDiscountPercent] = await Promise.all([
     getAllProducts(),
     getCategories(),
     getCombos(),
+    getActiveNewUserDiscountPercent(),
   ]);
 
   let filtered = allProducts;
@@ -116,7 +118,11 @@ export default async function ShopPage({ searchParams }: ShopPageProps) {
           <>
             <div className="mt-10 grid grid-cols-2 gap-5 sm:gap-6 lg:grid-cols-4">
               {pageItems.map((product) => (
-                <ProductCard key={product.id} product={product} />
+                <ProductCard
+                  key={product.id}
+                  product={product}
+                  newUserDiscountPercent={newUserDiscountPercent}
+                />
               ))}
             </div>
             <Suspense fallback={null}>
