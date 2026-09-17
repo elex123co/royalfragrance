@@ -14,7 +14,7 @@ const VALID_STATUSES = [
 ] as const;
 
 const STATUS_LABELS: Record<string, string> = {
-  order_received: "received",
+  order_received: "placed — awaiting payment",
   payment_confirmed: "payment confirmed",
   processing: "being processed",
   ready_for_delivery: "ready for delivery",
