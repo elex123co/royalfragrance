@@ -24,7 +24,11 @@ const checkoutSchema = z.object({
         productId: z.string(),
         variantId: z.string().optional(),
         name: z.string(),
-        price: z.number().positive(),
+        // min(0), not positive() — combo items include ₦0 lines by
+        // design (the combo's total price sits on one line, the rest of
+        // its bundled products are priced at 0 but still fulfil and
+        // deduct stock normally).
+        price: z.number().min(0),
         quantity: z.number().int().positive(),
       })
     )

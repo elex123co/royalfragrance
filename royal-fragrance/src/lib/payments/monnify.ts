@@ -195,7 +195,10 @@ export const monnifyProvider: PaymentProvider = {
         customerName: `${input.firstName} ${input.lastName}`.trim(),
         bvn: input.bvn,
         nin: input.nin,
-        getAllAvailableBanks: false,
+        // Monnify requires either explicit preferredBanks or this set to
+        // true — using all available banks avoids having to hardcode and
+        // maintain a list of specific bank codes.
+        getAllAvailableBanks: true,
       }),
     });
 
