@@ -65,14 +65,12 @@ export const metadata: Metadata = {
     title: "Royal Fragrance — More Than a Fragrance",
     description: DEFAULT_DESCRIPTION,
     url: SITE_URL,
-    images: [{ url: LOGO_URL, width: 512, height: 512, alt: "Royal Fragrance" }],
     locale: "en_NG",
   },
   twitter: {
     card: "summary_large_image",
     title: "Royal Fragrance — More Than a Fragrance",
     description: DEFAULT_DESCRIPTION,
-    images: [LOGO_URL],
   },
   robots: {
     index: true,
