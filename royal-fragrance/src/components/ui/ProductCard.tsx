@@ -59,7 +59,12 @@ export function ProductCard({
         )}
         {product.promoTierLabel && !outOfStock && (
           <span className="absolute right-3 top-3 rounded-full bg-caramel px-3 py-1 text-xs font-semibold tracking-wide text-espresso shadow-sm">
-            🎟️ Code Discount
+            Code Discount
+          </span>
+        )}
+        {newUserDiscountPercent && !outOfStock && (
+          <span className="absolute bottom-3 left-3 rounded-full bg-espresso px-3 py-1 text-xs font-bold tracking-wide text-cream shadow-sm">
+            {newUserDiscountPercent}% OFF — New Customers
           </span>
         )}
       </div>
@@ -90,7 +95,7 @@ export function ProductCard({
 
         {newUserDiscountPercent && !outOfStock && (
           <p className="text-xs font-bold text-red-600">
-            🎉 New customers: <span className="line-through text-rich/40 font-normal">{formatNaira(product.price)}</span>{" "}
+            New customers: <span className="line-through text-rich/40 font-normal">{formatNaira(product.price)}</span>{" "}
             {formatNaira(Math.round(product.price * (1 - newUserDiscountPercent / 100)))} ({newUserDiscountPercent}% off)
           </p>
         )}

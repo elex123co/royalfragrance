@@ -68,7 +68,7 @@ export async function sendVendorApprovedEmail(to: string, name: string) {
   const siteUrl = process.env.NEXT_PUBLIC_SITE_URL ?? "https://royalfragrance.netlify.app";
   await sendEmail({
     to,
-    subject: "You're approved as a Royal Fragrance vendor 🎉",
+    subject: "You're approved as a Royal Fragrance vendor",
     html: wrapper(
       "You're Approved",
       `<p>Hi ${name},</p>

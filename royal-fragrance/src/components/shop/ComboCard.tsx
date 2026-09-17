@@ -36,7 +36,7 @@ export function ComboCard({ combo }: { combo: Combo }) {
         {combo.image ? (
           <BrandImage src={combo.image} alt={combo.name} sizes="(max-width: 768px) 100vw, 33vw" />
         ) : (
-          <div className="flex h-full items-center justify-center text-4xl">🎁</div>
+          <div className="flex h-full items-center justify-center text-4xl text-rich/30">No image</div>
         )}
         {savings > 0 && (
           <span className="absolute left-3 top-3 rounded-full bg-red-600 px-3 py-1 text-xs font-medium text-white shadow-sm">

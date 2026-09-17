@@ -133,7 +133,7 @@ export function CheckoutForm({
 
       {newUserDiscountActive && (
         <div className="mt-6 rounded-xl bg-caramel/15 px-4 py-3 text-sm text-espresso">
-          🎉 New customers get <strong>{newUserDiscountPercentage}% off</strong> their
+          New customers get <strong>{newUserDiscountPercentage}% off</strong> their
           first order — applied automatically at checkout if you're signed
           in and this is your first purchase with us.
         </div>

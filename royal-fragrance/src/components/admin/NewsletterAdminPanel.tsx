@@ -16,7 +16,7 @@ const CONTENT_TYPE_LABELS: Record<string, string> = {
   storytelling: "Storytelling 📖",
   luxury_editorial: "Luxury Editorial 👑",
   romance: "Romance Story 💌",
-  weekend_energy: "Weekend Energy 🔥",
+  weekend_energy: "Weekend Energy",
   sunday_reflection: "Sunday Reflection 🌿",
   scent_confession: "Scent Confession 🕵🏽",
   royal_scent_chronicles: "Royal Scent Chronicles 📚",

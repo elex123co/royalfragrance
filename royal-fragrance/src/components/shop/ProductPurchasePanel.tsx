@@ -90,19 +90,23 @@ export function ProductPurchasePanel({
       </div>
 
       {newUserDiscountPercent && !outOfStock && (
-        <p className="mt-2 text-base font-bold text-red-600">
-          🎉 New customers:{" "}
-          <span className="text-base font-normal text-rich/40 line-through">
-            {formatNaira(price)}
-          </span>{" "}
-          {formatNaira(Math.round(price * (1 - newUserDiscountPercent / 100)))} (
-          {newUserDiscountPercent}% off your first order)
-        </p>
+        <div className="mt-2">
+          <span className="inline-block rounded-full bg-espresso px-3 py-1.5 text-sm font-bold tracking-wide text-cream shadow-sm">
+            {newUserDiscountPercent}% OFF — New Customers
+          </span>
+          <p className="mt-1.5 text-sm text-rich/70">
+            <span className="line-through text-rich/40">{formatNaira(price)}</span>{" "}
+            <span className="font-bold text-red-600">
+              {formatNaira(Math.round(price * (1 - newUserDiscountPercent / 100)))}
+            </span>{" "}
+            on your first order
+          </p>
+        </div>
       )}
 
       {product.promoTierLabel && (
         <span className="mt-2 inline-block rounded-full bg-caramel px-3 py-1.5 text-sm font-semibold text-espresso shadow-sm">
-          🎟️ {product.promoTierLabel}
+          {product.promoTierLabel}
         </span>
       )}
 
