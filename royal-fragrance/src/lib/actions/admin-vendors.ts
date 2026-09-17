@@ -79,7 +79,7 @@ export async function provisionCollectionAccount(vendorId: string) {
 
   const { data: vendor } = await supabase
     .from("vendors")
-    .select("business_name, users!user_id(name, email, phone)")
+    .select("business_name, bvn, nin, users!user_id(name, email, phone)")
     .eq("user_id", vendorId)
     .single();
 
@@ -96,6 +96,8 @@ export async function provisionCollectionAccount(vendorId: string) {
       lastName: rest.join(" ") || "Partner",
       phone: user.phone,
       vendorId,
+      bvn: (vendor as any).bvn ?? undefined,
+      nin: (vendor as any).nin ?? undefined,
     });
 
     const { error } = await supabase.from("vendor_collection_accounts").insert({

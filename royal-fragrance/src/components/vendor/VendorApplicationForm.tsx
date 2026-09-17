@@ -21,6 +21,8 @@ export function VendorApplicationForm() {
     primaryPlatform: PLATFORMS[0],
     audienceSize: "",
     promotionCommitment: false,
+    bvn: "",
+    nin: "",
   });
   const [status, setStatus] = useState<"idle" | "loading" | "success" | "error">(
     "idle"
@@ -144,6 +146,33 @@ export function VendorApplicationForm() {
           onChange={(e) => setForm((f) => ({ ...f, notes: e.target.value }))}
           className="w-full rounded-lg border border-espresso/15 px-4 py-2.5 text-sm focus:border-caramel focus:outline-none"
         />
+      </div>
+
+      <div>
+        <label className="mb-1.5 block text-sm font-medium text-espresso">
+          BVN or NIN (optional)
+        </label>
+        <p className="mb-2 text-xs text-rich/50">
+          Only needed if you're approved for a personal collection account
+          to receive customer payments directly — you can add this later
+          from your dashboard if you'd rather skip it for now.
+        </p>
+        <div className="grid grid-cols-2 gap-3">
+          <input
+            value={form.bvn}
+            onChange={(e) => setForm((f) => ({ ...f, bvn: e.target.value }))}
+            placeholder="BVN"
+            maxLength={11}
+            className="w-full rounded-lg border border-espresso/15 px-4 py-2.5 text-sm focus:border-caramel focus:outline-none"
+          />
+          <input
+            value={form.nin}
+            onChange={(e) => setForm((f) => ({ ...f, nin: e.target.value }))}
+            placeholder="NIN"
+            maxLength={11}
+            className="w-full rounded-lg border border-espresso/15 px-4 py-2.5 text-sm focus:border-caramel focus:outline-none"
+          />
+        </div>
       </div>
 
       <label className="flex items-start gap-2 text-sm text-rich/80">

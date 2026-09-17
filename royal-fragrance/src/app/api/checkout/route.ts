@@ -1,7 +1,7 @@
 import { NextResponse } from "next/server";
 import { cookies } from "next/headers";
 import { z } from "zod";
-import { createAdminClient } from "@/lib/supabase/server";
+import { createAdminClient, createClient } from "@/lib/supabase/server";
 import { getPaymentProvider } from "@/lib/payments";
 import { validatePromoCodeServerSide } from "@/lib/utils/promo-validation";
 
@@ -77,6 +77,47 @@ export async function POST(request: Request) {
   const total = subtotal + delivery.fee - discountAmount;
   const orderNumber = generateOrderNumber();
 
+  // New-customer first-order discount — automatic, no code needed.
+  // Only for a genuinely logged-in account (matches "new users who log
+  // into the website"), never stacked on top of a manually-entered promo
+  // code, and only while the admin toggle is on and not past its optional
+  // end date.
+  let newUserDiscountApplied = false;
+  let loggedInUserId: string | null = null;
+  if (discountAmount === 0) {
+    const sessionClient = createClient();
+    const {
+      data: { user },
+    } = await sessionClient.auth.getUser();
+
+    if (user) {
+      loggedInUserId = user.id;
+      const { data: settings } = await supabase
+        .from("new_user_discount_settings")
+        .select("*")
+        .eq("id", 1)
+        .single();
+
+      const notExpired = !settings?.expires_at || new Date(settings.expires_at) > new Date();
+
+      if (settings?.enabled && notExpired) {
+        const { count } = await supabase
+          .from("orders")
+          .select("id", { count: "exact", head: true })
+          .eq("customer_id", user.id)
+          .eq("payment_status", "paid");
+
+        if ((count ?? 0) === 0) {
+          const percent = Number(settings.discount_percentage);
+          discountAmount = Math.round(subtotal * (percent / 100));
+          newUserDiscountApplied = true;
+        }
+      }
+    }
+  }
+
+  const finalTotal = subtotal + delivery.fee - discountAmount;
+
   // Validate stock BEFORE creating the order — prevents overselling on
   // items that have sold out between the customer adding to cart and
   // checking out.
@@ -134,13 +175,15 @@ export async function POST(request: Request) {
       delivery_zone_id: delivery.zoneId ?? null,
       delivery_fee: delivery.fee,
       subtotal,
-      total,
+      total: finalTotal,
       payment_status: "pending",
       order_status: "order_received",
       payment_provider: process.env.PAYMENT_PROVIDER ?? "paystack",
       referred_by_vendor_id: referredByVendorId,
       promo_code_id: promoCodeId,
       discount_amount: discountAmount,
+      customer_id: loggedInUserId,
+      new_user_discount_applied: newUserDiscountApplied,
     })
     .select()
     .single();
@@ -196,7 +239,7 @@ export async function POST(request: Request) {
 
     const payment = await provider.initializePayment({
       email: customer.email,
-      amountNaira: total,
+      amountNaira: finalTotal,
       reference: orderNumber,
       callbackUrl: `${siteUrl}/order-confirmation?order=${orderNumber}`,
       metadata: { orderId: order.id, orderNumber },

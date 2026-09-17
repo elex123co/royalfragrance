@@ -70,6 +70,18 @@ export default async function AdminVendorDetailPage({
             <span className="text-rich/50">Committed to promote:</span>{" "}
             {vendor.promotion_commitment ? "Yes" : "No"}
           </p>
+          <p>
+            <span className="text-rich/50">BVN/NIN on file:</span>{" "}
+            {vendor.bvn || vendor.nin ? (
+              <span className="text-green-700">
+                Yes ({vendor.bvn ? "BVN" : "NIN"} ···{(vendor.bvn || vendor.nin).slice(-4)})
+              </span>
+            ) : (
+              <span className="text-amber-700">
+                None — required for a Monnify collection account
+              </span>
+            )}
+          </p>
         </div>
         {vendor.onboarding_notes && (
           <p className="mt-3 text-sm text-rich/70">

@@ -17,6 +17,8 @@ export interface VendorApplicationInput {
   primaryPlatform: string;
   audienceSize: string;
   promotionCommitment: boolean;
+  bvn: string;
+  nin: string;
 }
 
 export interface VendorApplicationResult {
@@ -68,6 +70,8 @@ export async function applyAsVendor(
     primary_platform: input.primaryPlatform,
     audience_size: input.audienceSize,
     promotion_commitment: input.promotionCommitment,
+    bvn: input.bvn || null,
+    nin: input.nin || null,
   });
 
   if (vendorError) {

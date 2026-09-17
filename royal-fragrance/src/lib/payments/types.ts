@@ -42,6 +42,14 @@ export interface DedicatedAccountInput {
   phone?: string;
   /** Optional: the underlying customer/vendor id for our own metadata */
   vendorId: string;
+  /**
+   * Required by Monnify's Reserved Account API for compliance (Paystack's
+   * equivalent never needed this) — either bvn or nin must be present when
+   * using the Monnify provider. Optional at the interface level since
+   * Paystack ignores it entirely.
+   */
+  bvn?: string;
+  nin?: string;
 }
 
 export interface DedicatedAccountResult {

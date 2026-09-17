@@ -9,7 +9,15 @@ import { trackMetaEvent } from "@/components/analytics/MetaPixel";
 
 type Step = "customer" | "delivery" | "summary";
 
-export function CheckoutForm({ zones }: { zones: DeliveryZone[] }) {
+export function CheckoutForm({
+  zones,
+  newUserDiscountActive = false,
+  newUserDiscountPercentage = 10,
+}: {
+  zones: DeliveryZone[];
+  newUserDiscountActive?: boolean;
+  newUserDiscountPercentage?: number;
+}) {
   const { items, subtotal, clearCart } = useCart();
   const [step, setStep] = useState<Step>("customer");
   const [submitting, setSubmitting] = useState(false);
@@ -122,6 +130,14 @@ export function CheckoutForm({ zones }: { zones: DeliveryZone[] }) {
   return (
     <div className="rounded-xl2 border border-espresso/10 bg-white/60 p-6 shadow-premium-sm sm:p-8">
       <StepIndicator step={step} />
+
+      {newUserDiscountActive && (
+        <div className="mt-6 rounded-xl bg-caramel/15 px-4 py-3 text-sm text-espresso">
+          🎉 New customers get <strong>{newUserDiscountPercentage}% off</strong> their
+          first order — applied automatically at checkout if you're signed
+          in and this is your first purchase with us.
+        </div>
+      )}
 
       {step === "customer" && (
         <div className="mt-8 space-y-4">

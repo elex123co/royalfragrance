@@ -860,3 +860,38 @@ create policy "Anyone can view discount tiers" on product_discount_tiers
   for select using (true);
 create policy "Admins manage discount tiers" on product_discount_tiers
   for all using (public.is_admin());
+
+-- ----------------------------------------------------------------------------
+-- NEW CUSTOMER FIRST-ORDER DISCOUNT
+-- Automatic — no code needed. Applies once per account (zero prior PAID
+-- orders), only while enabled and not past its optional end date. Mutually
+-- exclusive with a manually-entered promo code (whichever the customer
+-- already has applied takes precedence, never both stacked).
+-- ----------------------------------------------------------------------------
+
+create table new_user_discount_settings (
+  id int primary key default 1,
+  enabled boolean not null default false,
+  discount_percentage numeric(5,2) not null default 10,
+  expires_at timestamptz,
+  updated_at timestamptz not null default now(),
+  constraint single_row check (id = 1)
+);
+insert into new_user_discount_settings (id) values (1) on conflict (id) do nothing;
+
+alter table orders add column new_user_discount_applied boolean not null default false;
+
+alter table new_user_discount_settings enable row level security;
+create policy "Admins manage new user discount settings" on new_user_discount_settings
+  for all using (public.is_admin());
+
+-- ----------------------------------------------------------------------------
+-- VENDOR BVN/NIN — required for Monnify Reserved Account creation
+-- Monnify's compliance requirement (Paystack never needed this). Optional
+-- at the database level since existing Paystack-based vendors don't need
+-- it — only required when actually provisioning a Monnify collection
+-- account for a given vendor.
+-- ----------------------------------------------------------------------------
+
+alter table vendors add column bvn text;
+alter table vendors add column nin text;
