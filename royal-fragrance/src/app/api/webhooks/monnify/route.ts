@@ -61,6 +61,11 @@ export async function POST(request: Request) {
     }
   }
 
+  // The actual sender's details — NOT "customer", which in Monnify's
+  // payload refers to who the reserved account itself belongs to (our
+  // vendor), not who sent the money. The real payer is here instead.
+  const source = data.paymentSourceInformation?.[0];
+
   const { error: txError } = await supabase.from("payment_transactions").insert({
     provider: "monnify",
     provider_transaction_reference: reference,
@@ -68,7 +73,7 @@ export async function POST(request: Request) {
     order_id: order?.id ?? null,
     amount: amountNaira,
     status: "confirmed",
-    payer_name: data.customer?.name ?? null,
+    payer_name: source?.accountName ?? null,
     payer_phone: null,
     raw_payload: data,
     transaction_date: data.paidOn ?? new Date().toISOString(),
