@@ -37,12 +37,12 @@ export default function Footer() {
                 href="mailto:oyinkansolaelizabetholutunde@gmail.com"
                 className="break-all hover:text-cream"
               >
-                oyinkansolaelizabetholutunde@gmail.com
+                royalfragrancegallery@gmail.com
               </a>
             </li>
             <li className="flex items-start gap-2.5">
               <MapPin size={15} className="mt-0.5 shrink-0 text-caramel" />
-              <span>Block 314, Abesan Estate, Ipaja, Lagos</span>
+              <span>Abesan Estate, Ipaja, Lagos</span>
             </li>
           </ul>
         </div>
