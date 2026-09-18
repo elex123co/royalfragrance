@@ -5,6 +5,7 @@ import { useTransition, useState } from "react";
 import {
   setVendorStatus,
   provisionCollectionAccount,
+  removeCollectionAccount,
 } from "@/lib/actions/admin-vendors";
 
 export function VendorRowActions({
@@ -32,6 +33,20 @@ export function VendorRowActions({
     setError(null);
     startTransition(async () => {
       const result = await provisionCollectionAccount(vendorId, accountName);
+      if (!result.success) setError(result.error ?? "Failed");
+    });
+  }
+
+  function handleRemove() {
+    if (
+      !confirm(
+        "Permanently remove this vendor's collection account? This cannot be undone — you'd need to create a fresh one afterward."
+      )
+    )
+      return;
+    setError(null);
+    startTransition(async () => {
+      const result = await removeCollectionAccount(vendorId);
       if (!result.success) setError(result.error ?? "Failed");
     });
   }
@@ -98,6 +113,15 @@ export function VendorRowActions({
             className="rounded-full border border-caramel px-3 py-1 text-xs text-caramel hover:bg-caramel/10"
           >
             Set Up Account
+          </button>
+        )}
+        {status === "active" && vendorType !== "affiliate" && hasCollectionAccount && (
+          <button
+            disabled={isPending}
+            onClick={handleRemove}
+            className="rounded-full border border-red-300 px-3 py-1 text-xs text-red-600 hover:bg-red-50"
+          >
+            Remove Account
           </button>
         )}
         {vendorType !== "affiliate" && (

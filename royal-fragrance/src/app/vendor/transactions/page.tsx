@@ -34,6 +34,9 @@ export default async function VendorTransactionsPage() {
                   <p className="font-display text-lg text-espresso">
                     + {formatNaira(t.amount)}
                   </p>
+                  {t.payer_name && (
+                    <p className="text-sm text-espresso">From: {t.payer_name}</p>
+                  )}
                   <p className="text-xs text-rich/50">
                     {new Date(t.transaction_date).toLocaleString()} · Awaiting
                     Sale Record
@@ -56,11 +59,16 @@ export default async function VendorTransactionsPage() {
         {transactions.map((t: any) => (
           <div
             key={t.id}
-            className="flex items-center justify-between rounded-xl border border-espresso/10 bg-white/50 px-4 py-3 text-sm"
+            className="flex flex-wrap items-center justify-between gap-2 rounded-xl border border-espresso/10 bg-white/50 px-4 py-3 text-sm"
           >
-            <span className="font-display text-espresso">
-              {formatNaira(t.amount)}
-            </span>
+            <div>
+              <span className="font-display text-espresso">
+                {formatNaira(t.amount)}
+              </span>
+              {t.payer_name && (
+                <p className="text-xs text-rich/60">From: {t.payer_name}</p>
+              )}
+            </div>
             <span className="text-rich/50">
               {new Date(t.transaction_date).toLocaleDateString()}
             </span>

@@ -134,3 +134,39 @@ export async function provisionCollectionAccount(vendorId: string, accountNameOv
     };
   }
 }
+
+export async function removeCollectionAccount(vendorId: string) {
+  const { admin: supabase } = await requireAdmin();
+
+  const { data: account } = await supabase
+    .from("vendor_collection_accounts")
+    .select("id, provider, provider_account_reference")
+    .eq("vendor_id", vendorId)
+    .single();
+
+  if (!account) return { success: false, error: "No collection account found." };
+
+  try {
+    const provider = getPaymentProvider();
+    if (provider.deleteVendorCollectionAccount) {
+      await provider.deleteVendorCollectionAccount(account.provider_account_reference);
+    }
+
+    await supabase.from("vendor_collection_accounts").delete().eq("id", account.id);
+
+    await supabase.from("audit_logs").insert({
+      action: "vendor.collection_account_removed",
+      entity_type: "vendor",
+      entity_id: vendorId,
+      metadata: { provider: account.provider },
+    });
+
+    revalidatePath("/admin/vendors");
+    return { success: true };
+  } catch (err: any) {
+    return {
+      success: false,
+      error: err?.message ?? "Could not remove the collection account.",
+    };
+  }
+}

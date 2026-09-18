@@ -78,4 +78,11 @@ export interface PaymentProvider {
    * callers must handle a thrown "not supported" error gracefully.
    */
   createVendorCollectionAccount(input: DedicatedAccountInput): Promise<DedicatedAccountResult>;
+
+  /**
+   * Permanently deallocates a previously created vendor collection
+   * account — irreversible where supported. Optional since not every
+   * provider exposes this the same way.
+   */
+  deleteVendorCollectionAccount?(providerAccountReference: string): Promise<void>;
 }

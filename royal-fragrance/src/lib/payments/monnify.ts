@@ -222,4 +222,21 @@ export const monnifyProvider: PaymentProvider = {
       accountName: body.accountName,
     };
   },
+
+  async deleteVendorCollectionAccount(providerAccountReference: string): Promise<void> {
+    const token = await getAccessToken();
+
+    const res = await fetch(
+      `${BASE_URL}/api/v1/bank-transfer/reserved-accounts/reference/${encodeURIComponent(providerAccountReference)}`,
+      {
+        method: "DELETE",
+        headers: { Authorization: `Bearer ${token}` },
+      }
+    );
+
+    if (!res.ok) {
+      const text = await res.text();
+      throw new Error(`Monnify account deallocation failed (${res.status}): ${text}`);
+    }
+  },
 };
