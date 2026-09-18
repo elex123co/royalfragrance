@@ -8,11 +8,11 @@ import { trackMetaEvent } from "@/components/analytics/MetaPixel";
 
 const PLATFORMS = ["Instagram", "TikTok", "X (Twitter)", "Facebook", "YouTube", "WhatsApp Status", "Other"];
 
-export function VendorApplicationForm() {
+export function VendorApplicationForm({ initialEmail }: { initialEmail?: string } = {}) {
   const router = useRouter();
   const [form, setForm] = useState({
     fullName: "",
-    email: "",
+    email: initialEmail ?? "",
     phone: "",
     password: "",
     notes: "",

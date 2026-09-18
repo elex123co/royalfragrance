@@ -166,3 +166,17 @@ export async function sendOrderStatusEmail(
     ),
   });
 }
+
+export async function sendVendorApplicationLinkEmail(to: string, applyUrl: string) {
+  await sendEmail({
+    to,
+    subject: "Your Royal Fragrance vendor application link",
+    html: wrapper(
+      "Ready to Apply?",
+      `<p>Thanks for your interest in becoming a Royal Fragrance vendor.</p>
+       <p>Click below to open your application form. This link is unique to you and can only be used once.</p>
+       <p><a href="${applyUrl}" style="display:inline-block; margin-top:12px; padding:10px 20px; background:#1E120C; color:#E8D7C5; text-decoration:none; border-radius:999px;">Start My Application</a></p>
+       <p style="margin-top:16px; font-size:12px; color:#888;">If the button doesn't work, copy and paste this link: ${applyUrl}</p>`
+    ),
+  });
+}

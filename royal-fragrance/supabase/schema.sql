@@ -882,6 +882,8 @@ insert into new_user_discount_settings (id) values (1) on conflict (id) do nothi
 alter table orders add column new_user_discount_applied boolean not null default false;
 
 alter table new_user_discount_settings enable row level security;
+create policy "Anyone can view new user discount settings" on new_user_discount_settings
+  for select using (true);
 create policy "Admins manage new user discount settings" on new_user_discount_settings
   for all using (public.is_admin());
 
@@ -973,3 +975,24 @@ create policy "Admins manage combo items" on combo_items
 -- ----------------------------------------------------------------------------
 
 alter table products add column type text;
+
+-- ----------------------------------------------------------------------------
+-- VENDOR APPLICATION INTEREST GATE
+-- The become-a-vendor page no longer shows the full application form
+-- directly — a visitor first expresses interest with just their email,
+-- and the real form is only reachable via a unique, one-time link sent
+-- to that email. Keeps the detailed form (including BVN/NIN) out of
+-- casual view.
+-- ----------------------------------------------------------------------------
+
+create table vendor_interest_signups (
+  id uuid primary key default gen_random_uuid(),
+  email text not null,
+  token text not null unique,
+  used boolean not null default false,
+  created_at timestamptz not null default now()
+);
+
+alter table vendor_interest_signups enable row level security;
+create policy "Admins manage vendor interest signups" on vendor_interest_signups
+  for all using (public.is_admin());

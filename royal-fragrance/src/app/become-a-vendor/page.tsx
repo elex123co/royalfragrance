@@ -1,14 +1,19 @@
-import { VendorApplicationForm } from "@/components/vendor/VendorApplicationForm";
-import { Wallet, PackageCheck, LineChart, Users } from "lucide-react";
+import { VendorInterestForm } from "@/components/vendor/VendorInterestForm";
+import { Wallet, PackageCheck, LineChart, Users, Percent } from "lucide-react";
 
 export const metadata = {
   title: "Become a Vendor",
   description:
-    "Sell Royal Fragrance products through your own network. Get a personal vendor dashboard, track sales, manage inventory, and grow with a premium fragrance brand.",
+    "Sell Royal Fragrance products through your own network. Earn 12% commission, get a personal vendor dashboard, track sales, manage inventory, and grow with a premium fragrance brand.",
   alternates: { canonical: "https://royalfragrancegallery.com/become-a-vendor" },
 };
 
 const perks = [
+  {
+    icon: Percent,
+    title: "Earn 12% Commission",
+    description: "On every sale you record or every order through your personal link.",
+  },
   {
     icon: Wallet,
     title: "Dedicated Collection Account",
@@ -45,8 +50,8 @@ export default function BecomeVendorPage() {
           </h1>
           <p className="mx-auto mt-4 max-w-2xl text-rich/70">
             Sell Royal Fragrance products through your own network — online,
-            on WhatsApp, or in person — with a dashboard built for real sales
-            work.
+            on WhatsApp, or in person — and earn 12% commission on every
+            sale, with a dashboard built for real sales work.
           </p>
         </div>
 
@@ -74,7 +79,7 @@ export default function BecomeVendorPage() {
             </p>
           </div>
 
-          <VendorApplicationForm />
+          <VendorInterestForm />
         </div>
       </div>
     </section>
