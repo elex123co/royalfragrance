@@ -1,6 +1,7 @@
 import { getCurrentVendor, getVendorDashboardData } from "@/lib/data/vendor";
 import { formatNaira } from "@/lib/utils/currency";
 import { RecordSaleButton } from "@/components/vendor/RecordSaleButton";
+import { TransactionsList } from "@/components/vendor/TransactionsList";
 
 export const metadata = { title: "Transactions — Vendor — Royal Fragrance" };
 
@@ -52,38 +53,8 @@ export default async function VendorTransactionsPage() {
       <h2 className="mb-3 text-sm font-medium uppercase tracking-wide text-rich/50">
         All Collections
       </h2>
-      <div className="space-y-2">
-        {transactions.length === 0 && (
-          <p className="text-sm text-rich/50">No collections yet.</p>
-        )}
-        {transactions.map((t: any) => (
-          <div
-            key={t.id}
-            className="flex flex-wrap items-center justify-between gap-2 rounded-xl border border-espresso/10 bg-white/50 px-4 py-3 text-sm"
-          >
-            <div>
-              <span className="font-display text-espresso">
-                {formatNaira(t.amount)}
-              </span>
-              {t.payer_name && (
-                <p className="text-xs text-rich/60">From: {t.payer_name}</p>
-              )}
-            </div>
-            <span className="text-rich/50">
-              {new Date(t.transaction_date).toLocaleDateString()}
-            </span>
-            <span
-              className={`rounded-full px-2.5 py-1 text-xs ${
-                recordedIds.has(t.id)
-                  ? "bg-green-100 text-green-700"
-                  : "bg-amber-100 text-amber-700"
-              }`}
-            >
-              {recordedIds.has(t.id) ? "Sale Recorded" : "Unrecorded"}
-            </span>
-          </div>
-        ))}
-      </div>
+      <p className="mb-3 text-xs text-rich/50">Tap any collection to view its receipt.</p>
+      <TransactionsList transactions={transactions} recordedIds={recordedIds} />
     </div>
   );
 }
