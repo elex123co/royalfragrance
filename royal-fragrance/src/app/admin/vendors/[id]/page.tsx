@@ -154,6 +154,56 @@ export default async function AdminVendorDetailPage({
             ))}
           </div>
         </div>
+
+        <div className="rounded-xl2 border border-espresso/10 bg-white/60 p-6 lg:col-span-2">
+          <h2 className="mb-4 font-display text-lg text-espresso">Recorded Sales</h2>
+          <div className="space-y-3">
+            {dashboard.sales.length === 0 && (
+              <p className="text-sm text-rich/50">No sales recorded yet.</p>
+            )}
+            {dashboard.sales.map((sale: any) => (
+              <div
+                key={sale.id}
+                className="rounded-xl border border-espresso/10 bg-cream/60 p-4 text-sm"
+              >
+                <div className="mb-2 flex flex-wrap items-center justify-between gap-2">
+                  <span className="font-medium text-espresso">{sale.sale_number}</span>
+                  <span className="text-xs text-rich/50">
+                    {new Date(sale.created_at).toLocaleString()}
+                  </span>
+                  <span
+                    className={`rounded-full px-2.5 py-1 text-xs ${
+                      sale.sale_status === "approved"
+                        ? "bg-green-100 text-green-700"
+                        : "bg-amber-100 text-amber-700"
+                    }`}
+                  >
+                    {sale.sale_status.replace(/_/g, " ")}
+                  </span>
+                </div>
+                {(sale.customer_name || sale.customer_phone) && (
+                  <p className="mb-2 text-xs text-rich/60">
+                    Customer: {sale.customer_name}
+                    {sale.customer_phone ? ` · ${sale.customer_phone}` : ""}
+                  </p>
+                )}
+                <div className="space-y-1 border-t border-espresso/10 pt-2">
+                  {(sale.vendor_sale_items ?? []).map((item: any) => (
+                    <div key={item.id} className="flex justify-between text-xs text-rich/70">
+                      <span>
+                        {item.products?.name ?? "Product"} × {item.quantity}
+                      </span>
+                      <span>{formatNaira(item.quantity * item.recorded_price)}</span>
+                    </div>
+                  ))}
+                </div>
+                {sale.notes && (
+                  <p className="mt-2 text-xs italic text-rich/50">Note: {sale.notes}</p>
+                )}
+              </div>
+            ))}
+          </div>
+        </div>
       </div>
     </div>
   );

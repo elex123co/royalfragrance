@@ -261,3 +261,41 @@ export async function deleteProduct(productId: string) {
   return { success: true };
 }
 
+export async function applyDiscountTierToAllProducts(
+  discountType: "percentage" | "fixed_amount",
+  discountValue: number
+) {
+  const { admin } = await requireAdmin();
+
+  if (!discountValue || discountValue <= 0) {
+    return { success: false, error: "Enter a discount value greater than 0." };
+  }
+
+  const { data: products, error: productsError } = await admin
+    .from("products")
+    .select("id")
+    .neq("status", "draft");
+
+  if (productsError) return { success: false, error: productsError.message };
+  if (!products || products.length === 0) {
+    return { success: false, error: "No products found." };
+  }
+
+  // upsert with onConflict on the tier's unique (product_id, discount_type,
+  // discount_value) constraint — silently skips products that already
+  // carry this exact tier instead of erroring on the duplicate.
+  const { error } = await admin.from("product_discount_tiers").upsert(
+    products.map((p) => ({
+      product_id: p.id,
+      discount_type: discountType,
+      discount_value: discountValue,
+    })),
+    { onConflict: "product_id,discount_type,discount_value", ignoreDuplicates: true }
+  );
+
+  if (error) return { success: false, error: error.message };
+
+  revalidatePath("/admin/products");
+  revalidatePath("/shop");
+  return { success: true, count: products.length };
+}

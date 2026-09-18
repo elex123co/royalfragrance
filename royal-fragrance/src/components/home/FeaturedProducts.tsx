@@ -1,9 +1,13 @@
 import { ProductCard } from "@/components/ui/ProductCard";
 import { LinkButton } from "@/components/ui/Button";
 import { getFeaturedProducts } from "@/lib/data/products";
+import { getActiveNewUserDiscountPercent } from "@/lib/data/new-user-discount";
 
 export async function FeaturedProducts() {
-  const featured = await getFeaturedProducts();
+  const [featured, newUserDiscountPercent] = await Promise.all([
+    getFeaturedProducts(),
+    getActiveNewUserDiscountPercent(),
+  ]);
 
   return (
     <section className="bg-brand-100/40 py-24">
@@ -19,7 +23,11 @@ export async function FeaturedProducts() {
 
         <div className="grid grid-cols-2 gap-5 sm:gap-6 lg:grid-cols-4">
           {featured.map((product) => (
-            <ProductCard key={product.id} product={product} />
+            <ProductCard
+              key={product.id}
+              product={product}
+              newUserDiscountPercent={newUserDiscountPercent}
+            />
           ))}
         </div>
 

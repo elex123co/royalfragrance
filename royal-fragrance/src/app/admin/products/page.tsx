@@ -3,6 +3,7 @@ import { createAdminClient } from "@/lib/supabase/server";
 import { formatNaira } from "@/lib/utils/currency";
 import { Plus } from "lucide-react";
 import { ProductRowActions } from "@/components/admin/ProductRowActions";
+import { BulkDiscountTierPanel } from "@/components/admin/BulkDiscountTierPanel";
 
 // Always fetch live data — admin dashboards must never serve a stale build-time snapshot.
 export const dynamic = "force-dynamic";
@@ -29,6 +30,8 @@ export default async function AdminProductsPage() {
           <Plus size={16} /> New Product
         </Link>
       </div>
+
+      <BulkDiscountTierPanel />
 
       <div className="overflow-x-auto rounded-xl2 border border-espresso/10 bg-white/60">
         <table className="w-full min-w-[640px] text-left text-sm">

@@ -1,11 +1,14 @@
 import { getCurrentVendor, getVendorDashboardData } from "@/lib/data/vendor";
 import { CopyAccountButton } from "@/components/vendor/CopyAccountButton";
+import { BvnNinForm } from "@/components/vendor/BvnNinForm";
 
+export const dynamic = "force-dynamic";
 export const metadata = { title: "Collection Account — Vendor — Royal Fragrance" };
 
 export default async function CollectionAccountPage() {
   const vendor = await getCurrentVendor();
   const { collectionAccount } = await getVendorDashboardData(vendor!.user_id);
+  const hasBvnOrNin = !!(vendor as any)?.bvn || !!(vendor as any)?.nin;
 
   return (
     <div>
@@ -13,11 +16,13 @@ export default async function CollectionAccountPage() {
         My Collection Account
       </h1>
 
-      {!collectionAccount ? (
+      {!collectionAccount && !hasBvnOrNin ? (
+        <BvnNinForm />
+      ) : !collectionAccount ? (
         <div className="rounded-xl2 border border-espresso/10 bg-white/60 p-6 text-sm text-rich/70">
-          Your collection account hasn&rsquo;t been set up yet. This is
-          configured by the Royal Fragrance team once your vendor account is
-          active — check back soon or reach out to support.
+          Your BVN/NIN is on file — your collection account is now set up
+          by the Royal Fragrance team. Check back soon or reach out to
+          support if it's been a while.
         </div>
       ) : (
         <div className="max-w-md rounded-xl2 border border-espresso/10 bg-brand-gradient p-8 text-cream shadow-premium">

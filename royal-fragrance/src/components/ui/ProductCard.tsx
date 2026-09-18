@@ -57,11 +57,6 @@ export function ProductCard({
             {discountLabel(product.discountType ?? null, product.discountValue) ?? "Sale"}
           </span>
         )}
-        {product.promoTierLabel && !outOfStock && (
-          <span className="absolute right-3 top-3 rounded-full bg-caramel px-3 py-1 text-xs font-semibold tracking-wide text-espresso shadow-sm">
-            Code Discount
-          </span>
-        )}
         {newUserDiscountPercent && !outOfStock && (
           <span className="absolute bottom-3 left-3 rounded-full bg-espresso px-3 py-1 text-xs font-bold tracking-wide text-cream shadow-sm">
             {newUserDiscountPercent}% OFF — New Customers
