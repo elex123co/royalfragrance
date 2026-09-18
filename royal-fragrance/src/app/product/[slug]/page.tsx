@@ -7,8 +7,14 @@ import { BrandImage } from "@/components/ui/BrandImage";
 import { WishlistToggle } from "@/components/shop/WishlistToggle";
 import { createClient } from "@/lib/supabase/server";
 import { isWishlisted } from "@/lib/data/account";
+import { MessageCircle } from "lucide-react";
 
 const SITE_URL = "https://royalfragrancegallery.com";
+
+// Always fetch live data — price, stock, discount tiers, and the new
+// customer discount setting can all change at any time, and a stale
+// cached product page would show outdated info.
+export const dynamic = "force-dynamic";
 
 export async function generateMetadata({
   params,
@@ -161,12 +167,25 @@ export default async function ProductPage({
                   newUserDiscountPercent={newUserDiscountPercent}
                 />
               </div>
-              <div className="mt-8">
+              <div className="mt-8 flex flex-col gap-2">
                 <WishlistToggle
                   productId={product.id}
                   initialWishlisted={wishlisted}
                   isLoggedIn={!!user}
                 />
+                {whatsapp?.business_phone && (
+                  <a
+                    href={`https://wa.me/${whatsapp.business_phone.replace(/\D/g, "")}?text=${encodeURIComponent(
+                      `Hi! I'm interested in ${product.name}.`
+                    )}`}
+                    target="_blank"
+                    rel="noopener noreferrer"
+                    className="flex h-11 w-11 items-center justify-center rounded-full border border-espresso/20 text-espresso transition hover:border-espresso"
+                    aria-label="Chat on WhatsApp"
+                  >
+                    <MessageCircle size={18} />
+                  </a>
+                )}
               </div>
             </div>
           </div>

@@ -22,7 +22,7 @@ export default async function VendorEarningsPage() {
   return (
     <div>
       <h1 className="mb-1 font-display text-2xl text-espresso">My Earnings</h1>
-      <p className="mb-6 text-sm text-rich/60">10% commission on every sale.</p>
+      <p className="mb-6 text-sm text-rich/60">12% commission on every sale.</p>
 
       <div className="mb-8 grid grid-cols-2 gap-4 sm:grid-cols-2">
         <div className="rounded-xl2 border border-espresso/10 bg-white/60 p-5">

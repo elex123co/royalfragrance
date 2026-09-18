@@ -13,7 +13,7 @@ export default async function VendorLinksPage() {
       <h1 className="mb-1 font-display text-2xl text-espresso">My Links</h1>
       <p className="mb-6 text-sm text-rich/60">
         Share a product link below — anyone who buys through it gets attributed
-        to you automatically, and you earn 10% commission once their order is
+        to you automatically, and you earn 12% commission once their order is
         confirmed.
       </p>
 

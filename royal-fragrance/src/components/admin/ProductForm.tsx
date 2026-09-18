@@ -50,7 +50,8 @@ export function ProductForm({
   const [discountTiers, setDiscountTiers] = useState<DiscountTier[]>(initialDiscountTiers);
   const [colors, setColors] = useState<string[]>(initial?.colors ?? []);
   const [colorInput, setColorInput] = useState("");
-  const [form, setForm] = useState<Omit<ProductInput, "discountTiers" | "colors">>({
+  const [productType, setProductType] = useState(initial?.type ?? "");
+  const [form, setForm] = useState<Omit<ProductInput, "discountTiers" | "colors" | "type">>({
     name: initial?.name ?? "",
     slug: initial?.slug ?? "",
     description: initial?.description ?? "",
@@ -164,7 +165,7 @@ export function ProductForm({
     setSubmitting(true);
     setError(null);
 
-    const payload = { ...form, slug: form.slug || slugify(form.name), discountTiers, colors };
+    const payload = { ...form, slug: form.slug || slugify(form.name), discountTiers, colors, type: productType };
     const result = productId
       ? await updateProduct(productId, payload)
       : await createProduct(payload);
@@ -422,6 +423,22 @@ export function ProductForm({
         >
           + Add tier
         </button>
+      </div>
+
+      <div>
+        <label className="mb-1.5 block text-sm font-medium text-espresso">
+          Type (optional)
+        </label>
+        <p className="mb-2 text-xs text-rich/50">
+          Free text — e.g. "Eau de Parfum", "Body Spray", "Attar". Your own
+          wording, not picked from a list.
+        </p>
+        <input
+          value={productType}
+          onChange={(e) => setProductType(e.target.value)}
+          placeholder="e.g. Eau de Parfum"
+          className="w-full rounded-lg border border-espresso/15 px-4 py-2.5 text-sm focus:border-caramel focus:outline-none"
+        />
       </div>
 
       <div>

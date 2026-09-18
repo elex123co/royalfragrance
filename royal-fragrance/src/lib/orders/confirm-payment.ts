@@ -96,17 +96,17 @@ export async function confirmOrderPaidAndDeductStock(
     });
   }
 
-  // 10% affiliate commission on the referring vendor's link — calculated
+  // 12% affiliate commission on the referring vendor's link — calculated
   // on product subtotal only, not delivery, since delivery isn't revenue
   // the vendor helped generate.
   if (order.referred_by_vendor_id) {
-    const commissionAmount = Number(order.subtotal) * 0.1;
+    const commissionAmount = Number(order.subtotal) * 0.12;
     await supabase.from("vendor_commissions").insert({
       vendor_id: order.referred_by_vendor_id,
       source_type: "referral_order",
       source_id: orderId,
       amount: commissionAmount,
-      rate: 0.1,
+      rate: 0.12,
     });
   }
 

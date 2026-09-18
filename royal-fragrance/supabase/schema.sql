@@ -966,3 +966,10 @@ create policy "Anyone can view combo items" on combo_items
   for select using (true);
 create policy "Admins manage combo items" on combo_items
   for all using (public.is_admin());
+
+-- ----------------------------------------------------------------------------
+-- PRODUCT TYPE — free-text field admin types in directly (e.g. "Eau de
+-- Parfum", "Body Spray"), separate from category/subcategory.
+-- ----------------------------------------------------------------------------
+
+alter table products add column type text;

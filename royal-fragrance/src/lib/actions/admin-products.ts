@@ -23,6 +23,7 @@ export interface ProductInput {
    * whichever matching promo code a customer has unlocks that specific one. */
   discountTiers: { discountType: "percentage" | "fixed_amount"; discountValue: number }[];
   colors: string[];
+  type: string;
 }
 
 /**
@@ -66,6 +67,7 @@ export async function createProduct(input: ProductInput) {
       discount_type: input.discountType,
       discount_value: input.discountValue,
       colors: input.colors,
+      type: input.type || null,
     })
     .select()
     .single();
@@ -151,6 +153,7 @@ export async function updateProduct(productId: string, input: ProductInput) {
       discount_type: input.discountType,
       discount_value: input.discountValue,
       colors: input.colors,
+      type: input.type || null,
     })
     .eq("id", productId);
 

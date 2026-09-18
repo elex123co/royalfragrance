@@ -25,6 +25,7 @@ export interface Product {
    * code, and never changes the shown price on its own. */
   promoTierLabel?: string;
   colors?: string[];
+  productType?: string;
   image: string;
   notes?: {
     top?: string[];

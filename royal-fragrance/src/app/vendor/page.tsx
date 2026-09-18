@@ -128,7 +128,7 @@ async function AffiliateOverview({
 
       <div className="mt-8 rounded-xl2 border border-caramel/30 bg-caramel/10 p-5">
         <p className="text-sm text-espresso">
-          You earn 10% every time someone buys through your personal link.{" "}
+          You earn 12% every time someone buys through your personal link.{" "}
           <Link href="/vendor/links" className="underline">
             Get your links
           </Link>

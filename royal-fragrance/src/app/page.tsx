@@ -7,6 +7,11 @@ import { BecomeVendor } from "@/components/home/BecomeVendor";
 import { Testimonials } from "@/components/home/Testimonials";
 import { Newsletter } from "@/components/home/Newsletter";
 
+// Always fetch live data — FeaturedProducts reads pricing/discount
+// settings that can change at any time, and a stale cached homepage
+// would show outdated prices/badges.
+export const dynamic = "force-dynamic";
+
 export default function HomePage() {
   return (
     <>

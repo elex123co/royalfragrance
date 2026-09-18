@@ -153,15 +153,15 @@ export async function recordVendorSale(input: RecordSaleInput) {
     metadata: { saleStatus, recordedTotal },
   });
 
-  // Flat 10% commission on every vendor sale, physical or affiliate —
+  // Flat 12% commission on every vendor sale, physical or affiliate —
   // computed on the recorded total, not the raw transaction amount, so a
   // partial or mismatched recording doesn't overpay commission.
   await supabase.from("vendor_commissions").insert({
     vendor_id: vendorId,
     source_type: "vendor_sale",
     source_id: sale.id,
-    amount: recordedTotal * 0.1,
-    rate: 0.1,
+    amount: recordedTotal * 0.12,
+    rate: 0.12,
   });
 
   revalidatePath("/vendor/sales");
