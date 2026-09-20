@@ -325,7 +325,7 @@ export function ProductForm({
           markdown. For promo-code-only pricing, use Discount Tiers below
           instead.
         </p>
-        <div className="grid grid-cols-2 gap-3">
+        <div className="grid grid-cols-1 gap-3 sm:grid-cols-2">
           <select
             value={form.discountType ?? ""}
             onChange={(e) =>
@@ -374,7 +374,7 @@ export function ProductForm({
 
         <div className="space-y-2">
           {discountTiers.map((tier, i) => (
-            <div key={i} className="flex items-center gap-2">
+            <div key={i} className="flex flex-wrap items-center gap-2">
               <select
                 value={tier.discountType}
                 onChange={(e) =>
@@ -384,7 +384,7 @@ export function ProductForm({
                     )
                   )
                 }
-                className="rounded-lg border border-espresso/15 px-3 py-2 text-sm"
+                className="min-w-0 flex-1 rounded-lg border border-espresso/15 px-3 py-2 text-sm sm:flex-none"
               >
                 <option value="percentage">% off</option>
                 <option value="fixed_amount">₦ off</option>
@@ -401,12 +401,12 @@ export function ProductForm({
                   )
                 }
                 placeholder={tier.discountType === "percentage" ? "15" : "2000"}
-                className="w-28 rounded-lg border border-espresso/15 px-3 py-2 text-sm"
+                className="w-24 min-w-0 flex-1 rounded-lg border border-espresso/15 px-3 py-2 text-sm sm:w-28 sm:flex-none"
               />
               <button
                 type="button"
                 onClick={() => setDiscountTiers((prev) => prev.filter((_, idx) => idx !== i))}
-                className="text-xs text-red-500 hover:underline"
+                className="shrink-0 text-xs text-red-500 hover:underline"
               >
                 Remove
               </button>
@@ -583,7 +583,7 @@ export function ProductForm({
               >
                 ✕
               </button>
-              <div className="grid grid-cols-3 gap-2">
+              <div className="grid grid-cols-1 gap-2 sm:grid-cols-3">
                 <div>
                   <label className="mb-1 block text-[10px] uppercase tracking-wide text-rich/50">
                     Size
