@@ -65,15 +65,9 @@ export function ProductCard({
       </div>
 
       <div className="flex flex-1 flex-col gap-1.5 p-4 sm:p-5">
-        <span className="text-[11px] uppercase tracking-widest text-caramel">
-          {product.category}
-        </span>
         <h3 className="font-display text-base leading-snug text-espresso sm:text-lg">
           {product.name}
         </h3>
-        <p className="line-clamp-2 text-xs text-rich/70 sm:text-sm">
-          {product.shortDescription}
-        </p>
 
         <div className="mt-3 flex items-center gap-2 justify-between">
           <div className="flex items-baseline gap-2">
