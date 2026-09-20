@@ -11,11 +11,11 @@ type Step = "customer" | "delivery" | "summary";
 
 export function CheckoutForm({
   zones,
-  newUserDiscountActive = false,
+  newUserDiscountEligible = false,
   newUserDiscountPercentage = 10,
 }: {
   zones: DeliveryZone[];
-  newUserDiscountActive?: boolean;
+  newUserDiscountEligible?: boolean;
   newUserDiscountPercentage?: number;
 }) {
   const { items, subtotal, clearCart } = useCart();
@@ -52,7 +52,19 @@ export function CheckoutForm({
 
   const selectedZone = zones.find((z) => z.id === delivery.zoneId);
   const deliveryFee = selectedZone?.fee ?? 0;
-  const discountAmount = promoStatus.applied ? promoStatus.discountAmount : 0;
+
+  // A promo code, once applied, REPLACES the automatic new-customer
+  // discount rather than stacking with it — matching exactly how the
+  // backend computes the real charge at order-creation time, so what's
+  // shown here is never misleading.
+  const autoDiscountAmount =
+    !promoStatus.applied && newUserDiscountEligible
+      ? Math.round(subtotal * (newUserDiscountPercentage / 100))
+      : 0;
+  const discountAmount = promoStatus.applied ? promoStatus.discountAmount : autoDiscountAmount;
+  const discountLabel = promoStatus.applied
+    ? `Promo code "${promoStatus.code}"`
+    : "New customer discount";
   const total = subtotal + deliveryFee - discountAmount;
 
   async function handleApplyPromo() {
@@ -131,11 +143,10 @@ export function CheckoutForm({
     <div className="rounded-xl2 border border-espresso/10 bg-white/60 p-6 shadow-premium-sm sm:p-8">
       <StepIndicator step={step} />
 
-      {newUserDiscountActive && (
+      {newUserDiscountEligible && !promoStatus.applied && (
         <div className="mt-6 rounded-xl bg-caramel/15 px-4 py-3 text-sm text-espresso">
-          New customers get <strong>{newUserDiscountPercentage}% off</strong> their
-          first order — applied automatically at checkout if you're signed
-          in and this is your first purchase with us.
+          You qualify for <strong>{newUserDiscountPercentage}% off</strong> as a new
+          customer — already applied to your total below.
         </div>
       )}
 
@@ -271,6 +282,9 @@ export function CheckoutForm({
             {promoStatus.applied && (
               <p className="mt-1.5 text-xs text-green-700">
                 "{promoStatus.code}" applied — {formatNaira(promoStatus.discountAmount)} off
+                {newUserDiscountEligible
+                  ? " (replaces your automatic new-customer discount)"
+                  : ""}
               </p>
             )}
             {!promoStatus.applied && "error" in promoStatus && promoStatus.error && (
@@ -289,7 +303,7 @@ export function CheckoutForm({
             </div>
             {discountAmount > 0 && (
               <div className="flex justify-between text-green-700">
-                <span>Discount</span>
+                <span>{discountLabel}</span>
                 <span>−{formatNaira(discountAmount)}</span>
               </div>
             )}
