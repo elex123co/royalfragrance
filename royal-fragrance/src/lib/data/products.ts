@@ -15,10 +15,10 @@ function bestTierLabel(tiers: { discount_type: string; discount_value: number }[
   const percentageTiers = tiers.filter((t) => t.discount_type === "percentage");
   if (percentageTiers.length > 0) {
     const best = Math.max(...percentageTiers.map((t) => Number(t.discount_value)));
-    return `Up to ${best}% off with code`;
+    return `Up to ${best}% off with code for regular customers`;
   }
   const best = Math.max(...tiers.map((t) => Number(t.discount_value)));
-  return `Up to ₦${best.toLocaleString()} off with code`;
+  return `Up to ₦${best.toLocaleString()} off with code for regular customers`;
 }
 
 /**
