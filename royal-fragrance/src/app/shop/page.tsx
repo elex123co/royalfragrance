@@ -6,7 +6,7 @@ import { ProductCard } from "@/components/ui/ProductCard";
 import { ShopFilters } from "@/components/shop/ShopFilters";
 import { Pagination } from "@/components/shop/Pagination";
 
-const PRODUCTS_PER_PAGE = 20;
+const PRODUCTS_PER_PAGE = 12;
 
 export const metadata = {
   title: "Shop",

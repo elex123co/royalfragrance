@@ -27,21 +27,23 @@ export function ProductCard({
         />
         <div className="pointer-events-none absolute inset-0 bg-gradient-to-t from-black/10 via-transparent to-white/10" />
 
-        {outOfStock && (
-          <span className="absolute left-3 top-3 rounded-full bg-espresso/90 px-3 py-1 text-xs tracking-wide text-cream">
-            Out of Stock
-          </span>
-        )}
-        {product.originalPrice && !outOfStock && (
-          <span className="absolute left-3 top-3 rounded-full bg-red-600 px-3 py-1 text-xs font-medium tracking-wide text-white shadow-sm">
-            {discountLabel(product.discountType ?? null, product.discountValue) ?? "Sale"}
-          </span>
-        )}
-        {newUserDiscountPercent && !outOfStock && (
-          <span className="absolute bottom-3 left-3 rounded-full bg-espresso px-3 py-1 text-xs font-bold tracking-wide text-cream shadow-sm">
-            {newUserDiscountPercent}% OFF
-          </span>
-        )}
+        <div className="absolute left-3 top-3 flex flex-col items-start gap-1.5">
+          {outOfStock && (
+            <span className="rounded-full bg-espresso/90 px-3 py-1 text-xs tracking-wide text-cream">
+              Out of Stock
+            </span>
+          )}
+          {product.originalPrice && !outOfStock && (
+            <span className="rounded-full bg-red-600 px-2.5 py-1 text-[11px] font-medium tracking-wide text-white shadow-sm">
+              {discountLabel(product.discountType ?? null, product.discountValue) ?? "Sale"}
+            </span>
+          )}
+          {newUserDiscountPercent && !outOfStock && (
+            <span className="rounded-full bg-espresso px-2.5 py-1 text-[11px] font-bold tracking-wide text-cream shadow-sm">
+              {newUserDiscountPercent}% OFF
+            </span>
+          )}
+        </div>
 
         {/* Name + price sit directly on the image as a bottom overlay,
             keeping the card a true square instead of stretching it with
