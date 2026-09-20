@@ -34,12 +34,12 @@ export function ProductCard({
             </span>
           )}
           {product.originalPrice && !outOfStock && (
-            <span className="rounded-full bg-red-600 px-2.5 py-1 text-[11px] font-medium tracking-wide text-white shadow-sm">
+            <span className="rounded-full bg-red-600 px-2 py-0.5 text-[9px] font-medium tracking-wide text-white shadow-sm">
               {discountLabel(product.discountType ?? null, product.discountValue) ?? "Sale"}
             </span>
           )}
           {newUserDiscountPercent && !outOfStock && (
-            <span className="rounded-full bg-espresso px-2.5 py-1 text-[11px] font-bold tracking-wide text-cream shadow-sm">
+            <span className="rounded-full bg-espresso px-2 py-0.5 text-[9px] font-bold tracking-wide text-cream shadow-sm">
               {newUserDiscountPercent}% OFF
             </span>
           )}

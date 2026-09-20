@@ -104,7 +104,7 @@ export function ProductPurchasePanel({
       )}
 
       {product.promoTierLabel && (
-        <span className="mt-2 inline-block rounded-full bg-caramel px-3 py-1.5 text-sm font-semibold text-espresso shadow-sm">
+        <span className="mt-2 inline-block whitespace-nowrap rounded-lg bg-caramel px-3 py-1.5 text-xs font-semibold text-espresso shadow-sm">
           {product.promoTierLabel}
         </span>
       )}
