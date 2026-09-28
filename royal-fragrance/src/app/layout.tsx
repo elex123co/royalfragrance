@@ -2,6 +2,7 @@ import type { Metadata, Viewport } from "next";
 import { Playfair_Display, Inter } from "next/font/google";
 import "./globals.css";
 import Navbar from "@/components/layout/Navbar";
+import { AnniversaryBanner } from "@/components/layout/AnniversaryBanner";
 import Footer from "@/components/layout/Footer";
 import { CartProvider } from "@/context/CartContext";
 import { AssistantWidget } from "@/components/assistant/AssistantWidget";
@@ -110,6 +111,7 @@ export default function RootLayout({
       <body>
         <MetaPixel />
         <CartProvider>
+          <AnniversaryBanner />
           <Navbar />
           <main>{children}</main>
           <Footer />

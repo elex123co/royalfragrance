@@ -40,7 +40,7 @@ export function ProductCard({
           )}
           {newUserDiscountPercent && !outOfStock && (
             <span className="rounded-full bg-espresso px-2 py-0.5 text-[9px] font-bold tracking-wide text-cream shadow-sm">
-              {newUserDiscountPercent}% OFF
+              Percent Off
             </span>
           )}
         </div>

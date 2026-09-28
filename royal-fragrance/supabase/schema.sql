@@ -79,10 +79,14 @@ create table vendors (
 -- ----------------------------------------------------------------------------
 create table categories (
   id uuid primary key default gen_random_uuid(),
-  name text not null unique,
-  slug text not null unique,
+  name text not null,
+  slug text not null,
   created_at timestamptz not null default now()
 );
+-- Uniqueness is scoped to (parent_category_id, name/slug) rather than
+-- global — added once parent_category_id exists (see the subcategories
+-- migration further below) — so the same subcategory name (e.g.
+-- "Masculine") can exist under many different parent categories.
 
 create table products (
   id uuid primary key default gen_random_uuid(),
@@ -906,6 +910,16 @@ alter table vendors add column nin text;
 -- subcategory nested under a main category. Top-level categories simply
 -- have parent_category_id = null, unchanged from before.
 alter table categories add column parent_category_id uuid references categories (id) on delete set null;
+
+-- Fixes an early design mistake: name/slug were globally unique across
+-- ALL categories, so "Masculine" could only ever exist once anywhere —
+-- blocking it from being reused as a subcategory under different
+-- parents (e.g. under both "Body Mist" and "Oud"). Scoping uniqueness to
+-- (parent_category_id, name/slug) instead fixes this properly.
+alter table categories drop constraint categories_name_key;
+alter table categories drop constraint categories_slug_key;
+alter table categories add constraint categories_parent_name_unique unique (parent_category_id, name);
+alter table categories add constraint categories_parent_slug_unique unique (parent_category_id, slug);
 
 -- Colors: simple descriptive tags shown on a product, not a stock-tracked
 -- variant dimension (unlike size) — a lighter-weight fit for a fragrance

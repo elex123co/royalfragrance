@@ -72,7 +72,7 @@ export default function Navbar() {
           onClick={() => setOpen(false)}
           className="flex items-center gap-2 font-display text-xl tracking-wide text-espresso"
         >
-          <span className="flex h-11 w-11 items-center justify-center rounded-full bg-leather p-1.5 shadow-sm">
+          <span className="flex h-11 w-11 items-center justify-center rounded-full bg-leather p-1.5 shadow-sm ring-2 ring-caramel ring-offset-2 ring-offset-cream/20">
             <Image src={LOGO_URL} alt="Royal Fragrance" width={36} height={36} className="h-full w-full object-contain" />
           </span>
         </Link>
@@ -151,8 +151,8 @@ export default function Navbar() {
     <header
       className={
         isHome
-          ? "fixed inset-x-0 top-0 z-50 border-b border-white/10 bg-black/10 backdrop-blur-md"
-          : "sticky top-0 z-50 border-b border-espresso/10 bg-cream/90 backdrop-blur-md"
+          ? "fixed inset-x-0 top-9 z-50 border-b border-white/10 bg-black/10 backdrop-blur-md"
+          : "sticky top-9 z-50 border-b border-espresso/10 bg-cream/90 backdrop-blur-md"
       }
     >
       <div className="mx-auto flex max-w-7xl items-center justify-between px-5 py-4 lg:px-8">
@@ -160,7 +160,7 @@ export default function Navbar() {
           href="/"
           className="flex items-center gap-2 font-display text-xl tracking-wide text-espresso"
         >
-          <span className="flex h-11 w-11 items-center justify-center rounded-full bg-leather p-1.5 shadow-sm">
+          <span className="flex h-11 w-11 items-center justify-center rounded-full bg-leather p-1.5 shadow-sm ring-2 ring-caramel ring-offset-2 ring-offset-cream/20">
             <Image src={LOGO_URL} alt="Royal Fragrance" width={36} height={36} className="h-full w-full object-contain" />
           </span>
         </Link>
