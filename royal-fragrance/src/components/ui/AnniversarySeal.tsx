@@ -29,8 +29,13 @@ export function AnniversarySeal({ size = 120 }: { size?: number }) {
 
       {/* Sunburst rays — the core "energy" of the design, replacing the
           stiff laurel wreath with something that reads as celebratory
-          motion rather than a formal crest. */}
-      <g transform="translate(60,60)">
+          motion rather than a formal crest. Spins slowly for real,
+          continuous energy rather than sitting static. */}
+      <g
+        transform="translate(60,60)"
+        className="animate-slow-spin"
+        style={{ transformOrigin: "60px 60px" }}
+      >
         {rays.map((_, i) => {
           const angle = (360 / rays.length) * i;
           return (
@@ -63,33 +68,36 @@ export function AnniversarySeal({ size = 120 }: { size?: number }) {
         />
       ))}
 
-      {/* Center medallion */}
-      <circle cx="60" cy="60" r="34" fill="url(#burstCore)" stroke="#70452F" strokeWidth="2" />
+      {/* Center medallion — gently pulses to draw the eye without being
+          obnoxious about it. */}
+      <g className="animate-gentle-pulse" style={{ transformOrigin: "60px 60px" }}>
+        <circle cx="60" cy="60" r="34" fill="url(#burstCore)" stroke="#70452F" strokeWidth="2" />
 
-      <text
-        x="60"
-        y="55"
-        textAnchor="middle"
-        fontSize="11"
-        fontWeight="800"
-        letterSpacing="0.5"
-        fill="#2B1B14"
-        fontFamily="sans-serif"
-      >
-        HAPPY
-      </text>
-      <text
-        x="60"
-        y="72"
-        textAnchor="middle"
-        fontSize="9"
-        fontWeight="700"
-        letterSpacing="0.5"
-        fill="#5C1F1F"
-        fontFamily="sans-serif"
-      >
-        ANNIVERSARY
-      </text>
+        <text
+          x="60"
+          y="55"
+          textAnchor="middle"
+          fontSize="11"
+          fontWeight="800"
+          letterSpacing="0.5"
+          fill="#2B1B14"
+          fontFamily="sans-serif"
+        >
+          HAPPY
+        </text>
+        <text
+          x="60"
+          y="72"
+          textAnchor="middle"
+          fontSize="9"
+          fontWeight="700"
+          letterSpacing="0.5"
+          fill="#5C1F1F"
+          fontFamily="sans-serif"
+        >
+          ANNIVERSARY
+        </text>
+      </g>
     </svg>
   );
 }

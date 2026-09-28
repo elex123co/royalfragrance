@@ -49,6 +49,8 @@ const config: Config = {
       animation: {
         "fade-up": "fadeUp 0.8s ease-out forwards",
         "fade-in": "fadeIn 1s ease-out forwards",
+        "gentle-pulse": "gentlePulse 2.2s ease-in-out infinite",
+        "slow-spin": "slowSpin 14s linear infinite",
       },
       keyframes: {
         fadeUp: {
@@ -58,6 +60,14 @@ const config: Config = {
         fadeIn: {
           "0%": { opacity: "0" },
           "100%": { opacity: "1" },
+        },
+        gentlePulse: {
+          "0%, 100%": { transform: "scale(1)" },
+          "50%": { transform: "scale(1.08)" },
+        },
+        slowSpin: {
+          "0%": { transform: "rotate(0deg)" },
+          "100%": { transform: "rotate(360deg)" },
         },
       },
     },

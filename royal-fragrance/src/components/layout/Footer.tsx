@@ -1,14 +1,18 @@
 import Link from "next/link";
 import { Instagram, Facebook, Twitter, Phone, Mail, MapPin } from "lucide-react";
+import { AnniversarySeal } from "@/components/ui/AnniversarySeal";
 
 export default function Footer() {
   return (
     <footer className="bg-espresso text-cream">
       <div className="mx-auto grid max-w-7xl gap-10 px-5 py-16 lg:grid-cols-5 lg:px-8">
         <div>
-          <h3 className="font-display text-xl">
-            Royal <span className="text-caramel">Fragrance</span>
-          </h3>
+          <div className="flex items-center gap-3">
+            <h3 className="font-display text-xl">
+              Royal <span className="text-caramel">Fragrance</span>
+            </h3>
+            <AnniversarySeal size={44} />
+          </div>
           <p className="mt-3 max-w-xs text-sm text-cream/70">
             A luxury fragrance brand for today, and an original perfume house
             in the making. More than a scent — a growing vision.
@@ -37,12 +41,12 @@ export default function Footer() {
                 href="mailto:oyinkansolaelizabetholutunde@gmail.com"
                 className="break-all hover:text-cream"
               >
-                royalfragrancegallery@gmail.com
+                oyinkansolaelizabetholutunde@gmail.com
               </a>
             </li>
             <li className="flex items-start gap-2.5">
               <MapPin size={15} className="mt-0.5 shrink-0 text-caramel" />
-              <span>Abesan Estate, Ipaja, Lagos</span>
+              <span>Block 314, Abesan Estate, Ipaja, Lagos</span>
             </li>
           </ul>
         </div>

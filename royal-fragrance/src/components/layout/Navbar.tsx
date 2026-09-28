@@ -5,6 +5,7 @@ import Image from "next/image";
 import { usePathname } from "next/navigation";
 import { useState, useEffect } from "react";
 import { createPortal } from "react-dom";
+import { AnniversarySeal } from "@/components/ui/AnniversarySeal";
 import {
   Menu,
   X,
@@ -72,8 +73,11 @@ export default function Navbar() {
           onClick={() => setOpen(false)}
           className="flex items-center gap-2 font-display text-xl tracking-wide text-espresso"
         >
-          <span className="flex h-11 w-11 items-center justify-center rounded-full bg-leather p-1.5 shadow-sm ring-2 ring-caramel ring-offset-2 ring-offset-cream/20">
+          <span className="relative flex h-11 w-11 items-center justify-center rounded-full bg-leather p-1.5 shadow-sm ring-2 ring-caramel ring-offset-2 ring-offset-cream/20">
             <Image src={LOGO_URL} alt="Royal Fragrance" width={36} height={36} className="h-full w-full object-contain" />
+            <span className="absolute -bottom-1 -right-1">
+              <AnniversarySeal size={20} />
+            </span>
           </span>
         </Link>
         <button
@@ -160,8 +164,11 @@ export default function Navbar() {
           href="/"
           className="flex items-center gap-2 font-display text-xl tracking-wide text-espresso"
         >
-          <span className="flex h-11 w-11 items-center justify-center rounded-full bg-leather p-1.5 shadow-sm ring-2 ring-caramel ring-offset-2 ring-offset-cream/20">
+          <span className="relative flex h-11 w-11 items-center justify-center rounded-full bg-leather p-1.5 shadow-sm ring-2 ring-caramel ring-offset-2 ring-offset-cream/20">
             <Image src={LOGO_URL} alt="Royal Fragrance" width={36} height={36} className="h-full w-full object-contain" />
+            <span className="absolute -bottom-1 -right-1">
+              <AnniversarySeal size={20} />
+            </span>
           </span>
         </Link>
 

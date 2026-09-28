@@ -20,7 +20,7 @@ export function Hero() {
       <div className="absolute inset-0 bg-gradient-to-r from-espresso/90 via-espresso/70 to-espresso/40" />
 
       <div className="absolute right-6 top-28 z-10 drop-shadow-2xl sm:right-12 sm:top-32">
-        <AnniversarySeal size={150} />
+        <AnniversarySeal size={180} />
       </div>
 
       <div className="relative mx-auto max-w-7xl px-5 py-24 lg:px-8">
