@@ -19,8 +19,8 @@ export function Hero() {
           fading a little lighter toward the right where there's no text. */}
       <div className="absolute inset-0 bg-gradient-to-r from-espresso/90 via-espresso/70 to-espresso/40" />
 
-      <div className="absolute right-6 top-6 drop-shadow-lg sm:right-10 sm:top-10">
-        <AnniversarySeal size={90} />
+      <div className="absolute right-6 top-28 z-10 drop-shadow-2xl sm:right-12 sm:top-32">
+        <AnniversarySeal size={150} />
       </div>
 
       <div className="relative mx-auto max-w-7xl px-5 py-24 lg:px-8">
