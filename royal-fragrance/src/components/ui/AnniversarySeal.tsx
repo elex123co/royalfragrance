@@ -1,79 +1,92 @@
 export function AnniversarySeal({ size = 120 }: { size?: number }) {
+  const rays = Array.from({ length: 16 });
+  const confetti = [
+    { x: 14, y: 22, r: 3.2, color: "#E85D4E", rot: 20 },
+    { x: 100, y: 18, r: 2.6, color: "#4BA3A0", rot: -15 },
+    { x: 108, y: 55, r: 3, color: "#E8C24A", rot: 45 },
+    { x: 96, y: 92, r: 2.8, color: "#E85D4E", rot: -30 },
+    { x: 60, y: 106, r: 3.2, color: "#4BA3A0", rot: 10 },
+    { x: 20, y: 90, r: 2.6, color: "#E8C24A", rot: -20 },
+    { x: 8, y: 58, r: 3, color: "#E85D4E", rot: 35 },
+    { x: 30, y: 10, r: 2.4, color: "#4BA3A0", rot: 60 },
+    { x: 88, y: 8, r: 2.4, color: "#E8C24A", rot: -50 },
+  ];
+
   return (
     <svg
       width={size}
-      height={size * 1.25}
-      viewBox="0 0 120 150"
+      height={size}
+      viewBox="0 0 120 120"
       xmlns="http://www.w3.org/2000/svg"
-      aria-label="Anniversary"
+      aria-label="Anniversary celebration"
     >
       <defs>
-        <linearGradient id="goldFace" x1="0%" y1="0%" x2="100%" y2="100%">
-          <stop offset="0%" stopColor="#E8C88A" />
-          <stop offset="45%" stopColor="#C49A7A" />
-          <stop offset="100%" stopColor="#8A5A34" />
-        </linearGradient>
-        <linearGradient id="goldRim" x1="0%" y1="0%" x2="100%" y2="100%">
-          <stop offset="0%" stopColor="#F2D9A8" />
-          <stop offset="100%" stopColor="#70452F" />
-        </linearGradient>
+        <radialGradient id="burstCore" cx="50%" cy="50%" r="50%">
+          <stop offset="0%" stopColor="#F5D98A" />
+          <stop offset="100%" stopColor="#C49A7A" />
+        </radialGradient>
       </defs>
 
-      {/* Ribbon tails, drawn first so the medallion sits on top */}
-      <path d="M42 88 L34 148 L60 132 L86 148 L78 88 Z" fill="#5C1F1F" />
-      <path d="M42 88 L34 148 L48 140 L52 88 Z" fill="#4A1818" />
-      <path d="M78 88 L86 148 L72 140 L68 88 Z" fill="#4A1818" />
-
-      {/* Laurel branches */}
-      <g fill="none" stroke="url(#goldRim)" strokeWidth="2.5" strokeLinecap="round">
-        <path d="M14 70 C 20 55, 22 40, 34 28" />
-        <path d="M18 62 C 24 60, 28 56, 30 50" />
-        <path d="M20 50 C 26 49, 30 45, 32 40" />
-        <path d="M24 38 C 29 38, 32 35, 34 31" />
-
-        <path d="M106 70 C 100 55, 98 40, 86 28" />
-        <path d="M102 62 C 96 60, 92 56, 90 50" />
-        <path d="M100 50 C 94 49, 90 45, 88 40" />
-        <path d="M96 38 C 91 38, 88 35, 86 31" />
+      {/* Sunburst rays — the core "energy" of the design, replacing the
+          stiff laurel wreath with something that reads as celebratory
+          motion rather than a formal crest. */}
+      <g transform="translate(60,60)">
+        {rays.map((_, i) => {
+          const angle = (360 / rays.length) * i;
+          return (
+            <rect
+              key={i}
+              x="-2.5"
+              y="-58"
+              width="5"
+              height="20"
+              rx="2.5"
+              fill={i % 2 === 0 ? "#E8C24A" : "#C49A7A"}
+              transform={`rotate(${angle})`}
+            />
+          );
+        })}
       </g>
 
-      {/* Medallion */}
-      <circle cx="60" cy="55" r="42" fill="url(#goldRim)" />
-      <circle cx="60" cy="55" r="36" fill="url(#goldFace)" stroke="#3D2414" strokeWidth="1" />
-      <circle cx="60" cy="55" r="30" fill="none" stroke="#E8D7C5" strokeWidth="1" opacity="0.6" />
+      {/* Confetti pieces scattered around the burst — bright, varied
+          colors for genuine party energy. */}
+      {confetti.map((c, i) => (
+        <rect
+          key={i}
+          x={c.x - c.r}
+          y={c.y - c.r}
+          width={c.r * 2}
+          height={c.r * 2}
+          rx={c.r * 0.4}
+          fill={c.color}
+          transform={`rotate(${c.rot} ${c.x} ${c.y})`}
+        />
+      ))}
+
+      {/* Center medallion */}
+      <circle cx="60" cy="60" r="34" fill="url(#burstCore)" stroke="#70452F" strokeWidth="2" />
 
       <text
         x="60"
-        y="49"
+        y="55"
         textAnchor="middle"
-        fontSize="8"
+        fontSize="11"
+        fontWeight="800"
+        letterSpacing="0.5"
+        fill="#2B1B14"
+        fontFamily="sans-serif"
+      >
+        HAPPY
+      </text>
+      <text
+        x="60"
+        y="72"
+        textAnchor="middle"
+        fontSize="9"
         fontWeight="700"
-        letterSpacing="1.5"
-        fill="#2B1B14"
-        fontFamily="serif"
-      >
-        ROYAL
-      </text>
-      <text
-        x="60"
-        y="60"
-        textAnchor="middle"
-        fontSize="6.5"
-        letterSpacing="1.2"
-        fill="#2B1B14"
-        fontFamily="serif"
-      >
-        FRAGRANCE
-      </text>
-      <line x1="42" y1="65" x2="78" y2="65" stroke="#2B1B14" strokeWidth="0.75" opacity="0.5" />
-      <text
-        x="60"
-        y="74"
-        textAnchor="middle"
-        fontSize="6"
-        letterSpacing="2"
-        fill="#2B1B14"
-        fontFamily="serif"
+        letterSpacing="0.5"
+        fill="#5C1F1F"
+        fontFamily="sans-serif"
       >
         ANNIVERSARY
       </text>
