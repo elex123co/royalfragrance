@@ -4,25 +4,44 @@ import { useRouter, useSearchParams, usePathname } from "next/navigation";
 import { useState } from "react";
 import { Search } from "lucide-react";
 
-export function ShopFilters({ categories }: { categories: string[] }) {
+interface Category {
+  id: string;
+  name: string;
+  parent_category_id: string | null;
+}
+
+export function ShopFilters({ categories }: { categories: Category[] }) {
   const router = useRouter();
   const pathname = usePathname();
   const searchParams = useSearchParams();
   const [query, setQuery] = useState(searchParams.get("q") ?? "");
 
-  function updateParam(key: string, value: string) {
+  const selectedCategory = searchParams.get("category") ?? "";
+  const topLevelCategories = categories.filter((c) => !c.parent_category_id);
+  const subcategories = categories.filter((c) => c.parent_category_id === selectedCategory);
+
+  function updateParams(updates: Record<string, string>) {
     const params = new URLSearchParams(searchParams.toString());
-    if (value) {
-      params.set(key, value);
-    } else {
-      params.delete(key);
+    for (const [key, value] of Object.entries(updates)) {
+      if (value) {
+        params.set(key, value);
+      } else {
+        params.delete(key);
+      }
     }
     router.push(`${pathname}?${params.toString()}`);
   }
 
   function handleSearchSubmit(e: React.FormEvent) {
     e.preventDefault();
-    updateParam("q", query);
+    updateParams({ q: query });
+  }
+
+  function handleCategoryChange(value: string) {
+    // Changing the parent invalidates whatever subcategory was picked
+    // under the previous parent — clear it so we never end up filtering
+    // by a subcategory that no longer belongs to the selected parent.
+    updateParams({ category: value, subcategory: "" });
   }
 
   return (
@@ -43,21 +62,36 @@ export function ShopFilters({ categories }: { categories: string[] }) {
 
       <div className="flex flex-wrap gap-3">
         <select
-          defaultValue={searchParams.get("category") ?? ""}
-          onChange={(e) => updateParam("category", e.target.value)}
+          value={selectedCategory}
+          onChange={(e) => handleCategoryChange(e.target.value)}
           className="rounded-full border border-espresso/15 bg-white px-4 py-2 text-sm text-espresso focus:border-caramel focus:outline-none"
         >
           <option value="">All Categories</option>
-          {categories.map((c) => (
-            <option key={c} value={c}>
-              {c}
+          {topLevelCategories.map((c) => (
+            <option key={c.id} value={c.id}>
+              {c.name}
             </option>
           ))}
         </select>
 
+        {selectedCategory && subcategories.length > 0 && (
+          <select
+            value={searchParams.get("subcategory") ?? ""}
+            onChange={(e) => updateParams({ subcategory: e.target.value })}
+            className="rounded-full border border-caramel/40 bg-white px-4 py-2 text-sm text-espresso focus:border-caramel focus:outline-none"
+          >
+            <option value="">All {topLevelCategories.find((c) => c.id === selectedCategory)?.name}</option>
+            {subcategories.map((c) => (
+              <option key={c.id} value={c.id}>
+                {c.name}
+              </option>
+            ))}
+          </select>
+        )}
+
         <select
           defaultValue={searchParams.get("sort") ?? ""}
-          onChange={(e) => updateParam("sort", e.target.value)}
+          onChange={(e) => updateParams({ sort: e.target.value })}
           className="rounded-full border border-espresso/15 bg-white px-4 py-2 text-sm text-espresso focus:border-caramel focus:outline-none"
         >
           <option value="">Sort: Newest</option>

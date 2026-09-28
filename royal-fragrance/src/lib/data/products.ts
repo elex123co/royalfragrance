@@ -89,6 +89,7 @@ function mapRow(row: any, promoTierLabel?: string): Product {
     shortDescription: row.short_description ?? "",
     description: row.description ?? "",
     category: row.categories?.name ?? "Uncategorized",
+    categoryId: row.category_id ?? null,
     price: effectivePrice,
     originalPrice: effectivePrice !== rawPrice ? rawPrice : undefined,
     discountType: discountType ?? undefined,

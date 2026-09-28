@@ -23,6 +23,7 @@ interface ShopPageProps {
   searchParams: {
     q?: string;
     category?: string;
+    subcategory?: string;
     sort?: string;
     minPrice?: string;
     maxPrice?: string;
@@ -48,10 +49,22 @@ export default async function ShopPage({ searchParams }: ShopPageProps) {
     );
   }
 
-  if (searchParams.category) {
-    filtered = filtered.filter(
-      (p) => p.category.toLowerCase() === searchParams.category!.toLowerCase()
-    );
+  // Filtering by category ID rather than name — names are no longer
+  // globally unique (the same subcategory name, e.g. "Masculine", can now
+  // exist under several different parents), so name matching would be
+  // ambiguous. Picking a specific subcategory matches only that one;
+  // picking just a parent (with no subcategory chosen) matches the
+  // parent itself PLUS every one of its subcategories, since that's the
+  // behavior a customer actually expects from selecting a top-level
+  // category.
+  if (searchParams.subcategory) {
+    filtered = filtered.filter((p) => p.categoryId === searchParams.subcategory);
+  } else if (searchParams.category) {
+    const childIds = realCategories
+      .filter((c) => c.parent_category_id === searchParams.category)
+      .map((c) => c.id);
+    const matchIds = new Set([searchParams.category, ...childIds]);
+    filtered = filtered.filter((p) => p.categoryId && matchIds.has(p.categoryId));
   }
 
   if (searchParams.minPrice) {
@@ -93,7 +106,7 @@ export default async function ShopPage({ searchParams }: ShopPageProps) {
         </div>
 
         <Suspense fallback={null}>
-          <ShopFilters categories={realCategories.map((c) => c.name)} />
+          <ShopFilters categories={realCategories} />
         </Suspense>
 
         {filtered.length === 0 ? (

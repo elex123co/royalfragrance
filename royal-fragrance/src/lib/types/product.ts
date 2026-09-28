@@ -16,6 +16,7 @@ export interface Product {
   shortDescription: string;
   description: string;
   category: string;
+  categoryId?: string | null;
   price: number; // effective price after any active discount
   originalPrice?: number; // set only when a discount is active, for strikethrough display
   discountType?: DiscountType;
