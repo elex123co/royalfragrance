@@ -9,7 +9,7 @@ export interface ValidationResult {
 /**
  * Structural, checkable validation — not a claim of perfect AI safety.
  * Confirms required fields exist, strips any product name that isn't in
- * the real list Elizabeth was given (rather than trusting the model not
+ * the real list Queen was given (rather than trusting the model not
  * to invent one), and rejects content that's clearly too short/broken to
  * be a real newsletter.
  */

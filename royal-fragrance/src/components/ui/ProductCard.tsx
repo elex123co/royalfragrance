@@ -3,7 +3,6 @@ import type { Product } from "@/lib/types/product";
 import { formatNaira } from "@/lib/utils/currency";
 import { discountLabel } from "@/lib/utils/discount";
 import { BrandImage } from "@/components/ui/BrandImage";
-import { AnniversarySeal } from "@/components/ui/AnniversarySeal";
 
 export function ProductCard({
   product,
@@ -27,10 +26,6 @@ export function ProductCard({
           className="object-cover transition-transform duration-700 ease-out group-hover:scale-110"
         />
         <div className="pointer-events-none absolute inset-0 bg-gradient-to-t from-black/10 via-transparent to-white/10" />
-
-        <div className="absolute right-2 top-2 drop-shadow-md">
-          <AnniversarySeal size={36} />
-        </div>
 
         <div className="absolute left-3 top-3 flex flex-col items-start gap-1.5">
           {outOfStock && (

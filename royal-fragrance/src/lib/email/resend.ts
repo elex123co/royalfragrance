@@ -101,8 +101,8 @@ export async function sendAdminVendorApplicationAlert(
          Email: ${applicant.email}<br/>
          Phone: ${applicant.phone}<br/>
          Student: ${applicant.isStudent ? `Yes — ${applicant.university || "university not given"}` : "No"}<br/>
-         Primary platform: ${applicant.primaryPlatform || "not given"}<br/>
-         Audience size: ${applicant.audienceSize || "not given"}
+         Social media activity: ${applicant.audienceSize || "not given"}<br/>
+         Full answers are on the vendor's page in Admin.
        </p>
        <p><a href="${siteUrl}/admin/vendors" style="display:inline-block; margin-top:12px; padding:10px 20px; background:#1E120C; color:#E8D7C5; text-decoration:none; border-radius:999px;">Review in Admin</a></p>`
     ),

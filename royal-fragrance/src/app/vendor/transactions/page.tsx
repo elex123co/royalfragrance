@@ -23,7 +23,7 @@ export default async function VendorTransactionsPage() {
       {unrecordedTransactions.length > 0 && (
         <div className="mb-8">
           <h2 className="mb-3 text-sm font-medium uppercase tracking-wide text-caramel">
-            Unrecorded Collections
+            Unrecorded Payments
           </h2>
           <div className="space-y-3">
             {unrecordedTransactions.map((t: any) => (
@@ -51,7 +51,7 @@ export default async function VendorTransactionsPage() {
       )}
 
       <h2 className="mb-3 text-sm font-medium uppercase tracking-wide text-rich/50">
-        All Collections
+        All Payments
       </h2>
       <p className="mb-3 text-xs text-rich/50">Tap any collection to view its receipt.</p>
       <TransactionsList transactions={transactions} recordedIds={recordedIds} />

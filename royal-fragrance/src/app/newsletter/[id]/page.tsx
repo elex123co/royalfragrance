@@ -52,7 +52,7 @@ export default async function NewsletterReadPage({
         <p className="mt-10 text-sm text-rich/60">
           Until next time,
           <br />
-          Elizabeth 👑
+          Queen 👑
         </p>
       </div>
     </section>

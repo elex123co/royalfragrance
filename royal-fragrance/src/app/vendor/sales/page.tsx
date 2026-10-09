@@ -1,5 +1,6 @@
 import { getCurrentVendor, getVendorDashboardData } from "@/lib/data/vendor";
 import { formatNaira } from "@/lib/utils/currency";
+import { CustomerReceiptButton } from "@/components/vendor/CustomerReceiptButton";
 import { HandoverButton } from "@/components/vendor/HandoverButton";
 
 export const metadata = { title: "Sales — Vendor — Royal Fragrance" };
@@ -62,13 +63,36 @@ export default async function VendorSalesPage() {
                 ))}
               </div>
 
-              <div className="mt-3 flex items-center justify-between">
+              <div className="mt-3 flex flex-wrap items-center justify-between gap-2">
                 <span className="text-xs capitalize text-rich/50">
                   Fulfillment: {sale.fulfillment_status.replaceAll("_", " ")}
                 </span>
-                {sale.fulfillment_status === "pending_handover" && (
-                  <HandoverButton saleId={sale.id} />
-                )}
+                <div className="flex items-center gap-2">
+                  <CustomerReceiptButton
+                    data={{
+                      saleNumber: sale.sale_number,
+                      date: sale.created_at,
+                      customerName: sale.customer_name,
+                      customerPhone: sale.customer_phone,
+                      vendorName: vendor!.business_name,
+                      vendorCode: vendor!.vendor_code,
+                      paymentReference:
+                        sale.payment_transactions?.provider_transaction_reference ?? null,
+                      amountPaid: sale.payment_transactions
+                        ? Number(sale.payment_transactions.amount)
+                        : null,
+                      items: (sale.vendor_sale_items ?? []).map((i: any) => ({
+                        name: i.products?.name ?? "Item",
+                        size: i.product_variants?.size ?? null,
+                        quantity: i.quantity,
+                        price: Number(i.recorded_price),
+                      })),
+                    }}
+                  />
+                  {sale.fulfillment_status === "pending_handover" && (
+                    <HandoverButton saleId={sale.id} />
+                  )}
+                </div>
               </div>
             </div>
           );

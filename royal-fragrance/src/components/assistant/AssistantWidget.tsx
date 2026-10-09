@@ -24,7 +24,7 @@ interface ChatMessage {
 const GREETING: ChatMessage = {
   role: "assistant",
   content:
-    "Hi, I'm Elizabeth. Tell me what kind of scent you're after — a note you love, an occasion, even a budget — and I'll find something from our collection for you.",
+    "Hi, I'm Queen. Tell me what kind of scent you're after — a note you love, an occasion, even a budget — and I'll find something from our collection for you.",
 };
 
 export function AssistantWidget() {
@@ -39,7 +39,7 @@ export function AssistantWidget() {
     scrollRef.current?.scrollTo({ top: scrollRef.current.scrollHeight, behavior: "smooth" });
   }, [messages, loading]);
 
-  // Elizabeth is a shopping assistant — hide her inside the admin/vendor/
+  // Queen is a shopping assistant — hide her inside the admin/vendor/
   // customer dashboards, where nobody's browsing to buy.
   const hidden =
     pathname.startsWith("/admin") ||
@@ -94,7 +94,7 @@ export function AssistantWidget() {
           className="fixed bottom-5 right-5 z-40 flex items-center gap-2 rounded-full bg-espresso px-5 py-3 text-sm font-medium text-cream shadow-premium transition hover:bg-rich"
         >
           <Sparkles size={18} />
-          Ask Elizabeth
+          Ask Queen
         </button>
       )}
 
@@ -104,7 +104,7 @@ export function AssistantWidget() {
             <div className="flex items-center gap-2">
               <Sparkles size={18} className="text-caramel" />
               <div>
-                <p className="font-display text-sm leading-tight">Elizabeth</p>
+                <p className="font-display text-sm leading-tight">Queen</p>
                 <p className="text-[10px] leading-tight text-cream/60">
                   Royal Fragrance Concierge
                 </p>
@@ -150,7 +150,7 @@ export function AssistantWidget() {
             {loading && (
               <div className="text-left">
                 <div className="inline-block rounded-2xl bg-white/80 px-4 py-2.5 text-sm text-rich/50">
-                  Elizabeth is thinking…
+                  Queen is thinking…
                 </div>
               </div>
             )}

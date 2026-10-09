@@ -2,13 +2,13 @@ import { Resend } from "resend";
 import type { SupabaseClient } from "@supabase/supabase-js";
 
 const FROM_ADDRESS =
-  process.env.RESEND_FROM_EMAIL ?? "Elizabeth <onboarding@resend.dev>";
+  process.env.RESEND_FROM_EMAIL ?? "Queen <onboarding@resend.dev>";
 
 /**
  * Deliberately styled like a personal letter, not a marketing template —
  * Gmail's Promotions-tab classifier weighs heavily-styled CTA buttons,
  * a loud branded header, and "ad-like" visual structure. Plain paragraphs
- * and text links read as a real message, which also just fits Elizabeth's
+ * and text links read as a real message, which also just fits Queen's
  * actual voice better than a corporate newsletter shell would.
  */
 function renderEmailHtml(params: {
@@ -40,7 +40,7 @@ function renderEmailHtml(params: {
       ${params.content}
       ${choicesHtml}
       <p style="margin-top: 28px;">
-        Until next time,<br/>Elizabeth
+        Until next time,<br/>Queen
       </p>
       <p style="margin-top: 20px; font-size: 13px; color: #70452F;">
         <a href="${siteUrl}/newsletter/${params.newsletterId}" style="color:#70452F;">Read this online</a> —

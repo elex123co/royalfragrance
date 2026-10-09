@@ -1,3 +1,4 @@
+import { ANSWER_LABELS } from "@/lib/vendor-application-fields";
 import { notFound } from "next/navigation";
 import { createAdminClient } from "@/lib/supabase/server";
 import { getVendorDashboardData } from "@/lib/data/vendor";
@@ -83,6 +84,21 @@ export default async function AdminVendorDetailPage({
             )}
           </p>
         </div>
+        {vendor.application_answers && (
+          <div className="mt-4 border-t border-espresso/10 pt-4">
+            <h3 className="mb-2 text-sm font-medium text-espresso">Application answers</h3>
+            <dl className="grid gap-x-6 gap-y-2 text-sm sm:grid-cols-2">
+              {Object.entries(vendor.application_answers as Record<string, string>)
+                .filter(([, v]) => v)
+                .map(([k, v]) => (
+                  <div key={k}>
+                    <dt className="text-xs text-rich/50">{ANSWER_LABELS[k] ?? k}</dt>
+                    <dd className="text-rich/80">{v}</dd>
+                  </div>
+                ))}
+            </dl>
+          </div>
+        )}
         {vendor.onboarding_notes && (
           <p className="mt-3 text-sm text-rich/70">
             <span className="text-rich/50">Notes:</span> {vendor.onboarding_notes}

@@ -1,5 +1,6 @@
 import Link from "next/link";
 import { validateAndConsumeVendorToken } from "@/lib/actions/vendor-interest";
+import { getBrandWhatsAppLink } from "@/lib/data/whatsapp";
 import { VendorApplicationForm } from "@/components/vendor/VendorApplicationForm";
 
 export const dynamic = "force-dynamic";
@@ -32,6 +33,10 @@ export default async function VendorApplyPage({
     );
   }
 
+  const whatsappLink = await getBrandWhatsAppLink(
+    "Hello Royal Fragrance, I have a question about becoming a vendor."
+  );
+
   return (
     <section className="bg-cream py-16">
       <div className="mx-auto max-w-xl px-5 lg:px-8">
@@ -41,7 +46,7 @@ export default async function VendorApplyPage({
         <p className="mb-8 text-rich/70">
           Fill in your details below — this only takes a few minutes.
         </p>
-        <VendorApplicationForm initialEmail={result.email} />
+        <VendorApplicationForm initialEmail={result.email} whatsappLink={whatsappLink} />
       </div>
     </section>
   );

@@ -1,6 +1,5 @@
 import Image from "next/image";
 import { LinkButton } from "@/components/ui/Button";
-import { AnniversarySeal } from "@/components/ui/AnniversarySeal";
 
 const HERO_IMAGE_URL =
   "https://res.cloudinary.com/dtchp470a/image/upload/v1788707661/WhatsApp_Image_2026-09-06_at_16.05.36_2_wkpvtm.jpg";
@@ -18,10 +17,6 @@ export function Hero() {
       {/* Dark overlay so white/cream text stays readable over the photo,
           fading a little lighter toward the right where there's no text. */}
       <div className="absolute inset-0 bg-gradient-to-r from-espresso/90 via-espresso/70 to-espresso/40" />
-
-      <div className="absolute right-6 top-28 z-10 drop-shadow-2xl sm:right-12 sm:top-32">
-        <AnniversarySeal size={180} />
-      </div>
 
       <div className="relative mx-auto max-w-7xl px-5 py-24 lg:px-8">
         <div className="max-w-xl animate-fade-up">

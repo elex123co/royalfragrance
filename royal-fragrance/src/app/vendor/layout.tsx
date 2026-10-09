@@ -12,6 +12,8 @@ import {
 } from "lucide-react";
 import { getCurrentVendor } from "@/lib/data/vendor";
 import { LogoutButton, LogoutIconButton } from "@/components/account/LogoutButton";
+import { PendingApprovalScreen } from "@/components/vendor/PendingApprovalScreen";
+import { getBrandWhatsAppLink } from "@/lib/data/whatsapp";
 import { DashboardMobileNav } from "@/components/shared/DashboardMobileNav";
 
 const physicalNavItems = [
@@ -40,6 +42,20 @@ export default async function VendorLayout({
 }) {
   const vendor = await getCurrentVendor();
   if (!vendor) redirect("/login?redirect=/vendor");
+
+  // Vendors see nothing of the dashboard until an admin approves them.
+  if (vendor.status !== "active") {
+    const whatsappLink = await getBrandWhatsAppLink(
+      `Hello Royal Fragrance, I applied as a vendor (${vendor.vendor_code}) and have a question.`
+    );
+    return (
+      <PendingApprovalScreen
+        name={vendor.users?.name ?? vendor.business_name}
+        status={vendor.status}
+        whatsappLink={whatsappLink}
+      />
+    );
+  }
 
   const navItems = vendor.vendor_type === "affiliate" ? affiliateNavItems : physicalNavItems;
 

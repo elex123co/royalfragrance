@@ -1,6 +1,5 @@
 import Link from "next/link";
 import { Instagram, Facebook, Twitter, Phone, Mail, MapPin } from "lucide-react";
-import { AnniversarySeal } from "@/components/ui/AnniversarySeal";
 
 export default function Footer() {
   return (
@@ -11,7 +10,6 @@ export default function Footer() {
             <h3 className="font-display text-xl">
               Royal <span className="text-caramel">Fragrance</span>
             </h3>
-            <AnniversarySeal size={44} />
           </div>
           <p className="mt-3 max-w-xs text-sm text-cream/70">
             A luxury fragrance brand for today, and an original perfume house

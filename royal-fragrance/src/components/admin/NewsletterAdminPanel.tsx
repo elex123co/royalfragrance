@@ -101,7 +101,7 @@ export function NewsletterAdminPanel({
             <h2 className="font-display text-lg text-espresso">Automation</h2>
             <p className="text-sm text-rich/60">
               {automationEnabled
-                ? "Elizabeth will send automatically on schedule."
+                ? "Queen will send automatically on schedule."
                 : "Automation is paused — scheduled sends will be skipped."}
             </p>
           </div>
@@ -161,7 +161,7 @@ export function NewsletterAdminPanel({
         <h2 className="mb-3 font-display text-lg text-espresso">Campaign Guidance</h2>
 
         <label className="mb-1.5 block text-sm font-medium text-espresso">
-          Brand notes for Elizabeth (optional context for upcoming newsletters)
+          Brand notes for Queen (optional context for upcoming newsletters)
         </label>
         <textarea
           value={brandNotes}
@@ -228,7 +228,7 @@ export function NewsletterAdminPanel({
             <option value="sunday">Sunday</option>
           </select>
           <Button onClick={handleGenerate} disabled={generating}>
-            {generating ? "Elizabeth is writing…" : "Generate Preview"}
+            {generating ? "Queen is writing…" : "Generate Preview"}
           </Button>
         </div>
         {genError && (

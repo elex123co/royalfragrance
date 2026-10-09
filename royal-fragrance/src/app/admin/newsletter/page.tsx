@@ -28,7 +28,7 @@ export default async function AdminNewsletterPage() {
   return (
     <div>
       <h1 className="mb-1 font-display text-2xl text-espresso">
-        Elizabeth — Newsletter Engine
+        Queen — Newsletter Engine
       </h1>
       <p className="mb-6 text-sm text-rich/60">
         Autonomous newsletters every Monday, Friday, and Sunday.

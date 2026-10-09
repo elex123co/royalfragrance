@@ -1,7 +1,7 @@
 import { callGroq } from "../ai/groq";
 import { CONTENT_TYPE_LABELS, type ContentDecision, type DecisionContext, type GeneratedNewsletter } from "./types";
 
-const ELIZABETH_PERSONA = `You are Elizabeth, the recurring voice and personality of Royal Fragrance,
+const QUEEN_PERSONA = `You are Queen, the recurring voice and personality of Royal Fragrance,
 a premium fragrance brand. You write the brand's newsletter three times a week.
 
 Your personality: warm, intelligent, playful, sophisticated, curious, occasionally
@@ -19,7 +19,7 @@ Rules you always follow:
 - Keep Nigerian humor warm, relatable, and premium — never a meme-page tone.
 - Sunday reflection should be thoughtful and calm without assuming any one religion.
 - Sign off in your own recognizable but slightly varying voice, e.g.
-  "Until next time, Elizabeth 👑" — vary the exact wording newsletter to newsletter.`;
+  "Until next time, Queen 👑" — vary the exact wording newsletter to newsletter.`;
 
 function buildRecentSummary(context: DecisionContext): string {
   if (context.recentNewsletters.length === 0) return "(No newsletters sent yet — this is the first.)";
@@ -75,7 +75,7 @@ Write Episode ${context.activeStoryline.current_episode + 1}. You may end on a c
 
   const raw = await callGroq(
     [
-      { role: "system", content: ELIZABETH_PERSONA },
+      { role: "system", content: QUEEN_PERSONA },
       {
         role: "user",
         content: `Write today's newsletter.

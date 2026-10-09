@@ -23,7 +23,7 @@ export async function gatherContext(
   ]);
 
   // Was the most recent interactive newsletter's vote ever resolved? If so,
-  // surface the result so Elizabeth can reference it ("you all chose...").
+  // surface the result so Queen can reference it ("you all chose...").
   let pendingVoteResult: DecisionContext["pendingVoteResult"] = null;
   const { data: lastInteractive } = await supabase
     .from("newsletters")

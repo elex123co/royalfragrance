@@ -463,7 +463,7 @@ begin
   end if;
 
   -- Everyone who signs up — customer, vendor, or admin-created — is
-  -- automatically subscribed to Elizabeth's newsletter. No separate
+  -- automatically subscribed to Queen's newsletter. No separate
   -- opt-in step; they can unsubscribe later if the site adds that flow.
   insert into public.newsletter_subscribers (email)
   values (new.email)
@@ -569,7 +569,7 @@ create policy "Admins delete product images" on storage.objects
   for delete using (bucket_id = 'product-images' and public.is_admin());
 
 -- ----------------------------------------------------------------------------
--- ELIZABETH — AUTONOMOUS NEWSLETTER ENGINE
+-- QUEEN — AUTONOMOUS NEWSLETTER ENGINE
 -- Content types, storylines/characters for continuity, interactive voting,
 -- and a singleton settings row for pause/resume + campaign guidance.
 -- ----------------------------------------------------------------------------
@@ -1010,3 +1010,10 @@ create table vendor_interest_signups (
 alter table vendor_interest_signups enable row level security;
 create policy "Admins manage vendor interest signups" on vendor_interest_signups
   for all using (public.is_admin());
+
+-- ----------------------------------------------------------------------------
+-- VENDOR APPLICATION ANSWERS — full Google-Form style application
+-- Stores every answer from the vendor application (university, hostel,
+-- references, etc.) so admins can review them before approving.
+-- ----------------------------------------------------------------------------
+alter table vendors add column if not exists application_answers jsonb;

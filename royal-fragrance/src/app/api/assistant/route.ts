@@ -1,6 +1,6 @@
 import { NextResponse } from "next/server";
 import { z } from "zod";
-import { askElizabeth } from "@/lib/ai/elizabeth";
+import { askQueen } from "@/lib/ai/queen";
 
 const schema = z.object({
   message: z.string().min(1).max(500),
@@ -24,10 +24,10 @@ export async function POST(request: Request) {
   }
 
   try {
-    const result = await askElizabeth(parsed.data.message, parsed.data.history ?? []);
+    const result = await askQueen(parsed.data.message, parsed.data.history ?? []);
     return NextResponse.json(result);
   } catch (err) {
-    console.error("Elizabeth assistant error:", err);
+    console.error("Queen assistant error:", err);
     return NextResponse.json(
       {
         message:

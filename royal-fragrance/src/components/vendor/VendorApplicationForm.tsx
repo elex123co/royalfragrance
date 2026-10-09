@@ -2,44 +2,79 @@
 
 import { useState } from "react";
 import { useRouter } from "next/navigation";
+import { MessageCircle } from "lucide-react";
 import { Button } from "@/components/ui/Button";
 import { PasswordInput } from "@/components/ui/PasswordInput";
 import { applyAsVendor } from "@/lib/actions/vendor-application";
 import { trackMetaEvent } from "@/components/analytics/MetaPixel";
+import {
+  APPLICATION_TITLE,
+  APPLICATION_INTRO,
+  MAIN_QUESTIONS,
+  REFERENCE_HEADING,
+  REFERENCE_DESCRIPTION,
+  REFERENCE_QUESTIONS,
+  STUDENT_STATUS_LABEL,
+  STUDENT_STATUS_OPTIONS,
+  STUDENT_FOLLOWUPS,
+  type QuestionDef,
+} from "@/lib/vendor-application-fields";
 
-const PLATFORMS = ["Instagram", "TikTok", "X (Twitter)", "Facebook", "YouTube", "WhatsApp Status", "Other"];
+const inputClass =
+  "w-full rounded-lg border border-espresso/15 px-4 py-2.5 text-sm focus:border-caramel focus:outline-none";
 
-export function VendorApplicationForm({ initialEmail }: { initialEmail?: string } = {}) {
+export function VendorApplicationForm({
+  initialEmail,
+  whatsappLink,
+}: {
+  initialEmail?: string;
+  whatsappLink?: string;
+} = {}) {
   const router = useRouter();
-  const [form, setForm] = useState({
-    fullName: "",
-    email: initialEmail ?? "",
-    phone: "",
-    password: "",
-    notes: "",
-    isStudent: false,
-    university: "",
-    primaryPlatform: PLATFORMS[0],
-    audienceSize: "",
-    promotionCommitment: false,
-    bvn: "",
-    nin: "",
-  });
-  const [status, setStatus] = useState<"idle" | "loading" | "success" | "error">(
-    "idle"
-  );
+  const [email, setEmail] = useState(initialEmail ?? "");
+  const [password, setPassword] = useState("");
+  const [answers, setAnswers] = useState<Record<string, string>>({});
+  const [studentStatus, setStudentStatus] = useState("");
+  const [studentOther, setStudentOther] = useState("");
+  const [bvn, setBvn] = useState("");
+  const [nin, setNin] = useState("");
+  const [status, setStatus] = useState<"idle" | "loading" | "success" | "error">("idle");
   const [error, setError] = useState<string | null>(null);
+
+  const setAnswer = (key: string, value: string) =>
+    setAnswers((prev) => ({ ...prev, [key]: value }));
 
   async function handleSubmit(e: React.FormEvent) {
     e.preventDefault();
-    if (!form.promotionCommitment) {
-      setError("Please confirm you're willing to actively promote our products.");
-      return;
-    }
-    setStatus("loading");
     setError(null);
 
-    const result = await applyAsVendor(form);
+    if (!bvn.trim() && !nin.trim()) {
+      setError("BVN or NIN is compulsory. Please provide at least one.");
+      return;
+    }
+    if (bvn.trim() && !/^\d{11}$/.test(bvn.trim())) {
+      setError("BVN must be exactly 11 digits.");
+      return;
+    }
+    if (nin.trim() && !/^\d{11}$/.test(nin.trim())) {
+      setError("NIN must be exactly 11 digits.");
+      return;
+    }
+    if (!studentStatus) {
+      setError("Please choose an option for STUDENT OR NOT.");
+      return;
+    }
+
+    setStatus("loading");
+    const result = await applyAsVendor({
+      email,
+      password,
+      bvn: bvn.trim(),
+      nin: nin.trim(),
+      studentStatus,
+      studentOther,
+      answers,
+    });
 
     if (!result.success) {
       setStatus("error");
@@ -49,18 +84,16 @@ export function VendorApplicationForm({ initialEmail }: { initialEmail?: string 
 
     setStatus("success");
     trackMetaEvent("Lead", { content_name: "Vendor Application" });
-    setTimeout(() => router.push("/login"), 2500);
+    setTimeout(() => router.push("/login"), 3000);
   }
 
   if (status === "success") {
     return (
       <div className="rounded-xl2 border border-espresso/10 bg-white/60 p-8 text-center shadow-premium-sm">
-        <h3 className="font-display text-xl text-espresso">
-          Application Submitted
-        </h3>
+        <h3 className="font-display text-xl text-espresso">Application Submitted</h3>
         <p className="mt-2 text-sm text-rich/70">
-          We&rsquo;ll review your application and notify you once approved.
-          Redirecting you to sign in…
+          We&rsquo;ll review your application and notify you once approved. Your
+          dashboard stays locked until then. Redirecting you to sign in…
         </p>
       </div>
     );
@@ -71,162 +104,146 @@ export function VendorApplicationForm({ initialEmail }: { initialEmail?: string 
       onSubmit={handleSubmit}
       className="space-y-4 rounded-xl2 border border-espresso/10 bg-white/60 p-6 shadow-premium-sm sm:p-8"
     >
-      <h2 className="font-display text-lg text-espresso">Vendor & Ambassador Application</h2>
+      <h2 className="font-display text-xl tracking-wide text-espresso">{APPLICATION_TITLE}</h2>
+      {APPLICATION_INTRO.map((line) => (
+        <p key={line} className="text-sm text-rich/70">
+          {line}
+        </p>
+      ))}
 
-      <Field
-        label="Full Name"
-        value={form.fullName}
-        onChange={(v) => setForm((f) => ({ ...f, fullName: v }))}
-      />
-      <Field
-        label="Email"
-        type="email"
-        value={form.email}
-        onChange={(v) => setForm((f) => ({ ...f, email: v }))}
-      />
-      <Field
-        label="Phone Number"
-        value={form.phone}
-        onChange={(v) => setForm((f) => ({ ...f, phone: v }))}
-      />
-      <Field
-        label="Password"
-        type="password"
-        value={form.password}
-        onChange={(v) => setForm((f) => ({ ...f, password: v }))}
-      />
-
-      <label className="flex items-center gap-2 text-sm text-rich/80">
+      <div>
+        <Label text="Email" required />
         <input
-          type="checkbox"
-          checked={form.isStudent}
-          onChange={(e) => setForm((f) => ({ ...f, isStudent: e.target.checked }))}
-        />
-        I'm currently a student
-      </label>
-
-      {form.isStudent && (
-        <Field
-          label="Which university?"
-          value={form.university}
-          onChange={(v) => setForm((f) => ({ ...f, university: v }))}
-        />
-      )}
-
-      <div>
-        <label className="mb-1.5 block text-sm font-medium text-espresso">
-          Where do you have the most influence?
-        </label>
-        <select
-          value={form.primaryPlatform}
-          onChange={(e) => setForm((f) => ({ ...f, primaryPlatform: e.target.value }))}
-          className="w-full rounded-lg border border-espresso/15 px-4 py-2.5 text-sm focus:border-caramel focus:outline-none"
-        >
-          {PLATFORMS.map((p) => (
-            <option key={p} value={p}>
-              {p}
-            </option>
-          ))}
-        </select>
-      </div>
-
-      <Field
-        label="Roughly how many people can you reach there? (e.g. followers, group size)"
-        value={form.audienceSize}
-        onChange={(v) => setForm((f) => ({ ...f, audienceSize: v }))}
-      />
-
-      <div>
-        <label className="mb-1.5 block text-sm font-medium text-espresso">
-          Tell us about your sales network
-        </label>
-        <textarea
+          type="email"
           required
-          rows={3}
-          value={form.notes}
-          onChange={(e) => setForm((f) => ({ ...f, notes: e.target.value }))}
-          className="w-full rounded-lg border border-espresso/15 px-4 py-2.5 text-sm focus:border-caramel focus:outline-none"
+          value={email}
+          onChange={(e) => setEmail(e.target.value)}
+          placeholder="Your email"
+          className={inputClass}
         />
       </div>
 
       <div>
-        <label className="mb-1.5 block text-sm font-medium text-espresso">
-          BVN or NIN (optional)
-        </label>
-        <p className="mb-2 text-xs text-rich/50">
-          Only needed if you're approved for a personal collection account
-          to receive customer payments directly — you can add this later
-          from your dashboard if you'd rather skip it for now.
+        <Label text="Create a password for your vendor account" required />
+        <PasswordInput required value={password} onChange={(e) => setPassword(e.target.value)} />
+      </div>
+
+      {MAIN_QUESTIONS.map((q) => (
+        <QuestionField key={q.key} q={q} value={answers[q.key] ?? ""} onChange={(v) => setAnswer(q.key, v)} />
+      ))}
+
+      <div className="border-t border-espresso/10 pt-4">
+        <h3 className="font-display text-base text-espresso">{REFERENCE_HEADING}</h3>
+        <p className="mt-1 text-xs text-rich/60">{REFERENCE_DESCRIPTION}</p>
+      </div>
+      {REFERENCE_QUESTIONS.map((q) => (
+        <QuestionField key={q.key} q={q} value={answers[q.key] ?? ""} onChange={(v) => setAnswer(q.key, v)} />
+      ))}
+
+      <div className="border-t border-espresso/10 pt-4">
+        <Label text={STUDENT_STATUS_LABEL} required />
+        <div className="space-y-2">
+          {STUDENT_STATUS_OPTIONS.map((opt) => (
+            <label key={opt} className="flex items-center gap-2 text-sm text-rich/80">
+              <input
+                type="radio"
+                name="studentStatus"
+                checked={studentStatus === opt}
+                onChange={() => setStudentStatus(opt)}
+              />
+              {opt === "Other" ? "Other:" : opt}
+              {opt === "Other" && studentStatus === "Other" && (
+                <input
+                  required
+                  value={studentOther}
+                  onChange={(e) => setStudentOther(e.target.value)}
+                  className="ml-1 flex-1 rounded-lg border border-espresso/15 px-3 py-1.5 text-sm focus:border-caramel focus:outline-none"
+                />
+              )}
+            </label>
+          ))}
+        </div>
+      </div>
+      {STUDENT_FOLLOWUPS.map((q) => (
+        <QuestionField key={q.key} q={q} value={answers[q.key] ?? ""} onChange={(v) => setAnswer(q.key, v)} />
+      ))}
+
+      <div className="border-t border-espresso/10 pt-4">
+        <Label text="BVN or NIN" required />
+        <p className="mb-2 text-xs text-rich/60">
+          Compulsory. Provide your 11-digit BVN or NIN (at least one). It is used
+          to open your personal collection account for customer payments.
         </p>
         <div className="grid grid-cols-2 gap-3">
           <input
-            value={form.bvn}
-            onChange={(e) => setForm((f) => ({ ...f, bvn: e.target.value }))}
+            value={bvn}
+            onChange={(e) => setBvn(e.target.value.replace(/\D/g, ""))}
             placeholder="BVN"
+            inputMode="numeric"
             maxLength={11}
-            className="w-full rounded-lg border border-espresso/15 px-4 py-2.5 text-sm focus:border-caramel focus:outline-none"
+            className={inputClass}
           />
           <input
-            value={form.nin}
-            onChange={(e) => setForm((f) => ({ ...f, nin: e.target.value }))}
+            value={nin}
+            onChange={(e) => setNin(e.target.value.replace(/\D/g, ""))}
             placeholder="NIN"
+            inputMode="numeric"
             maxLength={11}
-            className="w-full rounded-lg border border-espresso/15 px-4 py-2.5 text-sm focus:border-caramel focus:outline-none"
+            className={inputClass}
           />
         </div>
       </div>
 
-      <label className="flex items-start gap-2 text-sm text-rich/80">
-        <input
-          type="checkbox"
-          className="mt-1"
-          checked={form.promotionCommitment}
-          onChange={(e) => setForm((f) => ({ ...f, promotionCommitment: e.target.checked }))}
-        />
-        I commit to actively promoting Royal Fragrance products on the
-        platform I selected above, not just selling passively.
-      </label>
-
-      {error && (
-        <p className="rounded-lg bg-red-50 px-4 py-2 text-sm text-red-700">
-          {error}
-        </p>
-      )}
+      {error && <p className="rounded-lg bg-red-50 px-4 py-2 text-sm text-red-700">{error}</p>}
 
       <Button type="submit" className="w-full" disabled={status === "loading"}>
         {status === "loading" ? "Submitting…" : "Submit Application"}
       </Button>
+
+      {whatsappLink && (
+        <a
+          href={whatsappLink}
+          target="_blank"
+          rel="noopener noreferrer"
+          className="flex items-center justify-center gap-2 rounded-full border border-espresso/20 px-4 py-2.5 text-sm text-espresso hover:bg-espresso/5"
+        >
+          <MessageCircle size={16} />
+          Have questions? Chat with our brand on WhatsApp
+        </a>
+      )}
     </form>
   );
 }
 
-function Field({
-  label,
+function Label({ text, required }: { text: string; required?: boolean }) {
+  return (
+    <label className="mb-1.5 block text-sm font-medium text-espresso">
+      {text}
+      {required && <span className="text-red-600"> *</span>}
+    </label>
+  );
+}
+
+function QuestionField({
+  q,
   value,
   onChange,
-  type = "text",
 }: {
-  label: string;
+  q: QuestionDef;
   value: string;
-  onChange: (value: string) => void;
-  type?: string;
+  onChange: (v: string) => void;
 }) {
   return (
     <div>
-      <label className="mb-1.5 block text-sm font-medium text-espresso">
-        {label}
-      </label>
-      {type === "password" ? (
-        <PasswordInput required value={value} onChange={(e) => onChange(e.target.value)} />
-      ) : (
-        <input
-          type={type}
-          required
-          value={value}
-          onChange={(e) => onChange(e.target.value)}
-          className="w-full rounded-lg border border-espresso/15 px-4 py-2.5 text-sm focus:border-caramel focus:outline-none"
-        />
-      )}
+      <Label text={q.label} required={q.required} />
+      <input
+        type={q.type ?? "text"}
+        required={q.required}
+        value={value}
+        onChange={(e) => onChange(e.target.value)}
+        placeholder="Your answer"
+        className={inputClass}
+      />
     </div>
   );
 }

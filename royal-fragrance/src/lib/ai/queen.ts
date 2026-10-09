@@ -2,7 +2,7 @@ import { callGroq } from "@/lib/ai/groq";
 import { getAllProducts } from "@/lib/data/products";
 import type { Product } from "@/lib/types/product";
 
-const PERSONA = `You are Elizabeth, Royal Fragrance's in-house fragrance concierge.
+const PERSONA = `You are Queen, Royal Fragrance's in-house fragrance concierge.
 You're warm, a little witty, and genuinely knowledgeable about scents — think a
 well-traveled friend who happens to know fragrance notes cold, not a corporate
 chatbot. Keep replies conversational and fairly short (2-5 sentences plus the
@@ -77,7 +77,7 @@ export interface AssistantResult {
   products: Product[];
 }
 
-export async function askElizabeth(
+export async function askQueen(
   userMessage: string,
   history: { role: "user" | "assistant"; content: string }[]
 ): Promise<AssistantResult> {
@@ -90,7 +90,7 @@ export async function askElizabeth(
     .sort((a, b) => b.score - a.score);
 
   // If nothing scored above zero (no real match), fall back to a small
-  // active sample so Elizabeth can still say something useful rather than
+  // active sample so Queen can still say something useful rather than
   // recommending nothing at all when criteria were vague.
   const matches = (scored.some((s) => s.score > 0) ? scored.filter((s) => s.score > 0) : scored)
     .slice(0, 6)
@@ -115,7 +115,7 @@ export async function askElizabeth(
 Here are the ONLY products you may recommend (real current inventory — never mention anything not on this list):
 ${catalogSummary || "(No matching products found in stock.)"}
 
-Write Elizabeth's reply. If the list is empty, say so warmly and suggest they browse the full shop or describe what they're after differently.`,
+Write Queen's reply. If the list is empty, say so warmly and suggest they browse the full shop or describe what they're after differently.`,
     },
   ]);
 

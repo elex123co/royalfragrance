@@ -1,4 +1,5 @@
 import { VendorInterestForm } from "@/components/vendor/VendorInterestForm";
+import { getBrandWhatsAppLink } from "@/lib/data/whatsapp";
 import { Wallet, PackageCheck, LineChart, Users, Percent } from "lucide-react";
 
 export const metadata = {
@@ -37,7 +38,12 @@ const perks = [
   },
 ];
 
-export default function BecomeVendorPage() {
+export const dynamic = "force-dynamic";
+
+export default async function BecomeVendorPage() {
+  const whatsappLink = await getBrandWhatsAppLink(
+    "Hello Royal Fragrance, I have a question about becoming a vendor."
+  );
   return (
     <section className="bg-cream py-16">
       <div className="mx-auto max-w-6xl px-5 lg:px-8">
@@ -75,8 +81,17 @@ export default function BecomeVendorPage() {
             <p className="mt-6 text-sm text-rich/60">
               Applications are reviewed by our team. Once approved, your
               status changes from <strong>Pending Approval</strong> to{" "}
-              <strong>Active</strong> and full dashboard features unlock.
+              <strong>Active</strong> and full dashboard features unlock. Until
+              then, your dashboard stays locked.
             </p>
+            <a
+              href={whatsappLink}
+              target="_blank"
+              rel="noopener noreferrer"
+              className="mt-4 inline-block rounded-full border border-espresso/20 px-5 py-2.5 text-sm text-espresso hover:bg-espresso/5"
+            >
+              Have questions? Chat with our brand on WhatsApp
+            </a>
           </div>
 
           <VendorInterestForm />
