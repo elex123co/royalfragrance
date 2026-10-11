@@ -1,5 +1,5 @@
 import Link from "next/link";
-import { Instagram, Facebook, Phone, Mail } from "lucide-react";
+import { Instagram, Facebook, Phone, Mail, MapPin } from "lucide-react";
 
 // lucide has no TikTok glyph, so it is drawn inline. Replace href once the
 // real TikTok link is supplied.
@@ -51,6 +51,10 @@ export default function Footer() {
               >
                 royalfragrancescent@gmail.com
               </a>
+            </li>
+            <li className="flex items-start gap-2.5">
+              <MapPin size={15} className="mt-0.5 shrink-0 text-caramel" />
+              <span>Abesan Estate, Ipaja, Lagos</span>
             </li>
           </ul>
         </div>
