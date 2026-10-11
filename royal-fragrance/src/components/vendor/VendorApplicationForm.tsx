@@ -84,7 +84,6 @@ export function VendorApplicationForm({
 
     setStatus("success");
     trackMetaEvent("Lead", { content_name: "Vendor Application" });
-    setTimeout(() => router.push("/login"), 3000);
   }
 
   if (status === "success") {
@@ -93,8 +92,31 @@ export function VendorApplicationForm({
         <h3 className="font-display text-xl text-espresso">Application Submitted</h3>
         <p className="mt-2 text-sm text-rich/70">
           We&rsquo;ll review your application and notify you once approved. Your
-          dashboard stays locked until then. Redirecting you to sign in…
+          dashboard stays locked until then.
         </p>
+        {whatsappLink && (
+          <>
+            <p className="mt-5 text-sm text-espresso">
+              Just finished the form? Message the Royal Fragrance team on
+              WhatsApp to let us know, or to ask any question.
+            </p>
+            <a
+              href={whatsappLink}
+              target="_blank"
+              rel="noopener noreferrer"
+              className="mt-3 inline-flex items-center justify-center gap-2 rounded-full bg-green-600 px-6 py-3 text-sm text-white hover:bg-green-700"
+            >
+              <MessageCircle size={18} />
+              Message us on WhatsApp
+            </a>
+          </>
+        )}
+        <button
+          onClick={() => router.push("/login")}
+          className="mt-4 block w-full text-sm text-rich/60 underline"
+        >
+          Go to sign in
+        </button>
       </div>
     );
   }

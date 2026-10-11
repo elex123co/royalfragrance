@@ -4,6 +4,7 @@ import { createAdminClient } from "@/lib/supabase/server";
 import { getVendorDashboardData } from "@/lib/data/vendor";
 import { formatNaira } from "@/lib/utils/currency";
 import { InventoryTransferForm } from "@/components/admin/InventoryTransferForm";
+import { RemoveInventoryButton } from "@/components/admin/RemoveInventoryButton";
 import { AmbassadorLevelForm } from "@/components/admin/AmbassadorLevelForm";
 
 // Always fetch live data — admin dashboards must never serve a stale build-time snapshot.
@@ -161,11 +162,22 @@ export default async function AdminVendorDetailPage({
           <div className="space-y-1 text-sm text-rich/70">
             {dashboard.inventory.length === 0 && <p>No inventory assigned yet.</p>}
             {dashboard.inventory.map((i: any) => (
-              <div key={i.id} className="flex justify-between">
-                <span>
-                  {i.products?.name} {i.product_variants?.size ? `(${i.product_variants.size})` : ""}
-                </span>
-                <span>{i.available_quantity}</span>
+              <div key={i.id} className="border-b border-espresso/5 pb-2">
+                <div className="flex items-center justify-between gap-3">
+                  <span>
+                    {i.products?.name} {i.product_variants?.size ? `(${i.product_variants.size})` : ""}
+                  </span>
+                  <span className="flex items-center gap-3">
+                    <span>{i.available_quantity}</span>
+                    {i.available_quantity > 0 && (
+                      <RemoveInventoryButton
+                        inventoryId={i.id}
+                        available={i.available_quantity}
+                        label={i.products?.name ?? "item"}
+                      />
+                    )}
+                  </span>
+                </div>
               </div>
             ))}
           </div>

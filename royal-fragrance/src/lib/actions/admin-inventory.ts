@@ -65,3 +65,58 @@ export async function transferInventoryToVendor(input: TransferInput) {
   revalidatePath("/vendor/inventory");
   return { success: true };
 }
+
+/**
+ * Takes stock back off a vendor — used to undo a mistaken assignment.
+ * Removes `quantity` units (or everything when omitted), logs the movement
+ * with before/after quantities, and never goes below zero. Past recorded
+ * sales are untouched; only the vendor's current stock changes.
+ */
+export async function removeVendorInventory(input: {
+  inventoryId: string;
+  quantity?: number;
+}) {
+  const { admin: supabase } = await requireAdmin();
+
+  const { data: inv } = await supabase
+    .from("vendor_inventory")
+    .select("id, vendor_id, product_id, variant_id, available_quantity")
+    .eq("id", input.inventoryId)
+    .maybeSingle();
+
+  if (!inv) return { success: false, error: "Inventory line not found" };
+
+  const removeQty = input.quantity ?? inv.available_quantity;
+  if (!Number.isInteger(removeQty) || removeQty <= 0) {
+    return { success: false, error: "Enter a quantity greater than zero" };
+  }
+  if (removeQty > inv.available_quantity) {
+    return {
+      success: false,
+      error: `The vendor only has ${inv.available_quantity} in stock`,
+    };
+  }
+
+  const newQuantity = inv.available_quantity - removeQty;
+
+  const { error: updateError } = await supabase
+    .from("vendor_inventory")
+    .update({ available_quantity: newQuantity, updated_at: new Date().toISOString() })
+    .eq("id", inv.id);
+  if (updateError) return { success: false, error: updateError.message };
+
+  await supabase.from("inventory_movements").insert({
+    vendor_id: inv.vendor_id,
+    product_id: inv.product_id,
+    variant_id: inv.variant_id,
+    movement_type: "stock_adjustment",
+    quantity: -removeQty,
+    previous_quantity: inv.available_quantity,
+    new_quantity: newQuantity,
+    notes: "Removed by admin (assignment correction)",
+  });
+
+  revalidatePath(`/admin/vendors/${inv.vendor_id}`);
+  revalidatePath("/vendor/inventory");
+  return { success: true };
+}

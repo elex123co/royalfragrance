@@ -1,5 +1,15 @@
 import Link from "next/link";
-import { Instagram, Facebook, Twitter, Phone, Mail, MapPin } from "lucide-react";
+import { Instagram, Facebook, Phone, Mail, MapPin } from "lucide-react";
+
+// lucide has no TikTok glyph, so it is drawn inline. Replace href once the
+// real TikTok link is supplied.
+function TikTokIcon({ size = 18, className = "" }: { size?: number; className?: string }) {
+  return (
+    <svg width={size} height={size} viewBox="0 0 24 24" fill="currentColor" className={className} aria-label="TikTok">
+      <path d="M16.6 2h-3.2v13.1a2.9 2.9 0 1 1-2.9-2.9c.3 0 .6 0 .9.1V9a6.1 6.1 0 1 0 5.2 6V8.8a7.4 7.4 0 0 0 4.3 1.4V7a4.3 4.3 0 0 1-4.3-5Z" />
+    </svg>
+  );
+}
 
 export default function Footer() {
   return (
@@ -18,7 +28,7 @@ export default function Footer() {
           <div className="mt-5 flex gap-4">
             <Instagram size={18} className="text-cream/70 hover:text-caramel" />
             <Facebook size={18} className="text-cream/70 hover:text-caramel" />
-            <Twitter size={18} className="text-cream/70 hover:text-caramel" />
+            <TikTokIcon size={18} className="text-cream/70 hover:text-caramel" />
           </div>
         </div>
 
@@ -36,10 +46,10 @@ export default function Footer() {
             <li className="flex items-start gap-2.5">
               <Mail size={15} className="mt-0.5 shrink-0 text-caramel" />
               <a
-                href="mailto:oyinkansolaelizabetholutunde@gmail.com"
+                href="mailto:royalfragrancescent@gmail.com"
                 className="break-all hover:text-cream"
               >
-                oyinkansolaelizabetholutunde@gmail.com
+                royalfragrancescent@gmail.com
               </a>
             </li>
             <li className="flex items-start gap-2.5">

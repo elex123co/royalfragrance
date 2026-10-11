@@ -34,7 +34,7 @@ export default async function VendorApplyPage({
   }
 
   const whatsappLink = await getBrandWhatsAppLink(
-    "Hello Royal Fragrance, I have a question about becoming a vendor."
+    "Hello Royal Fragrance, I have just submitted my vendor application. Please let me know the next step."
   );
 
   return (

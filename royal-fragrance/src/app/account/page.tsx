@@ -14,7 +14,7 @@ import {
 import { formatNaira } from "@/lib/utils/currency";
 import { OrderTimeline } from "@/components/account/OrderTimeline";
 import { LinkButton } from "@/components/ui/Button";
-import { Package, Sparkles, Heart, Crown } from "lucide-react";
+import { Package, Sparkles, Heart } from "lucide-react";
 
 export const metadata = { title: "My Royal Experience — Royal Fragrance" };
 
@@ -63,12 +63,6 @@ export default async function AccountOverviewPage() {
       icon: Heart,
       href: "/account/wishlist",
     },
-    {
-      label: "Royal Points",
-      value: "Coming Soon",
-      icon: Crown,
-      href: null,
-    },
   ];
 
   return (
@@ -88,7 +82,7 @@ export default async function AccountOverviewPage() {
       </div>
 
       {/* Stat cards */}
-      <div className="grid grid-cols-2 gap-4 lg:grid-cols-4">
+      <div className="grid grid-cols-2 gap-4 lg:grid-cols-3">
         {stats.map(({ label, value, icon: Icon, href }) => {
           const card = (
             <div className="rounded-xl2 border border-espresso/10 bg-white/60 p-5 transition hover:shadow-premium-sm">
