@@ -27,7 +27,9 @@ export default function Footer() {
           </p>
           <div className="mt-5 flex gap-4">
             <Instagram size={18} className="text-cream/70 hover:text-caramel" />
-            <Facebook size={18} className="text-cream/70 hover:text-caramel" />
+            <a href="https://www.facebook.com/royal.fragrance.568989" target="_blank" rel="noopener noreferrer" aria-label="Facebook">
+              <Facebook size={18} className="text-cream/70 hover:text-caramel" />
+            </a>
             <TikTokIcon size={18} className="text-cream/70 hover:text-caramel" />
           </div>
         </div>

@@ -4,11 +4,14 @@ export const metadata = { title: "Inventory — Vendor — Royal Fragrance" };
 
 export default async function VendorInventoryPage() {
   const vendor = await getCurrentVendor();
+  const isAffiliate = vendor!.vendor_type === "affiliate";
   const { inventory } = await getVendorDashboardData(vendor!.user_id);
 
   return (
     <div>
-      <h1 className="mb-6 font-display text-2xl text-espresso">My Inventory</h1>
+      <h1 className="mb-6 font-display text-2xl text-espresso">
+        {isAffiliate ? "My Products" : "My Inventory"}
+      </h1>
 
       <div className="grid gap-4 sm:grid-cols-2 lg:grid-cols-3">
         {inventory.length === 0 && (

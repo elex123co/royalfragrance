@@ -33,8 +33,8 @@ const perks = [
   },
   {
     icon: Users,
-    title: "Track Handovers",
-    description: "Record when products are delivered to your customers.",
+    title: "Track Deliveries",
+    description: "Record when products have been delivered to your customers.",
   },
 ];
 

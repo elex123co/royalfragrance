@@ -65,7 +65,7 @@ export default async function VendorSalesPage() {
 
               <div className="mt-3 flex flex-wrap items-center justify-between gap-2">
                 <span className="text-xs capitalize text-rich/50">
-                  Fulfillment: {sale.fulfillment_status.replaceAll("_", " ")}
+                  Delivery: {sale.fulfillment_status === "pending_handover" ? "waiting to be delivered to customer" : sale.fulfillment_status === "handed_over" ? "delivered to customer" : sale.fulfillment_status.replaceAll("_", " ")}
                 </span>
                 <div className="flex items-center gap-2">
                   <CustomerReceiptButton

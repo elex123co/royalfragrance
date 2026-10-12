@@ -19,7 +19,11 @@ export async function middleware(request: NextRequest) {
   // matched request. A vendor's personalized product link looks like
   // /product/oud-noir?ref=VEND-2369; whoever clicks it gets this cookie,
   // and checkout reads it later to attribute the order and commission.
-  const ref = request.nextUrl.searchParams.get("ref");
+  // A vendor's storefront (/store/VEND-1234) counts as a referral too.
+  const storeMatch = path.match(/^\/store\/([^/]+)/);
+  const ref =
+    request.nextUrl.searchParams.get("ref") ??
+    (storeMatch ? decodeURIComponent(storeMatch[1]).toUpperCase() : null);
   if (ref) {
     response.cookies.set(REF_COOKIE, ref, {
       maxAge: REF_COOKIE_MAX_AGE,

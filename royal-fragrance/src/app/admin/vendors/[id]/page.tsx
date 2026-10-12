@@ -116,9 +116,10 @@ export default async function AdminVendorDetailPage({
 
       {vendor.vendor_type === "affiliate" && (
         <div className="mb-6 rounded-xl2 border border-caramel/30 bg-caramel/10 p-5 text-sm text-espresso">
-          This is an affiliate vendor — they don't handle physical inventory,
-          so there's nothing to assign below. Their sales come through
-          referral links and are tracked automatically.
+          This is an affiliate vendor. Assign the products you want them to
+          promote below. They get one personal link that opens a shop showing
+          only the products assigned to them, and their sales through it are
+          tracked automatically.
         </div>
       )}
 

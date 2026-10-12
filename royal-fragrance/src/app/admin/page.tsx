@@ -75,7 +75,7 @@ export default async function AdminOverviewPage() {
     { label: "Total Vendors", value: stats.totalVendors },
     { label: "Pending Orders", value: stats.pendingOrders },
     { label: "Completed Orders", value: stats.completedOrders },
-    { label: "Pending Handovers", value: stats.pendingHandovers },
+    { label: "Goods Awaiting Delivery", value: stats.pendingHandovers },
     { label: "Low Stock Items", value: stats.lowStock.length },
   ];
 

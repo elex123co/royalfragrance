@@ -5,7 +5,7 @@ const perks = [
   { icon: Wallet, label: "Dedicated collection account" },
   { icon: LineChart, label: "Monitor incoming payments" },
   { icon: PackageCheck, label: "Manage assigned inventory" },
-  { icon: Users, label: "Track customer handovers" },
+  { icon: Users, label: "Track deliveries to customers" },
 ];
 
 export function BecomeVendor() {

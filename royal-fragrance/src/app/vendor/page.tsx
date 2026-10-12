@@ -80,9 +80,9 @@ export default async function VendorOverviewPage() {
       href: "/vendor/transactions",
     },
     {
-      label: "Pending Handovers",
+      label: "Goods to Deliver",
       value: pendingHandovers,
-      hint: "Paid sales where the goods have not yet been handed to the customer.",
+      hint: "Customers who have paid but have not yet received their perfume from you. Deliver it, then mark it as delivered.",
       href: "/vendor/handovers",
     },
   ];
@@ -177,9 +177,9 @@ async function AffiliateOverview({
 
       <div className="mt-8 rounded-xl2 border border-caramel/30 bg-caramel/10 p-5">
         <p className="text-sm text-espresso">
-          You earn 12% every time someone buys through your personal link.{" "}
+          Share your link with customers. Every purchase made through it is credited to you.{" "}
           <Link href="/vendor/links" className="underline">
-            Get your links
+            Get your link
           </Link>
         </p>
       </div>

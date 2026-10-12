@@ -22,8 +22,8 @@ export default async function CollectionPage() {
       </h1>
       <p className="mb-6 text-sm text-rich/60">
         {collection.length === 0
-          ? "Every fragrance you own will show up here."
-          : `You own ${collection.length} fragrance${collection.length !== 1 ? "s" : ""}.`}
+          ? "Every fragrance you have purchased will show up here."
+          : `You have purchased ${collection.length} fragrance${collection.length !== 1 ? "s" : ""}.`}
       </p>
 
       {collection.length === 0 ? (

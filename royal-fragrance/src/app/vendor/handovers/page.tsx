@@ -1,6 +1,6 @@
 import { getCurrentVendor, getVendorDashboardData } from "@/lib/data/vendor";
 
-export const metadata = { title: "Handovers — Vendor — Royal Fragrance" };
+export const metadata = { title: "Deliveries to Customers — Vendor — Royal Fragrance" };
 
 export default async function VendorHandoversPage() {
   const vendor = await getCurrentVendor();
@@ -12,14 +12,14 @@ export default async function VendorHandoversPage() {
 
   return (
     <div>
-      <h1 className="mb-6 font-display text-2xl text-espresso">Handovers</h1>
+      <h1 className="mb-6 font-display text-2xl text-espresso">Deliveries to Customers</h1>
 
       <h2 className="mb-3 text-sm font-medium uppercase tracking-wide text-caramel">
-        Pending ({pending.length})
+        To Deliver ({pending.length})
       </h2>
       <div className="mb-8 space-y-2">
         {pending.length === 0 && (
-          <p className="text-sm text-rich/50">Nothing pending handover.</p>
+          <p className="text-sm text-rich/50">No customer is waiting for goods. All paid orders have been delivered.</p>
         )}
         {pending.map((s: any) => (
           <div
@@ -35,11 +35,11 @@ export default async function VendorHandoversPage() {
       </div>
 
       <h2 className="mb-3 text-sm font-medium uppercase tracking-wide text-rich/50">
-        Completed
+        Delivered
       </h2>
       <div className="space-y-2">
         {handovers.length === 0 && (
-          <p className="text-sm text-rich/50">No handovers recorded yet.</p>
+          <p className="text-sm text-rich/50">No deliveries recorded yet.</p>
         )}
         {handovers.map((h: any) => (
           <div

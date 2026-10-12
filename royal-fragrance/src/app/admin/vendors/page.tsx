@@ -80,7 +80,7 @@ export default async function AdminVendorsPage() {
               <th className="px-4 py-3">Sales</th>
               <th className="px-4 py-3">Earnings</th>
               <th className="px-4 py-3">Inventory</th>
-              <th className="px-4 py-3">Pending Handovers</th>
+              <th className="px-4 py-3">Goods to Deliver</th>
               <th className="px-4 py-3"></th>
             </tr>
           </thead>

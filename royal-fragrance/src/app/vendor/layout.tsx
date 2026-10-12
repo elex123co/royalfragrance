@@ -22,16 +22,18 @@ const physicalNavItems = [
   { href: "/vendor/transactions", label: "Transactions", icon: Receipt },
   { href: "/vendor/sales", label: "Sales", icon: ClipboardList },
   { href: "/vendor/inventory", label: "Inventory", icon: Package },
-  { href: "/vendor/handovers", label: "Handovers", icon: Truck },
+  { href: "/vendor/handovers", label: "Deliveries to Customers", icon: Truck },
+  { href: "/vendor/links", label: "My Link", icon: Link2 },
   { href: "/vendor/earnings", label: "Earnings", icon: Wallet2 },
 ];
 
 // Affiliate vendors never handle physical stock or customer payments
 // directly, so collection accounts, transactions, inventory, and
-// handovers are all irrelevant to them — they get links + earnings only.
+// deliveries are irrelevant to them.
 const affiliateNavItems = [
   { href: "/vendor", label: "Overview", icon: LayoutDashboard },
-  { href: "/vendor/links", label: "My Links", icon: Link2 },
+  { href: "/vendor/inventory", label: "My Products", icon: Package },
+  { href: "/vendor/links", label: "My Link", icon: Link2 },
   { href: "/vendor/earnings", label: "Earnings", icon: Wallet2 },
 ];
 

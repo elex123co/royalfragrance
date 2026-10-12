@@ -30,7 +30,7 @@ export function HandoverButton({ saleId }: { saleId: string }) {
     setSubmitting(false);
 
     if (!result.success) {
-      setError(result.error ?? "Could not record handover");
+      setError(result.error ?? "Could not record delivery");
       return;
     }
     setOpen(false);
@@ -39,14 +39,14 @@ export function HandoverButton({ saleId }: { saleId: string }) {
   return (
     <>
       <Button size="sm" variant="secondary" onClick={() => setOpen(true)}>
-        Record Handover
+        Mark as Delivered
       </Button>
 
       {open && (
         <div className="fixed inset-0 z-50 flex items-center justify-center bg-espresso/60 p-4">
           <div className="w-full max-w-md rounded-xl2 bg-cream p-6">
             <h3 className="font-display text-lg text-espresso">
-              Record Product Handover
+              Deliver Goods to Customer
             </h3>
 
             <div className="mt-4 space-y-3">
@@ -101,7 +101,7 @@ export function HandoverButton({ saleId }: { saleId: string }) {
                 onClick={handleSubmit}
                 disabled={submitting || !recipientName || !recipientPhone}
               >
-                {submitting ? "Saving…" : "Confirm Handover"}
+                {submitting ? "Saving…" : "Confirm Delivery"}
               </Button>
             </div>
           </div>
