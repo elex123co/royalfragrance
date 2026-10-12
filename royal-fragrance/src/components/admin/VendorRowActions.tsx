@@ -6,6 +6,7 @@ import {
   setVendorStatus,
   provisionCollectionAccount,
   removeCollectionAccount,
+  syncCollectionAccountName,
 } from "@/lib/actions/admin-vendors";
 
 export function VendorRowActions({
@@ -34,6 +35,23 @@ export function VendorRowActions({
     startTransition(async () => {
       const result = await provisionCollectionAccount(vendorId, accountName);
       if (!result.success) setError(result.error ?? "Failed");
+    });
+  }
+
+  function handleSyncName() {
+    setError(null);
+    startTransition(async () => {
+      const result = await syncCollectionAccountName(vendorId);
+      if (!result.success) {
+        setError(result.error ?? "Failed");
+        return;
+      }
+      alert(
+        `Name saved before: ${result.previousName}\n` +
+          `Name on Monnify record: ${result.recordName}\n\n` +
+          `Name on each bank account:\n${result.bankNames?.join("\n")}\n\n` +
+          `The dashboard now shows the bank account name.`
+      );
     });
   }
 
@@ -118,20 +136,27 @@ export function VendorRowActions({
         {status === "active" && vendorType !== "affiliate" && hasCollectionAccount && (
           <button
             disabled={isPending}
+            onClick={handleSyncName}
+            className="rounded-full border border-espresso/30 px-3 py-1 text-xs text-espresso hover:bg-espresso/5"
+          >
+            Refresh Name
+          </button>
+        )}
+        {status === "active" && vendorType !== "affiliate" && hasCollectionAccount && (
+          <button
+            disabled={isPending}
             onClick={handleRemove}
             className="rounded-full border border-red-300 px-3 py-1 text-xs text-red-600 hover:bg-red-50"
           >
             Remove Account
           </button>
         )}
-        {vendorType !== "affiliate" && (
-          <Link
-            href={`/admin/vendors/${vendorId}`}
-            className="rounded-full border border-espresso/20 px-3 py-1 text-xs text-espresso hover:bg-espresso/5"
-          >
-            Manage Inventory
-          </Link>
-        )}
+        <Link
+          href={`/admin/vendors/${vendorId}`}
+          className="rounded-full border border-espresso/20 px-3 py-1 text-xs text-espresso hover:bg-espresso/5"
+        >
+          {vendorType === "affiliate" ? "Manage Products" : "Manage Inventory"}
+        </Link>
       </div>
       {error && <p className="text-xs text-red-600">{error}</p>}
     </div>

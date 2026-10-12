@@ -59,6 +59,13 @@ export interface DedicatedAccountResult {
   accountName: string;
 }
 
+export interface CollectionAccountDetails {
+  /** Name at the top level of the reserved account record. */
+  recordName: string;
+  /** Name on each bank account, which is what a payer sees when they transfer. */
+  accounts: { bankName: string; accountNumber: string; accountName: string }[];
+}
+
 export interface PaymentProvider {
   readonly name: "paystack" | "monnify";
 
@@ -78,6 +85,9 @@ export interface PaymentProvider {
    * callers must handle a thrown "not supported" error gracefully.
    */
   createVendorCollectionAccount(input: DedicatedAccountInput): Promise<DedicatedAccountResult>;
+
+  /** Reads a vendor's existing account back from the provider (names as the provider holds them now). */
+  getVendorCollectionAccount?(providerAccountReference: string): Promise<CollectionAccountDetails>;
 
   /**
    * Permanently deallocates a previously created vendor collection

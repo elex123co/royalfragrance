@@ -120,7 +120,11 @@ export async function provisionCollectionAccount(vendorId: string, accountNameOv
       action: "vendor.collection_account_assigned",
       entity_type: "vendor",
       entity_id: vendorId,
-      metadata: { provider: provider.name },
+      metadata: {
+        provider: provider.name,
+        name_sent: `${firstName} ${rest.join(" ") || "Partner"}`.trim(),
+        name_returned: account.accountName,
+      },
     });
 
     revalidatePath("/admin/vendors");
@@ -132,6 +136,51 @@ export async function provisionCollectionAccount(vendorId: string, accountNameOv
         err?.message ??
         "Could not provision a collection account. Vendor is still approved.",
     };
+  }
+}
+
+/**
+ * Reads the account back from the provider and saves the name it holds now,
+ * so the dashboard shows exactly what a payer will see. Returns every name
+ * the provider reports, which also shows whether a wrong name comes from us
+ * or from the provider.
+ */
+export async function syncCollectionAccountName(vendorId: string) {
+  const { admin: supabase } = await requireAdmin();
+
+  const { data: account } = await supabase
+    .from("vendor_collection_accounts")
+    .select("id, account_name, provider_account_reference")
+    .eq("vendor_id", vendorId)
+    .single();
+
+  if (!account) return { success: false, error: "No collection account found." };
+
+  try {
+    const provider = getPaymentProvider();
+    if (!provider.getVendorCollectionAccount) {
+      return { success: false, error: "This provider does not support reading the account back." };
+    }
+    const details = await provider.getVendorCollectionAccount(account.provider_account_reference);
+    const providerName = details.accounts[0]?.accountName || details.recordName;
+
+    if (providerName) {
+      await supabase
+        .from("vendor_collection_accounts")
+        .update({ account_name: providerName })
+        .eq("id", account.id);
+    }
+
+    revalidatePath("/admin/vendors");
+    revalidatePath("/vendor/collection-account");
+    return {
+      success: true,
+      previousName: account.account_name as string,
+      recordName: details.recordName,
+      bankNames: details.accounts.map((a) => `${a.bankName}: ${a.accountName}`),
+    };
+  } catch (err: any) {
+    return { success: false, error: err?.message ?? "Could not read the account from the provider." };
   }
 }
 

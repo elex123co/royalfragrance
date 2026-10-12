@@ -215,11 +215,34 @@ export const monnifyProvider: PaymentProvider = {
       throw new Error("Monnify reserved account response missing account details.");
     }
 
+    // The name a payer sees at their bank is the one on the individual bank
+    // account, so prefer that over the record-level name.
     return {
       providerAccountReference: body.accountReference,
       bankName: account.bankName,
       accountNumber: account.accountNumber,
-      accountName: body.accountName,
+      accountName: account.accountName || body.accountName,
+    };
+  },
+
+  async getVendorCollectionAccount(providerAccountReference: string) {
+    const token = await getAccessToken();
+    const res = await fetch(
+      `${BASE_URL}/api/v2/bank-transfer/reserved-accounts/${encodeURIComponent(providerAccountReference)}`,
+      { headers: { Authorization: `Bearer ${token}` } }
+    );
+    if (!res.ok) {
+      const text = await res.text();
+      throw new Error(`Monnify account lookup failed (${res.status}): ${text}`);
+    }
+    const body = (await res.json())?.responseBody;
+    return {
+      recordName: body?.accountName ?? "",
+      accounts: (body?.accounts ?? []).map((a: any) => ({
+        bankName: a.bankName,
+        accountNumber: a.accountNumber,
+        accountName: a.accountName,
+      })),
     };
   },
 
