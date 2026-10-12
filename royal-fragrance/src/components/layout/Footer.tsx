@@ -26,7 +26,9 @@ export default function Footer() {
             in the making. More than a scent — a growing vision.
           </p>
           <div className="mt-5 flex gap-4">
-            <Instagram size={18} className="text-cream/70 hover:text-caramel" />
+            <a href="https://www.instagram.com/theroy_alfragrance" target="_blank" rel="noopener noreferrer" aria-label="Instagram">
+              <Instagram size={18} className="text-cream/70 hover:text-caramel" />
+            </a>
             <a href="https://www.facebook.com/royal.fragrance.568989" target="_blank" rel="noopener noreferrer" aria-label="Facebook">
               <Facebook size={18} className="text-cream/70 hover:text-caramel" />
             </a>
