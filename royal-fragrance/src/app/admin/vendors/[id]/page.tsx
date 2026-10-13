@@ -116,20 +116,22 @@ export default async function AdminVendorDetailPage({
 
       {vendor.vendor_type === "affiliate" && (
         <div className="mb-6 rounded-xl2 border border-caramel/30 bg-caramel/10 p-5 text-sm text-espresso">
-          This is an affiliate vendor. Assign the products you want them to
-          promote below. They get one personal link that opens a shop showing
-          only the products assigned to them, and their sales through it are
-          tracked automatically.
+          This is an affiliate vendor, so there is nothing to assign. They can
+          promote every product in the shop through one personal link (which
+          opens the full shop) or a link for any single product, and their
+          sales through those links are tracked automatically.
         </div>
       )}
 
       <div className="grid gap-6 lg:grid-cols-2">
-        <div className="rounded-xl2 border border-espresso/10 bg-white/60 p-6">
-          <h2 className="mb-4 font-display text-lg text-espresso">
-            Assign Inventory
-          </h2>
-          <InventoryTransferForm vendorId={params.id} products={products ?? []} />
-        </div>
+        {vendor.vendor_type !== "affiliate" && (
+          <div className="rounded-xl2 border border-espresso/10 bg-white/60 p-6">
+            <h2 className="mb-4 font-display text-lg text-espresso">
+              Assign Inventory
+            </h2>
+            <InventoryTransferForm vendorId={params.id} products={products ?? []} />
+          </div>
+        )}
 
         <div className="rounded-xl2 border border-espresso/10 bg-white/60 p-6">
           <h2 className="mb-4 font-display text-lg text-espresso">Summary</h2>

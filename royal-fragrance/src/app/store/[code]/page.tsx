@@ -27,17 +27,22 @@ export default async function VendorStorePage({ params }: { params: { code: stri
 
   const { data: vendor } = await admin
     .from("vendors")
-    .select("user_id, business_name, status, vendor_code")
+    .select("user_id, business_name, status, vendor_code, vendor_type")
     .eq("vendor_code", code)
     .maybeSingle();
 
   if (!vendor || vendor.status !== "active") notFound();
 
-  const { data: inventory } = await admin
-    .from("vendor_inventory")
-    .select("product_id, available_quantity")
-    .eq("vendor_id", vendor.user_id)
-    .gt("available_quantity", 0);
+  // Affiliates promote the whole shop, so nothing is assigned to them.
+  // Other vendors only show the products assigned to them.
+  const isAffiliate = vendor.vendor_type === "affiliate";
+  const { data: inventory } = isAffiliate
+    ? { data: [] as { product_id: string }[] }
+    : await admin
+        .from("vendor_inventory")
+        .select("product_id, available_quantity")
+        .eq("vendor_id", vendor.user_id)
+        .gt("available_quantity", 0);
 
   const assignedIds = new Set((inventory ?? []).map((i) => i.product_id));
 
@@ -45,7 +50,9 @@ export default async function VendorStorePage({ params }: { params: { code: stri
     getAllProducts(),
     getActiveNewUserDiscountPercent(),
   ]);
-  const products = allProducts.filter((p) => assignedIds.has(p.id));
+  const products = isAffiliate
+    ? allProducts
+    : allProducts.filter((p) => assignedIds.has(p.id));
 
   return (
     <section className="bg-cream py-12">

@@ -155,7 +155,7 @@ export function VendorRowActions({
           href={`/admin/vendors/${vendorId}`}
           className="rounded-full border border-espresso/20 px-3 py-1 text-xs text-espresso hover:bg-espresso/5"
         >
-          {vendorType === "affiliate" ? "Manage Products" : "Manage Inventory"}
+          {vendorType === "affiliate" ? "View Details" : "Manage Inventory"}
         </Link>
       </div>
       {error && <p className="text-xs text-red-600">{error}</p>}

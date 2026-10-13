@@ -12,9 +12,11 @@ interface LinkProduct {
 export function LinkGenerator({
   vendorCode,
   products,
+  allProducts = false,
 }: {
   vendorCode: string;
   products: LinkProduct[];
+  allProducts?: boolean;
 }) {
   const [copied, setCopied] = useState<string | null>(null);
 
@@ -64,12 +66,14 @@ export function LinkGenerator({
       </div>
 
       <div className="rounded-xl2 border border-espresso/10 bg-white/60 p-6">
-        <h2 className="font-display text-lg text-espresso">Products on your link</h2>
+        <h2 className="font-display text-lg text-espresso">
+          {allProducts ? "Link for a single product" : "Products on your link"}
+        </h2>
         {products.length === 0 ? (
           <p className="mt-2 text-sm text-rich/60">
-            No products have been assigned to you yet, so your link has nothing to
-            show. Once the team assigns products to you, they appear here and on
-            your link automatically.
+            {allProducts
+              ? "There are no products in the shop yet."
+              : "No products have been assigned to you yet, so your link has nothing to show. Once the team assigns products to you, they appear here and on your link automatically."}
           </p>
         ) : (
           <ul className="mt-3 space-y-2">

@@ -32,7 +32,6 @@ const physicalNavItems = [
 // deliveries are irrelevant to them.
 const affiliateNavItems = [
   { href: "/vendor", label: "Overview", icon: LayoutDashboard },
-  { href: "/vendor/inventory", label: "My Products", icon: Package },
   { href: "/vendor/links", label: "My Link", icon: Link2 },
   { href: "/vendor/earnings", label: "Earnings", icon: Wallet2 },
 ];

@@ -1,3 +1,4 @@
+import { redirect } from "next/navigation";
 import { getCurrentVendor, getVendorDashboardData } from "@/lib/data/vendor";
 
 export const metadata = { title: "Inventory — Vendor — Royal Fragrance" };
@@ -5,6 +6,7 @@ export const metadata = { title: "Inventory — Vendor — Royal Fragrance" };
 export default async function VendorInventoryPage() {
   const vendor = await getCurrentVendor();
   const isAffiliate = vendor!.vendor_type === "affiliate";
+  if (isAffiliate) redirect("/vendor/links");
   const { inventory } = await getVendorDashboardData(vendor!.user_id);
 
   return (
