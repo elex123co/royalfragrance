@@ -10,6 +10,7 @@ import {
   Link2,
   Wallet2,
   UserCircle,
+  Boxes,
 } from "lucide-react";
 import { getCurrentVendor } from "@/lib/data/vendor";
 import { LogoutButton, LogoutIconButton } from "@/components/account/LogoutButton";
@@ -24,6 +25,7 @@ const physicalNavItems = [
   { href: "/vendor/sales", label: "Sales", icon: ClipboardList },
   { href: "/vendor/inventory", label: "Inventory", icon: Package },
   { href: "/vendor/handovers", label: "Deliveries to Customers", icon: Truck },
+  { href: "/vendor/batches", label: "Batch Delivery", icon: Boxes },
   { href: "/vendor/links", label: "My Link", icon: Link2 },
   { href: "/vendor/earnings", label: "Earnings", icon: Wallet2 },
   { href: "/vendor/profile", label: "Profile", icon: UserCircle },
@@ -34,6 +36,7 @@ const physicalNavItems = [
 // deliveries are irrelevant to them.
 const affiliateNavItems = [
   { href: "/vendor", label: "Overview", icon: LayoutDashboard },
+  { href: "/vendor/batches", label: "Batch Delivery", icon: Boxes },
   { href: "/vendor/links", label: "My Link", icon: Link2 },
   { href: "/vendor/earnings", label: "Earnings", icon: Wallet2 },
   { href: "/vendor/profile", label: "Profile", icon: UserCircle },

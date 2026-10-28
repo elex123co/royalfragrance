@@ -11,6 +11,7 @@ import {
   Settings,
   Gift,
   UserCircle,
+  Boxes,
 } from "lucide-react";
 import { createClient } from "@/lib/supabase/server";
 import { LogoutButton, LogoutIconButton } from "@/components/account/LogoutButton";
@@ -24,6 +25,7 @@ const navItems = [
   { href: "/admin/customers", label: "Customers", icon: UserCircle },
   { href: "/admin/vendors", label: "Vendors", icon: Users },
   { href: "/admin/delivery-fees", label: "Delivery Fees", icon: Truck },
+  { href: "/admin/batches", label: "Batch Delivery", icon: Boxes },
   { href: "/admin/promo-codes", label: "Promo Codes", icon: Percent },
   { href: "/admin/combos", label: "Combos", icon: Gift },
   { href: "/admin/settings", label: "Settings", icon: Settings },

@@ -4,6 +4,7 @@ import { confirmOrderPaidAndDeductStock } from "@/lib/orders/confirm-payment";
 import { formatNaira } from "@/lib/utils/currency";
 import { LinkButton } from "@/components/ui/Button";
 import { PurchaseTracker } from "@/components/analytics/PurchaseTracker";
+import { SwitchToIndividual } from "@/components/batches/SwitchToIndividual";
 import { CheckCircle2, Clock, MessageCircle, Users } from "lucide-react";
 
 export const metadata = { title: "Order Confirmation — Royal Fragrance" };
@@ -75,6 +76,17 @@ export default async function OrderConfirmationPage({
 
   const isPaid = paymentStatus === "paid";
 
+  let batchInfo: { status: string; locationName: string } | null = null;
+  if (order.batch_id) {
+    const { data: b } = await supabase
+      .from("delivery_batches")
+      .select("status, batch_locations(name)")
+      .eq("id", order.batch_id)
+      .maybeSingle();
+    const loc: any = Array.isArray(b?.batch_locations) ? b?.batch_locations[0] : b?.batch_locations;
+    if (b) batchInfo = { status: b.status, locationName: loc?.name ?? "" };
+  }
+
   const { data: whatsapp } = isPaid
     ? await supabase.from("whatsapp_settings").select("*").eq("id", 1).maybeSingle()
     : { data: null };
@@ -137,6 +149,33 @@ export default async function OrderConfirmationPage({
               </p>
             </div>
           </div>
+
+          {order.batch_id && batchInfo && (
+            <div className="mt-6 rounded-xl border border-espresso/10 bg-cream/60 p-4 text-left text-sm text-rich/80">
+              {order.batch_switched_at ? (
+                <p>
+                  This order was switched to individual delivery.
+                  {Number(order.balance_due) > 0 &&
+                    (order.balance_settled
+                      ? " Your balance has been settled."
+                      : ` Balance to pay: ${formatNaira(Number(order.balance_due))}.`)}
+                </p>
+              ) : (
+                <p>
+                  Delivered in a shared batch for {batchInfo.locationName} (batch {batchInfo.status}). Your delivery
+                  share was {formatNaira(Number(order.batch_fee_share))}.
+                </p>
+              )}
+            </div>
+          )}
+
+          {isPaid &&
+            order.batch_id &&
+            !order.batch_switched_at &&
+            batchInfo &&
+            batchInfo.status !== "delivered" && (
+              <SwitchToIndividual orderNumber={order.order_number} whatsappPhone={whatsapp?.business_phone} />
+            )}
 
           {isPaid && (whatsapp?.business_phone || whatsapp?.group_link) && (
             <div className="mt-6 rounded-xl border border-caramel/30 bg-caramel/10 p-5 text-left">

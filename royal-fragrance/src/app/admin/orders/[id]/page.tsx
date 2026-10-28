@@ -3,6 +3,7 @@ import Link from "next/link";
 import { createAdminClient } from "@/lib/supabase/server";
 import { formatNaira } from "@/lib/utils/currency";
 import { OrderStatusSelect } from "@/components/admin/OrderStatusSelect";
+import { SettleBalanceButton } from "@/components/batches/SettleBalanceButton";
 import { ArrowLeft } from "lucide-react";
 
 export const dynamic = "force-dynamic";
@@ -85,6 +86,23 @@ export default async function AdminOrderDetailPage({
                 <span>Delivery Fee</span>
                 <span>{formatNaira(order.delivery_fee)}</span>
               </div>
+              {order.batch_id && (
+                <div className="rounded-lg bg-caramel/10 px-3 py-2 text-xs text-espresso">
+                  <p>
+                    {order.batch_switched_at
+                      ? "Batch order switched to individual delivery."
+                      : "Batch delivery order (shared fee)."}
+                  </p>
+                  {Number(order.balance_due) > 0 && (
+                    <>
+                      <p className="mt-1">
+                        Balance due: {formatNaira(Number(order.balance_due))} ({order.balance_settled ? "settled" : "unpaid"})
+                      </p>
+                      {!order.balance_settled && <SettleBalanceButton orderId={order.id} />}
+                    </>
+                  )}
+                </div>
+              )}
               {Number(order.discount_amount) > 0 && (
                 <div className="flex justify-between text-green-700">
                   <span>

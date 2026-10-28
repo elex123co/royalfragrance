@@ -9,12 +9,24 @@ import { trackMetaEvent } from "@/components/analytics/MetaPixel";
 
 type Step = "customer" | "delivery" | "summary";
 
+export interface CheckoutBatch {
+  id: string;
+  label: string | null;
+  locationName: string;
+  state: string;
+  share: number;
+  closesAt: string;
+  spotsLeft: number;
+}
+
 export function CheckoutForm({
   zones,
+  batches = [],
   newUserDiscountEligible = false,
   newUserDiscountPercentage = 10,
 }: {
   zones: DeliveryZone[];
+  batches?: CheckoutBatch[];
   newUserDiscountEligible?: boolean;
   newUserDiscountPercentage?: number;
 }) {
@@ -50,8 +62,11 @@ export function CheckoutForm({
   >({ applied: false });
   const [applyingPromo, setApplyingPromo] = useState(false);
 
+  const [batchId, setBatchId] = useState<string>("");
+  const selectedBatch = batches.find((b) => b.id === batchId);
+
   const selectedZone = zones.find((z) => z.id === delivery.zoneId);
-  const deliveryFee = selectedZone?.fee ?? 0;
+  const deliveryFee = selectedBatch ? selectedBatch.share : selectedZone?.fee ?? 0;
 
   // A promo code, once applied, REPLACES the automatic new-customer
   // discount rather than stacking with it — matching exactly how the
@@ -98,12 +113,13 @@ export function CheckoutForm({
         body: JSON.stringify({
           customer,
           delivery: {
-            state: selectedZone?.state ?? selectedZone?.name ?? "",
+            state: selectedBatch ? selectedBatch.state : selectedZone?.state ?? selectedZone?.name ?? "",
             city: delivery.city,
             address: delivery.address,
-            zoneId: delivery.zoneId,
+            zoneId: selectedBatch ? undefined : delivery.zoneId,
             fee: deliveryFee,
           },
+          batchId: selectedBatch ? selectedBatch.id : undefined,
           items: items.map((i) => ({
             productId: i.productId,
             variantId: i.variantId,
@@ -180,7 +196,30 @@ export function CheckoutForm({
 
       {step === "delivery" && (
         <div className="mt-8 space-y-4">
-          <div>
+          {batches.length > 0 && (
+            <div className="rounded-xl border border-caramel/30 bg-caramel/10 p-4">
+              <p className="text-sm font-medium text-espresso">Share delivery with a batch</p>
+              <p className="mt-1 text-xs text-rich/70">
+                Customers in the same location split one delivery fee. If the batch takes too long, you can switch to
+                individual delivery from your order page.
+              </p>
+              <select
+                value={batchId}
+                onChange={(e) => setBatchId(e.target.value)}
+                className="mt-3 w-full rounded-lg border border-espresso/15 bg-white px-4 py-2.5 text-sm focus:border-caramel focus:outline-none"
+              >
+                <option value="">No batch: normal delivery</option>
+                {batches.map((b) => (
+                  <option key={b.id} value={b.id}>
+                    {b.locationName}
+                    {b.label ? ` (${b.label})` : ""} — {formatNaira(b.share)} delivery, closes{" "}
+                    {new Date(b.closesAt).toLocaleDateString()}, {b.spotsLeft} spot{b.spotsLeft === 1 ? "" : "s"} left
+                  </option>
+                ))}
+              </select>
+            </div>
+          )}
+          <div className={selectedBatch ? "hidden" : ""}>
             <label className="mb-1.5 block text-sm font-medium text-espresso">
               State
             </label>
@@ -220,7 +259,7 @@ export function CheckoutForm({
             </Button>
             <Button
               className="flex-1"
-              disabled={!delivery.zoneId || !delivery.city || !delivery.address}
+              disabled={(!selectedBatch && !delivery.zoneId) || !delivery.city || !delivery.address}
               onClick={() => setStep("summary")}
             >
               Review Order
@@ -298,7 +337,7 @@ export function CheckoutForm({
               <span>{formatNaira(subtotal)}</span>
             </div>
             <div className="flex justify-between text-rich/80">
-              <span>Delivery Fee ({selectedZone?.name})</span>
+              <span>{selectedBatch ? `Batch delivery share (${selectedBatch.locationName})` : `Delivery Fee (${selectedZone?.name})`}</span>
               <span>{formatNaira(deliveryFee)}</span>
             </div>
             {discountAmount > 0 && (

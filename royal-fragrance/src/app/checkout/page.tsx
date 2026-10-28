@@ -1,5 +1,6 @@
 import { getDeliveryZones } from "@/lib/data/delivery";
 import { getPersonalizedNewUserDiscount } from "@/lib/data/new-user-discount";
+import { getOpenBatches } from "@/lib/data/batches";
 import { CheckoutForm } from "@/components/checkout/CheckoutForm";
 
 export const metadata = { title: "Checkout — Royal Fragrance" };
@@ -9,9 +10,10 @@ export const metadata = { title: "Checkout — Royal Fragrance" };
 export const dynamic = "force-dynamic";
 
 export default async function CheckoutPage() {
-  const [zones, personalizedDiscount] = await Promise.all([
+  const [zones, personalizedDiscount, batches] = await Promise.all([
     getDeliveryZones(),
     getPersonalizedNewUserDiscount(),
+    getOpenBatches().catch(() => []),
   ]);
 
   return (
@@ -20,6 +22,15 @@ export default async function CheckoutPage() {
         <h1 className="mb-10 font-display text-3xl text-espresso">Checkout</h1>
         <CheckoutForm
           zones={zones}
+          batches={batches.map((b) => ({
+            id: b.id,
+            label: b.label,
+            locationName: b.location.name,
+            state: b.location.state,
+            share: b.share,
+            closesAt: b.closes_at,
+            spotsLeft: b.max_members - b.members,
+          }))}
           newUserDiscountEligible={personalizedDiscount.eligible}
           newUserDiscountPercentage={personalizedDiscount.percentage}
         />

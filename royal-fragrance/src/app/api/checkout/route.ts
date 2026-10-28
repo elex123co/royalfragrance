@@ -3,6 +3,7 @@ import { cookies } from "next/headers";
 import { z } from "zod";
 import { createAdminClient, createClient } from "@/lib/supabase/server";
 import { getPaymentProvider } from "@/lib/payments";
+import { getBatchById } from "@/lib/data/batches";
 import { validatePromoCodeServerSide } from "@/lib/utils/promo-validation";
 
 const checkoutSchema = z.object({
@@ -34,6 +35,7 @@ const checkoutSchema = z.object({
     )
     .min(1),
   promoCode: z.string().optional(),
+  batchId: z.string().uuid().optional(),
 });
 
 function generateOrderNumber() {
@@ -53,11 +55,33 @@ export async function POST(request: Request) {
     );
   }
 
-  const { customer, delivery, items, promoCode } = parsed.data;
+  const { customer, items, promoCode, batchId } = parsed.data;
+  let delivery = parsed.data.delivery;
 
   const subtotal = items.reduce((sum, i) => sum + i.price * i.quantity, 0);
 
   const supabase = createAdminClient();
+
+  // Batch delivery: the fee is never trusted from the client. Re-check the
+  // batch is still open with a free slot and charge exactly its share.
+  let batchFeeShare = 0;
+  if (batchId) {
+    const batch = await getBatchById(batchId);
+    if (
+      !batch ||
+      batch.status !== "open" ||
+      new Date(batch.closes_at) <= new Date() ||
+      !batch.location.active ||
+      batch.members >= batch.max_members
+    ) {
+      return NextResponse.json(
+        { error: "That delivery batch is full or has closed. Please pick another batch or normal delivery." },
+        { status: 409 }
+      );
+    }
+    batchFeeShare = batch.share;
+    delivery = { ...delivery, state: batch.location.state, zoneId: undefined, fee: batchFeeShare };
+  }
 
   // Re-verify the promo code from scratch here — never trust a discount
   // amount computed client-side. If the code became invalid between the
@@ -178,6 +202,8 @@ export async function POST(request: Request) {
       delivery_address: delivery.address,
       delivery_zone_id: delivery.zoneId ?? null,
       delivery_fee: delivery.fee,
+      batch_id: batchId ?? null,
+      batch_fee_share: batchFeeShare,
       subtotal,
       total: finalTotal,
       payment_status: "pending",
