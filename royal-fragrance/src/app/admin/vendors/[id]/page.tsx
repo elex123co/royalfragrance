@@ -5,6 +5,8 @@ import { getVendorDashboardData } from "@/lib/data/vendor";
 import { formatNaira } from "@/lib/utils/currency";
 import { InventoryTransferForm } from "@/components/admin/InventoryTransferForm";
 import { RemoveInventoryButton } from "@/components/admin/RemoveInventoryButton";
+import { VendorBatchLocationForm } from "@/components/admin/VendorBatchLocationForm";
+import { getBatchLocations } from "@/lib/data/batches";
 import { AmbassadorLevelForm } from "@/components/admin/AmbassadorLevelForm";
 
 // Always fetch live data — admin dashboards must never serve a stale build-time snapshot.
@@ -31,6 +33,7 @@ export default async function AdminVendorDetailPage({
     .select("id, name, product_variants(id, size)")
     .eq("status", "active");
 
+  const batchLocations = await getBatchLocations(true);
   const dashboard = await getVendorDashboardData(params.id);
   const totalCollections = dashboard.transactions.reduce(
     (sum, t: any) => sum + Number(t.amount),
@@ -52,6 +55,12 @@ export default async function AdminVendorDetailPage({
           </>
         )}
       </p>
+
+      <VendorBatchLocationForm
+        vendorUserId={vendor.user_id}
+        current={vendor.batch_location_id ?? null}
+        locations={batchLocations.map((l) => ({ id: l.id, name: l.name }))}
+      />
 
       <div className="mb-6 rounded-xl2 border border-espresso/10 bg-white/60 p-6">
         <h2 className="mb-3 font-display text-lg text-espresso">Applicant Profile</h2>

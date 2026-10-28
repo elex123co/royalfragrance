@@ -8,10 +8,11 @@ export const metadata = { title: "Batch Delivery — Vendor — Royal Fragrance"
 
 export default async function VendorBatchesPage() {
   const vendor = await getCurrentVendor();
-  const [locations, batches] = await Promise.all([
+  const [allLocations, batches] = await Promise.all([
     getBatchLocations(true),
     getBatchesList(vendor!.user_id),
   ]);
+  const locations = allLocations.filter((l) => l.id === vendor!.batch_location_id);
   const members = await getBatchMembers(batches.map((b) => b.id));
 
   return (
@@ -23,7 +24,19 @@ export default async function VendorBatchesPage() {
           it at checkout. Mark it delivered when the run is done.
         </p>
       </div>
-      <CreateBatchForm locations={locations} />
+      {locations.length === 0 ? (
+        <p className="rounded-xl2 border border-espresso/10 bg-white/60 p-5 text-sm text-rich/70">
+          The admin has not assigned you a batch location yet. Once they do, you can open batches for it here.
+        </p>
+      ) : (
+        <>
+          <p className="text-sm text-rich/70">
+            Your location: <strong>{locations[0].name}</strong>. Customers who order through your link can join your
+            batches.
+          </p>
+          <CreateBatchForm locations={locations} />
+        </>
+      )}
       <div>
         <h2 className="mb-3 font-display text-lg text-espresso">Your batches</h2>
         <BatchList batches={batches} members={members as any} />

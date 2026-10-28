@@ -1066,3 +1066,10 @@ alter table batch_locations enable row level security;
 alter table delivery_batches enable row level security;
 create policy "Admins manage batch locations" on batch_locations for all using (public.is_admin());
 create policy "Admins manage delivery batches" on delivery_batches for all using (public.is_admin());
+
+-- ----------------------------------------------------------------------------
+-- VENDOR BATCH LOCATION — the location a vendor serves (e.g. a campus).
+-- Customers who order through that vendor's link only see that location's
+-- batches; vendors can only open batches for their own location.
+-- ----------------------------------------------------------------------------
+alter table vendors add column if not exists batch_location_id uuid references batch_locations(id) on delete set null;

@@ -1,5 +1,7 @@
 import { getDeliveryZones } from "@/lib/data/delivery";
 import { getPersonalizedNewUserDiscount } from "@/lib/data/new-user-discount";
+import { cookies } from "next/headers";
+import { createAdminClient } from "@/lib/supabase/server";
 import { getOpenBatches } from "@/lib/data/batches";
 import { CheckoutForm } from "@/components/checkout/CheckoutForm";
 
@@ -9,11 +11,26 @@ export const metadata = { title: "Checkout — Royal Fragrance" };
 // served from a stale build-time snapshot.
 export const dynamic = "force-dynamic";
 
+async function getReferringVendorLocation(): Promise<string | null> {
+  const code = cookies().get("rf_ref")?.value;
+  if (!code) return null;
+  const { data } = await createAdminClient()
+    .from("vendors")
+    .select("batch_location_id")
+    .eq("vendor_code", code)
+    .eq("status", "active")
+    .maybeSingle();
+  return data?.batch_location_id ?? null;
+}
+
 export default async function CheckoutPage() {
+  const vendorLocationId = await getReferringVendorLocation();
   const [zones, personalizedDiscount, batches] = await Promise.all([
     getDeliveryZones(),
     getPersonalizedNewUserDiscount(),
-    getOpenBatches().catch(() => []),
+    getOpenBatches()
+      .then((all) => (vendorLocationId ? all.filter((b) => b.location.id === vendorLocationId) : []))
+      .catch(() => []),
   ]);
 
   return (

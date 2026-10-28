@@ -79,6 +79,21 @@ export async function POST(request: Request) {
         { status: 409 }
       );
     }
+    const refForBatch = cookies().get("rf_ref")?.value;
+    const { data: refVendor } = refForBatch
+      ? await supabase
+          .from("vendors")
+          .select("batch_location_id")
+          .eq("vendor_code", refForBatch)
+          .eq("status", "active")
+          .maybeSingle()
+      : { data: null };
+    if (!refVendor?.batch_location_id || refVendor.batch_location_id !== batch.location.id) {
+      return NextResponse.json(
+        { error: "Batch delivery is only available when ordering through the vendor that serves that location." },
+        { status: 403 }
+      );
+    }
     batchFeeShare = batch.share;
     delivery = { ...delivery, state: batch.location.state, zoneId: undefined, fee: batchFeeShare };
   }

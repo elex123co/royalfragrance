@@ -90,6 +90,18 @@ export async function createBatch(input: {
     return { success: false, error: e.message };
   }
 
+  if (ctx.role === "vendor") {
+    const { data: me } = await ctx.admin
+      .from("vendors")
+      .select("batch_location_id")
+      .eq("user_id", ctx.userId)
+      .maybeSingle();
+    if (!me?.batch_location_id) {
+      return { success: false, error: "The admin has not assigned you a batch location yet." };
+    }
+    input = { ...input, locationId: me.batch_location_id };
+  }
+
   const max = Math.floor(Number(input.maxMembers));
   if (!(max >= 1) || max > 500) return { success: false, error: "Members must be between 1 and 500." };
 
@@ -208,4 +220,19 @@ export async function switchToIndividualDelivery(
   revalidatePath("/admin/batches");
   revalidatePath("/vendor/batches");
   return { success: true, balance };
+}
+
+export async function assignVendorBatchLocation(
+  vendorUserId: string,
+  locationId: string | null
+): Promise<Result> {
+  const { admin } = await requireAdmin();
+  const { error } = await admin
+    .from("vendors")
+    .update({ batch_location_id: locationId || null })
+    .eq("user_id", vendorUserId);
+  if (error) return { success: false, error: error.message };
+  revalidateAll();
+  revalidatePath(`/admin/vendors/${vendorUserId}`);
+  return { success: true };
 }
