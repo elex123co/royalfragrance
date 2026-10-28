@@ -10,8 +10,8 @@ interface InventoryLine {
   product_id: string;
   variant_id: string | null;
   available_quantity: number;
-  products?: { name: string };
-  product_variants?: { size: string } | null;
+  products?: { name: string; base_price?: number | string | null };
+  product_variants?: { size: string; price?: number | string | null } | null;
 }
 
 interface SaleLine {
@@ -80,7 +80,8 @@ function RecordSaleModal({
           variantId: inv.variant_id ?? undefined,
           name: `${inv.products?.name ?? "Product"}${inv.product_variants?.size ? ` (${inv.product_variants.size})` : ""}`,
           quantity: 1,
-          price: 0,
+          // Start from the shop price of this size; the vendor can still change it.
+          price: Number(inv.product_variants?.price ?? inv.products?.base_price ?? 0),
         },
       ];
     });
@@ -99,6 +100,11 @@ function RecordSaleModal({
   async function handleSubmit() {
     if (lines.length === 0) {
       setError("Add at least one product.");
+      return;
+    }
+    const unpriced = lines.find((l) => !(l.price > 0));
+    if (unpriced) {
+      setError(`Enter the selling price for ${unpriced.name}.`);
       return;
     }
     setSubmitting(true);
@@ -171,8 +177,9 @@ function RecordSaleModal({
                 />
                 <input
                   type="number"
-                  placeholder="Price"
-                  value={line.price}
+                  placeholder="Price each"
+                  min={0}
+                  value={line.price === 0 ? "" : line.price}
                   onChange={(e) => updateLine(i, { price: Number(e.target.value) })}
                   className="w-24 rounded-lg border border-espresso/15 px-2 py-1 text-sm"
                 />

@@ -1017,3 +1017,9 @@ create policy "Admins manage vendor interest signups" on vendor_interest_signups
 -- references, etc.) so admins can review them before approving.
 -- ----------------------------------------------------------------------------
 alter table vendors add column if not exists application_answers jsonb;
+
+-- ----------------------------------------------------------------------------
+-- VENDOR DISPLAY NAME — the name a vendor chooses to show customers
+-- (e.g. "Shop with ..." on their storefront) instead of their full name.
+-- ----------------------------------------------------------------------------
+alter table vendors add column if not exists display_name text;

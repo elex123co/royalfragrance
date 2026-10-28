@@ -2,6 +2,7 @@
 
 import { revalidatePath } from "next/cache";
 import { createClient, createAdminClient } from "@/lib/supabase/server";
+import { withVariant } from "@/lib/inventory-filter";
 
 async function requireVendor() {
   const supabase = createClient();
@@ -56,6 +57,13 @@ export async function recordVendorSale(input: RecordSaleInput) {
     return { success: false, error: "Transaction not found" };
   }
 
+  if (input.items.some((i) => !(i.price > 0) || !(i.quantity > 0))) {
+    return {
+      success: false,
+      error: "Every product needs a quantity and a selling price greater than zero.",
+    };
+  }
+
   const recordedTotal = input.items.reduce(
     (sum, i) => sum + i.price * i.quantity,
     0
@@ -69,13 +77,14 @@ export async function recordVendorSale(input: RecordSaleInput) {
   // Verify sufficient inventory BEFORE writing anything, so we never leave
   // a sale recorded against stock we don't actually have.
   for (const item of input.items) {
-    const { data: inv } = await supabase
-      .from("vendor_inventory")
-      .select("available_quantity")
-      .eq("vendor_id", vendorId)
-      .eq("product_id", item.productId)
-      .eq("variant_id", item.variantId ?? null)
-      .maybeSingle();
+    const { data: inv } = await withVariant(
+      supabase
+        .from("vendor_inventory")
+        .select("available_quantity")
+        .eq("vendor_id", vendorId)
+        .eq("product_id", item.productId),
+      item.variantId
+    ).maybeSingle();
 
     if (!inv || inv.available_quantity < item.quantity) {
       return {
@@ -116,13 +125,14 @@ export async function recordVendorSale(input: RecordSaleInput) {
 
   // Deduct inventory + record the movement with before/after quantities.
   for (const item of input.items) {
-    const { data: inv } = await supabase
-      .from("vendor_inventory")
-      .select("id, available_quantity")
-      .eq("vendor_id", vendorId)
-      .eq("product_id", item.productId)
-      .eq("variant_id", item.variantId ?? null)
-      .single();
+    const { data: inv } = await withVariant(
+      supabase
+        .from("vendor_inventory")
+        .select("id, available_quantity")
+        .eq("vendor_id", vendorId)
+        .eq("product_id", item.productId),
+      item.variantId
+    ).single();
 
     if (!inv) continue;
 

@@ -27,7 +27,7 @@ export default async function VendorStorePage({ params }: { params: { code: stri
 
   const { data: vendor } = await admin
     .from("vendors")
-    .select("user_id, business_name, status, vendor_code, vendor_type")
+    .select("user_id, business_name, display_name, status, vendor_code, vendor_type")
     .eq("vendor_code", code)
     .maybeSingle();
 
@@ -62,7 +62,7 @@ export default async function VendorStorePage({ params }: { params: { code: stri
             Royal Fragrance
           </span>
           <h1 className="mt-2 font-display text-3xl text-espresso">
-            Shop with {vendor.business_name}
+            Shop with {vendor.display_name || vendor.business_name}
           </h1>
           <p className="mx-auto mt-2 max-w-xl text-sm text-rich/70">
             Choose from the fragrances available through your representative.

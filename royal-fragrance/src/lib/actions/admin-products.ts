@@ -41,6 +41,46 @@ function resolveStatus(
   return totalStock > 0 ? "active" : "out_of_stock";
 }
 
+function baseSlug(input: ProductInput) {
+  const fromName = input.name
+    .toLowerCase()
+    .trim()
+    .replace(/[^a-z0-9]+/g, "-")
+    .replace(/(^-|-$)/g, "");
+  const raw = (input.slug || "").trim() || fromName;
+  return raw.toLowerCase().replace(/[^a-z0-9-]+/g, "-").replace(/(^-|-$)/g, "") || "product";
+}
+
+/**
+ * Returns a slug no other product uses. A name that matches an existing
+ * product gets "-2", "-3", and so on, instead of failing with a database
+ * "duplicate key" error. When editing, the product's own current slug does
+ * not count as a clash.
+ */
+async function uniqueSlug(
+  admin: Awaited<ReturnType<typeof requireAdmin>>["admin"],
+  input: ProductInput,
+  excludeProductId?: string
+) {
+  const base = baseSlug(input);
+  let query = admin.from("products").select("id, slug").like("slug", `${base}%`);
+  if (excludeProductId) query = query.neq("id", excludeProductId);
+  const { data } = await query;
+  const taken = new Set((data ?? []).map((p) => p.slug));
+  if (!taken.has(base)) return base;
+  let n = 2;
+  while (taken.has(`${base}-${n}`)) n += 1;
+  return `${base}-${n}`;
+}
+
+function variantProblem(input: ProductInput) {
+  for (const v of input.variants) {
+    if (!v.size.trim()) return "Every size needs a name (for example 50ml or One Size).";
+    if (!(v.price > 0)) return `Enter a price for the ${v.size.trim()} size.`;
+  }
+  return null;
+}
+
 export async function createProduct(input: ProductInput) {
   const { admin } = await requireAdmin();
 
@@ -51,14 +91,18 @@ export async function createProduct(input: ProductInput) {
     };
   }
 
+  const problem = variantProblem(input);
+  if (problem) return { success: false, error: problem };
+
   const totalStock = input.variants.reduce((sum, v) => sum + v.stock, 0);
   const status = resolveStatus(input.status, totalStock);
+  const slug = await uniqueSlug(admin, input);
 
   const { data: product, error } = await admin
     .from("products")
     .insert({
       name: input.name,
-      slug: input.slug,
+      slug,
       description: input.description,
       short_description: input.shortDescription,
       category_id: input.categoryId,
@@ -124,7 +168,7 @@ export async function createProduct(input: ProductInput) {
 
   revalidatePath("/admin/products");
   revalidatePath("/shop");
-  return { success: true, productId: product.id };
+  return { success: true, productId: product.id, slug };
 }
 
 export async function updateProduct(productId: string, input: ProductInput) {
@@ -137,14 +181,18 @@ export async function updateProduct(productId: string, input: ProductInput) {
     };
   }
 
+  const problem = variantProblem(input);
+  if (problem) return { success: false, error: problem };
+
   const totalStock = input.variants.reduce((sum, v) => sum + v.stock, 0);
   const status = resolveStatus(input.status, totalStock);
+  const slug = await uniqueSlug(admin, input, productId);
 
   const { error } = await admin
     .from("products")
     .update({
       name: input.name,
-      slug: input.slug,
+      slug,
       description: input.description,
       short_description: input.shortDescription,
       category_id: input.categoryId,
@@ -198,7 +246,7 @@ export async function updateProduct(productId: string, input: ProductInput) {
   }
 
   revalidatePath("/admin/products");
-  revalidatePath(`/product/${input.slug}`);
+  revalidatePath(`/product/${slug}`);
   revalidatePath("/shop");
   if (tierWarning) return { success: true, warning: tierWarning };
   return { success: true };

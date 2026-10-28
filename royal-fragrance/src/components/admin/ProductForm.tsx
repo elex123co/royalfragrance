@@ -31,6 +31,26 @@ interface ProductFormProps {
   initialDiscountTiers?: DiscountTier[];
 }
 
+/** Downsizes a photo to at most 1600px and re-encodes it, so uploads are quick. */
+async function compressImage(file: File): Promise<File> {
+  try {
+    if (!file.type.startsWith("image/") || file.size < 300 * 1024) return file;
+    const bitmap = await createImageBitmap(file);
+    const scale = Math.min(1, 1600 / Math.max(bitmap.width, bitmap.height));
+    const canvas = document.createElement("canvas");
+    canvas.width = Math.round(bitmap.width * scale);
+    canvas.height = Math.round(bitmap.height * scale);
+    const ctx = canvas.getContext("2d");
+    if (!ctx) return file;
+    ctx.drawImage(bitmap, 0, 0, canvas.width, canvas.height);
+    const blob: Blob | null = await new Promise((res) => canvas.toBlob(res, "image/webp", 0.85));
+    if (!blob || blob.size >= file.size) return file;
+    return new File([blob], file.name.replace(/\.[^.]+$/, "") + ".webp", { type: "image/webp" });
+  } catch {
+    return file;
+  }
+}
+
 function slugify(name: string) {
   return name
     .toLowerCase()
@@ -60,11 +80,11 @@ export function ProductForm({
     basePrice: initial?.basePrice ?? 0,
     discountType: initial?.discountType ?? null,
     discountValue: initial?.discountValue ?? null,
-    status: initial?.status ?? "draft",
+    status: initial?.status ?? "active",
     images: initial?.images ?? [],
     variants: initial?.variants?.length
       ? initial.variants
-      : [{ size: "50ml", price: 0, stock: 0 }],
+      : [{ size: "", price: 0, stock: 0 }],
   });
   const [error, setError] = useState<string | null>(null);
   const [submitting, setSubmitting] = useState(false);
@@ -106,6 +126,7 @@ export function ProductForm({
       name: form.name,
       availableCategories: categories.map((c) => c.name),
       hints: aiHints,
+      imageUrls: form.images,
     });
 
     setGeneratingDescription(false);
@@ -134,11 +155,19 @@ export function ProductForm({
     setUploading(true);
     setUploadError(null);
 
-    for (const file of Array.from(files)) {
-      const data = new FormData();
-      data.append("file", file);
-      const result = await uploadProductImage(data);
+    // Shrink each photo in the browser first (phone photos are often 4-8MB),
+    // then upload them all at the same time instead of one after another.
+    const results = await Promise.all(
+      Array.from(files).map(async (file) => {
+        const small = await compressImage(file);
+        const data = new FormData();
+        data.append("file", small);
+        const result = await uploadProductImage(data);
+        return { file, result };
+      })
+    );
 
+    for (const { file, result } of results) {
       if (!result.success || !result.url) {
         setUploadError(result.error ?? `Could not upload ${file.name}`);
         continue;
@@ -159,6 +188,11 @@ export function ProductForm({
 
     if (form.variants.some((v) => !v.size.trim())) {
       setError("Every size/variant needs a name (e.g. \"50ml\" or \"One Size\").");
+      return;
+    }
+    const unpriced = form.variants.find((v) => !(v.price > 0));
+    if (unpriced) {
+      setError(`Enter a price for the ${unpriced.size.trim()} size.`);
       return;
     }
 
@@ -224,8 +258,10 @@ export function ProductForm({
         </div>
         {aiError && <p className="mt-1 text-xs text-red-600">{aiError}</p>}
         <p className="mt-1 text-xs text-rich/50">
-          Fills in both description fields and picks a category below — you
-          can change any of it before saving.
+          Upload the product photos first (in Photos below): the AI looks at
+          up to three of them and writes from what it sees. It fills in both
+          description fields and picks a category, and you can change any of
+          it before saving.
         </p>
       </div>
 
@@ -320,7 +356,7 @@ export function ProductForm({
           Public Sale Price
         </label>
         <p className="mb-1.5 text-xs text-amber-700">
-          ⚠️ This discounts the price for EVERYONE immediately, no promo
+          This discounts the price for EVERYONE immediately, no promo
           code needed. Leave as "No discount" unless you want an always-on
           markdown. For promo-code-only pricing, use Discount Tiers below
           instead.
@@ -565,8 +601,10 @@ export function ProductForm({
           </button>
         </div>
         <p className="mb-2 text-xs text-rich/50">
-          No real size options? Just use one row labeled &ldquo;One Size&rdquo;
-          with your total quantity in Stock.
+          Each size has its own price. Add a row for every size you sell (for
+          example 30ml at one price and 50ml at another) and customers will see
+          the price change as they pick a size. No real size options? Use one
+          row labeled &ldquo;One Size&rdquo;.
         </p>
         <div className="space-y-3">
           {form.variants.map((v, i) => (
@@ -601,7 +639,10 @@ export function ProductForm({
                   </label>
                   <input
                     type="number"
-                    value={v.price}
+                    min={0}
+                    inputMode="numeric"
+                    placeholder="e.g. 25000"
+                    value={v.price === 0 ? "" : v.price}
                     onChange={(e) => updateVariant(i, { price: Number(e.target.value) })}
                     className="w-full rounded-lg border border-espresso/15 px-2 py-2 text-sm"
                   />
@@ -613,7 +654,9 @@ export function ProductForm({
                   <input
                     type="number"
                     min={0}
-                    value={v.stock}
+                    inputMode="numeric"
+                    placeholder="e.g. 10"
+                    value={v.stock === 0 ? "" : v.stock}
                     onChange={(e) => updateVariant(i, { stock: Number(e.target.value) })}
                     className="w-full rounded-lg border border-espresso/15 px-2 py-2 text-sm"
                   />

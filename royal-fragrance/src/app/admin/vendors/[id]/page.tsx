@@ -172,13 +172,11 @@ export default async function AdminVendorDetailPage({
                   </span>
                   <span className="flex items-center gap-3">
                     <span>{i.available_quantity}</span>
-                    {i.available_quantity > 0 && (
-                      <RemoveInventoryButton
-                        inventoryId={i.id}
-                        available={i.available_quantity}
-                        label={i.products?.name ?? "item"}
-                      />
-                    )}
+                    <RemoveInventoryButton
+                      inventoryId={i.id}
+                      available={i.available_quantity}
+                      label={i.products?.name ?? "item"}
+                    />
                   </span>
                 </div>
               </div>

@@ -12,6 +12,10 @@ export function ProductCard({
   newUserDiscountPercent?: number | null;
 }) {
   const outOfStock = product.status === "out_of_stock";
+  // When sizes are priced differently, show the lowest price as "From".
+  const variantPrices = (product.variants ?? []).map((v) => v.price);
+  const lowestPrice = variantPrices.length > 0 ? Math.min(...variantPrices) : product.price;
+  const hasPriceRange = variantPrices.length > 1 && Math.max(...variantPrices) !== lowestPrice;
 
   return (
     <Link
@@ -51,8 +55,11 @@ export function ProductCard({
         <div className="absolute inset-x-0 bottom-0 bg-gradient-to-t from-black/70 to-transparent px-3 pb-2.5 pt-6">
           <p className="truncate text-sm font-medium text-white">{product.name}</p>
           <div className="flex items-baseline gap-1.5">
-            <span className="font-display text-sm text-white">{formatNaira(product.price)}</span>
-            {product.originalPrice && (
+            <span className="font-display text-sm text-white">
+              {hasPriceRange && <span className="mr-1 text-[10px] font-normal text-white/70">From</span>}
+              {formatNaira(hasPriceRange ? lowestPrice : product.price)}
+            </span>
+            {!hasPriceRange && product.originalPrice && (
               <span className="text-xs text-white/60 line-through">
                 {formatNaira(product.originalPrice)}
               </span>

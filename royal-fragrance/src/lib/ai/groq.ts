@@ -12,6 +12,45 @@ interface ChatMessage {
   content: string;
 }
 
+type VisionContent =
+  | string
+  | ({ type: "text"; text: string } | { type: "image_url"; image_url: { url: string } })[];
+
+interface VisionMessage {
+  role: "system" | "user" | "assistant";
+  content: VisionContent;
+}
+
+// A vision-capable Groq model, so descriptions can be written from the
+// actual product photos. Override with GROQ_VISION_MODEL if it is renamed.
+const DEFAULT_VISION_MODEL = "meta-llama/llama-4-scout-17b-16e-instruct";
+
+export async function callGroqVision(
+  messages: VisionMessage[],
+  { json = false }: { json?: boolean } = {}
+): Promise<string> {
+  const apiKey = process.env.GROQ_API_KEY;
+  if (!apiKey) throw new Error("GROQ_API_KEY is not configured");
+
+  const res = await fetch(GROQ_URL, {
+    method: "POST",
+    headers: { Authorization: `Bearer ${apiKey}`, "Content-Type": "application/json" },
+    body: JSON.stringify({
+      model: process.env.GROQ_VISION_MODEL || DEFAULT_VISION_MODEL,
+      messages,
+      temperature: 0.7,
+      ...(json ? { response_format: { type: "json_object" } } : {}),
+    }),
+  });
+
+  if (!res.ok) {
+    const text = await res.text();
+    throw new Error(`Groq vision request failed (${res.status}): ${text}`);
+  }
+  const data = await res.json();
+  return data.choices?.[0]?.message?.content ?? "";
+}
+
 /**
  * Calls Groq's chat completions endpoint. When `json` is true, requests
  * strict JSON-mode output — Groq (like OpenAI) will refuse non-JSON output

@@ -32,7 +32,16 @@ export function CustomerReceiptButton({ data }: { data: ReceiptData }) {
   const [busy, setBusy] = useState<"image" | "pdf" | "share" | null>(null);
   const ref = useRef<HTMLDivElement>(null);
 
-  const total = data.items.reduce((s, i) => s + i.price * i.quantity, 0);
+  const rawTotal = data.items.reduce((s, i) => s + i.price * i.quantity, 0);
+  // If no item price could be worked out (very old records), a single item
+  // takes what the customer actually paid, rather than showing zero.
+  const items =
+    rawTotal === 0 && data.amountPaid && data.items.length === 1
+      ? [{ ...data.items[0], price: data.amountPaid / data.items[0].quantity }]
+      : data.items;
+  const itemsTotal = items.reduce((s, i) => s + i.price * i.quantity, 0);
+  const total = itemsTotal > 0 ? itemsTotal : data.amountPaid ?? 0;
+  const itemCount = items.reduce((s, i) => s + i.quantity, 0);
   const d = new Date(data.date);
   const dateStr = d.toLocaleDateString("en-NG", { year: "numeric", month: "long", day: "numeric" });
   const timeStr = d.toLocaleTimeString("en-NG", { hour: "2-digit", minute: "2-digit" });
@@ -141,25 +150,38 @@ export function CustomerReceiptButton({ data }: { data: ReceiptData }) {
 
               <div style={{ borderTop: "1px dashed #ccc", borderBottom: "1px dashed #ccc", padding: "10px 0", margin: "10px 0" }}>
                 <Row label="Receipt No." value={data.saleNumber} />
-                <Row label="Date" value={`${dateStr}, ${timeStr}`} />
+                <Row label="Date" value={dateStr} />
+                <Row label="Time" value={timeStr} />
                 {data.customerName && <Row label="Customer" value={data.customerName} />}
                 <Row label="Served by" value={`${data.vendorName} (${data.vendorCode})`} />
                 {data.paymentReference && <Row label="Payment Ref." value={data.paymentReference} />}
               </div>
 
               <div style={{ margin: "8px 0" }}>
-                {data.items.map((it, idx) => (
-                  <div key={idx} style={{ display: "flex", justifyContent: "space-between", fontSize: 12, padding: "4px 0", color: "#1E120C" }}>
-                    <span style={{ maxWidth: "65%" }}>
+                <div style={{ display: "flex", fontSize: 10, color: "#70452F", textTransform: "uppercase", paddingBottom: 4, borderBottom: "1px solid #eee" }}>
+                  <span style={{ flex: 1 }}>Description</span>
+                  <span style={{ width: 28, textAlign: "center" }}>Qty</span>
+                  <span style={{ width: 70, textAlign: "right" }}>Price</span>
+                  <span style={{ width: 76, textAlign: "right" }}>Amount</span>
+                </div>
+                {items.map((it, idx) => (
+                  <div key={idx} style={{ display: "flex", fontSize: 11, padding: "5px 0", color: "#1E120C", alignItems: "flex-start" }}>
+                    <span style={{ flex: 1, paddingRight: 4 }}>
                       {it.name}
-                      {it.size ? ` (${it.size})` : ""} x {it.quantity}
+                      {it.size ? ` (${it.size})` : ""}
                     </span>
-                    <span style={{ fontWeight: 600 }}>{formatNaira(it.price * it.quantity)}</span>
+                    <span style={{ width: 28, textAlign: "center" }}>{it.quantity}</span>
+                    <span style={{ width: 70, textAlign: "right" }}>{formatNaira(it.price)}</span>
+                    <span style={{ width: 76, textAlign: "right", fontWeight: 600 }}>{formatNaira(it.price * it.quantity)}</span>
                   </div>
                 ))}
               </div>
 
               <div style={{ borderTop: "1px solid #1E120C", paddingTop: 8, marginTop: 8 }}>
+                <div style={{ display: "flex", justifyContent: "space-between", fontSize: 11, color: "#70452F", marginBottom: 4 }}>
+                  <span>Items purchased</span>
+                  <span>{itemCount}</span>
+                </div>
                 <div style={{ display: "flex", justifyContent: "space-between", fontSize: 14, fontWeight: 700, color: "#1E120C" }}>
                   <span>Total</span>
                   <span>{formatNaira(total)}</span>
@@ -172,10 +194,20 @@ export function CustomerReceiptButton({ data }: { data: ReceiptData }) {
                 )}
               </div>
 
-              <p style={{ marginTop: 16, textAlign: "center", fontSize: 11, color: "#70452F" }}>
-                Thank you for shopping with Royal Fragrance.
-              </p>
-              <p style={{ marginTop: 4, textAlign: "center", fontSize: 10, color: "#999" }}>royalfragrancegallery.com</p>
+              <div style={{ marginTop: 18, textAlign: "center" }}>
+                <p style={{ fontSize: 12, fontWeight: 600, color: "#1E120C" }}>
+                  Thank you for shopping with Royal Fragrance.
+                </p>
+                <p style={{ marginTop: 2, fontSize: 11, color: "#70452F", fontStyle: "italic" }}>
+                  May God replenish your source.
+                </p>
+              </div>
+
+              <div style={{ marginTop: 14, borderTop: "1px dashed #ccc", paddingTop: 8, textAlign: "center", fontSize: 10, color: "#70452F", lineHeight: 1.6 }}>
+                <p>Phone: 0704 021 8594</p>
+                <p>Email: royalfragrancescent@gmail.com</p>
+                <p style={{ color: "#999" }}>royalfragrancegallery.com</p>
+              </div>
             </div>
 
             <div className="space-y-2 border-t border-espresso/10 p-4">

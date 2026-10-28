@@ -16,7 +16,11 @@ export default async function VendorEarningsPage() {
 
   const total = (commissions ?? []).reduce((sum, c) => sum + Number(c.amount), 0);
   const thisMonth = (commissions ?? [])
-    .filter((c) => new Date(c.created_at).getMonth() === new Date().getMonth())
+    .filter((c) => {
+      const d = new Date(c.created_at);
+      const now = new Date();
+      return d.getMonth() === now.getMonth() && d.getFullYear() === now.getFullYear();
+    })
     .reduce((sum, c) => sum + Number(c.amount), 0);
 
   return (

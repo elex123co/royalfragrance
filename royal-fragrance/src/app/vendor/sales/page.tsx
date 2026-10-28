@@ -25,10 +25,18 @@ export default async function VendorSalesPage() {
           <p className="text-sm text-rich/50">No sales recorded yet.</p>
         )}
         {sales.map((sale: any) => {
-          const total = (sale.vendor_sale_items ?? []).reduce(
-            (sum: number, i: any) => sum + i.recorded_price * i.quantity,
+          // Older records saved before prices were required may hold 0;
+          // fall back to the shop price so totals are not shown as zero.
+          const unitPrice = (i: any) =>
+            Number(i.recorded_price) > 0
+              ? Number(i.recorded_price)
+              : Number(i.product_variants?.price ?? i.products?.base_price ?? 0);
+          const itemsTotal = (sale.vendor_sale_items ?? []).reduce(
+            (sum: number, i: any) => sum + unitPrice(i) * i.quantity,
             0
           );
+          const total =
+            itemsTotal > 0 ? itemsTotal : Number(sale.payment_transactions?.amount ?? 0);
           return (
             <div
               key={sale.id}
@@ -58,7 +66,7 @@ export default async function VendorSalesPage() {
                 {(sale.vendor_sale_items ?? []).map((item: any) => (
                   <p key={item.id}>
                     {item.products?.name} × {item.quantity} —{" "}
-                    {formatNaira(item.recorded_price * item.quantity)}
+                    {formatNaira(unitPrice(item) * item.quantity)}
                   </p>
                 ))}
               </div>
@@ -74,7 +82,7 @@ export default async function VendorSalesPage() {
                       date: sale.created_at,
                       customerName: sale.customer_name,
                       customerPhone: sale.customer_phone,
-                      vendorName: vendor!.business_name,
+                      vendorName: vendor!.display_name || vendor!.business_name,
                       vendorCode: vendor!.vendor_code,
                       paymentReference:
                         sale.payment_transactions?.provider_transaction_reference ?? null,
@@ -85,7 +93,7 @@ export default async function VendorSalesPage() {
                         name: i.products?.name ?? "Item",
                         size: i.product_variants?.size ?? null,
                         quantity: i.quantity,
-                        price: Number(i.recorded_price),
+                        price: unitPrice(i),
                       })),
                     }}
                   />

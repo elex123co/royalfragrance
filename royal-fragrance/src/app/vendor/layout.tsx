@@ -9,6 +9,7 @@ import {
   Truck,
   Link2,
   Wallet2,
+  UserCircle,
 } from "lucide-react";
 import { getCurrentVendor } from "@/lib/data/vendor";
 import { LogoutButton, LogoutIconButton } from "@/components/account/LogoutButton";
@@ -25,6 +26,7 @@ const physicalNavItems = [
   { href: "/vendor/handovers", label: "Deliveries to Customers", icon: Truck },
   { href: "/vendor/links", label: "My Link", icon: Link2 },
   { href: "/vendor/earnings", label: "Earnings", icon: Wallet2 },
+  { href: "/vendor/profile", label: "Profile", icon: UserCircle },
 ];
 
 // Affiliate vendors never handle physical stock or customer payments
@@ -34,6 +36,7 @@ const affiliateNavItems = [
   { href: "/vendor", label: "Overview", icon: LayoutDashboard },
   { href: "/vendor/links", label: "My Link", icon: Link2 },
   { href: "/vendor/earnings", label: "Earnings", icon: Wallet2 },
+  { href: "/vendor/profile", label: "Profile", icon: UserCircle },
 ];
 
 export default async function VendorLayout({

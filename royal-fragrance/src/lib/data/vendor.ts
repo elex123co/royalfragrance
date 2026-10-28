@@ -45,7 +45,7 @@ export async function getVendorDashboardData(vendorId: string) {
     supabase
       .from("vendor_sales")
       .select(
-        "*, vendor_sale_items(*, products(name), product_variants(size)), payment_transactions(amount, provider_transaction_reference, transaction_date)"
+        "*, vendor_sale_items(*, products(name, base_price), product_variants(size, price)), payment_transactions(amount, provider_transaction_reference, transaction_date)"
       )
       .eq("vendor_id", vendorId)
       .order("created_at", { ascending: false }),
