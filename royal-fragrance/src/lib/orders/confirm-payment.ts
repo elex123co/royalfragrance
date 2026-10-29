@@ -33,7 +33,7 @@ export async function confirmOrderPaidAndDeductStock(
 
   await supabase
     .from("orders")
-    .update({ payment_status: "paid", order_status: "payment_confirmed" })
+    .update({ payment_status: "paid", order_status: "payment_confirmed", paid_at: new Date().toISOString() })
     .eq("id", orderId);
 
   const { data: items } = await supabase

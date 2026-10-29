@@ -1073,3 +1073,9 @@ create policy "Admins manage delivery batches" on delivery_batches for all using
 -- batches; vendors can only open batches for their own location.
 -- ----------------------------------------------------------------------------
 alter table vendors add column if not exists batch_location_id uuid references batch_locations(id) on delete set null;
+
+-- ----------------------------------------------------------------------------
+-- PAYMENT HISTORY — exact time an order was paid (shown on Admin > Payments).
+-- ----------------------------------------------------------------------------
+alter table orders add column if not exists paid_at timestamptz;
+update orders set paid_at = updated_at where payment_status = 'paid' and paid_at is null;
