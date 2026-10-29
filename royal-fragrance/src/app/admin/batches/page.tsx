@@ -1,5 +1,7 @@
 import { getBatchLocations, getBatchesList, getBatchMembers } from "@/lib/data/batches";
 import { BatchLocationsPanel } from "@/components/batches/BatchLocationsPanel";
+import { createAdminClient } from "@/lib/supabase/server";
+import { VendorLocationsPanel } from "@/components/batches/VendorLocationsPanel";
 import { CreateBatchForm } from "@/components/batches/CreateBatchForm";
 import { BatchList } from "@/components/batches/BatchList";
 
@@ -8,6 +10,11 @@ export const metadata = { title: "Batch Delivery — Admin — Royal Fragrance" 
 
 export default async function AdminBatchesPage() {
   const [locations, batches] = await Promise.all([getBatchLocations(), getBatchesList()]);
+  const { data: vendorRows } = await createAdminClient()
+    .from("vendors")
+    .select("user_id, business_name, display_name, vendor_code, vendor_type, batch_location_id, status")
+    .eq("status", "active")
+    .order("business_name");
   const members = await getBatchMembers(batches.map((b) => b.id));
 
   return (
@@ -20,6 +27,16 @@ export default async function AdminBatchesPage() {
         </p>
       </div>
       <BatchLocationsPanel locations={locations} />
+      <VendorLocationsPanel
+        locations={locations.filter((l) => l.active).map((l) => ({ id: l.id, name: l.name }))}
+        vendors={(vendorRows ?? []).map((v: any) => ({
+          userId: v.user_id,
+          name: v.display_name || v.business_name,
+          code: v.vendor_code,
+          type: v.vendor_type,
+          locationId: v.batch_location_id,
+        }))}
+      />
       <CreateBatchForm locations={locations.filter((l) => l.active)} />
       <div>
         <h2 className="mb-3 font-display text-lg text-espresso">All batches</h2>
