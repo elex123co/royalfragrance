@@ -70,7 +70,22 @@ export function ProductForm({
   const [discountTiers, setDiscountTiers] = useState<DiscountTier[]>(initialDiscountTiers);
   const [colors, setColors] = useState<string[]>(initial?.colors ?? []);
   const [colorInput, setColorInput] = useState("");
-  const [productType, setProductType] = useState(initial?.type ?? "");
+  // Several types can be set on one product. They are saved together as a
+  // single comma-separated string in the existing `type` column.
+  const [productTypes, setProductTypes] = useState<string[]>(
+    (initial?.type ?? "")
+      .split(",")
+      .map((t) => t.trim())
+      .filter(Boolean)
+  );
+  const [typeInput, setTypeInput] = useState("");
+  function addType(raw: string) {
+    const t = raw.trim();
+    if (t && !productTypes.some((x) => x.toLowerCase() === t.toLowerCase())) {
+      setProductTypes((prev) => [...prev, t]);
+    }
+    setTypeInput("");
+  }
   const [form, setForm] = useState<Omit<ProductInput, "discountTiers" | "colors" | "type">>({
     name: initial?.name ?? "",
     slug: initial?.slug ?? "",
@@ -199,7 +214,7 @@ export function ProductForm({
     setSubmitting(true);
     setError(null);
 
-    const payload = { ...form, slug: form.slug || slugify(form.name), discountTiers, colors, type: productType };
+    const payload = { ...form, slug: form.slug || slugify(form.name), discountTiers, colors, type: productTypes.join(", ") };
     const result = productId
       ? await updateProduct(productId, payload)
       : await createProduct(payload);
@@ -466,15 +481,63 @@ export function ProductForm({
           Type (optional)
         </label>
         <p className="mb-2 text-xs text-rich/50">
-          Free text — e.g. "Eau de Parfum", "Body Spray", "Attar". Your own
-          wording, not picked from a list.
+          You can add more than one, e.g. "Eau de Parfum" and "Body Spray". Tap a
+          suggestion or type your own and press Enter.
         </p>
-        <input
-          value={productType}
-          onChange={(e) => setProductType(e.target.value)}
-          placeholder="e.g. Eau de Parfum"
-          className="w-full rounded-lg border border-espresso/15 px-4 py-2.5 text-sm focus:border-caramel focus:outline-none"
-        />
+        <div className="flex gap-2">
+          <input
+            value={typeInput}
+            onChange={(e) => setTypeInput(e.target.value)}
+            onKeyDown={(e) => {
+              if (e.key === "Enter" || e.key === ",") {
+                e.preventDefault();
+                addType(typeInput);
+              }
+            }}
+            placeholder="e.g. Eau de Parfum — press Enter to add"
+            className="flex-1 rounded-lg border border-espresso/15 px-4 py-2.5 text-sm focus:border-caramel focus:outline-none"
+          />
+          <button
+            type="button"
+            onClick={() => addType(typeInput)}
+            className="shrink-0 rounded-lg border border-espresso/20 px-4 text-sm text-espresso hover:bg-espresso/5"
+          >
+            Add
+          </button>
+        </div>
+        <div className="mt-2 flex flex-wrap gap-2">
+          {["Eau de Parfum", "Eau de Toilette", "Body Spray", "Attar", "Oil", "Parfum", "Cologne", "Body Mist"]
+            .filter((t) => !productTypes.some((x) => x.toLowerCase() === t.toLowerCase()))
+            .map((t) => (
+              <button
+                key={t}
+                type="button"
+                onClick={() => addType(t)}
+                className="rounded-full border border-dashed border-espresso/25 px-3 py-1 text-xs text-rich/70 hover:bg-espresso/5"
+              >
+                + {t}
+              </button>
+            ))}
+        </div>
+        {productTypes.length > 0 && (
+          <div className="mt-2 flex flex-wrap gap-2">
+            {productTypes.map((t) => (
+              <span
+                key={t}
+                className="flex items-center gap-1.5 rounded-full bg-espresso/5 px-3 py-1 text-xs text-espresso"
+              >
+                {t}
+                <button
+                  type="button"
+                  onClick={() => setProductTypes((prev) => prev.filter((x) => x !== t))}
+                  className="text-rich/40 hover:text-red-600"
+                >
+                  ✕
+                </button>
+              </span>
+            ))}
+          </div>
+        )}
       </div>
 
       <div>
