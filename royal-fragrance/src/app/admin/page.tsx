@@ -1,4 +1,5 @@
 import { createAdminClient } from "@/lib/supabase/server";
+import { getMonnifyWalletBalance } from "@/lib/payments/monnify";
 import { formatNaira } from "@/lib/utils/currency";
 
 // Always fetch live data — admin dashboards must never serve a stale build-time snapshot.
@@ -66,7 +67,7 @@ async function getStats() {
 }
 
 export default async function AdminOverviewPage() {
-  const stats = await getStats();
+  const [stats, wallet] = await Promise.all([getStats(), getMonnifyWalletBalance()]);
 
   const cards = [
     { label: "Total Revenue", value: formatNaira(stats.totalRevenue) },
@@ -84,6 +85,27 @@ export default async function AdminOverviewPage() {
       <h1 className="mb-8 font-display text-2xl text-espresso">
         Dashboard Overview
       </h1>
+
+      <div className="mb-4 rounded-xl2 border border-caramel/30 bg-caramel/10 p-5">
+        <p className="text-xs uppercase tracking-wide text-rich/60">Monnify account balance</p>
+        {wallet.ok ? (
+          <>
+            <p className="mt-2 font-display text-3xl text-espresso">
+              {formatNaira(wallet.balance.availableBalance)}
+            </p>
+            <p className="mt-1 text-xs text-rich/60">
+              Available now. Ledger balance {formatNaira(wallet.balance.ledgerBalance)}. Reload the page to refresh.
+            </p>
+          </>
+        ) : wallet.error === "not_configured" ? (
+          <p className="mt-2 text-sm text-rich/70">
+            Not connected yet. Add your Monnify wallet account number as MONNIFY_WALLET_ACCOUNT_NUMBER in the site
+            settings to see the balance here.
+          </p>
+        ) : (
+          <p className="mt-2 text-sm text-red-600">Could not load the balance: {wallet.error}</p>
+        )}
+      </div>
 
       <div className="grid gap-4 sm:grid-cols-2 lg:grid-cols-4">
         {cards.map((c) => (

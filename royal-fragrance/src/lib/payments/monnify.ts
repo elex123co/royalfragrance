@@ -263,3 +263,43 @@ export const monnifyProvider: PaymentProvider = {
     }
   },
 };
+
+export interface MonnifyWalletBalance {
+  availableBalance: number;
+  ledgerBalance: number;
+}
+
+/**
+ * Current balance of the business's Monnify (Moniepoint) wallet, i.e. the
+ * money that has landed from customer payments. Needs the wallet account
+ * number shown in the Monnify dashboard under Wallets, set as
+ * MONNIFY_WALLET_ACCOUNT_NUMBER.
+ */
+export async function getMonnifyWalletBalance(): Promise<
+  { ok: true; balance: MonnifyWalletBalance } | { ok: false; error: string }
+> {
+  const accountNumber = process.env.MONNIFY_WALLET_ACCOUNT_NUMBER?.trim();
+  if (!accountNumber) {
+    return { ok: false, error: "not_configured" };
+  }
+  try {
+    const token = await getAccessToken();
+    const res = await fetch(
+      `${BASE_URL}/api/v2/disbursements/wallet-balance?accountNumber=${encodeURIComponent(accountNumber)}`,
+      { headers: { Authorization: `Bearer ${token}` }, cache: "no-store" }
+    );
+    const data = await res.json().catch(() => null);
+    if (!res.ok || !data?.requestSuccessful) {
+      return { ok: false, error: data?.responseMessage ?? `Monnify returned ${res.status}` };
+    }
+    return {
+      ok: true,
+      balance: {
+        availableBalance: Number(data.responseBody?.availableBalance ?? 0),
+        ledgerBalance: Number(data.responseBody?.ledgerBalance ?? 0),
+      },
+    };
+  } catch (e: any) {
+    return { ok: false, error: e?.message ?? "Could not reach Monnify." };
+  }
+}
