@@ -127,11 +127,10 @@ Return ONLY a JSON object:
 
 CAPTION (shown on product cards): one line, at most 100 characters. It must carry at least two concrete specifics, such as the scent family or the leading notes, the concentration, and who or what occasion it suits. Good: "Smoky oud and warm amber in a rich Eau de Parfum for cool evenings". Bad: "A luxurious fragrance for the modern individual".
 
-DESCRIPTION (product page): 70 to 110 words, plain paragraphs, no bullet points, no headings.
-1. Open by naming the fragrance, the brand, the concentration and the size or sizes, in a natural sentence.
-2. Describe the scent: the family, and how it opens, develops and dries down, using the notes. Be sensory and concrete: name the notes and what they do.
-3. Mention what is genuinely visible about the bottle or box (colour, glass, cap, finish) in one sentence.
-4. Close with who it suits and when to wear it (time of day, season, occasion; Nigeria is warm, so say so if it matters).
+DESCRIPTION (product page): short and precise, 40 to 60 words in total, one paragraph, no bullet points, no headings. Every sentence must carry information; cut anything decorative.
+1. First sentence: the fragrance, brand, concentration and size or sizes, plus its scent family.
+2. Second sentence: the key notes and how they feel, naming the notes. Skip this detail if no notes are known.
+3. Last sentence: who it suits and when to wear it (time of day, season or occasion). Mention the bottle or box only if something about it is genuinely striking, and then in a few words.
 
 NOTES RULES (most important):
 - If the facts include printedNotes, use exactly those and set notesSource to "carton".
@@ -139,7 +138,7 @@ NOTES RULES (most important):
 - Otherwise leave notes empty, set notesSource to "none", and describe only the scent family that the name, line or gender strongly implies, without naming specific notes.
 - Never invent notes. Never state longevity in hours, never claim authenticity, awards, celebrity links or "best seller".
 
-STYLE: confident, warm and precise. Do not use these words or phrases: elevate, unleash, symphony, journey, captivating, mesmerizing, allure, testament, timeless, must-have, perfect for any occasion, indulge, embrace, sophisticated individual. No emojis. No exclamation marks. Do not repeat the caption inside the description. Do not start two sentences with the same word.
+STYLE: confident, warm and precise. Do not use these words or phrases: elevate, unleash, symphony, journey, captivating, mesmerizing, allure, testament, timeless, must-have, perfect for any occasion, indulge, embrace, sophisticated individual. No emojis. No exclamation marks. Do not repeat the caption inside the description. Do not start two sentences with the same word. Never go over 60 words in the description.
 
 CATEGORY: choose exactly one name from "Available categories" that best fits (usually by gender or style). Use null if none fit.`;
 

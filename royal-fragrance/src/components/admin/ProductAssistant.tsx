@@ -89,6 +89,20 @@ export function ProductAssistant({
     // eslint-disable-next-line react-hooks/exhaustive-deps
   }, []);
 
+  // Photos already sitting in the gallery are turned into drafts as soon as
+  // the page opens, so nothing needs a manual start.
+  const autoStarted = useRef(false);
+  useEffect(() => {
+    if (autoStarted.current) return;
+    autoStarted.current = true;
+    const pending = initialItems.filter((i) => i.status === "new" || i.status === "extracted");
+    if (pending.length > 0) {
+      say("assistant", `I found ${pending.length} photo${pending.length === 1 ? "" : "s"} in the gallery that ${pending.length === 1 ? "has" : "have"} not been turned into products yet. Starting on ${pending.length === 1 ? "it" : "them"} now.`);
+      runProcess(pending.map((i) => ({ id: i.id, status: i.status })));
+    }
+    // eslint-disable-next-line react-hooks/exhaustive-deps
+  }, []);
+
   useEffect(() => {
     endRef.current?.scrollIntoView({ behavior: "smooth", block: "end" });
   }, [messages.length, drafts.length, tab]);
