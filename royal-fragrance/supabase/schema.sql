@@ -1115,3 +1115,7 @@ create policy "Admins manage product gallery" on product_gallery for all using (
 -- PICKUP — Lagos customers can collect their order in Ipaja instead of delivery.
 -- ----------------------------------------------------------------------------
 alter table orders add column if not exists delivery_method text not null default 'delivery';
+
+-- Pickup orders: the customer's WhatsApp number and chosen pickup day (Thursday to Sunday).
+alter table orders add column if not exists pickup_whatsapp text;
+alter table orders add column if not exists pickup_date date;

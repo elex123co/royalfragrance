@@ -1,6 +1,7 @@
 import { createAdminClient } from "@/lib/supabase/server";
 import { getPaymentProvider } from "@/lib/payments";
 import { confirmOrderPaidAndDeductStock } from "@/lib/orders/confirm-payment";
+import { formatPickupDate } from "@/lib/pickup";
 import { formatNaira } from "@/lib/utils/currency";
 import { LinkButton } from "@/components/ui/Button";
 import { PurchaseTracker } from "@/components/analytics/PurchaseTracker";
@@ -139,7 +140,7 @@ export default async function OrderConfirmationPage({
               <p className="text-rich/50">{order.delivery_method === "pickup" ? "Pickup Location" : "Delivery Address"}</p>
               <p className="text-espresso">
                 {order.delivery_method === "pickup"
-                  ? "Ipaja, Lagos. We will tell you when it is ready to collect."
+                  ? `Ipaja, Lagos${order.pickup_date ? ` on ${formatPickupDate(order.pickup_date)}` : ""}. We will message you on WhatsApp when it is ready.`
                   : `${order.delivery_address}, ${order.delivery_city}, ${order.delivery_state}`}
               </p>
             </div>

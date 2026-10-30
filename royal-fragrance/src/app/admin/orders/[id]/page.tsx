@@ -4,6 +4,7 @@ import { createAdminClient } from "@/lib/supabase/server";
 import { formatNaira } from "@/lib/utils/currency";
 import { OrderStatusSelect } from "@/components/admin/OrderStatusSelect";
 import { SettleBalanceButton } from "@/components/batches/SettleBalanceButton";
+import { formatPickupDate } from "@/lib/pickup";
 import { ArrowLeft } from "lucide-react";
 
 export const dynamic = "force-dynamic";
@@ -88,7 +89,25 @@ export default async function AdminOrderDetailPage({
               </div>
               {order.delivery_method === "pickup" && (
                 <div className="rounded-lg bg-caramel/10 px-3 py-2 text-xs text-espresso">
-                  Customer will pick this order up at Ipaja, Lagos.
+                  <p>Customer will pick this order up at Ipaja, Lagos.</p>
+                  {order.pickup_date && (
+                    <p className="mt-1">
+                      Pickup day: <strong>{formatPickupDate(order.pickup_date)}</strong>
+                    </p>
+                  )}
+                  {order.pickup_whatsapp && (
+                    <p className="mt-1">
+                      WhatsApp:{" "}
+                      <a
+                        href={`https://wa.me/${String(order.pickup_whatsapp).replace(/\D/g, "")}`}
+                        target="_blank"
+                        rel="noopener noreferrer"
+                        className="underline"
+                      >
+                        {order.pickup_whatsapp}
+                      </a>
+                    </p>
+                  )}
                 </div>
               )}
               {order.batch_id && (

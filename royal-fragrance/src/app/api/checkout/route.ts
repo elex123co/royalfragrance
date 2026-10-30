@@ -3,7 +3,7 @@ import { cookies } from "next/headers";
 import { z } from "zod";
 import { createAdminClient, createClient } from "@/lib/supabase/server";
 import { getPaymentProvider } from "@/lib/payments";
-import { PICKUP_FEE, PICKUP_LOCATION } from "@/lib/pickup";
+import { PICKUP_FEE, PICKUP_LOCATION, PICKUP_DAYS_LABEL, isValidPickupDate, isValidWhatsapp, cleanWhatsapp } from "@/lib/pickup";
 import { getBatchById } from "@/lib/data/batches";
 import { validatePromoCodeServerSide } from "@/lib/utils/promo-validation";
 
@@ -20,6 +20,8 @@ const checkoutSchema = z.object({
     zoneId: z.string().nullish(),
     fee: z.number().min(0),
     method: z.enum(["delivery", "pickup"]).optional(),
+    pickupWhatsapp: z.string().nullish(),
+    pickupDate: z.string().nullish(),
   }),
   items: z
     .array(
@@ -120,6 +122,8 @@ export async function POST(request: Request) {
 
   // Pickup (Lagos only): the fee is fixed here, never taken from the browser.
   let isPickup = false;
+  let pickupWhatsapp: string | null = null;
+  let pickupDate: string | null = null;
   if (!batchId && delivery.method === "pickup") {
     let zoneState: string | null = null;
     if (delivery.zoneId) {
@@ -133,6 +137,17 @@ export async function POST(request: Request) {
     if (zoneState?.toLowerCase() !== "lagos") {
       return NextResponse.json({ error: "Pickup is only available for orders within Lagos." }, { status: 400 });
     }
+    if (!delivery.pickupWhatsapp || !isValidWhatsapp(delivery.pickupWhatsapp)) {
+      return NextResponse.json({ error: "Please enter your WhatsApp number for pickup." }, { status: 400 });
+    }
+    if (!delivery.pickupDate || !isValidPickupDate(delivery.pickupDate)) {
+      return NextResponse.json(
+        { error: `Pickup is available ${PICKUP_DAYS_LABEL} only. Please choose one of those days.` },
+        { status: 400 }
+      );
+    }
+    pickupWhatsapp = cleanWhatsapp(delivery.pickupWhatsapp);
+    pickupDate = delivery.pickupDate;
     isPickup = true;
     delivery = {
       ...delivery,
@@ -283,7 +298,7 @@ export async function POST(request: Request) {
       // Only sent for batch orders, so normal orders keep working even if
       // the batch columns have not been added to the database yet.
       ...(batchId ? { batch_id: batchId, batch_fee_share: batchFeeShare } : {}),
-      ...(isPickup ? { delivery_method: "pickup" } : {}),
+      ...(isPickup ? { delivery_method: "pickup", pickup_whatsapp: pickupWhatsapp, pickup_date: pickupDate } : {}),
     })
     .select()
     .single();

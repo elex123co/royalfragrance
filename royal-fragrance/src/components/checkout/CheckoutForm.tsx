@@ -1,11 +1,18 @@
 "use client";
 
-import { useState, useEffect } from "react";
+import { useState, useEffect, useMemo } from "react";
 import { useCart } from "@/context/CartContext";
 import { formatNaira } from "@/lib/utils/currency";
 import { Button } from "@/components/ui/Button";
 import type { DeliveryZone } from "@/lib/data/delivery";
-import { PICKUP_FEE, PICKUP_LOCATION } from "@/lib/pickup";
+import {
+  PICKUP_FEE,
+  PICKUP_LOCATION,
+  PICKUP_DAYS_LABEL,
+  upcomingPickupDates,
+  isValidWhatsapp,
+  cleanWhatsapp,
+} from "@/lib/pickup";
 import { trackMetaEvent } from "@/components/analytics/MetaPixel";
 
 type Step = "customer" | "delivery" | "summary";
@@ -68,6 +75,9 @@ export function CheckoutForm({
 
   const selectedZone = zones.find((z) => z.id === delivery.zoneId);
   const [wantsPickup, setWantsPickup] = useState(false);
+  const [pickupWhatsapp, setPickupWhatsapp] = useState("");
+  const [pickupDate, setPickupDate] = useState("");
+  const pickupDates = useMemo(() => upcomingPickupDates(12), []);
   const pickupAvailable = !selectedBatch && selectedZone?.state === "Lagos";
   const isPickup = wantsPickup && pickupAvailable;
   const deliveryFee = selectedBatch
@@ -129,6 +139,8 @@ export function CheckoutForm({
                 ? `Pickup at ${PICKUP_LOCATION}`
                 : delivery.address,
             method: isPickup ? "pickup" : "delivery",
+            pickupWhatsapp: isPickup ? cleanWhatsapp(pickupWhatsapp) : undefined,
+            pickupDate: isPickup ? pickupDate : undefined,
             zoneId: selectedBatch ? undefined : delivery.zoneId,
             fee: deliveryFee,
           },
@@ -272,9 +284,34 @@ export function CheckoutForm({
             </div>
           )}
           {isPickup ? (
-            <p className="rounded-lg bg-espresso/5 px-4 py-3 text-sm text-rich/80">
-              Pickup location: <strong>{PICKUP_LOCATION}</strong>. We will let you know when your order is ready to collect.
-            </p>
+            <div className="space-y-4">
+              <p className="rounded-lg bg-espresso/5 px-4 py-3 text-sm text-rich/80">
+                Pickup location: <strong>{PICKUP_LOCATION}</strong>. Pickup is available {PICKUP_DAYS_LABEL} only.
+              </p>
+              <Field
+                label="WhatsApp Number (required)"
+                value={pickupWhatsapp}
+                onChange={setPickupWhatsapp}
+                type="tel"
+              />
+              <div>
+                <label className="mb-1.5 block text-sm font-medium text-espresso">
+                  Pickup Date (required)
+                </label>
+                <select
+                  value={pickupDate}
+                  onChange={(e) => setPickupDate(e.target.value)}
+                  className="w-full rounded-lg border border-espresso/15 px-4 py-2.5 text-sm focus:border-caramel focus:outline-none"
+                >
+                  <option value="">Choose a day</option>
+                  {pickupDates.map((d) => (
+                    <option key={d.value} value={d.value}>
+                      {d.label}
+                    </option>
+                  ))}
+                </select>
+              </div>
+            </div>
           ) : selectedBatch ? (
             <p className="rounded-lg bg-espresso/5 px-4 py-3 text-sm text-rich/80">
               Delivery location: <strong>{selectedBatch.locationName}</strong>. Your order will be delivered with this
@@ -301,7 +338,11 @@ export function CheckoutForm({
             </Button>
             <Button
               className="flex-1"
-              disabled={!selectedBatch && !isPickup && (!delivery.zoneId || !delivery.city || !delivery.address)}
+              disabled={
+                isPickup
+                  ? !isValidWhatsapp(pickupWhatsapp) || !pickupDate
+                  : !selectedBatch && (!delivery.zoneId || !delivery.city || !delivery.address)
+              }
               onClick={() => setStep("summary")}
             >
               Review Order
