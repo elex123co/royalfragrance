@@ -79,6 +79,7 @@ async function requireBatchCreator() {
 export async function createBatch(input: {
   locationId: string;
   cycle: "weekly" | "monthly" | "custom";
+  startDate?: string;
   customDate?: string;
   maxMembers: number;
   label?: string;
@@ -114,17 +115,23 @@ export async function createBatch(input: {
 
   const now = new Date();
   let closes: Date;
+  let starts: Date = now;
   if (input.cycle === "weekly") {
     closes = new Date(now.getTime() + 7 * 86400000);
   } else if (input.cycle === "monthly") {
     closes = new Date(now);
     closes.setMonth(closes.getMonth() + 1);
   } else {
-    if (!input.customDate) return { success: false, error: "Pick the closing date." };
-    closes = new Date(`${input.customDate}T23:59:59`);
-    if (Number.isNaN(closes.getTime()) || closes <= now) {
-      return { success: false, error: "The closing date must be in the future." };
+    if (!input.startDate || !input.customDate) {
+      return { success: false, error: "Pick both the starting date and the closing date." };
     }
+    starts = new Date(`${input.startDate}T00:00:00`);
+    closes = new Date(`${input.customDate}T23:59:59`);
+    if (Number.isNaN(starts.getTime()) || Number.isNaN(closes.getTime())) {
+      return { success: false, error: "Those dates are not valid." };
+    }
+    if (closes <= now) return { success: false, error: "The closing date must be in the future." };
+    if (closes <= starts) return { success: false, error: "The closing date must be after the starting date." };
   }
 
   const { error } = await ctx.admin.from("delivery_batches").insert({
@@ -132,6 +139,7 @@ export async function createBatch(input: {
     created_by: ctx.userId,
     created_by_role: ctx.role,
     cycle: input.cycle,
+    starts_at: starts.toISOString(),
     closes_at: closes.toISOString(),
     max_members: max,
     label: input.label?.trim() || null,

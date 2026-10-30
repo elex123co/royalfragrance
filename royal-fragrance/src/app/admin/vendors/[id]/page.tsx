@@ -157,6 +157,7 @@ export default async function AdminVendorDetailPage({
               <span>Unrecorded Collections</span>
               <span>{dashboard.unrecordedTransactions.length}</span>
             </div>
+            {vendor.vendor_type !== "affiliate" && (
             <div className="flex justify-between">
               <span>Current Inventory</span>
               <span>
@@ -166,8 +167,11 @@ export default async function AdminVendorDetailPage({
                 )}
               </span>
             </div>
+            )}
           </div>
 
+          {vendor.vendor_type !== "affiliate" && (
+          <>
           <h3 className="mb-2 mt-6 text-sm font-medium text-espresso">
             Current Inventory
           </h3>
@@ -191,6 +195,8 @@ export default async function AdminVendorDetailPage({
               </div>
             ))}
           </div>
+          </>
+          )}
         </div>
 
         <div className="rounded-xl2 border border-espresso/10 bg-white/60 p-6 lg:col-span-2">

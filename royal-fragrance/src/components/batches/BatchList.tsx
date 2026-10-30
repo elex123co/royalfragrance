@@ -63,7 +63,7 @@ export function BatchList({
                   {b.label ? ` — ${b.label}` : ""}
                 </p>
                 <p className="text-xs text-rich/60">
-                  {b.cycle} · closes {new Date(b.closes_at).toLocaleDateString()} · {formatNaira(b.share)} per customer
+                  {b.cycle} · {new Date(b.starts_at).toLocaleDateString()} to {new Date(b.closes_at).toLocaleDateString()} · {formatNaira(b.share)} per customer
                   {showCreator ? ` · opened by ${b.created_by_role}` : ""}
                 </p>
               </div>

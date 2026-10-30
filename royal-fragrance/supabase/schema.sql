@@ -1079,3 +1079,8 @@ alter table vendors add column if not exists batch_location_id uuid references b
 -- ----------------------------------------------------------------------------
 alter table orders add column if not exists paid_at timestamptz;
 update orders set paid_at = updated_at where payment_status = 'paid' and paid_at is null;
+
+-- ----------------------------------------------------------------------------
+-- BATCH START DATE — a batch can open on a later date than it was created.
+-- ----------------------------------------------------------------------------
+alter table delivery_batches add column if not exists starts_at timestamptz not null default now();

@@ -37,7 +37,7 @@ export default async function AdminBatchesPage() {
           locationId: v.batch_location_id,
         }))}
       />
-      <CreateBatchForm locations={locations.filter((l) => l.active)} />
+      <CreateBatchForm showFees locations={locations.filter((l) => l.active)} />
       <div>
         <h2 className="mb-3 font-display text-lg text-espresso">All batches</h2>
         <BatchList batches={batches} members={members as any} showCreator />

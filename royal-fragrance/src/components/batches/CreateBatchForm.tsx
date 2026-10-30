@@ -6,10 +6,17 @@ import { createBatch } from "@/lib/actions/batches";
 import { formatNaira } from "@/lib/utils/currency";
 import type { BatchLocation } from "@/lib/data/batches";
 
-export function CreateBatchForm({ locations }: { locations: BatchLocation[] }) {
+export function CreateBatchForm({
+  locations,
+  showFees = false,
+}: {
+  locations: BatchLocation[];
+  showFees?: boolean;
+}) {
   const router = useRouter();
   const [locationId, setLocationId] = useState(locations[0]?.id ?? "");
   const [cycle, setCycle] = useState<"weekly" | "monthly" | "custom">("weekly");
+  const [startDate, setStartDate] = useState("");
   const [customDate, setCustomDate] = useState("");
   const [maxMembers, setMaxMembers] = useState("");
   const [label, setLabel] = useState("");
@@ -27,7 +34,7 @@ export function CreateBatchForm({ locations }: { locations: BatchLocation[] }) {
   async function submit() {
     setBusy(true);
     setMsg(null);
-    const res = await createBatch({ locationId, cycle, customDate, maxMembers: n, label });
+    const res = await createBatch({ locationId, cycle, startDate, customDate, maxMembers: n, label });
     setBusy(false);
     if (!res.success) return setMsg({ ok: false, text: res.error ?? "Could not create batch." });
     setMsg({ ok: true, text: "Batch opened. Customers can now join it at checkout." });
@@ -47,7 +54,8 @@ export function CreateBatchForm({ locations }: { locations: BatchLocation[] }) {
           <select className={input} value={locationId} onChange={(e) => setLocationId(e.target.value)}>
             {locations.map((l) => (
               <option key={l.id} value={l.id}>
-                {l.name} ({formatNaira(l.batch_fee)} batch fee)
+                {l.name}
+                {showFees ? ` (${formatNaira(l.batch_fee)} batch fee)` : ""}
               </option>
             ))}
           </select>
@@ -65,10 +73,16 @@ export function CreateBatchForm({ locations }: { locations: BatchLocation[] }) {
           </select>
         </label>
         {cycle === "custom" ? (
-          <label className="text-sm text-espresso">
-            Closing date
-            <input className={input} type="date" value={customDate} onChange={(e) => setCustomDate(e.target.value)} />
-          </label>
+          <>
+            <label className="text-sm text-espresso">
+              Starting date
+              <input className={input} type="date" value={startDate} onChange={(e) => setStartDate(e.target.value)} />
+            </label>
+            <label className="text-sm text-espresso">
+              Closing date
+              <input className={input} type="date" value={customDate} onChange={(e) => setCustomDate(e.target.value)} />
+            </label>
+          </>
         ) : (
           <label className="text-sm text-espresso">
             Label (optional)

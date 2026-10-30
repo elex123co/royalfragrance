@@ -62,7 +62,7 @@ export default async function VendorStorePage({ params }: { params: { code: stri
             Royal Fragrance
           </span>
           <h1 className="mt-2 font-display text-3xl text-espresso">
-            Shop with {vendor.display_name || vendor.business_name}
+            VEND {(vendor.display_name || vendor.business_name).toUpperCase()}
           </h1>
           <p className="mx-auto mt-2 max-w-xl text-sm text-rich/70">
             Choose from the fragrances available through your representative.

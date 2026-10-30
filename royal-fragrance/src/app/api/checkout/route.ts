@@ -71,6 +71,7 @@ export async function POST(request: Request) {
       !batch ||
       batch.status !== "open" ||
       new Date(batch.closes_at) <= new Date() ||
+      new Date(batch.starts_at) > new Date() ||
       !batch.location.active ||
       batch.members >= batch.max_members
     ) {

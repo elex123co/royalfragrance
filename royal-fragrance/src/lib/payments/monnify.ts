@@ -290,6 +290,13 @@ export async function getMonnifyWalletBalance(): Promise<
     );
     const data = await res.json().catch(() => null);
     if (!res.ok || !data?.requestSuccessful) {
+      if (res.status === 401 || res.status === 403) {
+        return {
+          ok: false,
+          error:
+            "Monnify refused the balance request. Wallet balance is a protected Monnify API that usually needs your server's IP address whitelisted or the feature enabled by Monnify support.",
+        };
+      }
       return { ok: false, error: data?.responseMessage ?? `Monnify returned ${res.status}` };
     }
     return {

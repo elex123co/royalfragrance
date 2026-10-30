@@ -13,6 +13,7 @@ export interface BatchSummary {
   id: string;
   label: string | null;
   cycle: "weekly" | "monthly" | "custom";
+  starts_at: string;
   closes_at: string;
   max_members: number;
   status: "open" | "closed" | "delivered" | "cancelled";
@@ -73,6 +74,7 @@ async function hydrate(rows: any[]): Promise<BatchSummary[]> {
       id: r.id,
       label: r.label,
       cycle: r.cycle,
+      starts_at: r.starts_at ?? r.created_at,
       closes_at: r.closes_at,
       max_members: r.max_members,
       status: r.status,
@@ -97,7 +99,9 @@ export async function getOpenBatches(): Promise<BatchSummary[]> {
     .gt("closes_at", new Date().toISOString())
     .order("closes_at");
   const all = await hydrate(data ?? []);
-  return all.filter((b) => b.location.active && b.members < b.max_members);
+  return all.filter(
+    (b) => b.location.active && b.members < b.max_members && new Date(b.starts_at) <= new Date()
+  );
 }
 
 export async function getBatchById(id: string): Promise<BatchSummary | null> {
