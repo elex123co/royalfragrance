@@ -1084,3 +1084,10 @@ update orders set paid_at = updated_at where payment_status = 'paid' and paid_at
 -- BATCH START DATE — a batch can open on a later date than it was created.
 -- ----------------------------------------------------------------------------
 alter table delivery_batches add column if not exists starts_at timestamptz not null default now();
+
+-- ----------------------------------------------------------------------------
+-- BATCH SIZE RANGE — a batch takes a minimum to go out and a maximum cap.
+-- The delivery share is the batch fee divided by the minimum. Older batches
+-- (null) behave as before: minimum = maximum.
+-- ----------------------------------------------------------------------------
+alter table delivery_batches add column if not exists min_members integer check (min_members >= 1);

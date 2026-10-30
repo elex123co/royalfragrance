@@ -15,6 +15,7 @@ export interface BatchSummary {
   cycle: "weekly" | "monthly" | "custom";
   starts_at: string;
   closes_at: string;
+  min_members: number;
   max_members: number;
   status: "open" | "closed" | "delivered" | "cancelled";
   created_by: string | null;
@@ -76,13 +77,14 @@ async function hydrate(rows: any[]): Promise<BatchSummary[]> {
       cycle: r.cycle,
       starts_at: r.starts_at ?? r.created_at,
       closes_at: r.closes_at,
+      min_members: Math.min(r.min_members ?? r.max_members, r.max_members),
       max_members: r.max_members,
       status: r.status,
       created_by: r.created_by,
       created_by_role: r.created_by_role,
       location,
       members: counts.get(r.id) ?? 0,
-      share: batchShare(location.batch_fee, r.max_members),
+      share: batchShare(location.batch_fee, Math.min(r.min_members ?? r.max_members, r.max_members)),
     };
   });
 }

@@ -18,13 +18,14 @@ export function CreateBatchForm({
   const [cycle, setCycle] = useState<"weekly" | "monthly" | "custom">("weekly");
   const [startDate, setStartDate] = useState("");
   const [customDate, setCustomDate] = useState("");
+  const [minMembers, setMinMembers] = useState("");
   const [maxMembers, setMaxMembers] = useState("");
   const [label, setLabel] = useState("");
   const [busy, setBusy] = useState(false);
   const [msg, setMsg] = useState<{ ok: boolean; text: string } | null>(null);
 
   const loc = locations.find((l) => l.id === locationId);
-  const n = Number(maxMembers);
+  const n = Number(minMembers);
   const share = loc && n >= 1 ? Math.ceil(loc.batch_fee / n) : null;
 
   if (locations.length === 0) {
@@ -34,10 +35,11 @@ export function CreateBatchForm({
   async function submit() {
     setBusy(true);
     setMsg(null);
-    const res = await createBatch({ locationId, cycle, startDate, customDate, maxMembers: n, label });
+    const res = await createBatch({ locationId, cycle, startDate, customDate, minMembers: n, maxMembers: Number(maxMembers) || n, label });
     setBusy(false);
     if (!res.success) return setMsg({ ok: false, text: res.error ?? "Could not create batch." });
     setMsg({ ok: true, text: "Batch opened. Customers can now join it at checkout." });
+    setMinMembers("");
     setMaxMembers("");
     setLabel("");
     router.refresh();
@@ -61,8 +63,12 @@ export function CreateBatchForm({
           </select>
         </label>
         <label className="text-sm text-espresso">
-          How many customers can join
-          <input className={input} type="number" min={1} value={maxMembers} onChange={(e) => setMaxMembers(e.target.value)} placeholder="e.g. 10" />
+          Minimum customers to go out
+          <input className={input} type="number" min={1} value={minMembers} onChange={(e) => setMinMembers(e.target.value)} placeholder="e.g. 8" />
+        </label>
+        <label className="text-sm text-espresso">
+          Maximum customers allowed
+          <input className={input} type="number" min={1} value={maxMembers} onChange={(e) => setMaxMembers(e.target.value)} placeholder="e.g. 12 (leave blank for same as minimum)" />
         </label>
         <label className="text-sm text-espresso">
           Cycle
@@ -92,7 +98,7 @@ export function CreateBatchForm({
       </div>
       {share !== null && (
         <p className="mt-3 text-sm text-rich/70">
-          Each customer will pay <strong>{formatNaira(share)}</strong> delivery in this batch.
+          Each customer will pay <strong>{formatNaira(share)}</strong> delivery in this batch, based on the minimum of {n} customers.
         </p>
       )}
       {msg && <p className={`mt-3 text-sm ${msg.ok ? "text-green-700" : "text-red-600"}`}>{msg.text}</p>}

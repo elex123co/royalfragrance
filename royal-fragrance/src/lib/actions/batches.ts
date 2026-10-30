@@ -81,6 +81,7 @@ export async function createBatch(input: {
   cycle: "weekly" | "monthly" | "custom";
   startDate?: string;
   customDate?: string;
+  minMembers: number;
   maxMembers: number;
   label?: string;
 }): Promise<Result> {
@@ -103,8 +104,12 @@ export async function createBatch(input: {
     input = { ...input, locationId: me.batch_location_id };
   }
 
-  const max = Math.floor(Number(input.maxMembers));
-  if (!(max >= 1) || max > 500) return { success: false, error: "Members must be between 1 and 500." };
+  const min = Math.floor(Number(input.minMembers));
+  const max = Math.floor(Number(input.maxMembers) || min);
+  if (!(min >= 1) || !(max >= 1) || max > 500) {
+    return { success: false, error: "Customers must be between 1 and 500." };
+  }
+  if (max < min) return { success: false, error: "The maximum cannot be less than the minimum." };
 
   const { data: location } = await ctx.admin
     .from("batch_locations")
@@ -141,6 +146,7 @@ export async function createBatch(input: {
     cycle: input.cycle,
     starts_at: starts.toISOString(),
     closes_at: closes.toISOString(),
+    min_members: min,
     max_members: max,
     label: input.label?.trim() || null,
   });

@@ -70,7 +70,7 @@ export function BatchList({
               <span className={`rounded-full px-3 py-1 text-xs capitalize ${STATUS_STYLE[b.status]}`}>{b.status}</span>
             </div>
             <p className="mt-2 text-sm text-rich/80">
-              {b.members} of {b.max_members} customers joined
+              {b.members} joined · needs {b.min_members}{b.max_members !== b.min_members ? ` to ${b.max_members}` : ""}{b.members >= b.min_members ? " · ready to deliver" : ` · ${b.min_members - b.members} more needed`}
             </p>
             <div className="mt-3 flex flex-wrap gap-2 text-xs">
               {b.status === "open" && (
