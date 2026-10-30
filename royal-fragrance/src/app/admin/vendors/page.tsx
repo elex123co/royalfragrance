@@ -122,7 +122,7 @@ export default async function AdminVendorsPage() {
                       <span className="text-xs text-rich/40">—</span>
                     )}
                     {v.ambassador_level && (
-                      <p className="mt-1 text-xs text-caramel">{v.ambassador_level}</p>
+                      <p className="mt-1 text-xs text-caramel">Level: {v.ambassador_level}</p>
                     )}
                   </td>
                   <td className="px-4 py-3">
