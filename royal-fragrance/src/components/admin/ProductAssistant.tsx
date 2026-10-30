@@ -143,7 +143,7 @@ export function ProductAssistant({
       while (queue.length) {
         const { file } = queue.shift()!;
         try {
-          const small = await compressImage(file);
+          const small = await compressImage(file, true);
           const phash = await photoHash(small);
           const fd = new FormData();
           fd.append("file", small);

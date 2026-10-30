@@ -25,6 +25,8 @@ interface VisionMessage {
 // actual product photos. Override with GROQ_VISION_MODEL if it is renamed.
 const DEFAULT_VISION_MODEL = "meta-llama/llama-4-scout-17b-16e-instruct";
 
+const FALLBACK_VISION_MODEL = "meta-llama/llama-4-maverick-17b-128e-instruct";
+
 export async function callGroqVision(
   messages: VisionMessage[],
   { json = false, temperature = 0.7 }: { json?: boolean; temperature?: number } = {}
@@ -32,23 +34,37 @@ export async function callGroqVision(
   const apiKey = process.env.GROQ_API_KEY;
   if (!apiKey) throw new Error("GROQ_API_KEY is not configured");
 
-  const res = await fetch(GROQ_URL, {
-    method: "POST",
-    headers: { Authorization: `Bearer ${apiKey}`, "Content-Type": "application/json" },
-    body: JSON.stringify({
-      model: process.env.GROQ_VISION_MODEL || DEFAULT_VISION_MODEL,
-      messages,
-      temperature,
-      ...(json ? { response_format: { type: "json_object" } } : {}),
-    }),
-  });
+  const primary = process.env.GROQ_VISION_MODEL || DEFAULT_VISION_MODEL;
+  // If Groq rejects the request itself (unknown model, JSON mode not allowed
+  // with images), retry with a plainer request and a second vision model.
+  const attempts: { model: string; json: boolean }[] = [
+    { model: primary, json },
+    ...(json ? [{ model: primary, json: false }] : []),
+    ...(primary !== FALLBACK_VISION_MODEL ? [{ model: FALLBACK_VISION_MODEL, json: false }] : []),
+  ];
 
-  if (!res.ok) {
+  let lastError = "";
+  for (const attempt of attempts) {
+    const res = await fetch(GROQ_URL, {
+      method: "POST",
+      headers: { Authorization: `Bearer ${apiKey}`, "Content-Type": "application/json" },
+      body: JSON.stringify({
+        model: attempt.model,
+        messages,
+        temperature,
+        ...(attempt.json ? { response_format: { type: "json_object" } } : {}),
+      }),
+    });
+    if (res.ok) {
+      const data = await res.json();
+      return data.choices?.[0]?.message?.content ?? "";
+    }
     const text = await res.text();
-    throw new Error(`Groq vision request failed (${res.status}): ${text}`);
+    lastError = `Groq vision request failed (${res.status}, ${attempt.model}): ${text.slice(0, 300)}`;
+    // Bad key or rate limit will not be fixed by another model.
+    if (res.status === 401 || res.status === 403 || res.status === 429) break;
   }
-  const data = await res.json();
-  return data.choices?.[0]?.message?.content ?? "";
+  throw new Error(lastError);
 }
 
 /**

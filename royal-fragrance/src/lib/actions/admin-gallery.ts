@@ -144,7 +144,10 @@ export async function extractGalleryItem(id: string): Promise<{ success: boolean
     console.error("extractGalleryItem failed:", e);
     await admin
       .from("product_gallery")
-      .update({ status: "failed", note: "The AI could not read this photo right now. Try again." })
+      .update({
+        status: "failed",
+        note: `The AI could not read this photo. ${String(e?.message ?? "").slice(0, 220)}`.trim(),
+      })
       .eq("id", id);
     return { success: false, error: e?.message ?? "failed" };
   }

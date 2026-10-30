@@ -1,9 +1,10 @@
 /** Browser-only helpers for photo uploads. */
 
 /** Downsizes a photo to at most 1600px and re-encodes it, so uploads are quick. */
-export async function compressImage(file: File): Promise<File> {
+export async function compressImage(file: File, asJpeg = false): Promise<File> {
   try {
-    if (!file.type.startsWith("image/") || file.size < 300 * 1024) return file;
+    if (!file.type.startsWith("image/")) return file;
+    if (!asJpeg && file.size < 300 * 1024) return file;
     const bitmap = await createImageBitmap(file);
     const scale = Math.min(1, 1600 / Math.max(bitmap.width, bitmap.height));
     const canvas = document.createElement("canvas");
@@ -12,6 +13,12 @@ export async function compressImage(file: File): Promise<File> {
     const ctx = canvas.getContext("2d");
     if (!ctx) return file;
     ctx.drawImage(bitmap, 0, 0, canvas.width, canvas.height);
+    if (asJpeg) {
+      // The AI reads JPEG most reliably, so gallery photos are always sent as JPEG.
+      const jpg: Blob | null = await new Promise((res) => canvas.toBlob(res, "image/jpeg", 0.88));
+      if (!jpg) return file;
+      return new File([jpg], file.name.replace(/\.[^.]+$/, "") + ".jpg", { type: "image/jpeg" });
+    }
     const blob: Blob | null = await new Promise((res) => canvas.toBlob(res, "image/webp", 0.85));
     if (!blob || blob.size >= file.size) return file;
     return new File([blob], file.name.replace(/\.[^.]+$/, "") + ".webp", { type: "image/webp" });
