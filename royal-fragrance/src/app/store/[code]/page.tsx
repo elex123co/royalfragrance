@@ -4,6 +4,8 @@ import { createAdminClient } from "@/lib/supabase/server";
 import { getAllProducts } from "@/lib/data/products";
 import { getActiveNewUserDiscountPercent } from "@/lib/data/new-user-discount";
 import { ProductCard } from "@/components/ui/ProductCard";
+import { VendorProductTile } from "@/components/store/VendorProductTile";
+import { waLink } from "@/lib/utils/whatsapp";
 
 export const dynamic = "force-dynamic";
 
@@ -27,7 +29,9 @@ export default async function VendorStorePage({ params }: { params: { code: stri
 
   const { data: vendor } = await admin
     .from("vendors")
-    .select("user_id, business_name, display_name, status, vendor_code, vendor_type")
+    .select(
+      "user_id, business_name, display_name, status, vendor_code, vendor_type, batch_location_id, application_answers, users!user_id(phone)"
+    )
     .eq("vendor_code", code)
     .maybeSingle();
 
@@ -54,6 +58,12 @@ export default async function VendorStorePage({ params }: { params: { code: stri
     ? allProducts
     : allProducts.filter((p) => assignedIds.has(p.id));
 
+  const vendorName = vendor.display_name || vendor.business_name;
+  const vendorPhone: string | null =
+    (Array.isArray((vendor as any).users) ? (vendor as any).users[0]?.phone : (vendor as any).users?.phone) ??
+    (vendor as any).application_answers?.phone ??
+    null;
+
   return (
     <section className="bg-cream py-12">
       <div className="mx-auto max-w-7xl px-5 lg:px-8">
@@ -69,6 +79,29 @@ export default async function VendorStorePage({ params }: { params: { code: stri
           </p>
         </div>
 
+        {!isAffiliate && (
+          <div className="mx-auto mb-8 max-w-3xl space-y-3">
+            <div className="rounded-xl2 border border-espresso/10 bg-white/70 p-4 text-sm text-rich/80">
+              <p className="font-medium text-espresso">How to order</p>
+              <p className="mt-1">
+                <strong>Near {vendorName}?</strong> Tap &ldquo;Chat vendor to buy&rdquo; and pay them directly on WhatsApp.
+              </p>
+              <p className="mt-1">
+                <strong>Far away?</strong> Tap &ldquo;Order online&rdquo; and check out normally. We deliver to you.
+              </p>
+            </div>
+            <Link
+              href={`/store/${encodeURIComponent(code)}/more`}
+              className="block rounded-xl2 border border-caramel/40 bg-caramel/10 p-4 text-sm text-espresso hover:bg-caramel/20"
+            >
+              <span className="font-medium">Want a perfume {vendorName} does not have?</span>
+              <span className="mt-0.5 block text-rich/70">
+                Tap here to see every other product on the site. You can order those with shared batch delivery.
+              </span>
+            </Link>
+          </div>
+        )}
+
         {products.length === 0 ? (
           <div className="text-center">
             <p className="text-rich/60">No products are available here right now.</p>
@@ -78,13 +111,25 @@ export default async function VendorStorePage({ params }: { params: { code: stri
           </div>
         ) : (
           <div className="grid grid-cols-2 gap-5 sm:gap-6 lg:grid-cols-4">
-            {products.map((product) => (
-              <ProductCard
-                key={product.id}
-                product={product}
-                newUserDiscountPercent={newUserDiscountPercent}
-              />
-            ))}
+            {products.map((product) =>
+              isAffiliate ? (
+                <ProductCard
+                  key={product.id}
+                  product={product}
+                  newUserDiscountPercent={newUserDiscountPercent}
+                />
+              ) : (
+                <VendorProductTile
+                  key={product.id}
+                  product={product}
+                  newUserDiscountPercent={newUserDiscountPercent}
+                  whatsappHref={waLink(
+                    vendorPhone,
+                    `Hello ${vendorName}, I saw ${product.name} on your Royal Fragrance link and I would like to buy it. Is it available?`
+                  )}
+                />
+              )
+            )}
           </div>
         )}
       </div>

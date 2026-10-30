@@ -13,7 +13,9 @@ export const dynamic = "force-dynamic";
 
 async function getReferringVendorLocation(): Promise<string | null> {
   const code = cookies().get("rf_ref")?.value;
-  if (!code) return null;
+  // Batch delivery is only offered to customers who came through the
+  // vendor's "every other product" link.
+  if (!code || cookies().get("rf_batch")?.value?.toUpperCase() !== code.toUpperCase()) return null;
   const { data } = await createAdminClient()
     .from("vendors")
     .select("batch_location_id")

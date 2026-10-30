@@ -31,6 +31,16 @@ export async function middleware(request: NextRequest) {
     });
   }
 
+  // Customers who open "every other product" from a vendor's storefront
+  // (/store/CODE/more) may join that vendor's location batch at checkout.
+  const moreMatch = path.match(/^\/store\/([^/]+)\/more/);
+  if (moreMatch) {
+    response.cookies.set("rf_batch", decodeURIComponent(moreMatch[1]).toUpperCase(), {
+      maxAge: 60 * 60 * 24 * 7,
+      path: "/",
+    });
+  }
+
   // Only vendor/admin routes need the auth + role check below — skip the
   // Supabase round-trip entirely for every other page.
   if (!needsVendor && !needsAdmin) {

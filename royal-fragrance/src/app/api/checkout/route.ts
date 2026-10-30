@@ -102,6 +102,12 @@ export async function POST(request: Request) {
       );
     }
     const refForBatch = cookies().get("rf_ref")?.value;
+    if (!refForBatch || cookies().get("rf_batch")?.value?.toUpperCase() !== refForBatch.toUpperCase()) {
+      return NextResponse.json(
+        { error: "Batch delivery is only available through your vendor's other-products link." },
+        { status: 403 }
+      );
+    }
     const { data: refVendor } = refForBatch
       ? await supabase
           .from("vendors")
