@@ -1110,3 +1110,8 @@ create index if not exists product_gallery_status_idx on product_gallery(status)
 alter table product_gallery enable row level security;
 drop policy if exists "Admins manage product gallery" on product_gallery;
 create policy "Admins manage product gallery" on product_gallery for all using (public.is_admin());
+
+-- ----------------------------------------------------------------------------
+-- PICKUP — Lagos customers can collect their order in Ipaja instead of delivery.
+-- ----------------------------------------------------------------------------
+alter table orders add column if not exists delivery_method text not null default 'delivery';

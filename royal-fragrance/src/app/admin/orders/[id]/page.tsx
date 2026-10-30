@@ -86,6 +86,11 @@ export default async function AdminOrderDetailPage({
                 <span>Delivery Fee</span>
                 <span>{formatNaira(order.delivery_fee)}</span>
               </div>
+              {order.delivery_method === "pickup" && (
+                <div className="rounded-lg bg-caramel/10 px-3 py-2 text-xs text-espresso">
+                  Customer will pick this order up at Ipaja, Lagos.
+                </div>
+              )}
               {order.batch_id && (
                 <div className="rounded-lg bg-caramel/10 px-3 py-2 text-xs text-espresso">
                   <p>

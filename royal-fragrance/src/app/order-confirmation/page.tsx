@@ -136,10 +136,11 @@ export default async function OrderConfirmationPage({
 
           <div className="mt-6 grid grid-cols-2 gap-3 text-left text-sm">
             <div>
-              <p className="text-rich/50">Delivery Address</p>
+              <p className="text-rich/50">{order.delivery_method === "pickup" ? "Pickup Location" : "Delivery Address"}</p>
               <p className="text-espresso">
-                {order.delivery_address}, {order.delivery_city},{" "}
-                {order.delivery_state}
+                {order.delivery_method === "pickup"
+                  ? "Ipaja, Lagos. We will tell you when it is ready to collect."
+                  : `${order.delivery_address}, ${order.delivery_city}, ${order.delivery_state}`}
               </p>
             </div>
             <div>

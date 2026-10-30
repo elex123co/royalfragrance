@@ -5,6 +5,7 @@ import { useCart } from "@/context/CartContext";
 import { formatNaira } from "@/lib/utils/currency";
 import { Button } from "@/components/ui/Button";
 import type { DeliveryZone } from "@/lib/data/delivery";
+import { PICKUP_FEE, PICKUP_LOCATION } from "@/lib/pickup";
 import { trackMetaEvent } from "@/components/analytics/MetaPixel";
 
 type Step = "customer" | "delivery" | "summary";
@@ -66,7 +67,14 @@ export function CheckoutForm({
   const selectedBatch = batches.find((b) => b.id === batchId);
 
   const selectedZone = zones.find((z) => z.id === delivery.zoneId);
-  const deliveryFee = selectedBatch ? selectedBatch.share : selectedZone?.fee ?? 0;
+  const [wantsPickup, setWantsPickup] = useState(false);
+  const pickupAvailable = !selectedBatch && selectedZone?.state === "Lagos";
+  const isPickup = wantsPickup && pickupAvailable;
+  const deliveryFee = selectedBatch
+    ? selectedBatch.share
+    : isPickup
+      ? PICKUP_FEE
+      : selectedZone?.fee ?? 0;
 
   // A promo code, once applied, REPLACES the automatic new-customer
   // discount rather than stacking with it — matching exactly how the
@@ -114,8 +122,13 @@ export function CheckoutForm({
           customer,
           delivery: {
             state: selectedBatch ? selectedBatch.state : selectedZone?.state ?? selectedZone?.name ?? "",
-            city: selectedBatch ? selectedBatch.locationName : delivery.city,
-            address: selectedBatch ? `Batch delivery: ${selectedBatch.locationName}` : delivery.address,
+            city: selectedBatch ? selectedBatch.locationName : isPickup ? "Ipaja" : delivery.city,
+            address: selectedBatch
+              ? `Batch delivery: ${selectedBatch.locationName}`
+              : isPickup
+                ? `Pickup at ${PICKUP_LOCATION}`
+                : delivery.address,
+            method: isPickup ? "pickup" : "delivery",
             zoneId: selectedBatch ? undefined : delivery.zoneId,
             fee: deliveryFee,
           },
@@ -242,7 +255,27 @@ export function CheckoutForm({
                 : "Estimated delivery: 1–4 weeks outside Lagos — we aim to get it to you sooner, but it will never take longer than 4 weeks."}
             </p>
           </div>
-          {selectedBatch ? (
+          {pickupAvailable && (
+            <div className="rounded-xl border border-espresso/10 bg-white p-4">
+              <p className="mb-2 text-sm font-medium text-espresso">How would you like to receive your order?</p>
+              <label className="flex cursor-pointer items-start gap-2 py-1 text-sm text-rich/80">
+                <input type="radio" name="method" checked={!isPickup} onChange={() => setWantsPickup(false)} className="mt-1" />
+                <span>Deliver to my address ({formatNaira(selectedZone?.fee ?? 0)})</span>
+              </label>
+              <label className="flex cursor-pointer items-start gap-2 py-1 text-sm text-rich/80">
+                <input type="radio" name="method" checked={isPickup} onChange={() => setWantsPickup(true)} className="mt-1" />
+                <span>
+                  Pick up at {PICKUP_LOCATION} ({formatNaira(PICKUP_FEE)})
+                  <span className="block text-xs text-rich/60">Available for Lagos only. Come to Ipaja to collect your order.</span>
+                </span>
+              </label>
+            </div>
+          )}
+          {isPickup ? (
+            <p className="rounded-lg bg-espresso/5 px-4 py-3 text-sm text-rich/80">
+              Pickup location: <strong>{PICKUP_LOCATION}</strong>. We will let you know when your order is ready to collect.
+            </p>
+          ) : selectedBatch ? (
             <p className="rounded-lg bg-espresso/5 px-4 py-3 text-sm text-rich/80">
               Delivery location: <strong>{selectedBatch.locationName}</strong>. Your order will be delivered with this
               batch.
@@ -268,7 +301,7 @@ export function CheckoutForm({
             </Button>
             <Button
               className="flex-1"
-              disabled={!selectedBatch && (!delivery.zoneId || !delivery.city || !delivery.address)}
+              disabled={!selectedBatch && !isPickup && (!delivery.zoneId || !delivery.city || !delivery.address)}
               onClick={() => setStep("summary")}
             >
               Review Order
@@ -346,7 +379,13 @@ export function CheckoutForm({
               <span>{formatNaira(subtotal)}</span>
             </div>
             <div className="flex justify-between text-rich/80">
-              <span>{selectedBatch ? `Batch delivery share (${selectedBatch.locationName})` : `Delivery Fee (${selectedZone?.name})`}</span>
+              <span>
+                {selectedBatch
+                  ? `Batch delivery share (${selectedBatch.locationName})`
+                  : isPickup
+                    ? `Pickup (${PICKUP_LOCATION})`
+                    : `Delivery Fee (${selectedZone?.name})`}
+              </span>
               <span>{formatNaira(deliveryFee)}</span>
             </div>
             {discountAmount > 0 && (

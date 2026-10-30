@@ -3,6 +3,7 @@ import { cookies } from "next/headers";
 import { z } from "zod";
 import { createAdminClient, createClient } from "@/lib/supabase/server";
 import { getPaymentProvider } from "@/lib/payments";
+import { PICKUP_FEE, PICKUP_LOCATION } from "@/lib/pickup";
 import { getBatchById } from "@/lib/data/batches";
 import { validatePromoCodeServerSide } from "@/lib/utils/promo-validation";
 
@@ -18,6 +19,7 @@ const checkoutSchema = z.object({
     address: z.string().min(5),
     zoneId: z.string().nullish(),
     fee: z.number().min(0),
+    method: z.enum(["delivery", "pickup"]).optional(),
   }),
   items: z
     .array(
@@ -114,6 +116,31 @@ export async function POST(request: Request) {
     }
     batchFeeShare = batch.share;
     delivery = { ...delivery, state: batch.location.state, zoneId: undefined, fee: batchFeeShare };
+  }
+
+  // Pickup (Lagos only): the fee is fixed here, never taken from the browser.
+  let isPickup = false;
+  if (!batchId && delivery.method === "pickup") {
+    let zoneState: string | null = null;
+    if (delivery.zoneId) {
+      const { data: zone } = await supabase
+        .from("delivery_zones")
+        .select("state")
+        .eq("id", delivery.zoneId)
+        .maybeSingle();
+      zoneState = zone?.state ?? (delivery.zoneId === "lagos" ? "Lagos" : null);
+    }
+    if (zoneState?.toLowerCase() !== "lagos") {
+      return NextResponse.json({ error: "Pickup is only available for orders within Lagos." }, { status: 400 });
+    }
+    isPickup = true;
+    delivery = {
+      ...delivery,
+      state: "Lagos",
+      city: "Ipaja",
+      address: `Pickup at ${PICKUP_LOCATION}`,
+      fee: PICKUP_FEE,
+    };
   }
 
   // Re-verify the promo code from scratch here — never trust a discount
@@ -256,6 +283,7 @@ export async function POST(request: Request) {
       // Only sent for batch orders, so normal orders keep working even if
       // the batch columns have not been added to the database yet.
       ...(batchId ? { batch_id: batchId, batch_fee_share: batchFeeShare } : {}),
+      ...(isPickup ? { delivery_method: "pickup" } : {}),
     })
     .select()
     .single();
