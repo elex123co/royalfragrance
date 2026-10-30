@@ -235,8 +235,6 @@ export async function POST(request: Request) {
       delivery_address: delivery.address,
       delivery_zone_id: delivery.zoneId ?? null,
       delivery_fee: delivery.fee,
-      batch_id: batchId ?? null,
-      batch_fee_share: batchFeeShare,
       subtotal,
       total: finalTotal,
       payment_status: "pending",
@@ -247,12 +245,15 @@ export async function POST(request: Request) {
       discount_amount: discountAmount,
       customer_id: loggedInUserId,
       new_user_discount_applied: newUserDiscountApplied,
+      // Only sent for batch orders, so normal orders keep working even if
+      // the batch columns have not been added to the database yet.
+      ...(batchId ? { batch_id: batchId, batch_fee_share: batchFeeShare } : {}),
     })
     .select()
     .single();
 
   if (orderError || !order) {
-    console.error("Failed to create order:", orderError);
+    console.error("Failed to create order:", JSON.stringify(orderError));
     return NextResponse.json({ error: "Could not create order" }, { status: 500 });
   }
 
