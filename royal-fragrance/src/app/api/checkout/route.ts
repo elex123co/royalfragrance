@@ -254,7 +254,12 @@ export async function POST(request: Request) {
 
   if (orderError || !order) {
     console.error("Failed to create order:", JSON.stringify(orderError));
-    return NextResponse.json({ error: "Could not create order" }, { status: 500 });
+    return NextResponse.json(
+      {
+        error: `Could not create order${orderError?.message ? ` (${orderError.message})` : ""}`,
+      },
+      { status: 500 }
+    );
   }
 
   if (promoCodeId) {
