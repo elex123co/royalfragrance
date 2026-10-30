@@ -13,9 +13,11 @@ export function ProductRowActions({
   productId,
   slug,
   status,
+  name,
 }: {
   productId: string;
   slug: string;
+  name?: string;
   status: "active" | "draft" | "out_of_stock";
 }) {
   const router = useRouter();
@@ -29,9 +31,28 @@ export function ProductRowActions({
   }
 
   function handleDelete() {
-    if (!confirm(`Delete this product? This cannot be undone.`)) return;
+    const label = name ? `"${name}"` : "this product";
+    if (!confirm(`Delete ${label} permanently? This cannot be undone.`)) return;
     startTransition(async () => {
-      const result = await deleteProduct(productId);
+      let result = await deleteProduct(productId);
+
+      if (result.needsConfirmation) {
+        if (!confirm(`${result.message}\n\nDelete it anyway?`)) return;
+        result = await deleteProduct(productId, { force: true });
+      }
+
+      if (result.hasHistory) {
+        if (
+          confirm(
+            `${result.error}\n\nHide ${label} from the shop instead? It will be set to Draft and its records stay safe.`
+          )
+        ) {
+          await updateProductStatus(productId, "draft");
+          router.refresh();
+        }
+        return;
+      }
+
       if (!result.success) {
         alert(result.error ?? "Could not delete this product.");
         return;
@@ -62,10 +83,10 @@ export function ProductRowActions({
       <button
         onClick={handleDelete}
         disabled={isPending}
-        className="text-espresso/60 hover:text-red-600"
+        className="flex items-center gap-1 rounded-full border border-red-200 px-2.5 py-1 text-xs text-red-600 hover:bg-red-50 disabled:opacity-40"
         aria-label="Delete"
       >
-        <Trash2 size={14} />
+        <Trash2 size={13} /> Delete
       </button>
     </div>
   );

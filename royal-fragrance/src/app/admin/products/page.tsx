@@ -131,7 +131,7 @@ export default async function AdminProductsPage({
                     </span>
                   </td>
                   <td className="px-4 py-3">
-                    <ProductRowActions productId={p.id} slug={p.slug} status={p.status} />
+                    <ProductRowActions productId={p.id} slug={p.slug} status={p.status} name={p.name} />
                   </td>
                 </tr>
               );

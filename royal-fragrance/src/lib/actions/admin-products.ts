@@ -287,27 +287,62 @@ export async function updateProductStatus(
   return { success: true };
 }
 
-export async function deleteProduct(productId: string) {
+export async function deleteProduct(
+  productId: string,
+  options: { force?: boolean } = {}
+): Promise<{
+  success: boolean;
+  error?: string;
+  /** Past orders or vendor sales exist: the product can only be hidden, not deleted. */
+  hasHistory?: boolean;
+  /** Vendors hold stock or a combo uses it: ask the admin before removing those too. */
+  needsConfirmation?: boolean;
+  message?: string;
+}> {
   const { admin } = await requireAdmin();
 
-  const { count: orderCount } = await admin
-    .from("order_items")
-    .select("id", { count: "exact", head: true })
-    .eq("product_id", productId);
+  const [{ count: orderCount }, { count: saleCount }] = await Promise.all([
+    admin.from("order_items").select("id", { count: "exact", head: true }).eq("product_id", productId),
+    admin.from("vendor_sale_items").select("id", { count: "exact", head: true }).eq("product_id", productId),
+  ]);
 
-  if ((orderCount ?? 0) > 0) {
+  if ((orderCount ?? 0) > 0 || (saleCount ?? 0) > 0) {
     return {
       success: false,
+      hasHistory: true,
       error:
-        "This product has real order history and can't be deleted — deleting it would break those past orders' records. Set it to \"Draft\" instead to hide it from the shop while keeping order history intact.",
+        "This product appears in past orders or vendor sales, so deleting it would break those records.",
     };
   }
 
-  const { error } = await admin.from("products").delete().eq("id", productId);
+  const [{ data: vendorStock }, { count: comboCount }] = await Promise.all([
+    admin.from("vendor_inventory").select("vendor_id, available_quantity").eq("product_id", productId),
+    admin.from("combo_items").select("id", { count: "exact", head: true }).eq("product_id", productId),
+  ]);
 
+  if (!options.force && ((vendorStock ?? []).length > 0 || (comboCount ?? 0) > 0)) {
+    const vendors = new Set((vendorStock ?? []).map((v: any) => v.vendor_id)).size;
+    const units = (vendorStock ?? []).reduce((sum: number, v: any) => sum + Number(v.available_quantity), 0);
+    const bits: string[] = [];
+    if (vendors > 0) bits.push(`${units} unit${units === 1 ? "" : "s"} assigned to ${vendors} vendor${vendors === 1 ? "" : "s"}`);
+    if ((comboCount ?? 0) > 0) bits.push(`used in ${comboCount} combo${comboCount === 1 ? "" : "s"}`);
+    return {
+      success: false,
+      needsConfirmation: true,
+      message: `This product is ${bits.join(" and ")}. Deleting it will remove it from those vendors and combos too.`,
+    };
+  }
+
+  // Clear everything that points at the product, then the product itself.
+  await admin.from("combo_items").delete().eq("product_id", productId);
+  await admin.from("inventory_movements").delete().eq("product_id", productId);
+  await admin.from("vendor_inventory").delete().eq("product_id", productId);
+
+  const { error } = await admin.from("products").delete().eq("id", productId);
   if (error) return { success: false, error: error.message };
 
   revalidatePath("/admin/products");
+  revalidatePath("/admin/assistant");
   revalidatePath("/shop");
   return { success: true };
 }
