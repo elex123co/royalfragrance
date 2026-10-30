@@ -10,6 +10,8 @@ export interface TransferInput {
   variantId?: string | null;
   quantity: number;
   notes?: string;
+  /** Set once the admin has agreed to add to a line the vendor already has. */
+  confirmIncrease?: boolean;
 }
 
 /**
@@ -17,7 +19,12 @@ export interface TransferInput {
  * with before/after quantities rather than silently overwriting (spec
  * section 23) and never lets the resulting quantity go negative.
  */
-export async function transferInventoryToVendor(input: TransferInput) {
+export async function transferInventoryToVendor(input: TransferInput): Promise<{
+  success: boolean;
+  error?: string;
+  needsConfirmation?: boolean;
+  existingQuantity?: number;
+}> {
   if (input.quantity <= 0) {
     return { success: false, error: "Quantity must be greater than zero" };
   }
@@ -35,6 +42,12 @@ export async function transferInventoryToVendor(input: TransferInput) {
 
   const previousQuantity = existing?.available_quantity ?? 0;
   const newQuantity = previousQuantity + input.quantity;
+
+  // This product (and size) is already assigned to the vendor: do not
+  // silently stack stock on it. Ask the admin first.
+  if (existing && !input.confirmIncrease) {
+    return { success: false, needsConfirmation: true, existingQuantity: previousQuantity };
+  }
 
   if (existing) {
     await supabase
