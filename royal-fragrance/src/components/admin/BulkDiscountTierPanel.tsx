@@ -2,7 +2,7 @@
 
 import { useState } from "react";
 import { useRouter } from "next/navigation";
-import { applyDiscountTierToAllProducts } from "@/lib/actions/admin-products";
+import { applyDiscountTierToAllProducts, removeAllProductDiscounts } from "@/lib/actions/admin-products";
 
 export function BulkDiscountTierPanel() {
   const router = useRouter();
@@ -36,6 +36,32 @@ export function BulkDiscountTierPanel() {
 
     setMessage(`Applied to ${result.count} product(s).`);
     setDiscountValue("");
+    router.refresh();
+  }
+
+  const [offBusy, setOffBusy] = useState(false);
+  const [alsoTiers, setAlsoTiers] = useState(false);
+  const [offMessage, setOffMessage] = useState<string | null>(null);
+
+  async function handleTurnOffAll() {
+    if (
+      !confirm(
+        `Turn off the sale discount on EVERY product${alsoTiers ? " and remove all discount tiers" : ""}? Prices go back to normal across the shop.`
+      )
+    )
+      return;
+    setOffBusy(true);
+    setOffMessage(null);
+    const res = await removeAllProductDiscounts({ alsoTiers });
+    setOffBusy(false);
+    if (!res.success) {
+      setOffMessage(res.error ?? "Could not turn off discounts.");
+      return;
+    }
+    setOffMessage(
+      `Turned off the discount on ${res.count} product(s)` +
+        (alsoTiers ? ` and removed ${res.tiersRemoved ?? 0} discount tier(s).` : ".")
+    );
     router.refresh();
   }
 
@@ -74,6 +100,26 @@ export function BulkDiscountTierPanel() {
       </div>
       {message && <p className="mt-2 text-xs text-green-700">{message}</p>}
       {error && <p className="mt-2 text-xs text-red-600">{error}</p>}
+
+      <div className="mt-4 border-t border-espresso/10 pt-4">
+        <p className="mb-1 text-sm font-medium text-espresso">Turn off discounts</p>
+        <p className="mb-3 text-xs text-rich/50">
+          Removes the sale discount from every product at once. To turn it off for a single product, use
+          &ldquo;Turn off&rdquo; under that product&rsquo;s price in the table below.
+        </p>
+        <label className="mb-3 flex items-center gap-2 text-xs text-rich/70">
+          <input type="checkbox" checked={alsoTiers} onChange={(e) => setAlsoTiers(e.target.checked)} />
+          Also remove all promo discount tiers
+        </label>
+        <button
+          onClick={handleTurnOffAll}
+          disabled={offBusy}
+          className="rounded-full border border-red-300 px-4 py-2 text-sm text-red-700 hover:bg-red-50 disabled:opacity-40"
+        >
+          {offBusy ? "Turning off..." : "Turn Off Discount on All Products"}
+        </button>
+        {offMessage && <p className="mt-2 text-xs text-green-700">{offMessage}</p>}
+      </div>
     </div>
   );
 }

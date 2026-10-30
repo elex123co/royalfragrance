@@ -385,3 +385,55 @@ export async function applyDiscountTierToAllProducts(
   revalidatePath("/shop");
   return { success: true, count: products.length };
 }
+
+/** Turns off the sale discount on one product (the discount tiers are left alone). */
+export async function removeProductDiscount(productId: string) {
+  const { admin } = await requireAdmin();
+  const { error } = await admin
+    .from("products")
+    .update({ discount_type: null, discount_value: null })
+    .eq("id", productId);
+  if (error) return { success: false, error: error.message };
+  revalidatePath("/admin/products");
+  revalidatePath("/shop");
+  revalidatePath("/");
+  return { success: true };
+}
+
+/** Turns off the sale discount on every product at once, and optionally the promo discount tiers too. */
+export async function removeAllProductDiscounts(options: { alsoTiers?: boolean } = {}) {
+  const { admin } = await requireAdmin();
+
+  const { data: discounted, error: findError } = await admin
+    .from("products")
+    .select("id")
+    .not("discount_type", "is", null);
+  if (findError) return { success: false, error: findError.message, count: 0 };
+
+  const ids = (discounted ?? []).map((p: any) => p.id);
+  if (ids.length > 0) {
+    const { error } = await admin
+      .from("products")
+      .update({ discount_type: null, discount_value: null })
+      .in("id", ids);
+    if (error) return { success: false, error: error.message, count: 0 };
+  }
+
+  let tiersRemoved = 0;
+  if (options.alsoTiers) {
+    const { count } = await admin
+      .from("product_discount_tiers")
+      .select("id", { count: "exact", head: true });
+    tiersRemoved = count ?? 0;
+    const { error } = await admin
+      .from("product_discount_tiers")
+      .delete()
+      .neq("id", "00000000-0000-0000-0000-000000000000");
+    if (error) return { success: false, error: error.message, count: ids.length };
+  }
+
+  revalidatePath("/admin/products");
+  revalidatePath("/shop");
+  revalidatePath("/");
+  return { success: true, count: ids.length, tiersRemoved };
+}

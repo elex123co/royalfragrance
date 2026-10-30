@@ -3,6 +3,7 @@ import { createAdminClient } from "@/lib/supabase/server";
 import { formatNaira } from "@/lib/utils/currency";
 import { Plus } from "lucide-react";
 import { ProductRowActions } from "@/components/admin/ProductRowActions";
+import { RemoveDiscountButton } from "@/components/admin/RemoveDiscountButton";
 import { BulkDiscountTierPanel } from "@/components/admin/BulkDiscountTierPanel";
 
 // Always fetch live data — admin dashboards must never serve a stale build-time snapshot.
@@ -27,7 +28,7 @@ export default async function AdminProductsPage({
   const { data: products } = await supabase
     .from("products")
     .select(
-      "id, name, slug, type, base_price, status, categories(name), product_variants(stock), product_images(url, position)"
+      "id, name, slug, type, base_price, discount_type, discount_value, status, categories(name), product_variants(stock), product_images(url, position)"
     )
     .order("created_at", { ascending: false });
 
@@ -115,6 +116,16 @@ export default async function AdminProductsPage({
                   </td>
                   <td className="px-4 py-3 text-rich/70">
                     {formatNaira(p.base_price)}
+                    {p.discount_type && Number(p.discount_value) > 0 && (
+                      <RemoveDiscountButton
+                        productId={p.id}
+                        label={
+                          p.discount_type === "percentage"
+                            ? `${Number(p.discount_value)}% off`
+                            : `${formatNaira(Number(p.discount_value))} off`
+                        }
+                      />
+                    )}
                   </td>
                   <td className="px-4 py-3 text-rich/70">{totalStock}</td>
                   <td className="px-4 py-3">
