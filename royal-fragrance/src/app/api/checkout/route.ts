@@ -152,7 +152,15 @@ export async function POST(request: Request) {
     } = await sessionClient.auth.getUser();
 
     if (user) {
-      loggedInUserId = user.id;
+      // orders.customer_id points at the customers table, so only link the
+      // order when this account really is a customer. Admin and vendor
+      // accounts, or a missing profile row, would otherwise break the insert.
+      const { data: customerRow } = await supabase
+        .from("customers")
+        .select("user_id")
+        .eq("user_id", user.id)
+        .maybeSingle();
+      loggedInUserId = customerRow ? user.id : null;
       const { data: settings } = await supabase
         .from("new_user_discount_settings")
         .select("*")
@@ -161,7 +169,7 @@ export async function POST(request: Request) {
 
       const notExpired = !settings?.expires_at || new Date(settings.expires_at) > new Date();
 
-      if (settings?.enabled && notExpired) {
+      if (loggedInUserId && settings?.enabled && notExpired) {
         const { count } = await supabase
           .from("orders")
           .select("id", { count: "exact", head: true })
