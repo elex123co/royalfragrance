@@ -25,7 +25,7 @@ interface VisionMessage {
 // actual product photos. Override with GROQ_VISION_MODEL if it is renamed.
 const DEFAULT_VISION_MODEL = "meta-llama/llama-4-scout-17b-16e-instruct";
 
-const VISION_NAME_HINT = /(scout|maverick|vision|llava|pixtral|gemma-?3|qwen.*vl|-vl\b|\bvl-)/i;
+const VISION_NAME_HINT = /(scout|maverick|vision|llava|pixtral|gemma-?3|qwen|-vl\b|\bvl-)/i;
 
 async function tryVision(
   apiKey: string,
@@ -141,4 +141,43 @@ export async function callGroq(
 
   const data = await res.json();
   return data.choices?.[0]?.message?.content ?? "";
+}
+
+/**
+ * Fallback reader for photos when no Groq model on the account can see
+ * images. Needs GEMINI_API_KEY; GEMINI_MODEL overrides the default.
+ */
+export async function callGeminiVision(
+  systemPrompt: string,
+  userText: string,
+  imageUrls: string[],
+  temperature = 0.1
+): Promise<string> {
+  const key = process.env.GEMINI_API_KEY;
+  if (!key) throw new Error("GEMINI_API_KEY is not configured");
+  const model = process.env.GEMINI_MODEL || "gemini-2.5-flash";
+
+  const parts: any[] = [{ text: userText }];
+  for (const url of imageUrls.slice(0, 4)) {
+    const img = await fetch(url);
+    if (!img.ok) throw new Error(`Could not download the photo (${img.status})`);
+    const mime = img.headers.get("content-type")?.split(";")[0] || "image/jpeg";
+    parts.push({ inline_data: { mime_type: mime, data: Buffer.from(await img.arrayBuffer()).toString("base64") } });
+  }
+
+  const res = await fetch(
+    `https://generativelanguage.googleapis.com/v1beta/models/${encodeURIComponent(model)}:generateContent?key=${encodeURIComponent(key)}`,
+    {
+      method: "POST",
+      headers: { "Content-Type": "application/json" },
+      body: JSON.stringify({
+        systemInstruction: { parts: [{ text: systemPrompt }] },
+        contents: [{ role: "user", parts }],
+        generationConfig: { temperature, responseMimeType: "application/json" },
+      }),
+    }
+  );
+  if (!res.ok) throw new Error(`Gemini request failed (${res.status}): ${(await res.text()).slice(0, 300)}`);
+  const data = await res.json();
+  return data.candidates?.[0]?.content?.parts?.map((p: any) => p.text ?? "").join("") ?? "";
 }

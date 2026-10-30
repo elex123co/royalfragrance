@@ -1,4 +1,4 @@
-import { callGroq, callGroqVision } from "./groq";
+import { callGroq, callGroqVision, callGeminiVision } from "./groq";
 
 /** What is actually printed on / visible in the packaging photo. */
 export interface PackagingFacts {
@@ -25,7 +25,9 @@ export interface ProductCopy {
   notesSource: "carton" | "knowledge" | "none";
 }
 
-function parseJson(raw: string): any {
+function parseJson(input: string): any {
+  // Some reasoning models print their thinking before the answer.
+  const raw = input.replace(/<think>[\s\S]*?<\/think>/g, "").trim();
   try {
     return JSON.parse(raw);
   } catch {
@@ -64,19 +66,27 @@ Return ONLY a JSON object with exactly these keys:
 If the name or brand is not readable, use null and set legibility to "partial" or "unreadable". Never invent a value.`;
 
 export async function extractPackagingFacts(imageUrls: string[]): Promise<PackagingFacts> {
-  const raw = await callGroqVision(
-    [
-      { role: "system", content: EXTRACT_SYSTEM },
-      {
-        role: "user",
-        content: [
-          { type: "text", text: "Read the packaging in this photo and return the JSON." },
-          ...imageUrls.slice(0, 4).map((url) => ({ type: "image_url" as const, image_url: { url } })),
-        ],
-      },
-    ],
-    { json: true, temperature: 0.1 }
-  );
+  const ask = "Read the packaging in this photo and return the JSON.";
+  let raw: string;
+  try {
+    raw = await callGroqVision(
+      [
+        { role: "system", content: EXTRACT_SYSTEM },
+        {
+          role: "user",
+          content: [
+            { type: "text", text: ask },
+            ...imageUrls.slice(0, 4).map((url) => ({ type: "image_url" as const, image_url: { url } })),
+          ],
+        },
+      ],
+      { json: true, temperature: 0.1 }
+    );
+  } catch (groqErr) {
+    // No usable vision model on the Groq account: use Gemini if a key is set.
+    if (!process.env.GEMINI_API_KEY) throw groqErr;
+    raw = await callGeminiVision(EXTRACT_SYSTEM, ask, imageUrls, 0.1);
+  }
   const p = parseJson(raw);
   const gender = str(p.targetGender)?.toLowerCase();
   const nums: number[] = Array.isArray(p.volumesMl)
