@@ -11,7 +11,14 @@ export default async function NewProductPage() {
 
   return (
     <div>
-      <h1 className="mb-6 font-display text-2xl text-espresso">New Product</h1>
+      <h1 className="mb-3 font-display text-2xl text-espresso">New Product</h1>
+      <p className="mb-6 rounded-xl bg-caramel/10 px-4 py-3 text-sm text-espresso">
+        Adding several perfumes? Drop their photos into the{" "}
+        <a href="/admin/assistant" className="underline">
+          Product Assistant
+        </a>{" "}
+        and it will read each carton and prepare the products for you.
+      </p>
       <ProductForm categories={categories} />
     </div>
   );

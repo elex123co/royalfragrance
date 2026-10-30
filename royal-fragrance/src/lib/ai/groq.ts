@@ -27,7 +27,7 @@ const DEFAULT_VISION_MODEL = "meta-llama/llama-4-scout-17b-16e-instruct";
 
 export async function callGroqVision(
   messages: VisionMessage[],
-  { json = false }: { json?: boolean } = {}
+  { json = false, temperature = 0.7 }: { json?: boolean; temperature?: number } = {}
 ): Promise<string> {
   const apiKey = process.env.GROQ_API_KEY;
   if (!apiKey) throw new Error("GROQ_API_KEY is not configured");
@@ -38,7 +38,7 @@ export async function callGroqVision(
     body: JSON.stringify({
       model: process.env.GROQ_VISION_MODEL || DEFAULT_VISION_MODEL,
       messages,
-      temperature: 0.7,
+      temperature,
       ...(json ? { response_format: { type: "json_object" } } : {}),
     }),
   });
@@ -59,7 +59,7 @@ export async function callGroqVision(
  */
 export async function callGroq(
   messages: ChatMessage[],
-  { json = false }: { json?: boolean } = {}
+  { json = false, temperature = 0.7 }: { json?: boolean; temperature?: number } = {}
 ): Promise<string> {
   const apiKey = process.env.GROQ_API_KEY;
   if (!apiKey) {
@@ -75,7 +75,7 @@ export async function callGroq(
     body: JSON.stringify({
       model: process.env.GROQ_MODEL || DEFAULT_MODEL,
       messages,
-      temperature: 0.7,
+      temperature,
       ...(json ? { response_format: { type: "json_object" } } : {}),
     }),
   });

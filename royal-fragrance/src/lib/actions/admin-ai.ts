@@ -1,7 +1,12 @@
 "use server";
 
 import { requireAdmin } from "./require-admin";
-import { callGroq, callGroqVision } from "@/lib/ai/groq";
+import {
+  extractPackagingFacts,
+  writeProductCopy,
+  displayNameFrom,
+  type PackagingFacts,
+} from "@/lib/ai/product-copy";
 
 export interface GenerateDescriptionInput {
   name: string;
@@ -16,84 +21,82 @@ export interface GenerateDescriptionResult {
   description?: string;
   suggestedCategory?: string; // exact match to one of availableCategories, or undefined
   usedImages?: boolean;
+  detectedName?: string;
+  detectedSizes?: string[];
+  notesSource?: "carton" | "knowledge" | "none";
   error?: string;
 }
 
-const BASE_RULES = `You write premium, sensory product copy for Royal Fragrance, a luxury perfume brand.
-Tone: elegant, evocative, confident, never generic or salesy. Return ONLY a JSON object:
-{ "shortDescription": string, "description": string, "suggestedCategory": string | null }
-shortDescription: one punchy sentence, under 90 characters, for product cards.
-description: 2-3 sentences for the full product page. Richer and sensory, but never invent specific notes or ingredients you were not given.
-suggestedCategory: pick the single best-fitting category EXACTLY as written from the "Available categories" list based on the product name, the photos and any notes given. If genuinely nothing fits, use null. Never invent a category not in the list.`;
+const EMPTY_FACTS: PackagingFacts = {
+  brand: null,
+  productName: null,
+  line: null,
+  concentration: null,
+  volumesMl: [],
+  targetGender: null,
+  printedNotes: { top: [], heart: [], base: [] },
+  printedClaims: [],
+  madeIn: null,
+  bottle: null,
+  packaging: null,
+  otherText: [],
+  legibility: "partial",
+};
 
-const VISION_RULES = `
-You are also given photos of the actual product. Look at them closely and build the copy around what is really visible: the bottle shape and material, the colour of the glass and liquid, the cap and any detailing, the box or packaging, the overall mood and who it seems made for. Mention these visual details naturally. Do not claim scent notes the photos cannot show unless they appear in the notes below.`;
-
+/**
+ * Two-step generation: first read the packaging photos (what is printed,
+ * what is visible), then write the caption and description strictly from
+ * those facts. Falls back to name-only writing if no photo is readable.
+ */
 export async function generateProductDescription(
   input: GenerateDescriptionInput
 ): Promise<GenerateDescriptionResult> {
   await requireAdmin();
 
-  if (!input.name.trim()) {
-    return { success: false, error: "Enter a product name first." };
+  const imageUrls = (input.imageUrls ?? []).filter((u) => /^https?:\/\//.test(u)).slice(0, 3);
+  if (!input.name.trim() && imageUrls.length === 0) {
+    return { success: false, error: "Enter a product name or add a photo first." };
   }
 
-  const imageUrls = (input.imageUrls ?? []).filter((u) => /^https?:\/\//.test(u)).slice(0, 3);
-
-  const userText = `Product name: ${input.name}
-Available categories: ${input.availableCategories.join(", ") || "(none set up yet)"}
-${input.hints ? `Notes/context to weave in: ${input.hints}` : "No specific scent notes given. Keep the scent itself evocative but general."}`;
-
   try {
-    let raw = "";
+    let facts: PackagingFacts = { ...EMPTY_FACTS };
     let usedImages = false;
 
     if (imageUrls.length > 0) {
       try {
-        raw = await callGroqVision(
-          [
-            { role: "system", content: BASE_RULES + VISION_RULES },
-            {
-              role: "user",
-              content: [
-                { type: "text", text: userText },
-                ...imageUrls.map((url) => ({ type: "image_url" as const, image_url: { url } })),
-              ],
-            },
-          ],
-          { json: true }
-        );
+        facts = await extractPackagingFacts(imageUrls);
         usedImages = true;
       } catch (visionErr) {
-        // If the vision model is unavailable, fall back to text only rather
-        // than failing the whole request.
-        console.error("Vision description failed, falling back to text:", visionErr);
+        console.error("Reading packaging failed, continuing with the name only:", visionErr);
       }
     }
 
-    if (!raw) {
-      raw = await callGroq(
-        [
-          { role: "system", content: BASE_RULES },
-          { role: "user", content: userText },
-        ],
-        { json: true }
-      );
+    const typedName = input.name.trim();
+    const displayName = typedName || displayNameFrom(facts);
+    if (!displayName) {
+      return {
+        success: false,
+        error: "I could not read the name from the photos. Type the product name and try again.",
+      };
     }
+    if (!facts.productName && typedName) facts.productName = typedName;
 
-    const parsed = JSON.parse(raw);
-    const suggestedCategory =
-      typeof parsed.suggestedCategory === "string" &&
-      input.availableCategories.includes(parsed.suggestedCategory)
-        ? parsed.suggestedCategory
-        : undefined;
+    const copy = await writeProductCopy({
+      facts,
+      displayName,
+      availableCategories: input.availableCategories,
+      hints: input.hints,
+    });
 
     return {
       success: true,
-      shortDescription: parsed.shortDescription,
-      description: parsed.description,
-      suggestedCategory,
+      shortDescription: copy.caption,
+      description: copy.description,
+      suggestedCategory: copy.category ?? undefined,
       usedImages,
+      detectedName: typedName ? undefined : displayName,
+      detectedSizes: facts.volumesMl.map((n) => `${n}ml`),
+      notesSource: copy.notesSource,
     };
   } catch (err) {
     console.error("AI description generation failed:", err);

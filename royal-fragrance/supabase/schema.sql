@@ -1091,3 +1091,22 @@ alter table delivery_batches add column if not exists starts_at timestamptz not 
 -- (null) behave as before: minimum = maximum.
 -- ----------------------------------------------------------------------------
 alter table delivery_batches add column if not exists min_members integer check (min_members >= 1);
+
+-- ----------------------------------------------------------------------------
+-- PRODUCT GALLERY — perfume photos the admin drops in; the AI reads each one,
+-- skips what the shop already sells, and prepares a draft product to review.
+-- ----------------------------------------------------------------------------
+create table if not exists product_gallery (
+  id uuid primary key default gen_random_uuid(),
+  url text not null,
+  phash text,
+  status text not null default 'new' check (status in ('new','extracted','ready','published','duplicate','failed')),
+  ai_data jsonb,
+  note text,
+  product_id uuid references products(id) on delete set null,
+  created_at timestamptz not null default now()
+);
+create index if not exists product_gallery_status_idx on product_gallery(status);
+alter table product_gallery enable row level security;
+drop policy if exists "Admins manage product gallery" on product_gallery;
+create policy "Admins manage product gallery" on product_gallery for all using (public.is_admin());

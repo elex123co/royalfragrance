@@ -13,6 +13,7 @@ import {
   UserCircle,
   Boxes,
   Banknote,
+  Sparkles,
 } from "lucide-react";
 import { createClient } from "@/lib/supabase/server";
 import { LogoutButton, LogoutIconButton } from "@/components/account/LogoutButton";
@@ -20,6 +21,7 @@ import { DashboardMobileNav } from "@/components/shared/DashboardMobileNav";
 
 const navItems = [
   { href: "/admin", label: "Overview", icon: LayoutDashboard },
+  { href: "/admin/assistant", label: "Product Assistant", icon: Sparkles },
   { href: "/admin/products", label: "Products", icon: Package },
   { href: "/admin/categories", label: "Categories", icon: Tag },
   { href: "/admin/orders", label: "Orders", icon: ShoppingCart },
