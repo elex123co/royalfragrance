@@ -114,8 +114,8 @@ export function CheckoutForm({
           customer,
           delivery: {
             state: selectedBatch ? selectedBatch.state : selectedZone?.state ?? selectedZone?.name ?? "",
-            city: delivery.city,
-            address: delivery.address,
+            city: selectedBatch ? selectedBatch.locationName : delivery.city,
+            address: selectedBatch ? `Batch delivery: ${selectedBatch.locationName}` : delivery.address,
             zoneId: selectedBatch ? undefined : delivery.zoneId,
             fee: deliveryFee,
           },
@@ -213,7 +213,7 @@ export function CheckoutForm({
                   <option key={b.id} value={b.id}>
                     {b.locationName}
                     {b.label ? ` (${b.label})` : ""} — {formatNaira(b.share)} delivery, closes{" "}
-                    {new Date(b.closesAt).toLocaleDateString()}, {b.spotsLeft} spot{b.spotsLeft === 1 ? "" : "s"} left
+                    {new Date(b.closesAt).toLocaleDateString()}, {b.spotsLeft} order{b.spotsLeft === 1 ? "" : "s"} left
                   </option>
                 ))}
               </select>
@@ -242,16 +242,25 @@ export function CheckoutForm({
                 : "Estimated delivery: 1–4 weeks outside Lagos — we aim to get it to you sooner, but it will never take longer than 4 weeks."}
             </p>
           </div>
-          <Field
-            label="City / Area"
-            value={delivery.city}
-            onChange={(v) => setDelivery((d) => ({ ...d, city: v }))}
-          />
-          <Field
-            label="Full Delivery Address"
-            value={delivery.address}
-            onChange={(v) => setDelivery((d) => ({ ...d, address: v }))}
-          />
+          {selectedBatch ? (
+            <p className="rounded-lg bg-espresso/5 px-4 py-3 text-sm text-rich/80">
+              Delivery location: <strong>{selectedBatch.locationName}</strong>. Your order will be delivered with this
+              batch.
+            </p>
+          ) : (
+            <>
+              <Field
+                label="City / Area"
+                value={delivery.city}
+                onChange={(v) => setDelivery((d) => ({ ...d, city: v }))}
+              />
+              <Field
+                label="Full Delivery Address"
+                value={delivery.address}
+                onChange={(v) => setDelivery((d) => ({ ...d, address: v }))}
+              />
+            </>
+          )}
 
           <div className="flex gap-3">
             <Button variant="outline" className="border-espresso/20 text-espresso" onClick={() => setStep("customer")}>
@@ -259,7 +268,7 @@ export function CheckoutForm({
             </Button>
             <Button
               className="flex-1"
-              disabled={(!selectedBatch && !delivery.zoneId) || !delivery.city || !delivery.address}
+              disabled={!selectedBatch && (!delivery.zoneId || !delivery.city || !delivery.address)}
               onClick={() => setStep("summary")}
             >
               Review Order

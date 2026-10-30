@@ -16,14 +16,14 @@ const checkoutSchema = z.object({
     state: z.string().min(1),
     city: z.string().min(1),
     address: z.string().min(5),
-    zoneId: z.string().optional(),
+    zoneId: z.string().nullish(),
     fee: z.number().min(0),
   }),
   items: z
     .array(
       z.object({
         productId: z.string(),
-        variantId: z.string().optional(),
+        variantId: z.string().nullish(),
         name: z.string(),
         // min(0), not positive() — combo items include ₦0 lines by
         // design (the combo's total price sits on one line, the rest of
@@ -34,8 +34,8 @@ const checkoutSchema = z.object({
       })
     )
     .min(1),
-  promoCode: z.string().optional(),
-  batchId: z.string().uuid().optional(),
+  promoCode: z.string().nullish(),
+  batchId: z.string().uuid().nullish(),
 });
 
 function generateOrderNumber() {
@@ -49,8 +49,25 @@ export async function POST(request: Request) {
   const parsed = checkoutSchema.safeParse(body);
 
   if (!parsed.success) {
+    console.error("Checkout payload rejected:", JSON.stringify(parsed.error.flatten()));
+    const labels: Record<string, string> = {
+      "customer.fullName": "full name",
+      "customer.email": "email",
+      "customer.phone": "phone number",
+      "delivery.state": "state",
+      "delivery.city": "city / area",
+      "delivery.address": "delivery address (at least 5 characters)",
+    };
+    const bad = parsed.error.issues
+      .map((i) => labels[i.path.slice(0, 2).join(".")])
+      .filter(Boolean);
     return NextResponse.json(
-      { error: "Invalid checkout payload", details: parsed.error.flatten() },
+      {
+        error: bad.length
+          ? `Please check your ${Array.from(new Set(bad)).join(", ")} and try again.`
+          : "Something in your order could not be read. Please refresh the page and try again.",
+        details: parsed.error.flatten(),
+      },
       { status: 400 }
     );
   }
