@@ -10,10 +10,28 @@ import { waLink } from "@/lib/utils/whatsapp";
 export const dynamic = "force-dynamic";
 
 export async function generateMetadata({ params }: { params: { code: string } }) {
+  const code = decodeURIComponent(params.code).toUpperCase();
+  let name: string | null = null;
+  try {
+    const { data } = await createAdminClient()
+      .from("vendors")
+      .select("business_name, display_name, status")
+      .eq("vendor_code", code)
+      .maybeSingle();
+    if (data && data.status === "active") name = String(data.display_name || data.business_name).toUpperCase();
+  } catch {
+    name = null;
+  }
+  const title = name ? `VEND ${name} | Royal Fragrance` : `Shop Royal Fragrance (${code})`;
+  const description = name
+    ? `Tap to see ${name}'s perfume catalogue and order from Royal Fragrance.`
+    : "Browse the Royal Fragrance products available through your representative.";
   return {
-    title: `Shop Royal Fragrance (${params.code.toUpperCase()})`,
-    description: "Browse the Royal Fragrance products available through your representative.",
+    title,
+    description,
     robots: { index: false },
+    openGraph: { title, description, type: "website" as const },
+    twitter: { card: "summary_large_image" as const, title, description },
   };
 }
 

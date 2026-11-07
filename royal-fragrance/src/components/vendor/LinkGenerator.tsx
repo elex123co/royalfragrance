@@ -1,7 +1,7 @@
 "use client";
 
 import { useState } from "react";
-import { Copy, MessageCircle } from "lucide-react";
+import { Copy, MessageCircle, Download, Share2 } from "lucide-react";
 
 interface LinkProduct {
   id: string;
@@ -30,12 +30,55 @@ export function LinkGenerator({
     setTimeout(() => setCopied(null), 2000);
   }
 
+  const cardUrl = `/store/${encodeURIComponent(vendorCode)}/opengraph-image`;
+  const cardMessage = `Shop Royal Fragrance perfumes with me. Tap here to see my catalogue and order: ${storeLink}`;
+
+  async function shareCard() {
+    try {
+      const blob = await (await fetch(cardUrl)).blob();
+      const file = new File([blob], `royal-fragrance-${vendorCode}.png`, { type: "image/png" });
+      const nav: any = navigator;
+      if (nav.canShare && nav.canShare({ files: [file] })) {
+        await nav.share({ files: [file], text: cardMessage });
+        return;
+      }
+    } catch {
+      // fall through to the plain WhatsApp link below
+    }
+    window.open(`https://wa.me/?text=${encodeURIComponent(cardMessage)}`, "_blank");
+  }
+
   const whatsappText = encodeURIComponent(
     `Shop Royal Fragrance perfumes here: ${storeLink}`
   );
 
   return (
     <div className="space-y-6">
+      <div className="rounded-xl2 border border-espresso/10 bg-white/60 p-6">
+        <p className="mb-1 text-sm font-medium text-espresso">Your vendor card</p>
+        <p className="mb-3 text-xs text-rich/60">
+          Post this card on your WhatsApp status or send it to chats. The caption carries your link, and when you
+          paste your link anywhere, it shows up as this same card that people can tap.
+        </p>
+        {/* eslint-disable-next-line @next/next/no-img-element */}
+        <img src={cardUrl} alt="Your vendor card" className="w-full max-w-xl rounded-xl border border-espresso/10" />
+        <div className="mt-3 flex flex-wrap gap-2">
+          <button
+            onClick={shareCard}
+            className="flex items-center gap-2 rounded-lg bg-green-600 px-4 py-2.5 text-sm text-white hover:bg-green-700"
+          >
+            <Share2 size={14} /> Share card
+          </button>
+          <a
+            href={cardUrl}
+            download={`royal-fragrance-${vendorCode}.png`}
+            className="flex items-center gap-2 rounded-lg border border-espresso/20 px-4 py-2.5 text-sm text-espresso hover:bg-espresso/5"
+          >
+            <Download size={14} /> Download card
+          </a>
+        </div>
+      </div>
+
       <div className="rounded-xl2 border border-espresso/10 bg-white/60 p-6">
         <label className="mb-1.5 block text-sm font-medium text-espresso">
           Your personal link
