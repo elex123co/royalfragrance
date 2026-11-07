@@ -110,7 +110,22 @@ export default async function AdminProductsPage({
               );
               return (
                 <tr key={p.id} className="border-b border-espresso/5 last:border-0">
-                  <td className="px-4 py-3 font-medium text-espresso">{p.name}</td>
+                  <td className="px-4 py-3 font-medium text-espresso">
+                    <div className="flex items-center gap-3">
+                      <div className="h-14 w-14 shrink-0 overflow-hidden rounded-lg bg-espresso/5">
+                        {(() => {
+                          const img = [...(p.product_images ?? [])].sort(
+                            (a: any, b: any) => a.position - b.position
+                          )[0];
+                          return img ? (
+                            // eslint-disable-next-line @next/next/no-img-element
+                            <img src={img.url} alt={p.name} className="h-full w-full object-cover" />
+                          ) : null;
+                        })()}
+                      </div>
+                      <span>{p.name}</span>
+                    </div>
+                  </td>
                   <td className="px-4 py-3 text-rich/70">
                     {p.categories?.name ?? "—"}
                   </td>
