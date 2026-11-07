@@ -1,4 +1,5 @@
 import { createAdminClient } from "@/lib/supabase/server";
+import type { DateRange } from "@/lib/date-range";
 
 export interface VendorMade {
   vendorId: string;
@@ -11,22 +12,33 @@ export interface VendorMade {
 }
 
 /** What every vendor has collected, sold, earned and still holds, for the admin overview. */
-export async function getVendorTotals() {
+export async function getVendorTotals(range?: DateRange) {
   const admin = createAdminClient();
+  const within = (q: any, column: string) => {
+    if (range?.from) q = q.gte(column, range.from.toISOString());
+    if (range?.to) q = q.lt(column, range.to.toISOString());
+    return q;
+  };
   const [{ data: vendors }, { data: tx }, { data: sales }, { data: comm }, { data: inv }] =
     await Promise.all([
       admin.from("vendors").select("user_id, business_name, display_name, vendor_code"),
-      admin
-        .from("payment_transactions")
-        .select("vendor_id, amount")
-        .not("vendor_id", "is", null)
-        .neq("status", "failed"),
-      admin
-        .from("vendor_sales")
-        .select(
-          "vendor_id, vendor_sale_items(quantity, recorded_price, products(base_price), product_variants(price))"
-        ),
-      admin.from("vendor_commissions").select("vendor_id, amount"),
+      within(
+        admin
+          .from("payment_transactions")
+          .select("vendor_id, amount")
+          .not("vendor_id", "is", null)
+          .neq("status", "failed"),
+        "transaction_date"
+      ),
+      within(
+        admin
+          .from("vendor_sales")
+          .select(
+            "vendor_id, vendor_sale_items(quantity, recorded_price, products(base_price), product_variants(price))"
+          ),
+        "created_at"
+      ),
+      within(admin.from("vendor_commissions").select("vendor_id, amount"), "created_at"),
       admin
         .from("vendor_inventory")
         .select("vendor_id, available_quantity, products(base_price), product_variants(price)"),

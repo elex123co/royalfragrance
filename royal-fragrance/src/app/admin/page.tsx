@@ -3,6 +3,8 @@ import { getMonnifyWalletBalance } from "@/lib/payments/monnify";
 import { formatNaira } from "@/lib/utils/currency";
 import Link from "next/link";
 import { getVendorTotals } from "@/lib/data/vendor-totals";
+import { resolveRange } from "@/lib/date-range";
+import { PeriodFilter } from "@/components/admin/PeriodFilter";
 
 // Always fetch live data — admin dashboards must never serve a stale build-time snapshot.
 export const dynamic = "force-dynamic";
@@ -68,11 +70,16 @@ async function getStats() {
   };
 }
 
-export default async function AdminOverviewPage() {
+export default async function AdminOverviewPage({
+  searchParams,
+}: {
+  searchParams: { period?: string; from?: string; to?: string };
+}) {
+  const range = resolveRange(searchParams ?? {});
   const [stats, wallet, vendorMade] = await Promise.all([
     getStats(),
     getMonnifyWalletBalance(),
-    getVendorTotals(),
+    getVendorTotals(range),
   ]);
 
   const cards = [
@@ -129,14 +136,20 @@ export default async function AdminOverviewPage() {
         ))}
       </div>
 
-      <div className="mt-10">
-        <h2 className="mb-3 font-display text-lg text-espresso">What vendors have made</h2>
+      <div className="mt-10" id="vendor-earnings">
+        <div className="mb-3 flex flex-wrap items-end justify-between gap-3">
+          <div>
+            <h2 className="font-display text-lg text-espresso">What vendors have made</h2>
+            <p className="text-xs text-rich/60">Showing: {range.label}</p>
+          </div>
+          <PeriodFilter period={range.key} from={range.fromInput} to={range.toInput} />
+        </div>
         <div className="grid gap-4 sm:grid-cols-2 lg:grid-cols-4">
           {[
             { label: "Sales vendors made", value: vendorMade.totals.salesValue },
             { label: "Collected by vendors", value: vendorMade.totals.collections },
             { label: "Commissions earned", value: vendorMade.totals.commission },
-            { label: "Stock still with vendors", value: vendorMade.totals.stockValue },
+            { label: "Stock with vendors now", value: vendorMade.totals.stockValue },
           ].map((c) => (
             <div key={c.label} className="rounded-xl2 border border-espresso/10 bg-white/60 p-5">
               <p className="text-xs uppercase tracking-wide text-rich/50">{c.label}</p>
@@ -152,7 +165,7 @@ export default async function AdminOverviewPage() {
                 <th className="px-4 py-3">Sales made</th>
                 <th className="px-4 py-3">Collected</th>
                 <th className="px-4 py-3">Commission</th>
-                <th className="px-4 py-3">Stock held</th>
+                <th className="px-4 py-3">Stock held now</th>
               </tr>
             </thead>
             <tbody>
