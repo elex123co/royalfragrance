@@ -1,6 +1,7 @@
 import { redirect } from "next/navigation";
 import { getCurrentVendor, getVendorDashboardData } from "@/lib/data/vendor";
 import { getT } from "@/lib/content/server";
+import { createAdminClient } from "@/lib/supabase/server";
 
 export async function generateMetadata() {
   const _t = await getT();
@@ -13,6 +14,18 @@ export default async function VendorInventoryPage() { const _t = await getT();
   const isAffiliate = vendor!.vendor_type === "affiliate";
   if (isAffiliate) redirect("/vendor/links");
   const { inventory } = await getVendorDashboardData(vendor!.user_id);
+
+  // First picture of each product, so the vendor can recognise the perfume.
+  const productIds = Array.from(new Set(inventory.map((i: any) => i.product_id)));
+  const imageFor = new Map<string, string>();
+  if (productIds.length > 0) {
+    const { data: images } = await createAdminClient()
+      .from("product_images")
+      .select("product_id, url, position")
+      .in("product_id", productIds)
+      .order("position");
+    for (const img of images ?? []) if (!imageFor.has(img.product_id)) imageFor.set(img.product_id, img.url);
+  }
 
   return (
     <div>
@@ -29,6 +42,16 @@ export default async function VendorInventoryPage() { const _t = await getT();
             key={item.id}
             className="rounded-xl2 border border-espresso/10 bg-white/60 p-5"
           >
+            <div className="mb-4 aspect-square w-full overflow-hidden rounded-xl bg-espresso/5">
+              {imageFor.get(item.product_id) ? (
+                // eslint-disable-next-line @next/next/no-img-element
+                <img
+                  src={imageFor.get(item.product_id)}
+                  alt={item.products?.name ?? ""}
+                  className="h-full w-full object-cover"
+                />
+              ) : null}
+            </div>
             <p className="font-display text-espresso">
               {item.products?.name}
               {item.product_variants?.size ? ` (${item.product_variants.size})` : ""}
