@@ -23,14 +23,65 @@ const STATUS_STYLE: Record<string, string> = {
   cancelled: "bg-red-100 text-red-700",
 };
 
+function PromoteBatch({ batch, vendorCode }: { batch: BatchSummary; vendorCode: string }) {
+  const [copied, setCopied] = useState(false);
+  const origin = typeof window !== "undefined" ? window.location.origin : "https://royalfragrancegallery.com";
+  const link = `${origin}/store/${encodeURIComponent(vendorCode)}/more`;
+  const left = Math.max(0, b_max(batch) - batch.members);
+  const message =
+    `Batch delivery to ${batch.location.name} is open. ` +
+    `Order your perfumes and share one delivery fee with other customers, about ${formatNaira(batch.share)} each. ` +
+    `Delivery closes ${new Date(batch.closes_at).toLocaleDateString()}${left > 0 ? `, ${left} spot${left === 1 ? "" : "s"} left` : ""}. ` +
+    `Order here and choose Batch delivery at checkout: ${link}`;
+
+  function copy(text: string) {
+    try {
+      navigator.clipboard.writeText(text);
+      setCopied(true);
+      setTimeout(() => setCopied(false), 2000);
+    } catch {
+      // ignore
+    }
+  }
+
+  return (
+    <div className="mt-3 rounded-lg border border-caramel/30 bg-caramel/5 p-3">
+      <p className="text-xs font-medium text-espresso">Promote this batch</p>
+      <p className="mt-1 break-all text-xs text-rich/60">{link}</p>
+      <div className="mt-2 flex flex-wrap gap-2 text-xs">
+        <button onClick={() => copy(link)} className="rounded-full border border-espresso/20 px-3 py-1 hover:bg-espresso/5">
+          {copied ? "Copied" : "Copy link"}
+        </button>
+        <button onClick={() => copy(message)} className="rounded-full border border-espresso/20 px-3 py-1 hover:bg-espresso/5">
+          Copy message
+        </button>
+        <a
+          href={`https://wa.me/?text=${encodeURIComponent(message)}`}
+          target="_blank"
+          rel="noreferrer"
+          className="rounded-full bg-green-600 px-3 py-1 text-white hover:bg-green-700"
+        >
+          Share on WhatsApp
+        </a>
+      </div>
+    </div>
+  );
+}
+
+function b_max(b: BatchSummary) {
+  return b.max_members;
+}
+
 export function BatchList({
   batches,
   members,
   showCreator = false,
+  vendorCode,
 }: {
   batches: BatchSummary[];
   members: Member[];
   showCreator?: boolean;
+  vendorCode?: string;
 }) {
   const router = useRouter();
   const [busyId, setBusyId] = useState<string | null>(null);
@@ -97,6 +148,7 @@ export function BatchList({
                 {openId === b.id ? "Hide customers" : `View customers (${active.length})`}
               </button>
             </div>
+            {vendorCode && b.status === "open" && <PromoteBatch batch={b} vendorCode={vendorCode} />}
             {openId === b.id && (
               <div className="mt-3 divide-y divide-espresso/5 rounded-lg border border-espresso/10 bg-cream/50 text-sm">
                 {list.length === 0 && <p className="p-3 text-rich/60">No paid customers yet.</p>}

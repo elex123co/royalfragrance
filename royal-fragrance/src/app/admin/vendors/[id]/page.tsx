@@ -4,7 +4,7 @@ import { createAdminClient } from "@/lib/supabase/server";
 import { getVendorDashboardData } from "@/lib/data/vendor";
 import { formatNaira } from "@/lib/utils/currency";
 import { InventoryTransferForm } from "@/components/admin/InventoryTransferForm";
-import { RemoveInventoryButton } from "@/components/admin/RemoveInventoryButton";
+import { VendorInventoryRow } from "@/components/admin/VendorInventoryRow";
 import { VendorBatchLocationForm } from "@/components/admin/VendorBatchLocationForm";
 import { getBatchLocations } from "@/lib/data/batches";
 import { AmbassadorLevelForm } from "@/components/admin/AmbassadorLevelForm";
@@ -13,6 +13,29 @@ import { AmbassadorLevelForm } from "@/components/admin/AmbassadorLevelForm";
 export const dynamic = "force-dynamic";
 
 export const metadata = { title: "Vendor Detail — Admin — Royal Fragrance" };
+
+const SALE_STATUS: Record<string, { label: string; style: string; hint: string }> = {
+  amount_matches: {
+    label: "Amount matches",
+    style: "bg-green-100 text-green-700",
+    hint: "The products recorded add up to the payment received.",
+  },
+  partial_recorded: {
+    label: "Partly recorded",
+    style: "bg-amber-100 text-amber-700",
+    hint: "The products recorded so far add up to less than the payment received. The vendor still has to add the rest.",
+  },
+  value_mismatch: {
+    label: "Value mismatch",
+    style: "bg-red-100 text-red-700",
+    hint: "The products recorded add up to more than the payment received.",
+  },
+  requires_review: {
+    label: "Needs review",
+    style: "bg-red-100 text-red-700",
+    hint: "Flagged for the admin to check.",
+  },
+};
 
 export default async function AdminVendorDetailPage({
   params,
@@ -35,6 +58,51 @@ export default async function AdminVendorDetailPage({
 
   const batchLocations = await getBatchLocations(true);
   const dashboard = await getVendorDashboardData(params.id);
+
+  // Group any duplicate rows for the same product and size into one line, and
+  // work out how much was assigned, sold and is left for each.
+  const productIds = Array.from(new Set(dashboard.inventory.map((i: any) => i.product_id)));
+  const [{ data: imageRows }, { data: movements }] = await Promise.all([
+    productIds.length
+      ? supabase
+          .from("product_images")
+          .select("product_id, url, position")
+          .in("product_id", productIds)
+          .order("position")
+      : Promise.resolve({ data: [] as any[] }),
+    supabase
+      .from("inventory_movements")
+      .select("product_id, variant_id, movement_type, quantity")
+      .eq("vendor_id", params.id),
+  ]);
+  const imageFor = new Map<string, string>();
+  for (const r of imageRows ?? []) if (!imageFor.has(r.product_id)) imageFor.set(r.product_id, r.url);
+
+  const lineKey = (p: string, v: string | null) => `${p}:${v ?? ""}`;
+  const lineMap = new Map<string, any>();
+  for (const i of dashboard.inventory as any[]) {
+    const key = lineKey(i.product_id, i.variant_id);
+    const cur = lineMap.get(key);
+    if (cur) cur.left += i.available_quantity;
+    else
+      lineMap.set(key, {
+        id: i.id,
+        key,
+        name: i.products?.name ?? "Product",
+        size: i.product_variants?.size ?? null,
+        image: imageFor.get(i.product_id) ?? null,
+        left: i.available_quantity,
+        assigned: 0,
+        sold: 0,
+      });
+  }
+  for (const m of movements ?? []) {
+    const line = lineMap.get(lineKey(m.product_id, m.variant_id));
+    if (!line) continue;
+    if (m.movement_type === "stock_assigned") line.assigned += Number(m.quantity);
+    if (m.movement_type === "sale_recorded") line.sold += Math.abs(Number(m.quantity));
+  }
+  const inventoryLines = Array.from(lineMap.values());
   const totalCollections = dashboard.transactions.reduce(
     (sum, t: any) => sum + Number(t.amount),
     0
@@ -175,24 +243,19 @@ export default async function AdminVendorDetailPage({
           <h3 className="mb-2 mt-6 text-sm font-medium text-espresso">
             Current Inventory
           </h3>
-          <div className="space-y-1 text-sm text-rich/70">
-            {dashboard.inventory.length === 0 && <p>No inventory assigned yet.</p>}
-            {dashboard.inventory.map((i: any) => (
-              <div key={i.id} className="border-b border-espresso/5 pb-2">
-                <div className="flex items-center justify-between gap-3">
-                  <span>
-                    {i.products?.name} {i.product_variants?.size ? `(${i.product_variants.size})` : ""}
-                  </span>
-                  <span className="flex items-center gap-3">
-                    <span>{i.available_quantity}</span>
-                    <RemoveInventoryButton
-                      inventoryId={i.id}
-                      available={i.available_quantity}
-                      label={i.products?.name ?? "item"}
-                    />
-                  </span>
-                </div>
-              </div>
+          <div className="space-y-2 text-sm text-rich/70">
+            {inventoryLines.length === 0 && <p>No inventory assigned yet.</p>}
+            {inventoryLines.map((l: any) => (
+              <VendorInventoryRow
+                key={l.key}
+                inventoryId={l.id}
+                name={l.name}
+                size={l.size}
+                imageUrl={l.image}
+                assigned={l.assigned}
+                sold={l.sold}
+                left={l.left}
+              />
             ))}
           </div>
           </>
@@ -216,15 +279,20 @@ export default async function AdminVendorDetailPage({
                     {new Date(sale.created_at).toLocaleString()}
                   </span>
                   <span
+                    title={SALE_STATUS[sale.sale_status]?.hint}
                     className={`rounded-full px-2.5 py-1 text-xs ${
-                      sale.sale_status === "approved"
-                        ? "bg-green-100 text-green-700"
-                        : "bg-amber-100 text-amber-700"
+                      SALE_STATUS[sale.sale_status]?.style ?? "bg-amber-100 text-amber-700"
                     }`}
                   >
-                    {sale.sale_status.replace(/_/g, " ")}
+                    {SALE_STATUS[sale.sale_status]?.label ?? sale.sale_status.replace(/_/g, " ")}
                   </span>
                 </div>
+                {sale.payment_transactions && (
+                  <p className="mb-2 text-xs text-rich/60">
+                    Payment received: {formatNaira(sale.payment_transactions.amount)}.{" "}
+                    {SALE_STATUS[sale.sale_status]?.hint}
+                  </p>
+                )}
                 {(sale.customer_name || sale.customer_phone) && (
                   <p className="mb-2 text-xs text-rich/60">
                     Customer: {sale.customer_name}

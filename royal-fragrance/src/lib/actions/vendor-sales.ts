@@ -69,10 +69,35 @@ export async function recordVendorSale(input: RecordSaleInput) {
     0
   );
 
+  // A payment can be split across several products, even across several
+  // saves. Count what is already recorded against it.
+  const { data: earlier } = await supabase
+    .from("vendor_sales")
+    .select("id, vendor_sale_items(quantity, recorded_price)")
+    .eq("transaction_id", input.transactionId);
+  const alreadyRecorded = (earlier ?? []).reduce(
+    (sum, s: any) =>
+      sum +
+      (s.vendor_sale_items ?? []).reduce(
+        (t: number, it: any) => t + Number(it.quantity) * Number(it.recorded_price),
+        0
+      ),
+    0
+  );
+  const paid = Number(transaction.amount);
+  const cumulative = alreadyRecorded + recordedTotal;
+
+  if (cumulative > paid) {
+    const left = Math.max(0, paid - alreadyRecorded);
+    return {
+      success: false,
+      error: `These products come to more than the payment. Only ${left.toLocaleString("en-NG")} naira of this payment is left to match.`,
+    };
+  }
+
   let saleStatus: "amount_matches" | "partial_recorded" | "value_mismatch" =
     "amount_matches";
-  if (recordedTotal < Number(transaction.amount)) saleStatus = "partial_recorded";
-  if (recordedTotal > Number(transaction.amount)) saleStatus = "value_mismatch";
+  if (cumulative < paid) saleStatus = "partial_recorded";
 
   // Verify sufficient inventory BEFORE writing anything, so we never leave
   // a sale recorded against stock we don't actually have.
@@ -154,6 +179,13 @@ export async function recordVendorSale(input: RecordSaleInput) {
       performed_by: vendorId,
       notes: `Sale ${sale.sale_number}`,
     });
+  }
+
+  if (saleStatus === "amount_matches" && (earlier ?? []).length > 0) {
+    await supabase
+      .from("vendor_sales")
+      .update({ sale_status: "amount_matches" })
+      .eq("transaction_id", input.transactionId);
   }
 
   await supabase.from("audit_logs").insert({

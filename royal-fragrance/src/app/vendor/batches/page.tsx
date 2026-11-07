@@ -39,7 +39,7 @@ export default async function VendorBatchesPage() {
       )}
       <div>
         <h2 className="mb-3 font-display text-lg text-espresso">Your batches</h2>
-        <BatchList batches={batches} members={members as any} />
+        <BatchList batches={batches} members={members as any} vendorCode={vendor!.vendor_code} />
       </div>
     </div>
   );

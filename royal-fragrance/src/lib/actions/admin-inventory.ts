@@ -143,3 +143,114 @@ export async function removeVendorInventory(input: {
   revalidatePath("/vendor/inventory");
   return { success: true };
 }
+
+/**
+ * Sets the exact quantity a vendor holds for one product line, for correcting
+ * a mistaken assignment in place. If older duplicate rows exist for the same
+ * product and size they are folded into this one. The change is recorded as
+ * a stock adjustment with before and after figures.
+ */
+export async function setVendorInventoryQuantity(input: {
+  inventoryId: string;
+  quantity: number;
+}) {
+  if (!Number.isInteger(input.quantity) || input.quantity < 0) {
+    return { success: false, error: "Enter a whole number, zero or more." };
+  }
+  const { admin: supabase } = await requireAdmin();
+
+  const { data: inv } = await supabase
+    .from("vendor_inventory")
+    .select("id, vendor_id, product_id, variant_id")
+    .eq("id", input.inventoryId)
+    .maybeSingle();
+  if (!inv) return { success: false, error: "Inventory line not found" };
+
+  const { data: rows } = await withVariant(
+    supabase
+      .from("vendor_inventory")
+      .select("id, available_quantity")
+      .eq("vendor_id", inv.vendor_id)
+      .eq("product_id", inv.product_id),
+    inv.variant_id
+  );
+  const lines = rows ?? [];
+  const previous = lines.reduce((sum, r: any) => sum + r.available_quantity, 0);
+  if (previous === input.quantity && lines.length <= 1) return { success: true };
+
+  const { error } = await supabase
+    .from("vendor_inventory")
+    .update({ available_quantity: input.quantity, updated_at: new Date().toISOString() })
+    .eq("id", inv.id);
+  if (error) return { success: false, error: error.message };
+
+  const extras = lines.filter((r: any) => r.id !== inv.id).map((r: any) => r.id);
+  if (extras.length > 0) {
+    await supabase.from("vendor_inventory").delete().in("id", extras);
+  }
+
+  if (previous !== input.quantity) {
+    await supabase.from("inventory_movements").insert({
+      vendor_id: inv.vendor_id,
+      product_id: inv.product_id,
+      variant_id: inv.variant_id,
+      movement_type: "stock_adjustment",
+      quantity: input.quantity - previous,
+      previous_quantity: previous,
+      new_quantity: input.quantity,
+      notes: "Quantity edited by admin",
+    });
+  }
+
+  revalidatePath(`/admin/vendors/${inv.vendor_id}`);
+  revalidatePath("/admin/vendors");
+  revalidatePath("/vendor/inventory");
+  return { success: true };
+}
+
+/** Deletes a vendor's whole line for one product and size, whatever the quantity. */
+export async function deleteVendorInventoryLine(inventoryId: string) {
+  const { admin: supabase } = await requireAdmin();
+
+  const { data: inv } = await supabase
+    .from("vendor_inventory")
+    .select("id, vendor_id, product_id, variant_id")
+    .eq("id", inventoryId)
+    .maybeSingle();
+  if (!inv) return { success: false, error: "Inventory line not found" };
+
+  const { data: rows } = await withVariant(
+    supabase
+      .from("vendor_inventory")
+      .select("id, available_quantity")
+      .eq("vendor_id", inv.vendor_id)
+      .eq("product_id", inv.product_id),
+    inv.variant_id
+  );
+  const lines = rows ?? [];
+  const previous = lines.reduce((sum, r: any) => sum + r.available_quantity, 0);
+
+  const { error } = await supabase
+    .from("vendor_inventory")
+    .delete()
+    .in("id", lines.map((r: any) => r.id).concat(inv.id));
+  if (error) return { success: false, error: error.message };
+
+  if (previous > 0) {
+    await supabase.from("inventory_movements").insert({
+      vendor_id: inv.vendor_id,
+      product_id: inv.product_id,
+      variant_id: inv.variant_id,
+      movement_type: "stock_adjustment",
+      quantity: -previous,
+      previous_quantity: previous,
+      new_quantity: 0,
+      notes: "Line deleted by admin",
+    });
+  }
+
+  revalidatePath(`/admin/vendors/${inv.vendor_id}`);
+  revalidatePath("/admin/vendors");
+  revalidatePath("/vendor/inventory");
+  return { success: true };
+}

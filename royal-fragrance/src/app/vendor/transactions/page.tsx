@@ -39,11 +39,18 @@ export default async function VendorTransactionsPage() {
                     <p className="text-sm text-espresso">From: {t.payer_name}</p>
                   )}
                   <p className="text-xs text-rich/50">
-                    {new Date(t.transaction_date).toLocaleString()} · Awaiting
-                    Sale Record
+                    {new Date(t.transaction_date).toLocaleString()} ·{" "}
+                    {t.recorded_total > 0
+                      ? `${formatNaira(t.recorded_total)} matched, ${formatNaira(t.remaining)} still to match`
+                      : "Awaiting Sale Record"}
                   </p>
                 </div>
-                <RecordSaleButton transactionId={t.id} inventory={inventory} />
+                <RecordSaleButton
+                  transactionId={t.id}
+                  inventory={inventory}
+                  paymentAmount={Number(t.amount)}
+                  remaining={t.remaining}
+                />
               </div>
             ))}
           </div>

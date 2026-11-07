@@ -25,21 +25,28 @@ interface SaleLine {
 export function RecordSaleButton({
   transactionId,
   inventory,
+  paymentAmount,
+  remaining,
 }: {
   transactionId: string;
   inventory: InventoryLine[];
+  paymentAmount?: number;
+  remaining?: number;
 }) {
   const [open, setOpen] = useState(false);
 
   return (
     <>
       <Button size="sm" onClick={() => setOpen(true)}>
-        Record Sale
+        {remaining !== undefined && paymentAmount !== undefined && remaining < paymentAmount
+          ? "Add more products"
+          : "Record Sale"}
       </Button>
       {open && (
         <RecordSaleModal
           transactionId={transactionId}
           inventory={inventory}
+          remaining={remaining}
           onClose={() => setOpen(false)}
         />
       )}
@@ -50,10 +57,12 @@ export function RecordSaleButton({
 function RecordSaleModal({
   transactionId,
   inventory,
+  remaining,
   onClose,
 }: {
   transactionId: string;
   inventory: InventoryLine[];
+  remaining?: number;
   onClose: () => void;
 }) {
   const [lines, setLines] = useState<SaleLine[]>([]);
@@ -107,6 +116,12 @@ function RecordSaleModal({
       setError(`Enter the selling price for ${unpriced.name}.`);
       return;
     }
+    if (remaining !== undefined && total > remaining) {
+      setError(
+        `These products come to ${formatNaira(total)}, which is more than the ${formatNaira(remaining)} of this payment still to be matched.`
+      );
+      return;
+    }
     setSubmitting(true);
     setError(null);
 
@@ -136,6 +151,13 @@ function RecordSaleModal({
     <div className="fixed inset-0 z-50 flex items-center justify-center bg-espresso/60 p-4">
       <div className="max-h-[90vh] w-full max-w-lg overflow-y-auto rounded-xl2 bg-cream p-6">
         <h3 className="font-display text-lg text-espresso">Record Sale</h3>
+        {remaining !== undefined && (
+          <p className="mt-1 text-xs text-rich/60">
+            You can add more than one product to this payment. Their prices must add up to{" "}
+            {formatNaira(remaining)} or less. If it is less, the rest stays open so you can add the
+            other products later.
+          </p>
+        )}
 
         <div className="mt-4">
           <p className="mb-2 text-sm font-medium text-espresso">
@@ -193,6 +215,19 @@ function RecordSaleModal({
             ))}
             <p className="text-right text-sm font-medium text-espresso">
               Recorded total: {formatNaira(total)}
+              {remaining !== undefined && (
+                <span
+                  className={`block text-xs font-normal ${
+                    total > remaining ? "text-red-600" : "text-rich/60"
+                  }`}
+                >
+                  {total > remaining
+                    ? `${formatNaira(total - remaining)} over the payment`
+                    : total === remaining
+                      ? "Matches the payment"
+                      : `${formatNaira(remaining - total)} of the payment still unmatched`}
+                </span>
+              )}
             </p>
           </div>
         )}

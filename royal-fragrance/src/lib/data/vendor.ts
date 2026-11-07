@@ -60,12 +60,40 @@ export async function getVendorDashboardData(vendorId: string) {
       .order("created_at", { ascending: false }),
   ]);
 
+  // How much of each payment has been matched to products so far. A payment
+  // stays open until the products recorded against it add up to its amount,
+  // so one payment can be split across several products (or several records).
+  const unitPrice = (i: any) =>
+    Number(i.recorded_price) > 0
+      ? Number(i.recorded_price)
+      : Number(i.product_variants?.price ?? i.products?.base_price ?? 0);
+  const recordedByTransaction = new Map<string, number>();
+  for (const s of sales ?? []) {
+    if (!s.transaction_id) continue;
+    const total = (s.vendor_sale_items ?? []).reduce(
+      (sum: number, i: any) => sum + unitPrice(i) * Number(i.quantity),
+      0
+    );
+    recordedByTransaction.set(
+      s.transaction_id,
+      (recordedByTransaction.get(s.transaction_id) ?? 0) + total
+    );
+  }
   const recordedSaleTransactionIds = new Set(
     (sales ?? []).map((s: any) => s.transaction_id).filter(Boolean)
   );
-  const unrecordedTransactions = (transactions ?? []).filter(
-    (t) => t.status === "confirmed" && !recordedSaleTransactionIds.has(t.id)
-  );
+  const unrecordedTransactions = (transactions ?? [])
+    .filter((t) => {
+      if (t.status !== "confirmed") return false;
+      if (!recordedSaleTransactionIds.has(t.id)) return true;
+      const recorded = recordedByTransaction.get(t.id) ?? 0;
+      // recorded === 0 means an old record without prices: treat as done.
+      return recorded > 0 && recorded < Number(t.amount);
+    })
+    .map((t) => {
+      const recorded = recordedByTransaction.get(t.id) ?? 0;
+      return { ...t, recorded_total: recorded, remaining: Math.max(0, Number(t.amount) - recorded) };
+    });
 
   return {
     collectionAccount,

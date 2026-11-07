@@ -1,6 +1,8 @@
 import { createAdminClient } from "@/lib/supabase/server";
 import { getMonnifyWalletBalance } from "@/lib/payments/monnify";
 import { formatNaira } from "@/lib/utils/currency";
+import Link from "next/link";
+import { getVendorTotals } from "@/lib/data/vendor-totals";
 
 // Always fetch live data — admin dashboards must never serve a stale build-time snapshot.
 export const dynamic = "force-dynamic";
@@ -67,7 +69,11 @@ async function getStats() {
 }
 
 export default async function AdminOverviewPage() {
-  const [stats, wallet] = await Promise.all([getStats(), getMonnifyWalletBalance()]);
+  const [stats, wallet, vendorMade] = await Promise.all([
+    getStats(),
+    getMonnifyWalletBalance(),
+    getVendorTotals(),
+  ]);
 
   const cards = [
     { label: "Total Revenue", value: formatNaira(stats.totalRevenue) },
@@ -121,6 +127,62 @@ export default async function AdminOverviewPage() {
             </p>
           </div>
         ))}
+      </div>
+
+      <div className="mt-10">
+        <h2 className="mb-3 font-display text-lg text-espresso">What vendors have made</h2>
+        <div className="grid gap-4 sm:grid-cols-2 lg:grid-cols-4">
+          {[
+            { label: "Sales vendors made", value: vendorMade.totals.salesValue },
+            { label: "Collected by vendors", value: vendorMade.totals.collections },
+            { label: "Commissions earned", value: vendorMade.totals.commission },
+            { label: "Stock still with vendors", value: vendorMade.totals.stockValue },
+          ].map((c) => (
+            <div key={c.label} className="rounded-xl2 border border-espresso/10 bg-white/60 p-5">
+              <p className="text-xs uppercase tracking-wide text-rich/50">{c.label}</p>
+              <p className="mt-2 font-display text-2xl text-espresso">{formatNaira(c.value)}</p>
+            </div>
+          ))}
+        </div>
+        <div className="mt-4 overflow-x-auto rounded-xl2 border border-espresso/10 bg-white/60">
+          <table className="w-full min-w-[640px] text-left text-sm">
+            <thead>
+              <tr className="border-b border-espresso/10 text-xs uppercase tracking-wide text-rich/50">
+                <th className="px-4 py-3">Vendor</th>
+                <th className="px-4 py-3">Sales made</th>
+                <th className="px-4 py-3">Collected</th>
+                <th className="px-4 py-3">Commission</th>
+                <th className="px-4 py-3">Stock held</th>
+              </tr>
+            </thead>
+            <tbody>
+              {vendorMade.list.length === 0 && (
+                <tr>
+                  <td colSpan={5} className="px-4 py-6 text-center text-rich/50">
+                    No vendors yet.
+                  </td>
+                </tr>
+              )}
+              {vendorMade.list.map((v) => (
+                <tr key={v.vendorId} className="border-b border-espresso/5 last:border-0">
+                  <td className="px-4 py-3">
+                    <Link
+                      href={`/admin/vendors/${v.vendorId}`}
+                      className="font-medium text-espresso underline-offset-2 hover:underline"
+                    >
+                      {v.name}
+                    </Link>
+                    <p className="text-xs text-rich/40">{v.code}</p>
+                  </td>
+                  <td className="px-4 py-3 text-rich/80">{formatNaira(v.salesValue)}</td>
+                  <td className="px-4 py-3 text-rich/80">{formatNaira(v.collections)}</td>
+                  <td className="px-4 py-3 text-rich/80">{formatNaira(v.commission)}</td>
+                  <td className="px-4 py-3 text-rich/80">{formatNaira(v.stockValue)}</td>
+                </tr>
+              ))}
+            </tbody>
+          </table>
+        </div>
       </div>
 
       <div className="mt-10 grid gap-6 lg:grid-cols-2">
