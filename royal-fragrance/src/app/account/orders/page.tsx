@@ -5,8 +5,14 @@ import { getOrders } from "@/lib/data/account";
 import { formatNaira } from "@/lib/utils/currency";
 import { OrderTimeline } from "@/components/account/OrderTimeline";
 import { BuyAgainButton } from "@/components/account/BuyAgainButton";
+import { getT } from "@/lib/content/server";
+import { tl } from "@/lib/content/translate";
 
-export const metadata = { title: "My Orders — Royal Fragrance" };
+export async function generateMetadata() {
+  const _t = await getT();
+  return { title: _t("meta.account.orders.title", "My Orders — Royal Fragrance") 
+  };
+}
 
 const STATUS_LABELS: Record<string, string> = {
   order_received: "Order Received",
@@ -18,7 +24,7 @@ const STATUS_LABELS: Record<string, string> = {
   cancelled: "Cancelled",
 };
 
-export default async function OrdersPage() {
+export default async function OrdersPage() { const _t = await getT();
   const supabase = createClient();
   const {
     data: { user },
@@ -29,10 +35,10 @@ export default async function OrdersPage() {
 
   return (
     <div>
-      <h1 className="mb-6 font-display text-2xl text-espresso">My Orders</h1>
+      <h1 className="mb-6 font-display text-2xl text-espresso">{_t("account.orders.db2821", "My Orders")}</h1>
 
       {orders.length === 0 ? (
-        <p className="text-sm text-rich/60">You haven&rsquo;t placed any orders yet.</p>
+        <p className="text-sm text-rich/60">{_t("account.orders.56e89b", "You haven’t placed any orders yet.")}</p>
       ) : (
         <div className="space-y-4">
           {orders.map((order: any) => (
@@ -65,13 +71,13 @@ export default async function OrdersPage() {
                     <div className="relative h-12 w-12 shrink-0 overflow-hidden rounded-lg bg-brand-100">
                       <BrandImage
                         src={item.products?.product_images?.[0]?.url}
-                        alt={item.products?.name ?? "Fragrance"}
+                        alt={item.products?.name ?? _t("account.orders.ebf862", "Fragrance")}
                         className="object-cover"
                       />
                     </div>
                     <div className="flex-1 text-sm">
                       <p className="text-espresso">{item.products?.name}</p>
-                      <p className="text-xs text-rich/50">Qty {item.quantity}</p>
+                      <p className="text-xs text-rich/50">{_t("account.orders.f068d1", "Qty {quantity}", { quantity: item.quantity })}</p>
                     </div>
                     <p className="text-sm text-rich/70">
                       {formatNaira(item.unit_price * item.quantity)}
@@ -88,7 +94,7 @@ export default async function OrdersPage() {
 
               <div className="mt-4 flex items-center justify-between">
                 <span className="text-xs text-rich/50">
-                  {STATUS_LABELS[order.order_status] ?? order.order_status}
+                  {tl(_t, "account.status", STATUS_LABELS[order.order_status] ?? order.order_status)}
                 </span>
                 {order.payment_status === "paid" && (
                   <BuyAgainButton

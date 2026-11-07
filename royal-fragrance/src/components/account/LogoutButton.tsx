@@ -2,6 +2,7 @@
 
 import { LogOut } from "lucide-react";
 import { createClient } from "@/lib/supabase/client";
+import { useT } from "@/lib/content/client";
 
 async function handleLogout() {
   const supabase = createClient();
@@ -13,15 +14,13 @@ async function handleLogout() {
   window.location.href = "/";
 }
 
-export function LogoutButton() {
+export function LogoutButton() { const _t = useT();
   return (
     <button
       onClick={handleLogout}
       className="flex w-full items-center gap-3 rounded-lg px-3 py-2 text-sm text-cream/60 transition hover:bg-cream/5 hover:text-cream"
     >
-      <LogOut size={16} />
-      Logout
-    </button>
+      <LogOut size={16} />{_t("account.logoutbutton.e43d61", "Logout")}</button>
   );
 }
 
@@ -30,11 +29,11 @@ export function LogoutButton() {
  * full logout was previously only reachable by tapping "More" in the
  * bottom nav first, and wasn't obvious to find.
  */
-export function LogoutIconButton({ className = "" }: { className?: string }) {
+export function LogoutIconButton({ className = "" }: { className?: string }) { const _t = useT();
   return (
     <button
       onClick={handleLogout}
-      aria-label="Logout"
+      aria-label={_t("account.logoutbutton.e43d61", "Logout")}
       className={`flex h-9 w-9 items-center justify-center rounded-full bg-cream/10 text-cream transition hover:bg-cream/20 ${className}`}
     >
       <LogOut size={16} />

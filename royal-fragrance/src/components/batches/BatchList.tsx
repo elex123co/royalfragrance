@@ -5,6 +5,7 @@ import { useRouter } from "next/navigation";
 import { setBatchStatus } from "@/lib/actions/batches";
 import { formatNaira } from "@/lib/utils/currency";
 import type { BatchSummary } from "@/lib/data/batches";
+import { useT } from "@/lib/content/client";
 
 interface Member {
   id: string;
@@ -23,7 +24,7 @@ const STATUS_STYLE: Record<string, string> = {
   cancelled: "bg-red-100 text-red-700",
 };
 
-function PromoteBatch({ batch, vendorCode }: { batch: BatchSummary; vendorCode: string }) {
+function PromoteBatch({ batch, vendorCode }: { batch: BatchSummary; vendorCode: string }) { const _t = useT();
   const [copied, setCopied] = useState(false);
   const origin = typeof window !== "undefined" ? window.location.origin : "https://royalfragrancegallery.com";
   const link = `${origin}/store/${encodeURIComponent(vendorCode)}/more`;
@@ -46,23 +47,19 @@ function PromoteBatch({ batch, vendorCode }: { batch: BatchSummary; vendorCode: 
 
   return (
     <div className="mt-3 rounded-lg border border-caramel/30 bg-caramel/5 p-3">
-      <p className="text-xs font-medium text-espresso">Promote this batch</p>
+      <p className="text-xs font-medium text-espresso">{_t("batches.batchlist.278e20", "Promote this batch")}</p>
       <p className="mt-1 break-all text-xs text-rich/60">{link}</p>
       <div className="mt-2 flex flex-wrap gap-2 text-xs">
         <button onClick={() => copy(link)} className="rounded-full border border-espresso/20 px-3 py-1 hover:bg-espresso/5">
-          {copied ? "Copied" : "Copy link"}
+          {copied ? _t("batches.batchlist.8e3df4", "Copied") : _t("batches.batchlist.2f84ee", "Copy link")}
         </button>
-        <button onClick={() => copy(message)} className="rounded-full border border-espresso/20 px-3 py-1 hover:bg-espresso/5">
-          Copy message
-        </button>
+        <button onClick={() => copy(message)} className="rounded-full border border-espresso/20 px-3 py-1 hover:bg-espresso/5">{_t("batches.batchlist.26902e", "Copy message")}</button>
         <a
           href={`https://wa.me/?text=${encodeURIComponent(message)}`}
           target="_blank"
           rel="noreferrer"
           className="rounded-full bg-green-600 px-3 py-1 text-white hover:bg-green-700"
-        >
-          Share on WhatsApp
-        </a>
+        >{_t("batches.batchlist.7e0393", "Share on WhatsApp")}</a>
       </div>
     </div>
   );
@@ -82,7 +79,7 @@ export function BatchList({
   members: Member[];
   showCreator?: boolean;
   vendorCode?: string;
-}) {
+}) { const _t = useT();
   const router = useRouter();
   const [busyId, setBusyId] = useState<string | null>(null);
   const [openId, setOpenId] = useState<string | null>(null);
@@ -93,11 +90,11 @@ export function BatchList({
     setError(null);
     const res = await setBatchStatus(id, status);
     setBusyId(null);
-    if (!res.success) return setError(res.error ?? "Could not update batch.");
+    if (!res.success) return setError(res.error ?? _t("batches.batchlist.58dfea", "Could not update batch."));
     router.refresh();
   }
 
-  if (batches.length === 0) return <p className="text-sm text-rich/60">No batches yet.</p>;
+  if (batches.length === 0) return <p className="text-sm text-rich/60">{_t("batches.batchlist.81c449", "No batches yet.")}</p>;
 
   return (
     <div className="space-y-3">
@@ -114,49 +111,40 @@ export function BatchList({
                   {b.label ? ` — ${b.label}` : ""}
                 </p>
                 <p className="text-xs text-rich/60">
-                  {b.cycle} · {new Date(b.starts_at).toLocaleDateString()} to {new Date(b.closes_at).toLocaleDateString()} · {formatNaira(b.share)} per customer
-                  {showCreator ? ` · opened by ${b.created_by_role}` : ""}
+                  {_t("batches.batchlist.7a7483", "{cycle} · {v} to {v2} · {v3} per customer{v4}", { cycle: b.cycle, v: new Date(b.starts_at).toLocaleDateString(), v2: new Date(b.closes_at).toLocaleDateString(), v3: formatNaira(b.share), v4: showCreator ? ` · opened by ${b.created_by_role}` : "" })}
                 </p>
               </div>
               <span className={`rounded-full px-3 py-1 text-xs capitalize ${STATUS_STYLE[b.status]}`}>{b.status}</span>
             </div>
             <p className="mt-2 text-sm text-rich/80">
-              {b.members} joined · needs {b.min_members}{b.max_members !== b.min_members ? ` to ${b.max_members}` : ""}{b.members >= b.min_members ? " · ready to deliver" : ` · ${b.min_members - b.members} more needed`}
+              {_t("batches.batchlist.c4259f", "{members} joined · needs {min_members}{v}{v2}", { members: b.members, min_members: b.min_members, v: b.max_members !== b.min_members ? ` to ${b.max_members}` : "", v2: b.members >= b.min_members ? " · ready to deliver" : ` · ${b.min_members - b.members} more needed` })}
             </p>
             <div className="mt-3 flex flex-wrap gap-2 text-xs">
               {b.status === "open" && (
-                <button disabled={busyId === b.id} onClick={() => change(b.id, "closed")} className="rounded-full border border-espresso/20 px-3 py-1 hover:bg-espresso/5">
-                  Close to new customers
-                </button>
+                <button disabled={busyId === b.id} onClick={() => change(b.id, "closed")} className="rounded-full border border-espresso/20 px-3 py-1 hover:bg-espresso/5">{_t("batches.batchlist.7d9008", "Close to new customers")}</button>
               )}
               {b.status === "closed" && (
-                <button disabled={busyId === b.id} onClick={() => change(b.id, "open")} className="rounded-full border border-espresso/20 px-3 py-1 hover:bg-espresso/5">
-                  Reopen
-                </button>
+                <button disabled={busyId === b.id} onClick={() => change(b.id, "open")} className="rounded-full border border-espresso/20 px-3 py-1 hover:bg-espresso/5">{_t("batches.batchlist.61e05d", "Reopen")}</button>
               )}
               {(b.status === "open" || b.status === "closed") && (
                 <>
-                  <button disabled={busyId === b.id} onClick={() => change(b.id, "delivered")} className="rounded-full bg-espresso px-3 py-1 text-cream hover:bg-rich">
-                    Mark delivered
-                  </button>
-                  <button disabled={busyId === b.id} onClick={() => change(b.id, "cancelled")} className="rounded-full border border-red-300 px-3 py-1 text-red-700 hover:bg-red-50">
-                    Cancel
-                  </button>
+                  <button disabled={busyId === b.id} onClick={() => change(b.id, "delivered")} className="rounded-full bg-espresso px-3 py-1 text-cream hover:bg-rich">{_t("batches.batchlist.2a9078", "Mark delivered")}</button>
+                  <button disabled={busyId === b.id} onClick={() => change(b.id, "cancelled")} className="rounded-full border border-red-300 px-3 py-1 text-red-700 hover:bg-red-50">{_t("batches.batchlist.77dfd2", "Cancel")}</button>
                 </>
               )}
               <button onClick={() => setOpenId(openId === b.id ? null : b.id)} className="rounded-full border border-espresso/20 px-3 py-1 hover:bg-espresso/5">
-                {openId === b.id ? "Hide customers" : `View customers (${active.length})`}
+                {openId === b.id ? _t("batches.batchlist.4bc728", "Hide customers") : `View customers (${active.length})`}
               </button>
             </div>
             {vendorCode && b.status === "open" && <PromoteBatch batch={b} vendorCode={vendorCode} />}
             {openId === b.id && (
               <div className="mt-3 divide-y divide-espresso/5 rounded-lg border border-espresso/10 bg-cream/50 text-sm">
-                {list.length === 0 && <p className="p-3 text-rich/60">No paid customers yet.</p>}
+                {list.length === 0 && <p className="p-3 text-rich/60">{_t("batches.batchlist.149781", "No paid customers yet.")}</p>}
                 {list.map((m) => (
                   <div key={m.id} className="p-3">
                     <p className="text-espresso">
                       {m.customer_name} · {m.customer_phone}
-                      {m.batch_switched_at && <span className="ml-2 text-xs text-amber-700">switched to individual delivery</span>}
+                      {m.batch_switched_at && <span className="ml-2 text-xs text-amber-700">{_t("batches.batchlist.96da65", "switched to individual delivery")}</span>}
                     </p>
                     <p className="text-xs text-rich/60">
                       {m.order_number} · {m.delivery_address}

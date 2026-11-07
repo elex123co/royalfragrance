@@ -3,6 +3,7 @@
 import { useRef, useState } from "react";
 import { Download, FileText, MessageCircle, Receipt, X } from "lucide-react";
 import { formatNaira } from "@/lib/utils/currency";
+import { useT } from "@/lib/content/client";
 
 const LOGO_URL =
   "https://res.cloudinary.com/dtchp470a/image/upload/v1788705368/WhatsApp_Image_2026-09-05_at_17.32.39__1_-removebg-preview_1_qaxnfw.png";
@@ -27,7 +28,7 @@ function waDigits(raw: string | null): string {
   return d;
 }
 
-export function CustomerReceiptButton({ data }: { data: ReceiptData }) {
+export function CustomerReceiptButton({ data }: { data: ReceiptData }) { const _t = useT();
   const [open, setOpen] = useState(false);
   const [busy, setBusy] = useState<"image" | "pdf" | "share" | null>(null);
   const ref = useRef<HTMLDivElement>(null);
@@ -98,7 +99,7 @@ export function CustomerReceiptButton({ data }: { data: ReceiptData }) {
       const nav = navigator as Navigator & { canShare?: (d: ShareData) => boolean };
       if (nav.canShare && nav.canShare({ files: [file] })) {
         try {
-          await nav.share({ files: [file], text, title: "Royal Fragrance Receipt" });
+          await nav.share({ files: [file], text, title: _t("vendor.customerreceiptbutton.3a89d8", "Royal Fragrance Receipt") });
           return;
         } catch {
           // user cancelled the share sheet
@@ -126,15 +127,14 @@ export function CustomerReceiptButton({ data }: { data: ReceiptData }) {
         onClick={() => setOpen(true)}
         className="inline-flex items-center gap-1.5 rounded-full border border-espresso/20 px-3 py-1.5 text-xs text-espresso hover:bg-espresso/5"
       >
-        <Receipt size={14} /> Customer Receipt
-      </button>
+        <Receipt size={14} />{" "}{_t("vendor.customerreceiptbutton.6cda3a", "Customer Receipt")}</button>
 
       {open && (
         <div className="fixed inset-0 z-50 flex items-center justify-center bg-black/50 p-4">
           <div className="max-h-[90vh] w-full max-w-sm overflow-y-auto rounded-xl2 bg-white">
             <div className="flex items-center justify-between border-b border-espresso/10 p-4">
-              <p className="font-display text-espresso">Customer Receipt</p>
-              <button onClick={() => setOpen(false)} aria-label="Close">
+              <p className="font-display text-espresso">{_t("vendor.customerreceiptbutton.6cda3a", "Customer Receipt")}</p>
+              <button onClick={() => setOpen(false)} aria-label={_t("vendor.customerreceiptbutton.bbfa77", "Close")}>
                 <X size={20} className="text-rich/50" />
               </button>
             </div>
@@ -143,26 +143,26 @@ export function CustomerReceiptButton({ data }: { data: ReceiptData }) {
             <div ref={ref} style={{ background: "#fff", padding: 24, fontFamily: "sans-serif" }}>
               <div style={{ textAlign: "center", marginBottom: 12 }}>
                 {/* eslint-disable-next-line @next/next/no-img-element */}
-                <img src={LOGO_URL} alt="Royal Fragrance" crossOrigin="anonymous" style={{ height: 48, width: 48, margin: "0 auto" }} />
-                <p style={{ marginTop: 8, fontSize: 16, fontWeight: 700, color: "#1E120C" }}>Royal Fragrance</p>
-                <p style={{ fontSize: 11, color: "#70452F" }}>Purchase Receipt</p>
+                <img src={LOGO_URL} alt={_t("vendor.customerreceiptbutton.c07431", "Royal Fragrance")} crossOrigin="anonymous" style={{ height: 48, width: 48, margin: "0 auto" }} />
+                <p style={{ marginTop: 8, fontSize: 16, fontWeight: 700, color: "#1E120C" }}>{_t("vendor.customerreceiptbutton.c07431", "Royal Fragrance")}</p>
+                <p style={{ fontSize: 11, color: "#70452F" }}>{_t("vendor.customerreceiptbutton.779573", "Purchase Receipt")}</p>
               </div>
 
               <div style={{ borderTop: "1px dashed #ccc", borderBottom: "1px dashed #ccc", padding: "10px 0", margin: "10px 0" }}>
-                <Row label="Receipt No." value={data.saleNumber} />
-                <Row label="Date" value={dateStr} />
-                <Row label="Time" value={timeStr} />
-                {data.customerName && <Row label="Customer" value={data.customerName} />}
-                <Row label="Served by" value={`${data.vendorName} (${data.vendorCode})`} />
-                {data.paymentReference && <Row label="Payment Ref." value={data.paymentReference} />}
+                <Row label={_t("vendor.customerreceiptbutton.5572ed", "Receipt No.")} value={data.saleNumber} />
+                <Row label={_t("vendor.customerreceiptbutton.eb9a4b", "Date")} value={dateStr} />
+                <Row label={_t("vendor.customerreceiptbutton.6c82e6", "Time")} value={timeStr} />
+                {data.customerName && <Row label={_t("vendor.customerreceiptbutton.0e8574", "Customer")} value={data.customerName} />}
+                <Row label={_t("vendor.customerreceiptbutton.e5d6ce", "Served by")} value={`${data.vendorName} (${data.vendorCode})`} />
+                {data.paymentReference && <Row label={_t("vendor.customerreceiptbutton.5b76d0", "Payment Ref.")} value={data.paymentReference} />}
               </div>
 
               <div style={{ margin: "8px 0" }}>
                 <div style={{ display: "flex", fontSize: 10, color: "#70452F", textTransform: "uppercase", paddingBottom: 4, borderBottom: "1px solid #eee" }}>
-                  <span style={{ flex: 1 }}>Description</span>
-                  <span style={{ width: 28, textAlign: "center" }}>Qty</span>
-                  <span style={{ width: 70, textAlign: "right" }}>Price</span>
-                  <span style={{ width: 76, textAlign: "right" }}>Amount</span>
+                  <span style={{ flex: 1 }}>{_t("vendor.customerreceiptbutton.55f8eb", "Description")}</span>
+                  <span style={{ width: 28, textAlign: "center" }}>{_t("vendor.customerreceiptbutton.1e5ff9", "Qty")}</span>
+                  <span style={{ width: 70, textAlign: "right" }}>{_t("vendor.customerreceiptbutton.3e8248", "Price")}</span>
+                  <span style={{ width: 76, textAlign: "right" }}>{_t("vendor.customerreceiptbutton.43dc85", "Amount")}</span>
                 </div>
                 {items.map((it, idx) => (
                   <div key={idx} style={{ display: "flex", fontSize: 11, padding: "5px 0", color: "#1E120C", alignItems: "flex-start" }}>
@@ -179,34 +179,30 @@ export function CustomerReceiptButton({ data }: { data: ReceiptData }) {
 
               <div style={{ borderTop: "1px solid #1E120C", paddingTop: 8, marginTop: 8 }}>
                 <div style={{ display: "flex", justifyContent: "space-between", fontSize: 11, color: "#70452F", marginBottom: 4 }}>
-                  <span>Items purchased</span>
+                  <span>{_t("vendor.customerreceiptbutton.220edb", "Items purchased")}</span>
                   <span>{itemCount}</span>
                 </div>
                 <div style={{ display: "flex", justifyContent: "space-between", fontSize: 14, fontWeight: 700, color: "#1E120C" }}>
-                  <span>Total</span>
+                  <span>{_t("vendor.customerreceiptbutton.b25928", "Total")}</span>
                   <span>{formatNaira(total)}</span>
                 </div>
                 {data.amountPaid !== null && (
                   <div style={{ display: "flex", justifyContent: "space-between", fontSize: 12, color: "#70452F", marginTop: 4 }}>
-                    <span>Amount paid</span>
+                    <span>{_t("vendor.customerreceiptbutton.d39013", "Amount paid")}</span>
                     <span>{formatNaira(data.amountPaid)}</span>
                   </div>
                 )}
               </div>
 
               <div style={{ marginTop: 18, textAlign: "center" }}>
-                <p style={{ fontSize: 12, fontWeight: 600, color: "#1E120C" }}>
-                  Thank you for shopping with Royal Fragrance.
-                </p>
-                <p style={{ marginTop: 2, fontSize: 11, color: "#70452F", fontStyle: "italic" }}>
-                  May God replenish your source.
-                </p>
+                <p style={{ fontSize: 12, fontWeight: 600, color: "#1E120C" }}>{_t("vendor.customerreceiptbutton.7da6b6", "Thank you for shopping with Royal Fragrance.")}</p>
+                <p style={{ marginTop: 2, fontSize: 11, color: "#70452F", fontStyle: "italic" }}>{_t("vendor.customerreceiptbutton.3dce6f", "May God replenish your source.")}</p>
               </div>
 
               <div style={{ marginTop: 14, borderTop: "1px dashed #ccc", paddingTop: 8, textAlign: "center", fontSize: 10, color: "#70452F", lineHeight: 1.6 }}>
-                <p>Phone: 0704 021 8594</p>
-                <p>Email: royalfragrancescent@gmail.com</p>
-                <p style={{ color: "#999" }}>royalfragrancegallery.com</p>
+                <p>{_t("vendor.customerreceiptbutton.c915bd", "Phone: 0704 021 8594")}</p>
+                <p>{_t("vendor.customerreceiptbutton.d802e5", "Email: royalfragrancescent@gmail.com")}</p>
+                <p style={{ color: "#999" }}>{_t("vendor.customerreceiptbutton.28c5ed", "royalfragrancegallery.com")}</p>
               </div>
             </div>
 
@@ -216,7 +212,7 @@ export function CustomerReceiptButton({ data }: { data: ReceiptData }) {
                 disabled={busy !== null}
                 className="flex w-full items-center justify-center gap-2 rounded-full bg-green-600 px-4 py-2.5 text-sm text-white hover:bg-green-700 disabled:opacity-50"
               >
-                <MessageCircle size={16} /> {busy === "share" ? "Preparing…" : "Send to customer on WhatsApp"}
+                <MessageCircle size={16} /> {busy === "share" ? _t("vendor.customerreceiptbutton.0b1d6c", "Preparing…") : _t("vendor.customerreceiptbutton.5e8529", "Send to customer on WhatsApp")}
               </button>
               <div className="flex gap-2">
                 <button
@@ -224,14 +220,14 @@ export function CustomerReceiptButton({ data }: { data: ReceiptData }) {
                   disabled={busy !== null}
                   className="flex flex-1 items-center justify-center gap-2 rounded-full border border-espresso/20 px-4 py-2.5 text-sm text-espresso hover:bg-espresso/5 disabled:opacity-50"
                 >
-                  <Download size={16} /> {busy === "image" ? "Saving…" : "Image"}
+                  <Download size={16} /> {busy === "image" ? _t("vendor.customerreceiptbutton.56a228", "Saving…") : _t("vendor.customerreceiptbutton.50e19f", "Image")}
                 </button>
                 <button
                   onClick={downloadPdf}
                   disabled={busy !== null}
                   className="flex flex-1 items-center justify-center gap-2 rounded-full bg-espresso px-4 py-2.5 text-sm text-cream hover:bg-rich disabled:opacity-50"
                 >
-                  <FileText size={16} /> {busy === "pdf" ? "Saving…" : "PDF"}
+                  <FileText size={16} /> {busy === "pdf" ? _t("vendor.customerreceiptbutton.56a228", "Saving…") : _t("vendor.customerreceiptbutton.d613d8", "PDF")}
                 </button>
               </div>
             </div>

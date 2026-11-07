@@ -5,10 +5,15 @@ import { createClient } from "@/lib/supabase/server";
 import { getWishlist } from "@/lib/data/account";
 import { formatNaira } from "@/lib/utils/currency";
 import { RemoveWishlistButton } from "@/components/account/RemoveWishlistButton";
+import { getT } from "@/lib/content/server";
 
-export const metadata = { title: "My Scent Wishlist — Royal Fragrance" };
+export async function generateMetadata() {
+  const _t = await getT();
+  return { title: _t("meta.account.wishlist.title", "My Scent Wishlist — Royal Fragrance") 
+  };
+}
 
-export default async function WishlistPage() {
+export default async function WishlistPage() { const _t = await getT();
   const supabase = createClient();
   const {
     data: { user },
@@ -19,21 +24,12 @@ export default async function WishlistPage() {
 
   return (
     <div>
-      <h1 className="mb-1 font-display text-2xl text-espresso">
-        My Scent Wishlist
-      </h1>
-      <p className="mb-6 text-sm text-rich/60">
-        Fragrances you&rsquo;re thinking about.
-      </p>
+      <h1 className="mb-1 font-display text-2xl text-espresso">{_t("account.wishlist.60df60", "My Scent Wishlist")}</h1>
+      <p className="mb-6 text-sm text-rich/60">{_t("account.wishlist.cb05ba", "Fragrances you’re thinking about.")}</p>
 
       {wishlist.length === 0 ? (
-        <p className="text-sm text-rich/50">
-          Nothing saved yet.{" "}
-          <Link href="/shop" className="text-caramel underline">
-            Browse fragrances
-          </Link>{" "}
-          and tap the heart on anything you love.
-        </p>
+        <p className="text-sm text-rich/50">{_t("account.wishlist.554e6e", "Nothing saved yet.")}{" "}
+          <Link href="/shop" className="text-caramel underline">{_t("account.wishlist.5424f5", "Browse fragrances")}</Link>{" "}{_t("account.wishlist.1dfd9d", "and tap the heart on anything you love.")}</p>
       ) : (
         <div className="grid grid-cols-2 gap-5 sm:grid-cols-3 lg:grid-cols-4">
           {wishlist.map((w: any) => {
@@ -50,7 +46,7 @@ export default async function WishlistPage() {
                   <div className="relative aspect-square overflow-hidden rounded-xl bg-brand-100">
                     <BrandImage
                       src={product?.product_images?.[0]?.url}
-                      alt={product?.name ?? "Fragrance"}
+                      alt={product?.name ?? _t("account.wishlist.ebf862", "Fragrance")}
                       className="object-cover"
                     />
                   </div>
@@ -60,7 +56,7 @@ export default async function WishlistPage() {
                   <div className="flex items-center justify-between">
                     <p className="text-xs text-rich/60">{formatNaira(price)}</p>
                     {product?.status === "out_of_stock" && (
-                      <span className="text-xs text-red-600">Out of Stock</span>
+                      <span className="text-xs text-red-600">{_t("account.wishlist.bc67a8", "Out of Stock")}</span>
                     )}
                   </div>
                 </Link>

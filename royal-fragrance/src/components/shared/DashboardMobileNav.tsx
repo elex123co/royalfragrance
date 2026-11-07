@@ -5,6 +5,7 @@ import Link from "next/link";
 import { usePathname } from "next/navigation";
 import { MoreHorizontal, X } from "lucide-react";
 import { LogoutButton } from "@/components/account/LogoutButton";
+import { useT } from "@/lib/content/client";
 
 export interface NavLink {
   href: string;
@@ -26,7 +27,7 @@ export function DashboardMobileNav({
   primaryTabs: NavLink[];
   moreLinks: NavLink[];
   moreLabel?: string;
-}) {
+}) { const _t = useT();
   const pathname = usePathname();
   const [moreOpen, setMoreOpen] = useState(false);
 
@@ -46,7 +47,7 @@ export function DashboardMobileNav({
           >
             <div className="mb-4 flex items-center justify-between">
               <p className="font-display text-lg text-espresso">{moreLabel}</p>
-              <button onClick={() => setMoreOpen(false)} aria-label="Close">
+              <button onClick={() => setMoreOpen(false)} aria-label={_t("shared.dashboardmobilenav.bbfa77", "Close")}>
                 <X size={20} className="text-espresso" />
               </button>
             </div>
@@ -105,9 +106,7 @@ export function DashboardMobileNav({
               isMoreActive ? "text-caramel" : "text-espresso/60"
             }`}
           >
-            <MoreHorizontal size={20} />
-            More
-            {moreBadge > 0 && (
+            <MoreHorizontal size={20} />{_t("shared.dashboardmobilenav.4bab2d", "More")}{moreBadge > 0 && (
               <span className="absolute right-5 top-1 flex h-4 w-4 items-center justify-center rounded-full bg-caramel text-[9px] text-espresso">
                 {moreBadge}
               </span>

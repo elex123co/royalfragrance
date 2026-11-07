@@ -1,5 +1,6 @@
 import { notFound } from "next/navigation";
 import { createAdminClient } from "@/lib/supabase/server";
+import { getT } from "@/lib/content/server";
 
 export default async function NewsletterReadPage({
   params,
@@ -7,7 +8,7 @@ export default async function NewsletterReadPage({
 }: {
   params: { id: string };
   searchParams: { voted?: string };
-}) {
+}) { const _t = await getT();
   const supabase = createAdminClient();
   const { data: newsletter } = await supabase
     .from("newsletters")
@@ -22,14 +23,10 @@ export default async function NewsletterReadPage({
     <section className="bg-cream py-16">
       <div className="mx-auto max-w-2xl px-5 lg:px-8">
         {searchParams.voted && searchParams.voted !== "error" && (
-          <div className="mb-6 rounded-xl2 bg-caramel/15 px-5 py-3 text-sm text-espresso">
-            Thanks for voting — your choice ({searchParams.voted}) has been counted. 👑
-          </div>
+          <div className="mb-6 rounded-xl2 bg-caramel/15 px-5 py-3 text-sm text-espresso">{_t("newsletter.id.3109a9", "Thanks for voting — your choice ({voted}) has been counted. 👑", { voted: searchParams.voted })}</div>
         )}
 
-        <span className="text-xs uppercase tracking-[0.2em] text-caramel">
-          Royal Fragrance
-        </span>
+        <span className="text-xs uppercase tracking-[0.2em] text-caramel">{_t("newsletter.id.c07431", "Royal Fragrance")}</span>
         <h1 className="mt-2 font-display text-3xl text-espresso">{newsletter.title}</h1>
 
         <div
@@ -42,18 +39,11 @@ export default async function NewsletterReadPage({
             <p className="mb-3 font-medium text-espresso">
               {newsletter.interactive_question}
             </p>
-            <p className="text-sm text-rich/60">
-              Vote from the email you received — this page shows the story, but votes
-              are tallied from your subscriber email link.
-            </p>
+            <p className="text-sm text-rich/60">{_t("newsletter.id.9a312d", "Vote from the email you received — this page shows the story, but votes are tallied from your subscriber email link.")}</p>
           </div>
         )}
 
-        <p className="mt-10 text-sm text-rich/60">
-          Until next time,
-          <br />
-          Queen 👑
-        </p>
+        <p className="mt-10 text-sm text-rich/60">{_t("newsletter.id.bb9644", "Until next time,")}<br />{_t("newsletter.id.d51246", "Queen 👑")}</p>
       </div>
     </section>
   );

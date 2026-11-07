@@ -5,9 +5,13 @@ import { BatchList } from "@/components/batches/BatchList";
 import { getT } from "@/lib/content/server";
 
 export const dynamic = "force-dynamic";
-export const metadata = { title: "Batch Delivery — Vendor — Royal Fragrance" };
+export async function generateMetadata() {
+  const _t = await getT();
+  return { title: _t("meta.vendor.batches.title", "Batch Delivery — Vendor — Royal Fragrance") 
+  };
+}
 
-export default async function VendorBatchesPage() {
+export default async function VendorBatchesPage() { const _t = await getT();
   const t = await getT();
   const vendor = await getCurrentVendor();
   const [allLocations, batches] = await Promise.all([
@@ -31,15 +35,12 @@ export default async function VendorBatchesPage() {
         </p>
       ) : (
         <>
-          <p className="text-sm text-rich/70">
-            Your location: <strong>{locations[0].name}</strong>. Customers who order through your link can join your
-            batches.
-          </p>
+          <p className="text-sm text-rich/70">{_t("vendor.batches.9cf8c0", "Your location:")}{" "}<strong>{locations[0].name}</strong>{_t("vendor.batches.5678c5", ". Customers who order through your link can join your batches.")}</p>
           <CreateBatchForm locations={locations} />
         </>
       )}
       <div>
-        <h2 className="mb-3 font-display text-lg text-espresso">Your batches</h2>
+        <h2 className="mb-3 font-display text-lg text-espresso">{_t("vendor.batches.d92da1", "Your batches")}</h2>
         <BatchList batches={batches} members={members as any} vendorCode={vendor!.vendor_code} />
       </div>
     </div>

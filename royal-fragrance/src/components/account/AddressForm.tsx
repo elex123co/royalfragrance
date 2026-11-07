@@ -4,8 +4,9 @@ import { useState } from "react";
 import { useRouter } from "next/navigation";
 import { Button } from "@/components/ui/Button";
 import { saveAddress } from "@/lib/actions/customer";
+import { useT } from "@/lib/content/client";
 
-export function AddressForm() {
+export function AddressForm() { const _t = useT();
   const router = useRouter();
   const [open, setOpen] = useState(false);
   const [form, setForm] = useState({
@@ -29,9 +30,7 @@ export function AddressForm() {
 
   if (!open) {
     return (
-      <Button variant="outline" className="border-espresso/20 text-espresso" onClick={() => setOpen(true)}>
-        + Add New Address
-      </Button>
+      <Button variant="outline" className="border-espresso/20 text-espresso" onClick={() => setOpen(true)}>{_t("account.addressform.2b9f8b", "+ Add New Address")}</Button>
     );
   }
 
@@ -41,7 +40,7 @@ export function AddressForm() {
       className="space-y-3 rounded-xl2 border border-espresso/10 bg-white/60 p-5"
     >
       <input
-        placeholder="Label (e.g. Home, Office)"
+        placeholder={_t("account.addressform.903195", "Label (e.g. Home, Office)")}
         required
         value={form.label}
         onChange={(e) => setForm((f) => ({ ...f, label: e.target.value }))}
@@ -49,14 +48,14 @@ export function AddressForm() {
       />
       <div className="grid grid-cols-2 gap-3">
         <input
-          placeholder="State"
+          placeholder={_t("account.addressform.a72502", "State")}
           required
           value={form.state}
           onChange={(e) => setForm((f) => ({ ...f, state: e.target.value }))}
           className="rounded-lg border border-espresso/15 px-3 py-2 text-sm"
         />
         <input
-          placeholder="City"
+          placeholder={_t("account.addressform.427162", "City")}
           required
           value={form.city}
           onChange={(e) => setForm((f) => ({ ...f, city: e.target.value }))}
@@ -64,7 +63,7 @@ export function AddressForm() {
         />
       </div>
       <textarea
-        placeholder="Full address"
+        placeholder={_t("account.addressform.9f8ce1", "Full address")}
         required
         rows={2}
         value={form.address}
@@ -76,9 +75,7 @@ export function AddressForm() {
           type="checkbox"
           checked={form.isDefault}
           onChange={(e) => setForm((f) => ({ ...f, isDefault: e.target.checked }))}
-        />
-        Set as default address
-      </label>
+        />{_t("account.addressform.b62ebb", "Set as default address")}</label>
 
       <div className="flex gap-3">
         <Button
@@ -86,11 +83,9 @@ export function AddressForm() {
           variant="outline"
           className="border-espresso/20 text-espresso"
           onClick={() => setOpen(false)}
-        >
-          Cancel
-        </Button>
+        >{_t("account.addressform.77dfd2", "Cancel")}</Button>
         <Button type="submit" disabled={submitting}>
-          {submitting ? "Saving…" : "Save Address"}
+          {submitting ? _t("account.addressform.56a228", "Saving…") : _t("account.addressform.4aa8d2", "Save Address")}
         </Button>
       </div>
     </form>

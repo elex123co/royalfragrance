@@ -13,14 +13,28 @@ export interface ContentField {
   note?: string;
 }
 
+import autoRegistry from "./auto-registry.json";
+
 export const CONTENT_GROUPS = [
+  "Menu and navigation",
   "Home page",
   "Our Story page",
   "Future page",
   "Become a Vendor page",
   "Shop page",
-  "Footer",
+  "Products and shop",
+  "Cart",
+  "Checkout and order confirmation",
+  "Login and registration",
+  "Customer account",
   "Vendor space",
+  "Vendor store pages",
+  "Shopping assistant",
+  "App install prompt",
+  "Footer",
+  "Page titles and descriptions (browser tab and Google)",
+  "Home, Our Story and Future pages",
+  "Other pages",
 ] as const;
 
 const F: ContentField[] = [];
@@ -403,6 +417,31 @@ add(V, "Collection Account page", [
     true,
   ],
 ]);
+
+// Wording found automatically in the page and component files.
+interface AutoEntry {
+  key: string;
+  group: string;
+  section: string;
+  def: string;
+  vars?: string[];
+  file?: string;
+}
+const curatedKeys = new Set(F.map((f) => f.key));
+const sectionName = (s: string) =>
+  s.replace(/([a-z])([A-Z])/g, "$1 $2").replace(/[-_.]/g, " ").replace(/^./, (c) => c.toUpperCase());
+for (const a of autoRegistry as AutoEntry[]) {
+  if (curatedKeys.has(a.key)) continue;
+  F.push({
+    key: a.key,
+    group: a.group,
+    section: sectionName(a.section),
+    label: a.def.length > 60 ? a.def.slice(0, 57) + "..." : a.def,
+    def: a.def,
+    multiline: a.def.length > 70,
+    note: a.vars && a.vars.length > 0 ? `Keep ${a.vars.map((v) => `{${v}}`).join(" ")} as it is: the site fills it in.` : undefined,
+  });
+}
 
 export const CONTENT_FIELDS: ContentField[] = F;
 export const CONTENT_DEFAULTS: Record<string, string> = Object.fromEntries(F.map((f) => [f.key, f.def]));

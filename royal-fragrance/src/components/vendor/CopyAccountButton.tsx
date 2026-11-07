@@ -2,6 +2,7 @@
 
 import { useState } from "react";
 import { Copy, Share2 } from "lucide-react";
+import { useT } from "@/lib/content/client";
 
 export function CopyAccountButton({
   accountNumber,
@@ -11,7 +12,7 @@ export function CopyAccountButton({
   accountNumber: string;
   bankName: string;
   accountName: string;
-}) {
+}) { const _t = useT();
   const [copied, setCopied] = useState(false);
 
   function handleCopy() {
@@ -37,14 +38,13 @@ export function CopyAccountButton({
         onClick={handleCopy}
         className="flex flex-1 items-center justify-center gap-2 rounded-full bg-cream/10 px-4 py-2.5 text-sm text-cream backdrop-blur-sm transition hover:bg-cream/20"
       >
-        <Copy size={14} /> {copied ? "Copied!" : "Copy Account Number"}
+        <Copy size={14} /> {copied ? _t("vendor.copyaccountbutton.b7c3ca", "Copied!") : _t("vendor.copyaccountbutton.ed1d59", "Copy Account Number")}
       </button>
       <button
         onClick={handleShare}
         className="flex items-center justify-center gap-2 rounded-full bg-caramel px-4 py-2.5 text-sm text-espresso transition hover:bg-sand"
       >
-        <Share2 size={14} /> Share
-      </button>
+        <Share2 size={14} />{" "}{_t("vendor.copyaccountbutton.09ca55", "Share")}</button>
     </div>
   );
 }

@@ -4,8 +4,9 @@ import { useState } from "react";
 import { createClient } from "@/lib/supabase/client";
 import { Button } from "@/components/ui/Button";
 import { PasswordInput } from "@/components/ui/PasswordInput";
+import { useT } from "@/lib/content/client";
 
-export default function ResetPasswordPage() {
+export default function ResetPasswordPage() { const _t = useT();
   const [password, setPassword] = useState("");
   const [confirmPassword, setConfirmPassword] = useState("");
   const [loading, setLoading] = useState(false);
@@ -17,11 +18,11 @@ export default function ResetPasswordPage() {
     setError(null);
 
     if (password !== confirmPassword) {
-      setError("Passwords don't match.");
+      setError(_t("resetpassword.58e560", "Passwords don't match."));
       return;
     }
     if (password.length < 6) {
-      setError("Password must be at least 6 characters.");
+      setError(_t("resetpassword.31e3a3", "Password must be at least 6 characters."));
       return;
     }
 
@@ -44,18 +45,14 @@ export default function ResetPasswordPage() {
   return (
     <section className="flex min-h-[70vh] items-center justify-center bg-cream px-5 py-16">
       <div className="w-full max-w-md rounded-xl2 border border-espresso/10 bg-white/60 p-8 shadow-premium-sm">
-        <h1 className="font-display text-2xl text-espresso">Set a New Password</h1>
+        <h1 className="font-display text-2xl text-espresso">{_t("resetpassword.a77c46", "Set a New Password")}</h1>
 
         {done ? (
-          <p className="mt-4 text-sm text-rich/70">
-            Password updated — taking you to sign in.
-          </p>
+          <p className="mt-4 text-sm text-rich/70">{_t("resetpassword.695fc4", "Password updated — taking you to sign in.")}</p>
         ) : (
           <form onSubmit={handleSubmit} className="mt-8 space-y-4">
             <div>
-              <label className="mb-1.5 block text-sm font-medium text-espresso">
-                New Password
-              </label>
+              <label className="mb-1.5 block text-sm font-medium text-espresso">{_t("resetpassword.4894cb", "New Password")}</label>
               <PasswordInput
                 required
                 value={password}
@@ -63,9 +60,7 @@ export default function ResetPasswordPage() {
               />
             </div>
             <div>
-              <label className="mb-1.5 block text-sm font-medium text-espresso">
-                Confirm New Password
-              </label>
+              <label className="mb-1.5 block text-sm font-medium text-espresso">{_t("resetpassword.68dcd7", "Confirm New Password")}</label>
               <PasswordInput
                 required
                 value={confirmPassword}
@@ -80,7 +75,7 @@ export default function ResetPasswordPage() {
             )}
 
             <Button type="submit" className="w-full" disabled={loading}>
-              {loading ? "Saving…" : "Set New Password"}
+              {loading ? _t("resetpassword.56a228", "Saving…") : _t("resetpassword.208bb0", "Set New Password")}
             </Button>
           </form>
         )}

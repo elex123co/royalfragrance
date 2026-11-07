@@ -19,6 +19,7 @@ import {
   STUDENT_FOLLOWUPS,
   type QuestionDef,
 } from "@/lib/vendor-application-fields";
+import { useT } from "@/lib/content/client";
 
 const inputClass =
   "w-full rounded-lg border border-espresso/15 px-4 py-2.5 text-sm focus:border-caramel focus:outline-none";
@@ -29,7 +30,7 @@ export function VendorApplicationForm({
 }: {
   initialEmail?: string;
   whatsappLink?: string;
-} = {}) {
+} = {}) { const _t = useT();
   const router = useRouter();
   const [email, setEmail] = useState(initialEmail ?? "");
   const [password, setPassword] = useState("");
@@ -49,19 +50,19 @@ export function VendorApplicationForm({
     setError(null);
 
     if (!bvn.trim() && !nin.trim()) {
-      setError("BVN or NIN is compulsory. Please provide at least one.");
+      setError(_t("vendor.vendorapplicationform.e9e2e9", "BVN or NIN is compulsory. Please provide at least one."));
       return;
     }
     if (bvn.trim() && !/^\d{11}$/.test(bvn.trim())) {
-      setError("BVN must be exactly 11 digits.");
+      setError(_t("vendor.vendorapplicationform.dec5fb", "BVN must be exactly 11 digits."));
       return;
     }
     if (nin.trim() && !/^\d{11}$/.test(nin.trim())) {
-      setError("NIN must be exactly 11 digits.");
+      setError(_t("vendor.vendorapplicationform.1dfb21", "NIN must be exactly 11 digits."));
       return;
     }
     if (!studentStatus) {
-      setError("Please choose an option for STUDENT OR NOT.");
+      setError(_t("vendor.vendorapplicationform.ea66d7", "Please choose an option for STUDENT OR NOT."));
       return;
     }
 
@@ -78,7 +79,7 @@ export function VendorApplicationForm({
 
     if (!result.success) {
       setStatus("error");
-      setError(result.error ?? "Something went wrong. Please try again.");
+      setError(result.error ?? _t("vendor.vendorapplicationform.9a3ea0", "Something went wrong. Please try again."));
       return;
     }
 
@@ -89,34 +90,24 @@ export function VendorApplicationForm({
   if (status === "success") {
     return (
       <div className="rounded-xl2 border border-espresso/10 bg-white/60 p-8 text-center shadow-premium-sm">
-        <h3 className="font-display text-xl text-espresso">Application Submitted</h3>
-        <p className="mt-2 text-sm text-rich/70">
-          We&rsquo;ll review your application and notify you once approved. Your
-          dashboard stays locked until then.
-        </p>
+        <h3 className="font-display text-xl text-espresso">{_t("vendor.vendorapplicationform.0a39ef", "Application Submitted")}</h3>
+        <p className="mt-2 text-sm text-rich/70">{_t("vendor.vendorapplicationform.c5bb5a", "We’ll review your application and notify you once approved. Your dashboard stays locked until then.")}</p>
         {whatsappLink && (
           <>
-            <p className="mt-5 text-sm text-espresso">
-              Just finished the form? Message the Royal Fragrance team on
-              WhatsApp to let us know, or to ask any question.
-            </p>
+            <p className="mt-5 text-sm text-espresso">{_t("vendor.vendorapplicationform.39ebfa", "Just finished the form? Message the Royal Fragrance team on WhatsApp to let us know, or to ask any question.")}</p>
             <a
               href={whatsappLink}
               target="_blank"
               rel="noopener noreferrer"
               className="mt-3 inline-flex items-center justify-center gap-2 rounded-full bg-green-600 px-6 py-3 text-sm text-white hover:bg-green-700"
             >
-              <MessageCircle size={18} />
-              Message us on WhatsApp
-            </a>
+              <MessageCircle size={18} />{_t("vendor.vendorapplicationform.a9993c", "Message us on WhatsApp")}</a>
           </>
         )}
         <button
           onClick={() => router.push("/login")}
           className="mt-4 block w-full text-sm text-rich/60 underline"
-        >
-          Go to sign in
-        </button>
+        >{_t("vendor.vendorapplicationform.726b0f", "Go to sign in")}</button>
       </div>
     );
   }
@@ -134,19 +125,19 @@ export function VendorApplicationForm({
       ))}
 
       <div>
-        <Label text="Email" required />
+        <Label text={_t("vendor.vendorapplicationform.84add5", "Email")} required />
         <input
           type="email"
           required
           value={email}
           onChange={(e) => setEmail(e.target.value)}
-          placeholder="Your email"
+          placeholder={_t("vendor.vendorapplicationform.3fa6f5", "Your email")}
           className={inputClass}
         />
       </div>
 
       <div>
-        <Label text="Create a password for your vendor account" required />
+        <Label text={_t("vendor.vendorapplicationform.0e194d", "Create a password for your vendor account")} required />
         <PasswordInput required value={password} onChange={(e) => setPassword(e.target.value)} />
       </div>
 
@@ -173,7 +164,7 @@ export function VendorApplicationForm({
                 checked={studentStatus === opt}
                 onChange={() => setStudentStatus(opt)}
               />
-              {opt === "Other" ? "Other:" : opt}
+              {opt === "Other" ? _t("vendor.vendorapplicationform.ae8a3b", "Other:") : opt}
               {opt === "Other" && studentStatus === "Other" && (
                 <input
                   required
@@ -191,16 +182,13 @@ export function VendorApplicationForm({
       ))}
 
       <div className="border-t border-espresso/10 pt-4">
-        <Label text="BVN or NIN" required />
-        <p className="mb-2 text-xs text-rich/60">
-          Compulsory. Provide your 11-digit BVN or NIN (at least one). It is used
-          to open your personal collection account for customer payments.
-        </p>
+        <Label text={_t("vendor.vendorapplicationform.add0b6", "BVN or NIN")} required />
+        <p className="mb-2 text-xs text-rich/60">{_t("vendor.vendorapplicationform.ed65fd", "Compulsory. Provide your 11-digit BVN or NIN (at least one). It is used to open your personal collection account for customer payments.")}</p>
         <div className="grid grid-cols-2 gap-3">
           <input
             value={bvn}
             onChange={(e) => setBvn(e.target.value.replace(/\D/g, ""))}
-            placeholder="BVN"
+            placeholder={_t("vendor.vendorapplicationform.c3caff", "BVN")}
             inputMode="numeric"
             maxLength={11}
             className={inputClass}
@@ -208,7 +196,7 @@ export function VendorApplicationForm({
           <input
             value={nin}
             onChange={(e) => setNin(e.target.value.replace(/\D/g, ""))}
-            placeholder="NIN"
+            placeholder={_t("vendor.vendorapplicationform.4b9496", "NIN")}
             inputMode="numeric"
             maxLength={11}
             className={inputClass}
@@ -219,7 +207,7 @@ export function VendorApplicationForm({
       {error && <p className="rounded-lg bg-red-50 px-4 py-2 text-sm text-red-700">{error}</p>}
 
       <Button type="submit" className="w-full" disabled={status === "loading"}>
-        {status === "loading" ? "Submitting…" : "Submit Application"}
+        {status === "loading" ? _t("vendor.vendorapplicationform.25bdf9", "Submitting…") : _t("vendor.vendorapplicationform.f32663", "Submit Application")}
       </Button>
 
       {whatsappLink && (
@@ -229,9 +217,7 @@ export function VendorApplicationForm({
           rel="noopener noreferrer"
           className="flex items-center justify-center gap-2 rounded-full border border-espresso/20 px-4 py-2.5 text-sm text-espresso hover:bg-espresso/5"
         >
-          <MessageCircle size={16} />
-          Have questions? Chat with our brand on WhatsApp
-        </a>
+          <MessageCircle size={16} />{_t("vendor.vendorapplicationform.318599", "Have questions? Chat with our brand on WhatsApp")}</a>
       )}
     </form>
   );
@@ -254,7 +240,7 @@ function QuestionField({
   q: QuestionDef;
   value: string;
   onChange: (v: string) => void;
-}) {
+}) { const _t = useT();
   return (
     <div>
       <Label text={q.label} required={q.required} />
@@ -263,7 +249,7 @@ function QuestionField({
         required={q.required}
         value={value}
         onChange={(e) => onChange(e.target.value)}
-        placeholder="Your answer"
+        placeholder={_t("vendor.vendorapplicationform.3ae5ff", "Your answer")}
         className={inputClass}
       />
     </div>

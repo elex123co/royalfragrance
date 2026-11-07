@@ -8,6 +8,7 @@ import { WishlistToggle } from "@/components/shop/WishlistToggle";
 import { createClient } from "@/lib/supabase/server";
 import { isWishlisted } from "@/lib/data/account";
 import { MessageCircle } from "lucide-react";
+import { getT } from "@/lib/content/server";
 
 const SITE_URL = "https://royalfragrancegallery.com";
 
@@ -53,7 +54,7 @@ export default async function ProductPage({
   params,
 }: {
   params: { slug: string };
-}) {
+}) { const _t = await getT();
   const product = await getProductBySlug(params.slug);
   if (!product) notFound();
 
@@ -134,7 +135,7 @@ export default async function ProductPage({
               <div className="mt-6 grid grid-cols-3 gap-4 rounded-xl2 border border-espresso/10 bg-white/50 p-5 text-sm">
                 {product.notes.top && (
                   <div>
-                    <p className="font-display text-espresso">Top</p>
+                    <p className="font-display text-espresso">{_t("product.slug.cae043", "Top")}</p>
                     <p className="mt-1 text-rich/70">
                       {product.notes.top.join(", ")}
                     </p>
@@ -142,7 +143,7 @@ export default async function ProductPage({
                 )}
                 {product.notes.heart && (
                   <div>
-                    <p className="font-display text-espresso">Heart</p>
+                    <p className="font-display text-espresso">{_t("product.slug.2a3733", "Heart")}</p>
                     <p className="mt-1 text-rich/70">
                       {product.notes.heart.join(", ")}
                     </p>
@@ -150,7 +151,7 @@ export default async function ProductPage({
                 )}
                 {product.notes.base && (
                   <div>
-                    <p className="font-display text-espresso">Base</p>
+                    <p className="font-display text-espresso">{_t("product.slug.077fe9", "Base")}</p>
                     <p className="mt-1 text-rich/70">
                       {product.notes.base.join(", ")}
                     </p>
@@ -181,7 +182,7 @@ export default async function ProductPage({
                     target="_blank"
                     rel="noopener noreferrer"
                     className="flex h-11 w-11 items-center justify-center rounded-full border border-espresso/20 text-espresso transition hover:border-espresso"
-                    aria-label="Chat on WhatsApp"
+                    aria-label={_t("product.slug.8eb8a8", "Chat on WhatsApp")}
                   >
                     <MessageCircle size={18} />
                   </a>
@@ -193,9 +194,7 @@ export default async function ProductPage({
 
         {related.length > 0 && (
           <div className="mt-24">
-            <h2 className="mb-8 font-display text-2xl text-espresso">
-              You May Also Like
-            </h2>
+            <h2 className="mb-8 font-display text-2xl text-espresso">{_t("product.slug.97b386", "You May Also Like")}</h2>
             <div className="grid grid-cols-2 gap-5 sm:gap-6 lg:grid-cols-4">
               {related.map((p) => (
                 <ProductCard

@@ -4,9 +4,13 @@ import { createAdminClient } from "@/lib/supabase/server";
 import { formatNaira } from "@/lib/utils/currency";
 import { getT, type TFn } from "@/lib/content/server";
 
-export const metadata = { title: "Vendor Overview — Royal Fragrance" };
+export async function generateMetadata() {
+  const _t = await getT();
+  return { title: _t("meta.vendor.title", "Vendor Overview — Royal Fragrance") 
+  };
+}
 
-export default async function VendorOverviewPage() {
+export default async function VendorOverviewPage() { const _t = await getT();
   const t = await getT();
   const vendor = await getCurrentVendor();
 
@@ -123,10 +127,7 @@ export default async function VendorOverviewPage() {
 
       {data.unrecordedTransactions.length > 0 && (
         <div className="mt-8 rounded-xl2 border border-caramel/30 bg-caramel/10 p-5">
-          <p className="text-sm text-espresso">
-            You have {data.unrecordedTransactions.length} confirmed payment
-            {data.unrecordedTransactions.length > 1 ? "s" : ""} waiting to be
-            matched to a sale.{" "}
+          <p className="text-sm text-espresso">{_t("vendor.1037e4", "You have {length} confirmed payment{v} waiting to be matched to a sale.", { length: data.unrecordedTransactions.length, v: data.unrecordedTransactions.length > 1 ? "s" : "" })}{" "}
             <a href="/vendor/transactions" className="underline">
               {t("vendor.home.record")}
             </a>
@@ -145,7 +146,7 @@ async function AffiliateOverview({
   vendorId: string;
   businessName: string;
   t: TFn;
-}) {
+}) { const _t = await getT();
   const supabase = createAdminClient();
 
   const [{ data: commissions }, { data: referredOrders }] = await Promise.all([
@@ -160,8 +161,8 @@ async function AffiliateOverview({
   const paidOrders = (referredOrders ?? []).filter((o) => o.payment_status === "paid").length;
 
   const cards = [
-    { label: "Total Earnings", value: formatNaira(totalEarnings) },
-    { label: "Referred Orders", value: paidOrders },
+    { label: _t("vendor.6139a8", "Total Earnings"), value: formatNaira(totalEarnings) },
+    { label: _t("vendor.baba4a", "Referred Orders"), value: paidOrders },
   ];
 
   return (

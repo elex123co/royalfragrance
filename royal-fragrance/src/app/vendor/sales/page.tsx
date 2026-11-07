@@ -2,8 +2,13 @@ import { getCurrentVendor, getVendorDashboardData } from "@/lib/data/vendor";
 import { formatNaira } from "@/lib/utils/currency";
 import { CustomerReceiptButton } from "@/components/vendor/CustomerReceiptButton";
 import { HandoverButton } from "@/components/vendor/HandoverButton";
+import { getT } from "@/lib/content/server";
 
-export const metadata = { title: "Sales — Vendor — Royal Fragrance" };
+export async function generateMetadata() {
+  const _t = await getT();
+  return { title: _t("meta.vendor.sales.title", "Sales — Vendor — Royal Fragrance") 
+  };
+}
 
 const STATUS_STYLE: Record<string, string> = {
   amount_matches: "bg-green-100 text-green-700",
@@ -12,17 +17,17 @@ const STATUS_STYLE: Record<string, string> = {
   requires_review: "bg-red-100 text-red-700",
 };
 
-export default async function VendorSalesPage() {
+export default async function VendorSalesPage() { const _t = await getT();
   const vendor = await getCurrentVendor();
   const { sales } = await getVendorDashboardData(vendor!.user_id);
 
   return (
     <div>
-      <h1 className="mb-6 font-display text-2xl text-espresso">Sales</h1>
+      <h1 className="mb-6 font-display text-2xl text-espresso">{_t("vendor.sales.d0edfb", "Sales")}</h1>
 
       <div className="space-y-3">
         {sales.length === 0 && (
-          <p className="text-sm text-rich/50">No sales recorded yet.</p>
+          <p className="text-sm text-rich/50">{_t("vendor.sales.803088", "No sales recorded yet.")}</p>
         )}
         {sales.map((sale: any) => {
           // Older records saved before prices were required may hold 0;
@@ -72,8 +77,7 @@ export default async function VendorSalesPage() {
               </div>
 
               <div className="mt-3 flex flex-wrap items-center justify-between gap-2">
-                <span className="text-xs capitalize text-rich/50">
-                  Delivery: {sale.fulfillment_status === "pending_handover" ? "waiting to be delivered to customer" : sale.fulfillment_status === "handed_over" ? "delivered to customer" : sale.fulfillment_status.replaceAll("_", " ")}
+                <span className="text-xs capitalize text-rich/50">{_t("vendor.sales.b046ab", "Delivery: {v}", { v: sale.fulfillment_status === "pending_handover" ? "waiting to be delivered to customer" : sale.fulfillment_status === "handed_over" ? "delivered to customer" : sale.fulfillment_status.replaceAll("_", " ") })}
                 </span>
                 <div className="flex items-center gap-2">
                   <CustomerReceiptButton

@@ -1,7 +1,8 @@
 import { Clock, MessageCircle } from "lucide-react";
 import { LogoutButton } from "@/components/account/LogoutButton";
+import { getT } from "@/lib/content/server";
 
-export function PendingApprovalScreen({
+export async function PendingApprovalScreen({
   name,
   status,
   whatsappLink,
@@ -9,7 +10,7 @@ export function PendingApprovalScreen({
   name: string;
   status: string;
   whatsappLink: string;
-}) {
+}) { const _t = await getT();
   const suspended = status === "suspended" || status === "inactive";
   return (
     <section className="flex min-h-[70vh] items-center justify-center bg-cream px-5 py-16">
@@ -18,7 +19,7 @@ export function PendingApprovalScreen({
           <Clock size={26} />
         </div>
         <h1 className="mt-5 font-display text-2xl text-espresso">
-          {suspended ? "Account Not Active" : "Application Under Review"}
+          {suspended ? _t("vendor.pendingapprovalscreen.9c4e51", "Account Not Active") : _t("vendor.pendingapprovalscreen.8a07e6", "Application Under Review")}
         </h1>
         <p className="mt-3 text-sm text-rich/70">
           {suspended
@@ -31,9 +32,7 @@ export function PendingApprovalScreen({
           rel="noopener noreferrer"
           className="mt-6 inline-flex items-center justify-center gap-2 rounded-full bg-espresso px-6 py-3 text-sm text-cream hover:bg-rich"
         >
-          <MessageCircle size={16} />
-          Chat with us on WhatsApp
-        </a>
+          <MessageCircle size={16} />{_t("vendor.pendingapprovalscreen.e32187", "Chat with us on WhatsApp")}</a>
         <div className="mt-5 flex justify-center">
           <LogoutButton />
         </div>

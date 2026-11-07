@@ -4,7 +4,11 @@ import { LinkGenerator } from "@/components/vendor/LinkGenerator";
 import { getT } from "@/lib/content/server";
 
 export const dynamic = "force-dynamic";
-export const metadata = { title: "My Link — Vendor — Royal Fragrance" };
+export async function generateMetadata() {
+  const _t = await getT();
+  return { title: _t("meta.vendor.links.title", "My Link — Vendor — Royal Fragrance") 
+  };
+}
 
 export default async function VendorLinkPage() {
   const t = await getT();

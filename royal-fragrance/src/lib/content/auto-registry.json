@@ -1,0 +1,5274 @@
+[
+ {
+  "key": "about.6979d6",
+  "group": "Home, Our Story and Future pages",
+  "section": "about page",
+  "def": "Royal Fragrance — curated collection",
+  "vars": [],
+  "file": "src/app/about/page.tsx"
+ },
+ {
+  "key": "account.addresses.b0239f",
+  "group": "Customer account",
+  "section": "addresses page",
+  "def": "My Addresses",
+  "vars": [],
+  "file": "src/app/account/addresses/page.tsx"
+ },
+ {
+  "key": "account.addresses.b3742a",
+  "group": "Customer account",
+  "section": "addresses page",
+  "def": "No saved addresses yet.",
+  "vars": [],
+  "file": "src/app/account/addresses/page.tsx"
+ },
+ {
+  "key": "account.addresses.808d7d",
+  "group": "Customer account",
+  "section": "addresses page",
+  "def": "Default",
+  "vars": [],
+  "file": "src/app/account/addresses/page.tsx"
+ },
+ {
+  "key": "account.collection.e08e18",
+  "group": "Customer account",
+  "section": "collection page",
+  "def": "My Fragrance Collection",
+  "vars": [],
+  "file": "src/app/account/collection/page.tsx"
+ },
+ {
+  "key": "account.collection.9397ed",
+  "group": "Customer account",
+  "section": "collection page",
+  "def": "Every fragrance you have purchased will show up here.",
+  "vars": [],
+  "file": "src/app/account/collection/page.tsx"
+ },
+ {
+  "key": "account.collection.cb0301",
+  "group": "Customer account",
+  "section": "collection page",
+  "def": "Shop the collection",
+  "vars": [],
+  "file": "src/app/account/collection/page.tsx"
+ },
+ {
+  "key": "account.collection.6d4989",
+  "group": "Customer account",
+  "section": "collection page",
+  "def": "to start building yours.",
+  "vars": [],
+  "file": "src/app/account/collection/page.tsx"
+ },
+ {
+  "key": "account.collection.760ef1",
+  "group": "Customer account",
+  "section": "collection page",
+  "def": "Purchased {v}{v2}",
+  "vars": [
+   "v",
+   "v2"
+  ],
+  "file": "src/app/account/collection/page.tsx"
+ },
+ {
+  "key": "account.layout.0efc2e",
+  "group": "Customer account",
+  "section": "account layout",
+  "def": "Overview",
+  "vars": [],
+  "file": "src/app/account/layout.tsx"
+ },
+ {
+  "key": "account.layout.db2821",
+  "group": "Customer account",
+  "section": "account layout",
+  "def": "My Orders",
+  "vars": [],
+  "file": "src/app/account/layout.tsx"
+ },
+ {
+  "key": "account.layout.aa78fd",
+  "group": "Customer account",
+  "section": "account layout",
+  "def": "My Collection",
+  "vars": [],
+  "file": "src/app/account/layout.tsx"
+ },
+ {
+  "key": "account.layout.6ff331",
+  "group": "Customer account",
+  "section": "account layout",
+  "def": "Wishlist",
+  "vars": [],
+  "file": "src/app/account/layout.tsx"
+ },
+ {
+  "key": "account.layout.25543d",
+  "group": "Customer account",
+  "section": "account layout",
+  "def": "Scent Profile",
+  "vars": [],
+  "file": "src/app/account/layout.tsx"
+ },
+ {
+  "key": "account.layout.4ca7b9",
+  "group": "Customer account",
+  "section": "account layout",
+  "def": "Addresses",
+  "vars": [],
+  "file": "src/app/account/layout.tsx"
+ },
+ {
+  "key": "account.layout.753a22",
+  "group": "Customer account",
+  "section": "account layout",
+  "def": "Notifications",
+  "vars": [],
+  "file": "src/app/account/layout.tsx"
+ },
+ {
+  "key": "account.layout.e32707",
+  "group": "Customer account",
+  "section": "account layout",
+  "def": "Account Settings",
+  "vars": [],
+  "file": "src/app/account/layout.tsx"
+ },
+ {
+  "key": "account.layout.699aee",
+  "group": "Customer account",
+  "section": "account layout",
+  "def": "My Royal Experience",
+  "vars": [],
+  "file": "src/app/account/layout.tsx"
+ },
+ {
+  "key": "account.layout.f27d6d",
+  "group": "Customer account",
+  "section": "account layout",
+  "def": "Welcome back, {firstName}",
+  "vars": [
+   "firstName"
+  ],
+  "file": "src/app/account/layout.tsx"
+ },
+ {
+  "key": "account.notifications.753a22",
+  "group": "Customer account",
+  "section": "notifications page",
+  "def": "Notifications",
+  "vars": [],
+  "file": "src/app/account/notifications/page.tsx"
+ },
+ {
+  "key": "account.notifications.82e599",
+  "group": "Customer account",
+  "section": "notifications page",
+  "def": "Nothing yet — check back soon.",
+  "vars": [],
+  "file": "src/app/account/notifications/page.tsx"
+ },
+ {
+  "key": "account.orders.db2821",
+  "group": "Customer account",
+  "section": "orders page",
+  "def": "My Orders",
+  "vars": [],
+  "file": "src/app/account/orders/page.tsx"
+ },
+ {
+  "key": "account.orders.56e89b",
+  "group": "Customer account",
+  "section": "orders page",
+  "def": "You haven’t placed any orders yet.",
+  "vars": [],
+  "file": "src/app/account/orders/page.tsx"
+ },
+ {
+  "key": "account.orders.ebf862",
+  "group": "Customer account",
+  "section": "orders page",
+  "def": "Fragrance",
+  "vars": [],
+  "file": "src/app/account/orders/page.tsx"
+ },
+ {
+  "key": "account.orders.f068d1",
+  "group": "Customer account",
+  "section": "orders page",
+  "def": "Qty {quantity}",
+  "vars": [
+   "quantity"
+  ],
+  "file": "src/app/account/orders/page.tsx"
+ },
+ {
+  "key": "account.c6aeac",
+  "group": "Customer account",
+  "section": "account page",
+  "def": "Active Orders",
+  "vars": [],
+  "file": "src/app/account/page.tsx"
+ },
+ {
+  "key": "account.aa78fd",
+  "group": "Customer account",
+  "section": "account page",
+  "def": "My Collection",
+  "vars": [],
+  "file": "src/app/account/page.tsx"
+ },
+ {
+  "key": "account.6ff331",
+  "group": "Customer account",
+  "section": "account page",
+  "def": "Wishlist",
+  "vars": [],
+  "file": "src/app/account/page.tsx"
+ },
+ {
+  "key": "account.5ace76",
+  "group": "Customer account",
+  "section": "account page",
+  "def": "Your fragrance is on its way 🚚",
+  "vars": [],
+  "file": "src/app/account/page.tsx"
+ },
+ {
+  "key": "account.dbb392",
+  "group": "Customer account",
+  "section": "account page",
+  "def": "Ready to discover your next signature scent?",
+  "vars": [],
+  "file": "src/app/account/page.tsx"
+ },
+ {
+  "key": "account.49137d",
+  "group": "Customer account",
+  "section": "account page",
+  "def": "Complete your Scent Profile so we can recommend fragrances you'll actually love.",
+  "vars": [],
+  "file": "src/app/account/page.tsx"
+ },
+ {
+  "key": "account.3c3292",
+  "group": "Customer account",
+  "section": "account page",
+  "def": "Active Order",
+  "vars": [],
+  "file": "src/app/account/page.tsx"
+ },
+ {
+  "key": "account.02c898",
+  "group": "Customer account",
+  "section": "account page",
+  "def": "View All Orders",
+  "vars": [],
+  "file": "src/app/account/page.tsx"
+ },
+ {
+  "key": "account.44c20b",
+  "group": "Customer account",
+  "section": "account page",
+  "def": "Your Fragrance Collection",
+  "vars": [],
+  "file": "src/app/account/page.tsx"
+ },
+ {
+  "key": "account.ef0f44",
+  "group": "Customer account",
+  "section": "account page",
+  "def": "You own {length} fragrance{v}",
+  "vars": [
+   "length",
+   "v"
+  ],
+  "file": "src/app/account/page.tsx"
+ },
+ {
+  "key": "account.8d3e56",
+  "group": "Customer account",
+  "section": "account page",
+  "def": "View Collection",
+  "vars": [],
+  "file": "src/app/account/page.tsx"
+ },
+ {
+  "key": "account.acf7f6",
+  "group": "Customer account",
+  "section": "account page",
+  "def": "Your collection starts with your first order.",
+  "vars": [],
+  "file": "src/app/account/page.tsx"
+ },
+ {
+  "key": "account.997020",
+  "group": "Customer account",
+  "section": "account page",
+  "def": "Shop fragrances",
+  "vars": [],
+  "file": "src/app/account/page.tsx"
+ },
+ {
+  "key": "account.1e386b",
+  "group": "Customer account",
+  "section": "account page",
+  "def": "Recommended For You",
+  "vars": [],
+  "file": "src/app/account/page.tsx"
+ },
+ {
+  "key": "account.777a76",
+  "group": "Customer account",
+  "section": "account page",
+  "def": "Based on your Scent Profile",
+  "vars": [],
+  "file": "src/app/account/page.tsx"
+ },
+ {
+  "key": "account.519f13",
+  "group": "Customer account",
+  "section": "account page",
+  "def": "Popular picks to get you started",
+  "vars": [],
+  "file": "src/app/account/page.tsx"
+ },
+ {
+  "key": "account.d3b554",
+  "group": "Customer account",
+  "section": "account page",
+  "def": "Build Your Scent Profile",
+  "vars": [],
+  "file": "src/app/account/page.tsx"
+ },
+ {
+  "key": "account.a4ed2b",
+  "group": "Customer account",
+  "section": "account page",
+  "def": "Your Scent Wishlist",
+  "vars": [],
+  "file": "src/app/account/page.tsx"
+ },
+ {
+  "key": "account.9c2bb0",
+  "group": "Customer account",
+  "section": "account page",
+  "def": "View Wishlist",
+  "vars": [],
+  "file": "src/app/account/page.tsx"
+ },
+ {
+  "key": "account.ebf862",
+  "group": "Customer account",
+  "section": "account page",
+  "def": "Fragrance",
+  "vars": [],
+  "file": "src/app/account/page.tsx"
+ },
+ {
+  "key": "account.scentprofile.08dec8",
+  "group": "Customer account",
+  "section": "scent-profile page",
+  "def": "Your Scent Profile",
+  "vars": [],
+  "file": "src/app/account/scent-profile/page.tsx"
+ },
+ {
+  "key": "account.scentprofile.31c197",
+  "group": "Customer account",
+  "section": "scent-profile page",
+  "def": "A few quick questions help us recommend fragrances you’ll actually love.",
+  "vars": [],
+  "file": "src/app/account/scent-profile/page.tsx"
+ },
+ {
+  "key": "account.scentprofile.21c7fe",
+  "group": "Customer account",
+  "section": "scent-profile page",
+  "def": "Your Profile",
+  "vars": [],
+  "file": "src/app/account/scent-profile/page.tsx"
+ },
+ {
+  "key": "account.settings.e32707",
+  "group": "Customer account",
+  "section": "settings page",
+  "def": "Account Settings",
+  "vars": [],
+  "file": "src/app/account/settings/page.tsx"
+ },
+ {
+  "key": "account.wishlist.60df60",
+  "group": "Customer account",
+  "section": "wishlist page",
+  "def": "My Scent Wishlist",
+  "vars": [],
+  "file": "src/app/account/wishlist/page.tsx"
+ },
+ {
+  "key": "account.wishlist.cb05ba",
+  "group": "Customer account",
+  "section": "wishlist page",
+  "def": "Fragrances you’re thinking about.",
+  "vars": [],
+  "file": "src/app/account/wishlist/page.tsx"
+ },
+ {
+  "key": "account.wishlist.554e6e",
+  "group": "Customer account",
+  "section": "wishlist page",
+  "def": "Nothing saved yet.",
+  "vars": [],
+  "file": "src/app/account/wishlist/page.tsx"
+ },
+ {
+  "key": "account.wishlist.5424f5",
+  "group": "Customer account",
+  "section": "wishlist page",
+  "def": "Browse fragrances",
+  "vars": [],
+  "file": "src/app/account/wishlist/page.tsx"
+ },
+ {
+  "key": "account.wishlist.1dfd9d",
+  "group": "Customer account",
+  "section": "wishlist page",
+  "def": "and tap the heart on anything you love.",
+  "vars": [],
+  "file": "src/app/account/wishlist/page.tsx"
+ },
+ {
+  "key": "account.wishlist.ebf862",
+  "group": "Customer account",
+  "section": "wishlist page",
+  "def": "Fragrance",
+  "vars": [],
+  "file": "src/app/account/wishlist/page.tsx"
+ },
+ {
+  "key": "account.wishlist.bc67a8",
+  "group": "Customer account",
+  "section": "wishlist page",
+  "def": "Out of Stock",
+  "vars": [],
+  "file": "src/app/account/wishlist/page.tsx"
+ },
+ {
+  "key": "becomeavendor.apply.e9ba36",
+  "group": "Vendor space",
+  "section": "apply page",
+  "def": "Link Invalid or Expired",
+  "vars": [],
+  "file": "src/app/become-a-vendor/apply/page.tsx"
+ },
+ {
+  "key": "becomeavendor.apply.3bfef2",
+  "group": "Vendor space",
+  "section": "apply page",
+  "def": "This application link has already been used or isn't valid. Request a new one below.",
+  "vars": [],
+  "file": "src/app/become-a-vendor/apply/page.tsx"
+ },
+ {
+  "key": "becomeavendor.apply.0973f3",
+  "group": "Vendor space",
+  "section": "apply page",
+  "def": "Request a New Link",
+  "vars": [],
+  "file": "src/app/become-a-vendor/apply/page.tsx"
+ },
+ {
+  "key": "becomeavendor.apply.868519",
+  "group": "Vendor space",
+  "section": "apply page",
+  "def": "Vendor Application",
+  "vars": [],
+  "file": "src/app/become-a-vendor/apply/page.tsx"
+ },
+ {
+  "key": "becomeavendor.apply.072c97",
+  "group": "Vendor space",
+  "section": "apply page",
+  "def": "Fill in your details below — this only takes a few minutes.",
+  "vars": [],
+  "file": "src/app/become-a-vendor/apply/page.tsx"
+ },
+ {
+  "key": "cart.5f9938",
+  "group": "Cart",
+  "section": "cart page",
+  "def": "Your Cart is Empty",
+  "vars": [],
+  "file": "src/app/cart/page.tsx"
+ },
+ {
+  "key": "cart.040bb8",
+  "group": "Cart",
+  "section": "cart page",
+  "def": "Discover a fragrance that feels like you.",
+  "vars": [],
+  "file": "src/app/cart/page.tsx"
+ },
+ {
+  "key": "cart.1a0913",
+  "group": "Cart",
+  "section": "cart page",
+  "def": "Shop Fragrances",
+  "vars": [],
+  "file": "src/app/cart/page.tsx"
+ },
+ {
+  "key": "cart.9bed3c",
+  "group": "Cart",
+  "section": "cart page",
+  "def": "Your Cart",
+  "vars": [],
+  "file": "src/app/cart/page.tsx"
+ },
+ {
+  "key": "cart.dcae58",
+  "group": "Cart",
+  "section": "cart page",
+  "def": "Combo",
+  "vars": [],
+  "file": "src/app/cart/page.tsx"
+ },
+ {
+  "key": "cart.b7567b",
+  "group": "Cart",
+  "section": "cart page",
+  "def": "Remove combo",
+  "vars": [],
+  "file": "src/app/cart/page.tsx"
+ },
+ {
+  "key": "cart.f068d1",
+  "group": "Cart",
+  "section": "cart page",
+  "def": "Qty {quantity}",
+  "vars": [
+   "quantity"
+  ],
+  "file": "src/app/cart/page.tsx"
+ },
+ {
+  "key": "cart.76ecba",
+  "group": "Cart",
+  "section": "cart page",
+  "def": "Remove item",
+  "vars": [],
+  "file": "src/app/cart/page.tsx"
+ },
+ {
+  "key": "cart.c7df8a",
+  "group": "Cart",
+  "section": "cart page",
+  "def": "Order Summary",
+  "vars": [],
+  "file": "src/app/cart/page.tsx"
+ },
+ {
+  "key": "cart.04d2de",
+  "group": "Cart",
+  "section": "cart page",
+  "def": "Products Subtotal",
+  "vars": [],
+  "file": "src/app/cart/page.tsx"
+ },
+ {
+  "key": "cart.9c12c6",
+  "group": "Cart",
+  "section": "cart page",
+  "def": "Delivery Fee",
+  "vars": [],
+  "file": "src/app/cart/page.tsx"
+ },
+ {
+  "key": "cart.04397e",
+  "group": "Cart",
+  "section": "cart page",
+  "def": "Calculated at checkout",
+  "vars": [],
+  "file": "src/app/cart/page.tsx"
+ },
+ {
+  "key": "cart.b25928",
+  "group": "Cart",
+  "section": "cart page",
+  "def": "Total",
+  "vars": [],
+  "file": "src/app/cart/page.tsx"
+ },
+ {
+  "key": "cart.d2f4d4",
+  "group": "Cart",
+  "section": "cart page",
+  "def": "Proceed to Checkout",
+  "vars": [],
+  "file": "src/app/cart/page.tsx"
+ },
+ {
+  "key": "checkout.3ac8e9",
+  "group": "Checkout and order confirmation",
+  "section": "checkout page",
+  "def": "Checkout",
+  "vars": [],
+  "file": "src/app/checkout/page.tsx"
+ },
+ {
+  "key": "combos.1d4829",
+  "group": "Other pages",
+  "section": "combos page",
+  "def": "Bundle Deals",
+  "vars": [],
+  "file": "src/app/combos/page.tsx"
+ },
+ {
+  "key": "combos.400679",
+  "group": "Other pages",
+  "section": "combos page",
+  "def": "Combos",
+  "vars": [],
+  "file": "src/app/combos/page.tsx"
+ },
+ {
+  "key": "combos.50b379",
+  "group": "Other pages",
+  "section": "combos page",
+  "def": "Curated pairings, priced together.",
+  "vars": [],
+  "file": "src/app/combos/page.tsx"
+ },
+ {
+  "key": "combos.1768ba",
+  "group": "Other pages",
+  "section": "combos page",
+  "def": "No combos available right now — check back soon.",
+  "vars": [],
+  "file": "src/app/combos/page.tsx"
+ },
+ {
+  "key": "forgotpassword.20553f",
+  "group": "Login and registration",
+  "section": "forgot-password page",
+  "def": "Reset Your Password",
+  "vars": [],
+  "file": "src/app/forgot-password/page.tsx"
+ },
+ {
+  "key": "forgotpassword.e7fddc",
+  "group": "Login and registration",
+  "section": "forgot-password page",
+  "def": "If an account exists for",
+  "vars": [],
+  "file": "src/app/forgot-password/page.tsx"
+ },
+ {
+  "key": "forgotpassword.b35860",
+  "group": "Login and registration",
+  "section": "forgot-password page",
+  "def": ", a password reset link has been sent — check your inbox (and spam folder).",
+  "vars": [],
+  "file": "src/app/forgot-password/page.tsx"
+ },
+ {
+  "key": "forgotpassword.e6670f",
+  "group": "Login and registration",
+  "section": "forgot-password page",
+  "def": "Enter your email and we'll send you a link to set a new password.",
+  "vars": [],
+  "file": "src/app/forgot-password/page.tsx"
+ },
+ {
+  "key": "forgotpassword.84add5",
+  "group": "Login and registration",
+  "section": "forgot-password page",
+  "def": "Email",
+  "vars": [],
+  "file": "src/app/forgot-password/page.tsx"
+ },
+ {
+  "key": "forgotpassword.cf7655",
+  "group": "Login and registration",
+  "section": "forgot-password page",
+  "def": "Sending…",
+  "vars": [],
+  "file": "src/app/forgot-password/page.tsx"
+ },
+ {
+  "key": "forgotpassword.987be4",
+  "group": "Login and registration",
+  "section": "forgot-password page",
+  "def": "Send Reset Link",
+  "vars": [],
+  "file": "src/app/forgot-password/page.tsx"
+ },
+ {
+  "key": "forgotpassword.4da821",
+  "group": "Login and registration",
+  "section": "forgot-password page",
+  "def": "Back to sign in",
+  "vars": [],
+  "file": "src/app/forgot-password/page.tsx"
+ },
+ {
+  "key": "login.108b93",
+  "group": "Login and registration",
+  "section": "login page",
+  "def": "Sign in failed",
+  "vars": [],
+  "file": "src/app/login/page.tsx"
+ },
+ {
+  "key": "login.1c9089",
+  "group": "Login and registration",
+  "section": "login page",
+  "def": "Welcome Back",
+  "vars": [],
+  "file": "src/app/login/page.tsx"
+ },
+ {
+  "key": "login.6209a2",
+  "group": "Login and registration",
+  "section": "login page",
+  "def": "Sign in to your Royal Fragrance account.",
+  "vars": [],
+  "file": "src/app/login/page.tsx"
+ },
+ {
+  "key": "login.84add5",
+  "group": "Login and registration",
+  "section": "login page",
+  "def": "Email",
+  "vars": [],
+  "file": "src/app/login/page.tsx"
+ },
+ {
+  "key": "login.8be3c9",
+  "group": "Login and registration",
+  "section": "login page",
+  "def": "Password",
+  "vars": [],
+  "file": "src/app/login/page.tsx"
+ },
+ {
+  "key": "login.4c29f7",
+  "group": "Login and registration",
+  "section": "login page",
+  "def": "Forgot password?",
+  "vars": [],
+  "file": "src/app/login/page.tsx"
+ },
+ {
+  "key": "login.c66b2a",
+  "group": "Login and registration",
+  "section": "login page",
+  "def": "Signing in…",
+  "vars": [],
+  "file": "src/app/login/page.tsx"
+ },
+ {
+  "key": "login.f8492c",
+  "group": "Login and registration",
+  "section": "login page",
+  "def": "Sign In",
+  "vars": [],
+  "file": "src/app/login/page.tsx"
+ },
+ {
+  "key": "login.176618",
+  "group": "Login and registration",
+  "section": "login page",
+  "def": "Don’t have an account?",
+  "vars": [],
+  "file": "src/app/login/page.tsx"
+ },
+ {
+  "key": "login.7dbf3d",
+  "group": "Login and registration",
+  "section": "login page",
+  "def": "Create one",
+  "vars": [],
+  "file": "src/app/login/page.tsx"
+ },
+ {
+  "key": "newsletter.id.3109a9",
+  "group": "Other pages",
+  "section": "[id] page",
+  "def": "Thanks for voting — your choice ({voted}) has been counted. 👑",
+  "vars": [
+   "voted"
+  ],
+  "file": "src/app/newsletter/[id]/page.tsx"
+ },
+ {
+  "key": "newsletter.id.c07431",
+  "group": "Other pages",
+  "section": "[id] page",
+  "def": "Royal Fragrance",
+  "vars": [],
+  "file": "src/app/newsletter/[id]/page.tsx"
+ },
+ {
+  "key": "newsletter.id.9a312d",
+  "group": "Other pages",
+  "section": "[id] page",
+  "def": "Vote from the email you received — this page shows the story, but votes are tallied from your subscriber email link.",
+  "vars": [],
+  "file": "src/app/newsletter/[id]/page.tsx"
+ },
+ {
+  "key": "newsletter.id.bb9644",
+  "group": "Other pages",
+  "section": "[id] page",
+  "def": "Until next time,",
+  "vars": [],
+  "file": "src/app/newsletter/[id]/page.tsx"
+ },
+ {
+  "key": "newsletter.id.d51246",
+  "group": "Other pages",
+  "section": "[id] page",
+  "def": "Queen 👑",
+  "vars": [],
+  "file": "src/app/newsletter/[id]/page.tsx"
+ },
+ {
+  "key": "orderconfirmation.4ba340",
+  "group": "Checkout and order confirmation",
+  "section": "order-confirmation page",
+  "def": "Order Not Found",
+  "vars": [],
+  "file": "src/app/order-confirmation/page.tsx"
+ },
+ {
+  "key": "orderconfirmation.2582d6",
+  "group": "Checkout and order confirmation",
+  "section": "order-confirmation page",
+  "def": "No order reference was provided.",
+  "vars": [],
+  "file": "src/app/order-confirmation/page.tsx"
+ },
+ {
+  "key": "orderconfirmation.ce3017",
+  "group": "Checkout and order confirmation",
+  "section": "order-confirmation page",
+  "def": "Continue Shopping",
+  "vars": [],
+  "file": "src/app/order-confirmation/page.tsx"
+ },
+ {
+  "key": "orderconfirmation.7b20ef",
+  "group": "Checkout and order confirmation",
+  "section": "order-confirmation page",
+  "def": "We couldn’t find an order with reference",
+  "vars": [],
+  "file": "src/app/order-confirmation/page.tsx"
+ },
+ {
+  "key": "orderconfirmation.b357a2",
+  "group": "Checkout and order confirmation",
+  "section": "order-confirmation page",
+  "def": "Order Confirmed",
+  "vars": [],
+  "file": "src/app/order-confirmation/page.tsx"
+ },
+ {
+  "key": "orderconfirmation.0ceada",
+  "group": "Checkout and order confirmation",
+  "section": "order-confirmation page",
+  "def": "Payment Pending",
+  "vars": [],
+  "file": "src/app/order-confirmation/page.tsx"
+ },
+ {
+  "key": "orderconfirmation.1d7577",
+  "group": "Checkout and order confirmation",
+  "section": "order-confirmation page",
+  "def": "Order",
+  "vars": [],
+  "file": "src/app/order-confirmation/page.tsx"
+ },
+ {
+  "key": "orderconfirmation.dd3b86",
+  "group": "Checkout and order confirmation",
+  "section": "order-confirmation page",
+  "def": "Product",
+  "vars": [],
+  "file": "src/app/order-confirmation/page.tsx"
+ },
+ {
+  "key": "orderconfirmation.9c12c6",
+  "group": "Checkout and order confirmation",
+  "section": "order-confirmation page",
+  "def": "Delivery Fee",
+  "vars": [],
+  "file": "src/app/order-confirmation/page.tsx"
+ },
+ {
+  "key": "orderconfirmation.6a151d",
+  "group": "Checkout and order confirmation",
+  "section": "order-confirmation page",
+  "def": "Total Paid",
+  "vars": [],
+  "file": "src/app/order-confirmation/page.tsx"
+ },
+ {
+  "key": "orderconfirmation.8dea76",
+  "group": "Checkout and order confirmation",
+  "section": "order-confirmation page",
+  "def": "Pickup Location",
+  "vars": [],
+  "file": "src/app/order-confirmation/page.tsx"
+ },
+ {
+  "key": "orderconfirmation.1f6393",
+  "group": "Checkout and order confirmation",
+  "section": "order-confirmation page",
+  "def": "Delivery Address",
+  "vars": [],
+  "file": "src/app/order-confirmation/page.tsx"
+ },
+ {
+  "key": "orderconfirmation.a15b0b",
+  "group": "Checkout and order confirmation",
+  "section": "order-confirmation page",
+  "def": "Order Status",
+  "vars": [],
+  "file": "src/app/order-confirmation/page.tsx"
+ },
+ {
+  "key": "orderconfirmation.258662",
+  "group": "Checkout and order confirmation",
+  "section": "order-confirmation page",
+  "def": "This order was switched to individual delivery.{v}",
+  "vars": [
+   "v"
+  ],
+  "file": "src/app/order-confirmation/page.tsx"
+ },
+ {
+  "key": "orderconfirmation.8c39b6",
+  "group": "Checkout and order confirmation",
+  "section": "order-confirmation page",
+  "def": "Delivered in a shared batch for {locationName} (batch {status}). Your delivery share was {v}.",
+  "vars": [
+   "locationName",
+   "status",
+   "v"
+  ],
+  "file": "src/app/order-confirmation/page.tsx"
+ },
+ {
+  "key": "orderconfirmation.e79a2f",
+  "group": "Checkout and order confirmation",
+  "section": "order-confirmation page",
+  "def": "Stay in touch on WhatsApp",
+  "vars": [],
+  "file": "src/app/order-confirmation/page.tsx"
+ },
+ {
+  "key": "orderconfirmation.2d187f",
+  "group": "Checkout and order confirmation",
+  "section": "order-confirmation page",
+  "def": "Get updates on your order, new arrivals, and exclusive offers.",
+  "vars": [],
+  "file": "src/app/order-confirmation/page.tsx"
+ },
+ {
+  "key": "orderconfirmation.4bb727",
+  "group": "Checkout and order confirmation",
+  "section": "order-confirmation page",
+  "def": "Chat With Us",
+  "vars": [],
+  "file": "src/app/order-confirmation/page.tsx"
+ },
+ {
+  "key": "orderconfirmation.8b0c6f",
+  "group": "Checkout and order confirmation",
+  "section": "order-confirmation page",
+  "def": "Join Our Group",
+  "vars": [],
+  "file": "src/app/order-confirmation/page.tsx"
+ },
+ {
+  "key": "product.slug.cae043",
+  "group": "Products and shop",
+  "section": "[slug] page",
+  "def": "Top",
+  "vars": [],
+  "file": "src/app/product/[slug]/page.tsx"
+ },
+ {
+  "key": "product.slug.2a3733",
+  "group": "Products and shop",
+  "section": "[slug] page",
+  "def": "Heart",
+  "vars": [],
+  "file": "src/app/product/[slug]/page.tsx"
+ },
+ {
+  "key": "product.slug.077fe9",
+  "group": "Products and shop",
+  "section": "[slug] page",
+  "def": "Base",
+  "vars": [],
+  "file": "src/app/product/[slug]/page.tsx"
+ },
+ {
+  "key": "product.slug.8eb8a8",
+  "group": "Products and shop",
+  "section": "[slug] page",
+  "def": "Chat on WhatsApp",
+  "vars": [],
+  "file": "src/app/product/[slug]/page.tsx"
+ },
+ {
+  "key": "product.slug.97b386",
+  "group": "Products and shop",
+  "section": "[slug] page",
+  "def": "You May Also Like",
+  "vars": [],
+  "file": "src/app/product/[slug]/page.tsx"
+ },
+ {
+  "key": "register.e80f3c",
+  "group": "Login and registration",
+  "section": "register page",
+  "def": "Check Your Email",
+  "vars": [],
+  "file": "src/app/register/page.tsx"
+ },
+ {
+  "key": "register.73845b",
+  "group": "Login and registration",
+  "section": "register page",
+  "def": "We've sent a confirmation link to",
+  "vars": [],
+  "file": "src/app/register/page.tsx"
+ },
+ {
+  "key": "register.23da16",
+  "group": "Login and registration",
+  "section": "register page",
+  "def": ". Click it to activate your account, then come back and sign in.",
+  "vars": [],
+  "file": "src/app/register/page.tsx"
+ },
+ {
+  "key": "register.8b588a",
+  "group": "Login and registration",
+  "section": "register page",
+  "def": "Didn't get it? Check spam, or",
+  "vars": [],
+  "file": "src/app/register/page.tsx"
+ },
+ {
+  "key": "register.758bd3",
+  "group": "Login and registration",
+  "section": "register page",
+  "def": "try again",
+  "vars": [],
+  "file": "src/app/register/page.tsx"
+ },
+ {
+  "key": "register.c586a4",
+  "group": "Login and registration",
+  "section": "register page",
+  "def": "Create Your Account",
+  "vars": [],
+  "file": "src/app/register/page.tsx"
+ },
+ {
+  "key": "register.c381ae",
+  "group": "Login and registration",
+  "section": "register page",
+  "def": "Join Royal Fragrance for a faster, personalized experience.",
+  "vars": [],
+  "file": "src/app/register/page.tsx"
+ },
+ {
+  "key": "register.64346b",
+  "group": "Login and registration",
+  "section": "register page",
+  "def": "Full Name",
+  "vars": [],
+  "file": "src/app/register/page.tsx"
+ },
+ {
+  "key": "register.84add5",
+  "group": "Login and registration",
+  "section": "register page",
+  "def": "Email",
+  "vars": [],
+  "file": "src/app/register/page.tsx"
+ },
+ {
+  "key": "register.ab25d6",
+  "group": "Login and registration",
+  "section": "register page",
+  "def": "Phone Number",
+  "vars": [],
+  "file": "src/app/register/page.tsx"
+ },
+ {
+  "key": "register.8be3c9",
+  "group": "Login and registration",
+  "section": "register page",
+  "def": "Password",
+  "vars": [],
+  "file": "src/app/register/page.tsx"
+ },
+ {
+  "key": "register.baab5b",
+  "group": "Login and registration",
+  "section": "register page",
+  "def": "Creating account…",
+  "vars": [],
+  "file": "src/app/register/page.tsx"
+ },
+ {
+  "key": "register.eff4fd",
+  "group": "Login and registration",
+  "section": "register page",
+  "def": "Create Account",
+  "vars": [],
+  "file": "src/app/register/page.tsx"
+ },
+ {
+  "key": "register.855903",
+  "group": "Login and registration",
+  "section": "register page",
+  "def": "Already have an account?",
+  "vars": [],
+  "file": "src/app/register/page.tsx"
+ },
+ {
+  "key": "register.ada2e9",
+  "group": "Login and registration",
+  "section": "register page",
+  "def": "Sign in",
+  "vars": [],
+  "file": "src/app/register/page.tsx"
+ },
+ {
+  "key": "resetpassword.58e560",
+  "group": "Login and registration",
+  "section": "reset-password page",
+  "def": "Passwords don't match.",
+  "vars": [],
+  "file": "src/app/reset-password/page.tsx"
+ },
+ {
+  "key": "resetpassword.31e3a3",
+  "group": "Login and registration",
+  "section": "reset-password page",
+  "def": "Password must be at least 6 characters.",
+  "vars": [],
+  "file": "src/app/reset-password/page.tsx"
+ },
+ {
+  "key": "resetpassword.a77c46",
+  "group": "Login and registration",
+  "section": "reset-password page",
+  "def": "Set a New Password",
+  "vars": [],
+  "file": "src/app/reset-password/page.tsx"
+ },
+ {
+  "key": "resetpassword.695fc4",
+  "group": "Login and registration",
+  "section": "reset-password page",
+  "def": "Password updated — taking you to sign in.",
+  "vars": [],
+  "file": "src/app/reset-password/page.tsx"
+ },
+ {
+  "key": "resetpassword.4894cb",
+  "group": "Login and registration",
+  "section": "reset-password page",
+  "def": "New Password",
+  "vars": [],
+  "file": "src/app/reset-password/page.tsx"
+ },
+ {
+  "key": "resetpassword.68dcd7",
+  "group": "Login and registration",
+  "section": "reset-password page",
+  "def": "Confirm New Password",
+  "vars": [],
+  "file": "src/app/reset-password/page.tsx"
+ },
+ {
+  "key": "resetpassword.56a228",
+  "group": "Login and registration",
+  "section": "reset-password page",
+  "def": "Saving…",
+  "vars": [],
+  "file": "src/app/reset-password/page.tsx"
+ },
+ {
+  "key": "resetpassword.208bb0",
+  "group": "Login and registration",
+  "section": "reset-password page",
+  "def": "Set New Password",
+  "vars": [],
+  "file": "src/app/reset-password/page.tsx"
+ },
+ {
+  "key": "store.code.more.c07431",
+  "group": "Vendor store pages",
+  "section": "more page",
+  "def": "Royal Fragrance",
+  "vars": [],
+  "file": "src/app/store/[code]/more/page.tsx"
+ },
+ {
+  "key": "store.code.more.04b0c7",
+  "group": "Vendor store pages",
+  "section": "more page",
+  "def": "More Perfumes",
+  "vars": [],
+  "file": "src/app/store/[code]/more/page.tsx"
+ },
+ {
+  "key": "store.code.more.681218",
+  "group": "Vendor store pages",
+  "section": "more page",
+  "def": "These are the perfumes {vendorName} does not have in stock.{v}",
+  "vars": [
+   "vendorName",
+   "v"
+  ],
+  "file": "src/app/store/[code]/more/page.tsx"
+ },
+ {
+  "key": "store.code.more.4d99db",
+  "group": "Vendor store pages",
+  "section": "more page",
+  "def": "Back to {vendorName}’s perfumes",
+  "vars": [
+   "vendorName"
+  ],
+  "file": "src/app/store/[code]/more/page.tsx"
+ },
+ {
+  "key": "store.code.more.c4ab9d",
+  "group": "Vendor store pages",
+  "section": "more page",
+  "def": "There is nothing else to show right now.",
+  "vars": [],
+  "file": "src/app/store/[code]/more/page.tsx"
+ },
+ {
+  "key": "store.code.c07431",
+  "group": "Vendor store pages",
+  "section": "[code] page",
+  "def": "Royal Fragrance",
+  "vars": [],
+  "file": "src/app/store/[code]/page.tsx"
+ },
+ {
+  "key": "store.code.ef6929",
+  "group": "Vendor store pages",
+  "section": "[code] page",
+  "def": "VEND {v}",
+  "vars": [
+   "v"
+  ],
+  "file": "src/app/store/[code]/page.tsx"
+ },
+ {
+  "key": "store.code.595c14",
+  "group": "Vendor store pages",
+  "section": "[code] page",
+  "def": "Choose from the fragrances available through your representative.",
+  "vars": [],
+  "file": "src/app/store/[code]/page.tsx"
+ },
+ {
+  "key": "store.code.370127",
+  "group": "Vendor store pages",
+  "section": "[code] page",
+  "def": "How to order",
+  "vars": [],
+  "file": "src/app/store/[code]/page.tsx"
+ },
+ {
+  "key": "store.code.c66b70",
+  "group": "Vendor store pages",
+  "section": "[code] page",
+  "def": "Near {vendorName}?",
+  "vars": [
+   "vendorName"
+  ],
+  "file": "src/app/store/[code]/page.tsx"
+ },
+ {
+  "key": "store.code.cd66ad",
+  "group": "Vendor store pages",
+  "section": "[code] page",
+  "def": "Tap “Chat vendor to buy” and pay them directly on WhatsApp.",
+  "vars": [],
+  "file": "src/app/store/[code]/page.tsx"
+ },
+ {
+  "key": "store.code.018c80",
+  "group": "Vendor store pages",
+  "section": "[code] page",
+  "def": "Far away?",
+  "vars": [],
+  "file": "src/app/store/[code]/page.tsx"
+ },
+ {
+  "key": "store.code.911836",
+  "group": "Vendor store pages",
+  "section": "[code] page",
+  "def": "Tap “Order online” and check out normally. We deliver to you.",
+  "vars": [],
+  "file": "src/app/store/[code]/page.tsx"
+ },
+ {
+  "key": "store.code.13679f",
+  "group": "Vendor store pages",
+  "section": "[code] page",
+  "def": "Want a perfume {vendorName} does not have?",
+  "vars": [
+   "vendorName"
+  ],
+  "file": "src/app/store/[code]/page.tsx"
+ },
+ {
+  "key": "store.code.d7eb30",
+  "group": "Vendor store pages",
+  "section": "[code] page",
+  "def": "Tap here to see every other product on the site. You can order those with shared batch delivery.",
+  "vars": [],
+  "file": "src/app/store/[code]/page.tsx"
+ },
+ {
+  "key": "store.code.b2b903",
+  "group": "Vendor store pages",
+  "section": "[code] page",
+  "def": "No products are available here right now.",
+  "vars": [],
+  "file": "src/app/store/[code]/page.tsx"
+ },
+ {
+  "key": "store.code.03c882",
+  "group": "Vendor store pages",
+  "section": "[code] page",
+  "def": "Browse the full shop",
+  "vars": [],
+  "file": "src/app/store/[code]/page.tsx"
+ },
+ {
+  "key": "vendor.batches.9cf8c0",
+  "group": "Vendor space",
+  "section": "batches page",
+  "def": "Your location:",
+  "vars": [],
+  "file": "src/app/vendor/batches/page.tsx"
+ },
+ {
+  "key": "vendor.batches.5678c5",
+  "group": "Vendor space",
+  "section": "batches page",
+  "def": ". Customers who order through your link can join your batches.",
+  "vars": [],
+  "file": "src/app/vendor/batches/page.tsx"
+ },
+ {
+  "key": "vendor.batches.d92da1",
+  "group": "Vendor space",
+  "section": "batches page",
+  "def": "Your batches",
+  "vars": [],
+  "file": "src/app/vendor/batches/page.tsx"
+ },
+ {
+  "key": "vendor.collectionaccount.dece31",
+  "group": "Vendor space",
+  "section": "collection-account page",
+  "def": "My Collection Account",
+  "vars": [],
+  "file": "src/app/vendor/collection-account/page.tsx"
+ },
+ {
+  "key": "vendor.collectionaccount.54bda5",
+  "group": "Vendor space",
+  "section": "collection-account page",
+  "def": "Your BVN/NIN is on file — your collection account is now set up by the Royal Fragrance team. Check back soon or reach out to support if it's been a while.",
+  "vars": [],
+  "file": "src/app/vendor/collection-account/page.tsx"
+ },
+ {
+  "key": "vendor.collectionaccount.429702",
+  "group": "Vendor space",
+  "section": "collection-account page",
+  "def": "Collection Account",
+  "vars": [],
+  "file": "src/app/vendor/collection-account/page.tsx"
+ },
+ {
+  "key": "vendor.collectionaccount.9e8998",
+  "group": "Vendor space",
+  "section": "collection-account page",
+  "def": "Bank",
+  "vars": [],
+  "file": "src/app/vendor/collection-account/page.tsx"
+ },
+ {
+  "key": "vendor.collectionaccount.0bd62e",
+  "group": "Vendor space",
+  "section": "collection-account page",
+  "def": "Account Number",
+  "vars": [],
+  "file": "src/app/vendor/collection-account/page.tsx"
+ },
+ {
+  "key": "vendor.collectionaccount.db3b79",
+  "group": "Vendor space",
+  "section": "collection-account page",
+  "def": "Account Name",
+  "vars": [],
+  "file": "src/app/vendor/collection-account/page.tsx"
+ },
+ {
+  "key": "vendor.earnings.aaf54a",
+  "group": "Vendor space",
+  "section": "earnings page",
+  "def": "My Earnings",
+  "vars": [],
+  "file": "src/app/vendor/earnings/page.tsx"
+ },
+ {
+  "key": "vendor.earnings.20e813",
+  "group": "Vendor space",
+  "section": "earnings page",
+  "def": "12% commission on every sale.",
+  "vars": [],
+  "file": "src/app/vendor/earnings/page.tsx"
+ },
+ {
+  "key": "vendor.earnings.ce51b5",
+  "group": "Vendor space",
+  "section": "earnings page",
+  "def": "Total Earned",
+  "vars": [],
+  "file": "src/app/vendor/earnings/page.tsx"
+ },
+ {
+  "key": "vendor.earnings.0f6cc3",
+  "group": "Vendor space",
+  "section": "earnings page",
+  "def": "This Month",
+  "vars": [],
+  "file": "src/app/vendor/earnings/page.tsx"
+ },
+ {
+  "key": "vendor.earnings.90ccd6",
+  "group": "Vendor space",
+  "section": "earnings page",
+  "def": "History",
+  "vars": [],
+  "file": "src/app/vendor/earnings/page.tsx"
+ },
+ {
+  "key": "vendor.earnings.a1517f",
+  "group": "Vendor space",
+  "section": "earnings page",
+  "def": "No commissions earned yet.",
+  "vars": [],
+  "file": "src/app/vendor/earnings/page.tsx"
+ },
+ {
+  "key": "vendor.earnings.7395ce",
+  "group": "Vendor space",
+  "section": "earnings page",
+  "def": "Recorded Sale",
+  "vars": [],
+  "file": "src/app/vendor/earnings/page.tsx"
+ },
+ {
+  "key": "vendor.earnings.7833d9",
+  "group": "Vendor space",
+  "section": "earnings page",
+  "def": "Referred Order",
+  "vars": [],
+  "file": "src/app/vendor/earnings/page.tsx"
+ },
+ {
+  "key": "vendor.earnings.6cc0e4",
+  "group": "Vendor space",
+  "section": "earnings page",
+  "def": "{v} · {v2}% rate",
+  "vars": [
+   "v",
+   "v2"
+  ],
+  "file": "src/app/vendor/earnings/page.tsx"
+ },
+ {
+  "key": "vendor.handovers.89c41b",
+  "group": "Vendor space",
+  "section": "handovers page",
+  "def": "Deliveries to Customers",
+  "vars": [],
+  "file": "src/app/vendor/handovers/page.tsx"
+ },
+ {
+  "key": "vendor.handovers.0198fb",
+  "group": "Vendor space",
+  "section": "handovers page",
+  "def": "To Deliver ({length})",
+  "vars": [
+   "length"
+  ],
+  "file": "src/app/vendor/handovers/page.tsx"
+ },
+ {
+  "key": "vendor.handovers.e83478",
+  "group": "Vendor space",
+  "section": "handovers page",
+  "def": "No customer is waiting for goods. All paid orders have been delivered.",
+  "vars": [],
+  "file": "src/app/vendor/handovers/page.tsx"
+ },
+ {
+  "key": "vendor.handovers.d44b3d",
+  "group": "Vendor space",
+  "section": "handovers page",
+  "def": "No customer name recorded",
+  "vars": [],
+  "file": "src/app/vendor/handovers/page.tsx"
+ },
+ {
+  "key": "vendor.handovers.eea956",
+  "group": "Vendor space",
+  "section": "handovers page",
+  "def": "Delivered",
+  "vars": [],
+  "file": "src/app/vendor/handovers/page.tsx"
+ },
+ {
+  "key": "vendor.handovers.45bbc9",
+  "group": "Vendor space",
+  "section": "handovers page",
+  "def": "No deliveries recorded yet.",
+  "vars": [],
+  "file": "src/app/vendor/handovers/page.tsx"
+ },
+ {
+  "key": "vendor.handovers.def76b",
+  "group": "Vendor space",
+  "section": "handovers page",
+  "def": "To {recipient_name} · {v}",
+  "vars": [
+   "recipient_name",
+   "v"
+  ],
+  "file": "src/app/vendor/handovers/page.tsx"
+ },
+ {
+  "key": "vendor.inventory.ea6ea5",
+  "group": "Vendor space",
+  "section": "inventory page",
+  "def": "My Products",
+  "vars": [],
+  "file": "src/app/vendor/inventory/page.tsx"
+ },
+ {
+  "key": "vendor.inventory.de400c",
+  "group": "Vendor space",
+  "section": "inventory page",
+  "def": "My Inventory",
+  "vars": [],
+  "file": "src/app/vendor/inventory/page.tsx"
+ },
+ {
+  "key": "vendor.inventory.8cf98f",
+  "group": "Vendor space",
+  "section": "inventory page",
+  "def": "No inventory has been assigned to you yet.",
+  "vars": [],
+  "file": "src/app/vendor/inventory/page.tsx"
+ },
+ {
+  "key": "vendor.inventory.7c62a1",
+  "group": "Vendor space",
+  "section": "inventory page",
+  "def": "Available",
+  "vars": [],
+  "file": "src/app/vendor/inventory/page.tsx"
+ },
+ {
+  "key": "vendor.inventory.1b2ff1",
+  "group": "Vendor space",
+  "section": "inventory page",
+  "def": "Low stock — request more",
+  "vars": [],
+  "file": "src/app/vendor/inventory/page.tsx"
+ },
+ {
+  "key": "vendor.layout.db7f1f",
+  "group": "Vendor space",
+  "section": "vendor layout",
+  "def": "Vendor Workspace{v}",
+  "vars": [
+   "v"
+  ],
+  "file": "src/app/vendor/layout.tsx"
+ },
+ {
+  "key": "vendor.layout.c75627",
+  "group": "Vendor space",
+  "section": "vendor layout",
+  "def": "Vendor Workspace",
+  "vars": [],
+  "file": "src/app/vendor/layout.tsx"
+ },
+ {
+  "key": "vendor.1037e4",
+  "group": "Vendor space",
+  "section": "vendor page",
+  "def": "You have {length} confirmed payment{v} waiting to be matched to a sale.",
+  "vars": [
+   "length",
+   "v"
+  ],
+  "file": "src/app/vendor/page.tsx"
+ },
+ {
+  "key": "vendor.6139a8",
+  "group": "Vendor space",
+  "section": "vendor page",
+  "def": "Total Earnings",
+  "vars": [],
+  "file": "src/app/vendor/page.tsx"
+ },
+ {
+  "key": "vendor.baba4a",
+  "group": "Vendor space",
+  "section": "vendor page",
+  "def": "Referred Orders",
+  "vars": [],
+  "file": "src/app/vendor/page.tsx"
+ },
+ {
+  "key": "vendor.profile.9ba8d3",
+  "group": "Vendor space",
+  "section": "profile page",
+  "def": "My Profile",
+  "vars": [],
+  "file": "src/app/vendor/profile/page.tsx"
+ },
+ {
+  "key": "vendor.profile.84dc6c",
+  "group": "Vendor space",
+  "section": "profile page",
+  "def": "Choose the name customers see. It appears on your personal shop page (“Shop with …”) and on receipts you send. Your registered full name stays private to the team.",
+  "vars": [],
+  "file": "src/app/vendor/profile/page.tsx"
+ },
+ {
+  "key": "vendor.profile.95cf10",
+  "group": "Vendor space",
+  "section": "profile page",
+  "def": "Name customers see",
+  "vars": [],
+  "file": "src/app/vendor/profile/page.tsx"
+ },
+ {
+  "key": "vendor.profile.3c2744",
+  "group": "Vendor space",
+  "section": "profile page",
+  "def": "Leave it empty to use your registered name ({business_name}).",
+  "vars": [
+   "business_name"
+  ],
+  "file": "src/app/vendor/profile/page.tsx"
+ },
+ {
+  "key": "vendor.sales.d0edfb",
+  "group": "Vendor space",
+  "section": "sales page",
+  "def": "Sales",
+  "vars": [],
+  "file": "src/app/vendor/sales/page.tsx"
+ },
+ {
+  "key": "vendor.sales.803088",
+  "group": "Vendor space",
+  "section": "sales page",
+  "def": "No sales recorded yet.",
+  "vars": [],
+  "file": "src/app/vendor/sales/page.tsx"
+ },
+ {
+  "key": "vendor.sales.b046ab",
+  "group": "Vendor space",
+  "section": "sales page",
+  "def": "Delivery: {v}",
+  "vars": [
+   "v"
+  ],
+  "file": "src/app/vendor/sales/page.tsx"
+ },
+ {
+  "key": "vendor.transactions.1e3281",
+  "group": "Vendor space",
+  "section": "transactions page",
+  "def": "Transactions",
+  "vars": [],
+  "file": "src/app/vendor/transactions/page.tsx"
+ },
+ {
+  "key": "vendor.transactions.10f456",
+  "group": "Vendor space",
+  "section": "transactions page",
+  "def": "Unrecorded Payments",
+  "vars": [],
+  "file": "src/app/vendor/transactions/page.tsx"
+ },
+ {
+  "key": "vendor.transactions.4a4997",
+  "group": "Vendor space",
+  "section": "transactions page",
+  "def": "From: {payer_name}",
+  "vars": [
+   "payer_name"
+  ],
+  "file": "src/app/vendor/transactions/page.tsx"
+ },
+ {
+  "key": "vendor.transactions.7318af",
+  "group": "Vendor space",
+  "section": "transactions page",
+  "def": "Awaiting Sale Record",
+  "vars": [],
+  "file": "src/app/vendor/transactions/page.tsx"
+ },
+ {
+  "key": "vendor.transactions.ba6058",
+  "group": "Vendor space",
+  "section": "transactions page",
+  "def": "All Payments",
+  "vars": [],
+  "file": "src/app/vendor/transactions/page.tsx"
+ },
+ {
+  "key": "vendor.transactions.954ff2",
+  "group": "Vendor space",
+  "section": "transactions page",
+  "def": "Tap any collection to view its receipt.",
+  "vars": [],
+  "file": "src/app/vendor/transactions/page.tsx"
+ },
+ {
+  "key": "account.addressform.2b9f8b",
+  "group": "Customer account",
+  "section": "AddressForm",
+  "def": "+ Add New Address",
+  "vars": [],
+  "file": "src/components/account/AddressForm.tsx"
+ },
+ {
+  "key": "account.addressform.903195",
+  "group": "Customer account",
+  "section": "AddressForm",
+  "def": "Label (e.g. Home, Office)",
+  "vars": [],
+  "file": "src/components/account/AddressForm.tsx"
+ },
+ {
+  "key": "account.addressform.a72502",
+  "group": "Customer account",
+  "section": "AddressForm",
+  "def": "State",
+  "vars": [],
+  "file": "src/components/account/AddressForm.tsx"
+ },
+ {
+  "key": "account.addressform.427162",
+  "group": "Customer account",
+  "section": "AddressForm",
+  "def": "City",
+  "vars": [],
+  "file": "src/components/account/AddressForm.tsx"
+ },
+ {
+  "key": "account.addressform.9f8ce1",
+  "group": "Customer account",
+  "section": "AddressForm",
+  "def": "Full address",
+  "vars": [],
+  "file": "src/components/account/AddressForm.tsx"
+ },
+ {
+  "key": "account.addressform.b62ebb",
+  "group": "Customer account",
+  "section": "AddressForm",
+  "def": "Set as default address",
+  "vars": [],
+  "file": "src/components/account/AddressForm.tsx"
+ },
+ {
+  "key": "account.addressform.77dfd2",
+  "group": "Customer account",
+  "section": "AddressForm",
+  "def": "Cancel",
+  "vars": [],
+  "file": "src/components/account/AddressForm.tsx"
+ },
+ {
+  "key": "account.addressform.56a228",
+  "group": "Customer account",
+  "section": "AddressForm",
+  "def": "Saving…",
+  "vars": [],
+  "file": "src/components/account/AddressForm.tsx"
+ },
+ {
+  "key": "account.addressform.4aa8d2",
+  "group": "Customer account",
+  "section": "AddressForm",
+  "def": "Save Address",
+  "vars": [],
+  "file": "src/components/account/AddressForm.tsx"
+ },
+ {
+  "key": "account.buyagainbutton.ed40fa",
+  "group": "Customer account",
+  "section": "BuyAgainButton",
+  "def": "Buy Again",
+  "vars": [],
+  "file": "src/components/account/BuyAgainButton.tsx"
+ },
+ {
+  "key": "account.deleteaddressbutton.ba8955",
+  "group": "Customer account",
+  "section": "DeleteAddressButton",
+  "def": "Remove this address?",
+  "vars": [],
+  "file": "src/components/account/DeleteAddressButton.tsx"
+ },
+ {
+  "key": "account.deleteaddressbutton.e96390",
+  "group": "Customer account",
+  "section": "DeleteAddressButton",
+  "def": "Remove",
+  "vars": [],
+  "file": "src/components/account/DeleteAddressButton.tsx"
+ },
+ {
+  "key": "account.logoutbutton.e43d61",
+  "group": "Customer account",
+  "section": "LogoutButton",
+  "def": "Logout",
+  "vars": [],
+  "file": "src/components/account/LogoutButton.tsx"
+ },
+ {
+  "key": "account.markallreadbutton.1b8316",
+  "group": "Customer account",
+  "section": "MarkAllReadButton",
+  "def": "Mark all as read",
+  "vars": [],
+  "file": "src/components/account/MarkAllReadButton.tsx"
+ },
+ {
+  "key": "account.mobiledashboardnav.4bab2d",
+  "group": "Customer account",
+  "section": "MobileDashboardNav",
+  "def": "More",
+  "vars": [],
+  "file": "src/components/account/MobileDashboardNav.tsx"
+ },
+ {
+  "key": "account.mobiledashboardnav.bbfa77",
+  "group": "Customer account",
+  "section": "MobileDashboardNav",
+  "def": "Close",
+  "vars": [],
+  "file": "src/components/account/MobileDashboardNav.tsx"
+ },
+ {
+  "key": "account.removewishlistbutton.fe96c8",
+  "group": "Customer account",
+  "section": "RemoveWishlistButton",
+  "def": "Remove from wishlist",
+  "vars": [],
+  "file": "src/components/account/RemoveWishlistButton.tsx"
+ },
+ {
+  "key": "account.scentprofilequiz.be2299",
+  "group": "Customer account",
+  "section": "ScentProfileQuiz",
+  "def": "What kind of scents do you enjoy?",
+  "vars": [],
+  "file": "src/components/account/ScentProfileQuiz.tsx"
+ },
+ {
+  "key": "account.scentprofilequiz.f56e42",
+  "group": "Customer account",
+  "section": "ScentProfileQuiz",
+  "def": "When do you mostly wear perfume?",
+  "vars": [],
+  "file": "src/components/account/ScentProfileQuiz.tsx"
+ },
+ {
+  "key": "account.scentprofilequiz.088314",
+  "group": "Customer account",
+  "section": "ScentProfileQuiz",
+  "def": "What intensity do you prefer?",
+  "vars": [],
+  "file": "src/components/account/ScentProfileQuiz.tsx"
+ },
+ {
+  "key": "account.scentprofilequiz.65692b",
+  "group": "Customer account",
+  "section": "ScentProfileQuiz",
+  "def": "Saved — your recommendations have been updated.",
+  "vars": [],
+  "file": "src/components/account/ScentProfileQuiz.tsx"
+ },
+ {
+  "key": "account.scentprofilequiz.56a228",
+  "group": "Customer account",
+  "section": "ScentProfileQuiz",
+  "def": "Saving…",
+  "vars": [],
+  "file": "src/components/account/ScentProfileQuiz.tsx"
+ },
+ {
+  "key": "account.scentprofilequiz.449bba",
+  "group": "Customer account",
+  "section": "ScentProfileQuiz",
+  "def": "Save My Scent Profile",
+  "vars": [],
+  "file": "src/components/account/ScentProfileQuiz.tsx"
+ },
+ {
+  "key": "account.settingsform.7f8cc5",
+  "group": "Customer account",
+  "section": "SettingsForm",
+  "def": "Could not save changes. Please try again.",
+  "vars": [],
+  "file": "src/components/account/SettingsForm.tsx"
+ },
+ {
+  "key": "account.settingsform.64346b",
+  "group": "Customer account",
+  "section": "SettingsForm",
+  "def": "Full Name",
+  "vars": [],
+  "file": "src/components/account/SettingsForm.tsx"
+ },
+ {
+  "key": "account.settingsform.84add5",
+  "group": "Customer account",
+  "section": "SettingsForm",
+  "def": "Email",
+  "vars": [],
+  "file": "src/components/account/SettingsForm.tsx"
+ },
+ {
+  "key": "account.settingsform.36142d",
+  "group": "Customer account",
+  "section": "SettingsForm",
+  "def": "Contact support to change your email.",
+  "vars": [],
+  "file": "src/components/account/SettingsForm.tsx"
+ },
+ {
+  "key": "account.settingsform.ab25d6",
+  "group": "Customer account",
+  "section": "SettingsForm",
+  "def": "Phone Number",
+  "vars": [],
+  "file": "src/components/account/SettingsForm.tsx"
+ },
+ {
+  "key": "account.settingsform.9d4af6",
+  "group": "Customer account",
+  "section": "SettingsForm",
+  "def": "Saved.",
+  "vars": [],
+  "file": "src/components/account/SettingsForm.tsx"
+ },
+ {
+  "key": "account.settingsform.56a228",
+  "group": "Customer account",
+  "section": "SettingsForm",
+  "def": "Saving…",
+  "vars": [],
+  "file": "src/components/account/SettingsForm.tsx"
+ },
+ {
+  "key": "account.settingsform.fa2984",
+  "group": "Customer account",
+  "section": "SettingsForm",
+  "def": "Save Changes",
+  "vars": [],
+  "file": "src/components/account/SettingsForm.tsx"
+ },
+ {
+  "key": "assistant.assistantwidget.515819",
+  "group": "Shopping assistant",
+  "section": "AssistantWidget",
+  "def": "Ask Queen",
+  "vars": [],
+  "file": "src/components/assistant/AssistantWidget.tsx"
+ },
+ {
+  "key": "assistant.assistantwidget.6911ad",
+  "group": "Shopping assistant",
+  "section": "AssistantWidget",
+  "def": "Queen",
+  "vars": [],
+  "file": "src/components/assistant/AssistantWidget.tsx"
+ },
+ {
+  "key": "assistant.assistantwidget.c8a7eb",
+  "group": "Shopping assistant",
+  "section": "AssistantWidget",
+  "def": "Royal Fragrance Concierge",
+  "vars": [],
+  "file": "src/components/assistant/AssistantWidget.tsx"
+ },
+ {
+  "key": "assistant.assistantwidget.bbfa77",
+  "group": "Shopping assistant",
+  "section": "AssistantWidget",
+  "def": "Close",
+  "vars": [],
+  "file": "src/components/assistant/AssistantWidget.tsx"
+ },
+ {
+  "key": "assistant.assistantwidget.3302ea",
+  "group": "Shopping assistant",
+  "section": "AssistantWidget",
+  "def": "Queen is thinking…",
+  "vars": [],
+  "file": "src/components/assistant/AssistantWidget.tsx"
+ },
+ {
+  "key": "assistant.assistantwidget.26ab65",
+  "group": "Shopping assistant",
+  "section": "AssistantWidget",
+  "def": "Describe a scent you'd love…",
+  "vars": [],
+  "file": "src/components/assistant/AssistantWidget.tsx"
+ },
+ {
+  "key": "assistant.assistantwidget.9bc257",
+  "group": "Shopping assistant",
+  "section": "AssistantWidget",
+  "def": "Send",
+  "vars": [],
+  "file": "src/components/assistant/AssistantWidget.tsx"
+ },
+ {
+  "key": "batches.batchlist.278e20",
+  "group": "Vendor space",
+  "section": "BatchList",
+  "def": "Promote this batch",
+  "vars": [],
+  "file": "src/components/batches/BatchList.tsx"
+ },
+ {
+  "key": "batches.batchlist.8e3df4",
+  "group": "Vendor space",
+  "section": "BatchList",
+  "def": "Copied",
+  "vars": [],
+  "file": "src/components/batches/BatchList.tsx"
+ },
+ {
+  "key": "batches.batchlist.2f84ee",
+  "group": "Vendor space",
+  "section": "BatchList",
+  "def": "Copy link",
+  "vars": [],
+  "file": "src/components/batches/BatchList.tsx"
+ },
+ {
+  "key": "batches.batchlist.26902e",
+  "group": "Vendor space",
+  "section": "BatchList",
+  "def": "Copy message",
+  "vars": [],
+  "file": "src/components/batches/BatchList.tsx"
+ },
+ {
+  "key": "batches.batchlist.7e0393",
+  "group": "Vendor space",
+  "section": "BatchList",
+  "def": "Share on WhatsApp",
+  "vars": [],
+  "file": "src/components/batches/BatchList.tsx"
+ },
+ {
+  "key": "batches.batchlist.58dfea",
+  "group": "Vendor space",
+  "section": "BatchList",
+  "def": "Could not update batch.",
+  "vars": [],
+  "file": "src/components/batches/BatchList.tsx"
+ },
+ {
+  "key": "batches.batchlist.81c449",
+  "group": "Vendor space",
+  "section": "BatchList",
+  "def": "No batches yet.",
+  "vars": [],
+  "file": "src/components/batches/BatchList.tsx"
+ },
+ {
+  "key": "batches.batchlist.7a7483",
+  "group": "Vendor space",
+  "section": "BatchList",
+  "def": "{cycle} · {v} to {v2} · {v3} per customer{v4}",
+  "vars": [
+   "cycle",
+   "v",
+   "v2",
+   "v3",
+   "v4"
+  ],
+  "file": "src/components/batches/BatchList.tsx"
+ },
+ {
+  "key": "batches.batchlist.c4259f",
+  "group": "Vendor space",
+  "section": "BatchList",
+  "def": "{members} joined · needs {min_members}{v}{v2}",
+  "vars": [
+   "members",
+   "min_members",
+   "v",
+   "v2"
+  ],
+  "file": "src/components/batches/BatchList.tsx"
+ },
+ {
+  "key": "batches.batchlist.7d9008",
+  "group": "Vendor space",
+  "section": "BatchList",
+  "def": "Close to new customers",
+  "vars": [],
+  "file": "src/components/batches/BatchList.tsx"
+ },
+ {
+  "key": "batches.batchlist.61e05d",
+  "group": "Vendor space",
+  "section": "BatchList",
+  "def": "Reopen",
+  "vars": [],
+  "file": "src/components/batches/BatchList.tsx"
+ },
+ {
+  "key": "batches.batchlist.2a9078",
+  "group": "Vendor space",
+  "section": "BatchList",
+  "def": "Mark delivered",
+  "vars": [],
+  "file": "src/components/batches/BatchList.tsx"
+ },
+ {
+  "key": "batches.batchlist.77dfd2",
+  "group": "Vendor space",
+  "section": "BatchList",
+  "def": "Cancel",
+  "vars": [],
+  "file": "src/components/batches/BatchList.tsx"
+ },
+ {
+  "key": "batches.batchlist.4bc728",
+  "group": "Vendor space",
+  "section": "BatchList",
+  "def": "Hide customers",
+  "vars": [],
+  "file": "src/components/batches/BatchList.tsx"
+ },
+ {
+  "key": "batches.batchlist.149781",
+  "group": "Vendor space",
+  "section": "BatchList",
+  "def": "No paid customers yet.",
+  "vars": [],
+  "file": "src/components/batches/BatchList.tsx"
+ },
+ {
+  "key": "batches.batchlist.96da65",
+  "group": "Vendor space",
+  "section": "BatchList",
+  "def": "switched to individual delivery",
+  "vars": [],
+  "file": "src/components/batches/BatchList.tsx"
+ },
+ {
+  "key": "batches.batchlocationspanel.fb0690",
+  "group": "Vendor space",
+  "section": "BatchLocationsPanel",
+  "def": "Could not save.",
+  "vars": [],
+  "file": "src/components/batches/BatchLocationsPanel.tsx"
+ },
+ {
+  "key": "batches.batchlocationspanel.530561",
+  "group": "Vendor space",
+  "section": "BatchLocationsPanel",
+  "def": "Delete this location?",
+  "vars": [],
+  "file": "src/components/batches/BatchLocationsPanel.tsx"
+ },
+ {
+  "key": "batches.batchlocationspanel.7ec509",
+  "group": "Vendor space",
+  "section": "BatchLocationsPanel",
+  "def": "Could not delete.",
+  "vars": [],
+  "file": "src/components/batches/BatchLocationsPanel.tsx"
+ },
+ {
+  "key": "batches.batchlocationspanel.7a4d3f",
+  "group": "Vendor space",
+  "section": "BatchLocationsPanel",
+  "def": "Batch locations and fees",
+  "vars": [],
+  "file": "src/components/batches/BatchLocationsPanel.tsx"
+ },
+ {
+  "key": "batches.batchlocationspanel.fbfde6",
+  "group": "Vendor space",
+  "section": "BatchLocationsPanel",
+  "def": "Batch fee is the full amount for one batch trip; customers split it. Individual fee is the normal fee a customer pays if they leave the batch and ship alone.",
+  "vars": [],
+  "file": "src/components/batches/BatchLocationsPanel.tsx"
+ },
+ {
+  "key": "batches.batchlocationspanel.d219c6",
+  "group": "Vendor space",
+  "section": "BatchLocationsPanel",
+  "def": "Location",
+  "vars": [],
+  "file": "src/components/batches/BatchLocationsPanel.tsx"
+ },
+ {
+  "key": "batches.batchlocationspanel.384906",
+  "group": "Vendor space",
+  "section": "BatchLocationsPanel",
+  "def": "Batch fee",
+  "vars": [],
+  "file": "src/components/batches/BatchLocationsPanel.tsx"
+ },
+ {
+  "key": "batches.batchlocationspanel.3d2d3a",
+  "group": "Vendor space",
+  "section": "BatchLocationsPanel",
+  "def": "Individual fee",
+  "vars": [],
+  "file": "src/components/batches/BatchLocationsPanel.tsx"
+ },
+ {
+  "key": "batches.batchlocationspanel.a733b8",
+  "group": "Vendor space",
+  "section": "BatchLocationsPanel",
+  "def": "Active",
+  "vars": [],
+  "file": "src/components/batches/BatchLocationsPanel.tsx"
+ },
+ {
+  "key": "batches.batchlocationspanel.f6fdbe",
+  "group": "Vendor space",
+  "section": "BatchLocationsPanel",
+  "def": "Delete",
+  "vars": [],
+  "file": "src/components/batches/BatchLocationsPanel.tsx"
+ },
+ {
+  "key": "batches.batchlocationspanel.9cac35",
+  "group": "Vendor space",
+  "section": "BatchLocationsPanel",
+  "def": "Location name",
+  "vars": [],
+  "file": "src/components/batches/BatchLocationsPanel.tsx"
+ },
+ {
+  "key": "batches.batchlocationspanel.80fb1d",
+  "group": "Vendor space",
+  "section": "BatchLocationsPanel",
+  "def": "Add location",
+  "vars": [],
+  "file": "src/components/batches/BatchLocationsPanel.tsx"
+ },
+ {
+  "key": "batches.createbatchform.2d23f9",
+  "group": "Vendor space",
+  "section": "CreateBatchForm",
+  "def": "No batch locations yet. The admin adds locations and their fees first.",
+  "vars": [],
+  "file": "src/components/batches/CreateBatchForm.tsx"
+ },
+ {
+  "key": "batches.createbatchform.5c4715",
+  "group": "Vendor space",
+  "section": "CreateBatchForm",
+  "def": "Could not create batch.",
+  "vars": [],
+  "file": "src/components/batches/CreateBatchForm.tsx"
+ },
+ {
+  "key": "batches.createbatchform.c7b13f",
+  "group": "Vendor space",
+  "section": "CreateBatchForm",
+  "def": "Batch opened. Customers can now join it at checkout.",
+  "vars": [],
+  "file": "src/components/batches/CreateBatchForm.tsx"
+ },
+ {
+  "key": "batches.createbatchform.5d532e",
+  "group": "Vendor space",
+  "section": "CreateBatchForm",
+  "def": "Open a new batch",
+  "vars": [],
+  "file": "src/components/batches/CreateBatchForm.tsx"
+ },
+ {
+  "key": "batches.createbatchform.d219c6",
+  "group": "Vendor space",
+  "section": "CreateBatchForm",
+  "def": "Location",
+  "vars": [],
+  "file": "src/components/batches/CreateBatchForm.tsx"
+ },
+ {
+  "key": "batches.createbatchform.34163e",
+  "group": "Vendor space",
+  "section": "CreateBatchForm",
+  "def": "Minimum customers to go out",
+  "vars": [],
+  "file": "src/components/batches/CreateBatchForm.tsx"
+ },
+ {
+  "key": "batches.createbatchform.4442f0",
+  "group": "Vendor space",
+  "section": "CreateBatchForm",
+  "def": "e.g. 8",
+  "vars": [],
+  "file": "src/components/batches/CreateBatchForm.tsx"
+ },
+ {
+  "key": "batches.createbatchform.ee0c47",
+  "group": "Vendor space",
+  "section": "CreateBatchForm",
+  "def": "Maximum customers allowed",
+  "vars": [],
+  "file": "src/components/batches/CreateBatchForm.tsx"
+ },
+ {
+  "key": "batches.createbatchform.9bee06",
+  "group": "Vendor space",
+  "section": "CreateBatchForm",
+  "def": "e.g. 12 (leave blank for same as minimum)",
+  "vars": [],
+  "file": "src/components/batches/CreateBatchForm.tsx"
+ },
+ {
+  "key": "batches.createbatchform.f5eda1",
+  "group": "Vendor space",
+  "section": "CreateBatchForm",
+  "def": "Cycle",
+  "vars": [],
+  "file": "src/components/batches/CreateBatchForm.tsx"
+ },
+ {
+  "key": "batches.createbatchform.88d43b",
+  "group": "Vendor space",
+  "section": "CreateBatchForm",
+  "def": "Weekly (closes in 7 days)",
+  "vars": [],
+  "file": "src/components/batches/CreateBatchForm.tsx"
+ },
+ {
+  "key": "batches.createbatchform.867435",
+  "group": "Vendor space",
+  "section": "CreateBatchForm",
+  "def": "Monthly (closes in 1 month)",
+  "vars": [],
+  "file": "src/components/batches/CreateBatchForm.tsx"
+ },
+ {
+  "key": "batches.createbatchform.a39a91",
+  "group": "Vendor space",
+  "section": "CreateBatchForm",
+  "def": "Custom date",
+  "vars": [],
+  "file": "src/components/batches/CreateBatchForm.tsx"
+ },
+ {
+  "key": "batches.createbatchform.4969bb",
+  "group": "Vendor space",
+  "section": "CreateBatchForm",
+  "def": "Starting date",
+  "vars": [],
+  "file": "src/components/batches/CreateBatchForm.tsx"
+ },
+ {
+  "key": "batches.createbatchform.a47e9f",
+  "group": "Vendor space",
+  "section": "CreateBatchForm",
+  "def": "Closing date",
+  "vars": [],
+  "file": "src/components/batches/CreateBatchForm.tsx"
+ },
+ {
+  "key": "batches.createbatchform.849686",
+  "group": "Vendor space",
+  "section": "CreateBatchForm",
+  "def": "Label (optional)",
+  "vars": [],
+  "file": "src/components/batches/CreateBatchForm.tsx"
+ },
+ {
+  "key": "batches.createbatchform.47807f",
+  "group": "Vendor space",
+  "section": "CreateBatchForm",
+  "def": "e.g. Hostel A weekly run",
+  "vars": [],
+  "file": "src/components/batches/CreateBatchForm.tsx"
+ },
+ {
+  "key": "batches.createbatchform.aee355",
+  "group": "Vendor space",
+  "section": "CreateBatchForm",
+  "def": "Each customer will pay",
+  "vars": [],
+  "file": "src/components/batches/CreateBatchForm.tsx"
+ },
+ {
+  "key": "batches.createbatchform.f7a57d",
+  "group": "Vendor space",
+  "section": "CreateBatchForm",
+  "def": "delivery in this batch, based on the minimum of {n} customers.",
+  "vars": [
+   "n"
+  ],
+  "file": "src/components/batches/CreateBatchForm.tsx"
+ },
+ {
+  "key": "batches.createbatchform.b1b853",
+  "group": "Vendor space",
+  "section": "CreateBatchForm",
+  "def": "Opening…",
+  "vars": [],
+  "file": "src/components/batches/CreateBatchForm.tsx"
+ },
+ {
+  "key": "batches.createbatchform.8a8b42",
+  "group": "Vendor space",
+  "section": "CreateBatchForm",
+  "def": "Open Batch",
+  "vars": [],
+  "file": "src/components/batches/CreateBatchForm.tsx"
+ },
+ {
+  "key": "batches.settlebalancebutton.56a228",
+  "group": "Vendor space",
+  "section": "SettleBalanceButton",
+  "def": "Saving…",
+  "vars": [],
+  "file": "src/components/batches/SettleBalanceButton.tsx"
+ },
+ {
+  "key": "batches.settlebalancebutton.8ad1d6",
+  "group": "Vendor space",
+  "section": "SettleBalanceButton",
+  "def": "Mark balance as paid",
+  "vars": [],
+  "file": "src/components/batches/SettleBalanceButton.tsx"
+ },
+ {
+  "key": "batches.switchtoindividual.ebaebb",
+  "group": "Vendor space",
+  "section": "SwitchToIndividual",
+  "def": "Could not switch.",
+  "vars": [],
+  "file": "src/components/batches/SwitchToIndividual.tsx"
+ },
+ {
+  "key": "batches.switchtoindividual.5e1d95",
+  "group": "Vendor space",
+  "section": "SwitchToIndividual",
+  "def": "Switched to individual delivery.",
+  "vars": [],
+  "file": "src/components/batches/SwitchToIndividual.tsx"
+ },
+ {
+  "key": "batches.switchtoindividual.be4799",
+  "group": "Vendor space",
+  "section": "SwitchToIndividual",
+  "def": "Your balance is",
+  "vars": [],
+  "file": "src/components/batches/SwitchToIndividual.tsx"
+ },
+ {
+  "key": "batches.switchtoindividual.75f509",
+  "group": "Vendor space",
+  "section": "SwitchToIndividual",
+  "def": "(the normal delivery fee minus what you already paid). Message us to settle it and we will ship your order on its own.",
+  "vars": [],
+  "file": "src/components/batches/SwitchToIndividual.tsx"
+ },
+ {
+  "key": "batches.switchtoindividual.bc3c16",
+  "group": "Vendor space",
+  "section": "SwitchToIndividual",
+  "def": "No extra payment is needed. We will ship your order on its own.",
+  "vars": [],
+  "file": "src/components/batches/SwitchToIndividual.tsx"
+ },
+ {
+  "key": "batches.switchtoindividual.a9993c",
+  "group": "Vendor space",
+  "section": "SwitchToIndividual",
+  "def": "Message us on WhatsApp",
+  "vars": [],
+  "file": "src/components/batches/SwitchToIndividual.tsx"
+ },
+ {
+  "key": "batches.switchtoindividual.047649",
+  "group": "Vendor space",
+  "section": "SwitchToIndividual",
+  "def": "Batch taking too long?",
+  "vars": [],
+  "file": "src/components/batches/SwitchToIndividual.tsx"
+ },
+ {
+  "key": "batches.switchtoindividual.8bd61a",
+  "group": "Vendor space",
+  "section": "SwitchToIndividual",
+  "def": "You can leave the batch and have your order delivered alone. You pay the difference between the normal delivery fee and the share you already paid.",
+  "vars": [],
+  "file": "src/components/batches/SwitchToIndividual.tsx"
+ },
+ {
+  "key": "batches.switchtoindividual.0b9899",
+  "group": "Vendor space",
+  "section": "SwitchToIndividual",
+  "def": "Email used for this order",
+  "vars": [],
+  "file": "src/components/batches/SwitchToIndividual.tsx"
+ },
+ {
+  "key": "batches.switchtoindividual.ca40b0",
+  "group": "Vendor space",
+  "section": "SwitchToIndividual",
+  "def": "Switching…",
+  "vars": [],
+  "file": "src/components/batches/SwitchToIndividual.tsx"
+ },
+ {
+  "key": "batches.switchtoindividual.1f78d7",
+  "group": "Vendor space",
+  "section": "SwitchToIndividual",
+  "def": "Switch to individual delivery",
+  "vars": [],
+  "file": "src/components/batches/SwitchToIndividual.tsx"
+ },
+ {
+  "key": "batches.vendorlocationspanel.fb0690",
+  "group": "Vendor space",
+  "section": "VendorLocationsPanel",
+  "def": "Could not save.",
+  "vars": [],
+  "file": "src/components/batches/VendorLocationsPanel.tsx"
+ },
+ {
+  "key": "batches.vendorlocationspanel.b8e91f",
+  "group": "Vendor space",
+  "section": "VendorLocationsPanel",
+  "def": "Assign vendors to locations",
+  "vars": [],
+  "file": "src/components/batches/VendorLocationsPanel.tsx"
+ },
+ {
+  "key": "batches.vendorlocationspanel.03d7ac",
+  "group": "Vendor space",
+  "section": "VendorLocationsPanel",
+  "def": "Pick the location each vendor serves (for example their campus). Customers ordering through that vendor’s link can join batches for that location only, and the vendor can only open batches there. Vendors with no location have no batch delivery.",
+  "vars": [],
+  "file": "src/components/batches/VendorLocationsPanel.tsx"
+ },
+ {
+  "key": "batches.vendorlocationspanel.3f8262",
+  "group": "Vendor space",
+  "section": "VendorLocationsPanel",
+  "def": "No active vendors yet.",
+  "vars": [],
+  "file": "src/components/batches/VendorLocationsPanel.tsx"
+ },
+ {
+  "key": "batches.vendorlocationspanel.9fb78f",
+  "group": "Vendor space",
+  "section": "VendorLocationsPanel",
+  "def": "No location",
+  "vars": [],
+  "file": "src/components/batches/VendorLocationsPanel.tsx"
+ },
+ {
+  "key": "checkout.checkoutform.141a52",
+  "group": "Checkout and order confirmation",
+  "section": "CheckoutForm",
+  "def": "New customer discount",
+  "vars": [],
+  "file": "src/components/checkout/CheckoutForm.tsx"
+ },
+ {
+  "key": "checkout.checkoutform.2c65b2",
+  "group": "Checkout and order confirmation",
+  "section": "CheckoutForm",
+  "def": "Invalid code.",
+  "vars": [],
+  "file": "src/components/checkout/CheckoutForm.tsx"
+ },
+ {
+  "key": "checkout.checkoutform.9a3ea0",
+  "group": "Checkout and order confirmation",
+  "section": "CheckoutForm",
+  "def": "Something went wrong. Please try again.",
+  "vars": [],
+  "file": "src/components/checkout/CheckoutForm.tsx"
+ },
+ {
+  "key": "checkout.checkoutform.46c60d",
+  "group": "Checkout and order confirmation",
+  "section": "CheckoutForm",
+  "def": "Network error. Please check your connection and try again.",
+  "vars": [],
+  "file": "src/components/checkout/CheckoutForm.tsx"
+ },
+ {
+  "key": "checkout.checkoutform.9583fb",
+  "group": "Checkout and order confirmation",
+  "section": "CheckoutForm",
+  "def": "Your cart is empty. Add a fragrance before checking out.",
+  "vars": [],
+  "file": "src/components/checkout/CheckoutForm.tsx"
+ },
+ {
+  "key": "checkout.checkoutform.db2d28",
+  "group": "Checkout and order confirmation",
+  "section": "CheckoutForm",
+  "def": "You qualify for",
+  "vars": [],
+  "file": "src/components/checkout/CheckoutForm.tsx"
+ },
+ {
+  "key": "checkout.checkoutform.bdd274",
+  "group": "Checkout and order confirmation",
+  "section": "CheckoutForm",
+  "def": "{newUserDiscountPercentage}% off",
+  "vars": [
+   "newUserDiscountPercentage"
+  ],
+  "file": "src/components/checkout/CheckoutForm.tsx"
+ },
+ {
+  "key": "checkout.checkoutform.764fb4",
+  "group": "Checkout and order confirmation",
+  "section": "CheckoutForm",
+  "def": "as a new customer — already applied to your total below.",
+  "vars": [],
+  "file": "src/components/checkout/CheckoutForm.tsx"
+ },
+ {
+  "key": "checkout.checkoutform.64346b",
+  "group": "Checkout and order confirmation",
+  "section": "CheckoutForm",
+  "def": "Full Name",
+  "vars": [],
+  "file": "src/components/checkout/CheckoutForm.tsx"
+ },
+ {
+  "key": "checkout.checkoutform.84add5",
+  "group": "Checkout and order confirmation",
+  "section": "CheckoutForm",
+  "def": "Email",
+  "vars": [],
+  "file": "src/components/checkout/CheckoutForm.tsx"
+ },
+ {
+  "key": "checkout.checkoutform.ab25d6",
+  "group": "Checkout and order confirmation",
+  "section": "CheckoutForm",
+  "def": "Phone Number",
+  "vars": [],
+  "file": "src/components/checkout/CheckoutForm.tsx"
+ },
+ {
+  "key": "checkout.checkoutform.026744",
+  "group": "Checkout and order confirmation",
+  "section": "CheckoutForm",
+  "def": "Continue to Delivery",
+  "vars": [],
+  "file": "src/components/checkout/CheckoutForm.tsx"
+ },
+ {
+  "key": "checkout.checkoutform.f93d20",
+  "group": "Checkout and order confirmation",
+  "section": "CheckoutForm",
+  "def": "Share delivery with a batch",
+  "vars": [],
+  "file": "src/components/checkout/CheckoutForm.tsx"
+ },
+ {
+  "key": "checkout.checkoutform.c5787c",
+  "group": "Checkout and order confirmation",
+  "section": "CheckoutForm",
+  "def": "Customers in the same location split one delivery fee. If the batch takes too long, you can switch to individual delivery from your order page.",
+  "vars": [],
+  "file": "src/components/checkout/CheckoutForm.tsx"
+ },
+ {
+  "key": "checkout.checkoutform.eeda02",
+  "group": "Checkout and order confirmation",
+  "section": "CheckoutForm",
+  "def": "No batch: normal delivery",
+  "vars": [],
+  "file": "src/components/checkout/CheckoutForm.tsx"
+ },
+ {
+  "key": "checkout.checkoutform.e59a43",
+  "group": "Checkout and order confirmation",
+  "section": "CheckoutForm",
+  "def": "{locationName}{v} — {v2} delivery, closes {v3}, {spotsLeft} order{v4} left",
+  "vars": [
+   "locationName",
+   "v",
+   "v2",
+   "v3",
+   "spotsLeft",
+   "v4"
+  ],
+  "file": "src/components/checkout/CheckoutForm.tsx"
+ },
+ {
+  "key": "checkout.checkoutform.a72502",
+  "group": "Checkout and order confirmation",
+  "section": "CheckoutForm",
+  "def": "State",
+  "vars": [],
+  "file": "src/components/checkout/CheckoutForm.tsx"
+ },
+ {
+  "key": "checkout.checkoutform.e125c1",
+  "group": "Checkout and order confirmation",
+  "section": "CheckoutForm",
+  "def": "{name} — {v} delivery",
+  "vars": [
+   "name",
+   "v"
+  ],
+  "file": "src/components/checkout/CheckoutForm.tsx"
+ },
+ {
+  "key": "checkout.checkoutform.d817b6",
+  "group": "Checkout and order confirmation",
+  "section": "CheckoutForm",
+  "def": "Estimated delivery: 24–48 hours within Lagos.",
+  "vars": [],
+  "file": "src/components/checkout/CheckoutForm.tsx"
+ },
+ {
+  "key": "checkout.checkoutform.879eca",
+  "group": "Checkout and order confirmation",
+  "section": "CheckoutForm",
+  "def": "Estimated delivery: 1–4 weeks outside Lagos — we aim to get it to you sooner, but it will never take longer than 4 weeks.",
+  "vars": [],
+  "file": "src/components/checkout/CheckoutForm.tsx"
+ },
+ {
+  "key": "checkout.checkoutform.b16885",
+  "group": "Checkout and order confirmation",
+  "section": "CheckoutForm",
+  "def": "How would you like to receive your order?",
+  "vars": [],
+  "file": "src/components/checkout/CheckoutForm.tsx"
+ },
+ {
+  "key": "checkout.checkoutform.13da0f",
+  "group": "Checkout and order confirmation",
+  "section": "CheckoutForm",
+  "def": "Deliver to my address ({v})",
+  "vars": [
+   "v"
+  ],
+  "file": "src/components/checkout/CheckoutForm.tsx"
+ },
+ {
+  "key": "checkout.checkoutform.88de5c",
+  "group": "Checkout and order confirmation",
+  "section": "CheckoutForm",
+  "def": "Pick up at {PICKUP_LOCATION} ({v})",
+  "vars": [
+   "PICKUP_LOCATION",
+   "v"
+  ],
+  "file": "src/components/checkout/CheckoutForm.tsx"
+ },
+ {
+  "key": "checkout.checkoutform.cfd1fd",
+  "group": "Checkout and order confirmation",
+  "section": "CheckoutForm",
+  "def": "Available for Lagos only. Come to Ipaja to collect your order.",
+  "vars": [],
+  "file": "src/components/checkout/CheckoutForm.tsx"
+ },
+ {
+  "key": "checkout.checkoutform.a25d3a",
+  "group": "Checkout and order confirmation",
+  "section": "CheckoutForm",
+  "def": "Pickup location:",
+  "vars": [],
+  "file": "src/components/checkout/CheckoutForm.tsx"
+ },
+ {
+  "key": "checkout.checkoutform.3a1df8",
+  "group": "Checkout and order confirmation",
+  "section": "CheckoutForm",
+  "def": ". Pickup is available {PICKUP_DAYS_LABEL} only.",
+  "vars": [
+   "PICKUP_DAYS_LABEL"
+  ],
+  "file": "src/components/checkout/CheckoutForm.tsx"
+ },
+ {
+  "key": "checkout.checkoutform.d51552",
+  "group": "Checkout and order confirmation",
+  "section": "CheckoutForm",
+  "def": "WhatsApp Number (required)",
+  "vars": [],
+  "file": "src/components/checkout/CheckoutForm.tsx"
+ },
+ {
+  "key": "checkout.checkoutform.dd1706",
+  "group": "Checkout and order confirmation",
+  "section": "CheckoutForm",
+  "def": "Pickup Date (required)",
+  "vars": [],
+  "file": "src/components/checkout/CheckoutForm.tsx"
+ },
+ {
+  "key": "checkout.checkoutform.2057df",
+  "group": "Checkout and order confirmation",
+  "section": "CheckoutForm",
+  "def": "Choose a day",
+  "vars": [],
+  "file": "src/components/checkout/CheckoutForm.tsx"
+ },
+ {
+  "key": "checkout.checkoutform.294ed3",
+  "group": "Checkout and order confirmation",
+  "section": "CheckoutForm",
+  "def": "Delivery location:",
+  "vars": [],
+  "file": "src/components/checkout/CheckoutForm.tsx"
+ },
+ {
+  "key": "checkout.checkoutform.05ab6c",
+  "group": "Checkout and order confirmation",
+  "section": "CheckoutForm",
+  "def": ". Your order will be delivered with this batch.",
+  "vars": [],
+  "file": "src/components/checkout/CheckoutForm.tsx"
+ },
+ {
+  "key": "checkout.checkoutform.27e190",
+  "group": "Checkout and order confirmation",
+  "section": "CheckoutForm",
+  "def": "City / Area",
+  "vars": [],
+  "file": "src/components/checkout/CheckoutForm.tsx"
+ },
+ {
+  "key": "checkout.checkoutform.b33a5d",
+  "group": "Checkout and order confirmation",
+  "section": "CheckoutForm",
+  "def": "Full Delivery Address",
+  "vars": [],
+  "file": "src/components/checkout/CheckoutForm.tsx"
+ },
+ {
+  "key": "checkout.checkoutform.b52b36",
+  "group": "Checkout and order confirmation",
+  "section": "CheckoutForm",
+  "def": "Back",
+  "vars": [],
+  "file": "src/components/checkout/CheckoutForm.tsx"
+ },
+ {
+  "key": "checkout.checkoutform.6776fe",
+  "group": "Checkout and order confirmation",
+  "section": "CheckoutForm",
+  "def": "Review Order",
+  "vars": [],
+  "file": "src/components/checkout/CheckoutForm.tsx"
+ },
+ {
+  "key": "checkout.checkoutform.d14f9f",
+  "group": "Checkout and order confirmation",
+  "section": "CheckoutForm",
+  "def": "Promo Code",
+  "vars": [],
+  "file": "src/components/checkout/CheckoutForm.tsx"
+ },
+ {
+  "key": "checkout.checkoutform.ab45ae",
+  "group": "Checkout and order confirmation",
+  "section": "CheckoutForm",
+  "def": "Enter code",
+  "vars": [],
+  "file": "src/components/checkout/CheckoutForm.tsx"
+ },
+ {
+  "key": "checkout.checkoutform.e96390",
+  "group": "Checkout and order confirmation",
+  "section": "CheckoutForm",
+  "def": "Remove",
+  "vars": [],
+  "file": "src/components/checkout/CheckoutForm.tsx"
+ },
+ {
+  "key": "checkout.checkoutform.820d60",
+  "group": "Checkout and order confirmation",
+  "section": "CheckoutForm",
+  "def": "Checking…",
+  "vars": [],
+  "file": "src/components/checkout/CheckoutForm.tsx"
+ },
+ {
+  "key": "checkout.checkoutform.cfea41",
+  "group": "Checkout and order confirmation",
+  "section": "CheckoutForm",
+  "def": "Apply",
+  "vars": [],
+  "file": "src/components/checkout/CheckoutForm.tsx"
+ },
+ {
+  "key": "checkout.checkoutform.33f012",
+  "group": "Checkout and order confirmation",
+  "section": "CheckoutForm",
+  "def": "\"{code}\" applied — {v} off{v2}",
+  "vars": [
+   "code",
+   "v",
+   "v2"
+  ],
+  "file": "src/components/checkout/CheckoutForm.tsx"
+ },
+ {
+  "key": "checkout.checkoutform.33b05b",
+  "group": "Checkout and order confirmation",
+  "section": "CheckoutForm",
+  "def": "Product Subtotal",
+  "vars": [],
+  "file": "src/components/checkout/CheckoutForm.tsx"
+ },
+ {
+  "key": "checkout.checkoutform.b25928",
+  "group": "Checkout and order confirmation",
+  "section": "CheckoutForm",
+  "def": "Total",
+  "vars": [],
+  "file": "src/components/checkout/CheckoutForm.tsx"
+ },
+ {
+  "key": "checkout.checkoutform.e25507",
+  "group": "Checkout and order confirmation",
+  "section": "CheckoutForm",
+  "def": "Redirecting to payment…",
+  "vars": [],
+  "file": "src/components/checkout/CheckoutForm.tsx"
+ },
+ {
+  "key": "checkout.checkoutform.d32bbe",
+  "group": "Checkout and order confirmation",
+  "section": "CheckoutForm",
+  "def": "Your Info",
+  "vars": [],
+  "file": "src/components/checkout/CheckoutForm.tsx"
+ },
+ {
+  "key": "checkout.checkoutform.9631af",
+  "group": "Checkout and order confirmation",
+  "section": "CheckoutForm",
+  "def": "Delivery",
+  "vars": [],
+  "file": "src/components/checkout/CheckoutForm.tsx"
+ },
+ {
+  "key": "checkout.checkoutform.b41a92",
+  "group": "Checkout and order confirmation",
+  "section": "CheckoutForm",
+  "def": "Payment",
+  "vars": [],
+  "file": "src/components/checkout/CheckoutForm.tsx"
+ },
+ {
+  "key": "home.brandintro.6979d6",
+  "group": "Home, Our Story and Future pages",
+  "section": "BrandIntro",
+  "def": "Royal Fragrance — curated collection",
+  "vars": [],
+  "file": "src/components/home/BrandIntro.tsx"
+ },
+ {
+  "key": "home.testimonials.9e1438",
+  "group": "Home, Our Story and Future pages",
+  "section": "Testimonials",
+  "def": "What People Say",
+  "vars": [],
+  "file": "src/components/home/Testimonials.tsx"
+ },
+ {
+  "key": "home.testimonials.8b40f0",
+  "group": "Home, Our Story and Future pages",
+  "section": "Testimonials",
+  "def": "Loved by Our Customers",
+  "vars": [],
+  "file": "src/components/home/Testimonials.tsx"
+ },
+ {
+  "key": "layout.footer.fc49f1",
+  "group": "Footer",
+  "section": "Footer",
+  "def": "TikTok",
+  "vars": [],
+  "file": "src/components/layout/Footer.tsx"
+ },
+ {
+  "key": "layout.footer.2c16ea",
+  "group": "Footer",
+  "section": "Footer",
+  "def": "Royal",
+  "vars": [],
+  "file": "src/components/layout/Footer.tsx"
+ },
+ {
+  "key": "layout.footer.ebf862",
+  "group": "Footer",
+  "section": "Footer",
+  "def": "Fragrance",
+  "vars": [],
+  "file": "src/components/layout/Footer.tsx"
+ },
+ {
+  "key": "layout.footer.5721bb",
+  "group": "Footer",
+  "section": "Footer",
+  "def": "Instagram",
+  "vars": [],
+  "file": "src/components/layout/Footer.tsx"
+ },
+ {
+  "key": "layout.footer.82da67",
+  "group": "Footer",
+  "section": "Footer",
+  "def": "Facebook",
+  "vars": [],
+  "file": "src/components/layout/Footer.tsx"
+ },
+ {
+  "key": "layout.navbar.c07431",
+  "group": "Menu and navigation",
+  "section": "Navbar",
+  "def": "Royal Fragrance",
+  "vars": [],
+  "file": "src/components/layout/Navbar.tsx"
+ },
+ {
+  "key": "layout.navbar.6c9fc9",
+  "group": "Menu and navigation",
+  "section": "Navbar",
+  "def": "Close menu",
+  "vars": [],
+  "file": "src/components/layout/Navbar.tsx"
+ },
+ {
+  "key": "layout.navbar.b51b2b",
+  "group": "Menu and navigation",
+  "section": "Navbar",
+  "def": "My Account",
+  "vars": [],
+  "file": "src/components/layout/Navbar.tsx"
+ },
+ {
+  "key": "layout.navbar.4e5a28",
+  "group": "Menu and navigation",
+  "section": "Navbar",
+  "def": "Login",
+  "vars": [],
+  "file": "src/components/layout/Navbar.tsx"
+ },
+ {
+  "key": "layout.navbar.2ba402",
+  "group": "Menu and navigation",
+  "section": "Navbar",
+  "def": "Sign Up",
+  "vars": [],
+  "file": "src/components/layout/Navbar.tsx"
+ },
+ {
+  "key": "layout.navbar.c8ded0",
+  "group": "Menu and navigation",
+  "section": "Navbar",
+  "def": "Cart{v}",
+  "vars": [
+   "v"
+  ],
+  "file": "src/components/layout/Navbar.tsx"
+ },
+ {
+  "key": "layout.navbar.85dfa3",
+  "group": "Menu and navigation",
+  "section": "Navbar",
+  "def": "Account",
+  "vars": [],
+  "file": "src/components/layout/Navbar.tsx"
+ },
+ {
+  "key": "layout.navbar.446568",
+  "group": "Menu and navigation",
+  "section": "Navbar",
+  "def": "Cart",
+  "vars": [],
+  "file": "src/components/layout/Navbar.tsx"
+ },
+ {
+  "key": "layout.navbar.197101",
+  "group": "Menu and navigation",
+  "section": "Navbar",
+  "def": "Open menu",
+  "vars": [],
+  "file": "src/components/layout/Navbar.tsx"
+ },
+ {
+  "key": "pwa.installprompt.7fa4d2",
+  "group": "App install prompt",
+  "section": "InstallPrompt",
+  "def": "Install Royal Fragrance",
+  "vars": [],
+  "file": "src/components/pwa/InstallPrompt.tsx"
+ },
+ {
+  "key": "pwa.installprompt.7026eb",
+  "group": "App install prompt",
+  "section": "InstallPrompt",
+  "def": "Tap the Share icon, then \"Add to Home Screen\" for quick access anytime.",
+  "vars": [],
+  "file": "src/components/pwa/InstallPrompt.tsx"
+ },
+ {
+  "key": "pwa.installprompt.09102b",
+  "group": "App install prompt",
+  "section": "InstallPrompt",
+  "def": "Add Royal Fragrance to your home screen for quick access — no app store needed.",
+  "vars": [],
+  "file": "src/components/pwa/InstallPrompt.tsx"
+ },
+ {
+  "key": "pwa.installprompt.fd6c3e",
+  "group": "App install prompt",
+  "section": "InstallPrompt",
+  "def": "Install",
+  "vars": [],
+  "file": "src/components/pwa/InstallPrompt.tsx"
+ },
+ {
+  "key": "pwa.installprompt.70afe9",
+  "group": "App install prompt",
+  "section": "InstallPrompt",
+  "def": "Dismiss",
+  "vars": [],
+  "file": "src/components/pwa/InstallPrompt.tsx"
+ },
+ {
+  "key": "shared.dashboardmobilenav.bbfa77",
+  "group": "Menu and navigation",
+  "section": "DashboardMobileNav",
+  "def": "Close",
+  "vars": [],
+  "file": "src/components/shared/DashboardMobileNav.tsx"
+ },
+ {
+  "key": "shared.dashboardmobilenav.4bab2d",
+  "group": "Menu and navigation",
+  "section": "DashboardMobileNav",
+  "def": "More",
+  "vars": [],
+  "file": "src/components/shared/DashboardMobileNav.tsx"
+ },
+ {
+  "key": "shop.combocard.fc5e5b",
+  "group": "Products and shop",
+  "section": "ComboCard",
+  "def": "No image",
+  "vars": [],
+  "file": "src/components/shop/ComboCard.tsx"
+ },
+ {
+  "key": "shop.combocard.634d43",
+  "group": "Products and shop",
+  "section": "ComboCard",
+  "def": "Save {v}",
+  "vars": [
+   "v"
+  ],
+  "file": "src/components/shop/ComboCard.tsx"
+ },
+ {
+  "key": "shop.combocard.db5497",
+  "group": "Products and shop",
+  "section": "ComboCard",
+  "def": "Includes",
+  "vars": [],
+  "file": "src/components/shop/ComboCard.tsx"
+ },
+ {
+  "key": "shop.combocard.4dbad7",
+  "group": "Products and shop",
+  "section": "ComboCard",
+  "def": "Add Combo to Cart",
+  "vars": [],
+  "file": "src/components/shop/ComboCard.tsx"
+ },
+ {
+  "key": "shop.productpurchasepanel.e57769",
+  "group": "Products and shop",
+  "section": "ProductPurchasePanel",
+  "def": "{newUserDiscountPercent}% OFF — New Customers",
+  "vars": [
+   "newUserDiscountPercent"
+  ],
+  "file": "src/components/shop/ProductPurchasePanel.tsx"
+ },
+ {
+  "key": "shop.productpurchasepanel.87be80",
+  "group": "Products and shop",
+  "section": "ProductPurchasePanel",
+  "def": "on your first order",
+  "vars": [],
+  "file": "src/components/shop/ProductPurchasePanel.tsx"
+ },
+ {
+  "key": "shop.productpurchasepanel.ee3fb1",
+  "group": "Products and shop",
+  "section": "ProductPurchasePanel",
+  "def": "Type:",
+  "vars": [],
+  "file": "src/components/shop/ProductPurchasePanel.tsx"
+ },
+ {
+  "key": "shop.productpurchasepanel.88d5e4",
+  "group": "Products and shop",
+  "section": "ProductPurchasePanel",
+  "def": "Colors",
+  "vars": [],
+  "file": "src/components/shop/ProductPurchasePanel.tsx"
+ },
+ {
+  "key": "shop.productpurchasepanel.b71523",
+  "group": "Products and shop",
+  "section": "ProductPurchasePanel",
+  "def": "Size",
+  "vars": [],
+  "file": "src/components/shop/ProductPurchasePanel.tsx"
+ },
+ {
+  "key": "shop.productpurchasepanel.6c02ab",
+  "group": "Products and shop",
+  "section": "ProductPurchasePanel",
+  "def": "Decrease quantity",
+  "vars": [],
+  "file": "src/components/shop/ProductPurchasePanel.tsx"
+ },
+ {
+  "key": "shop.productpurchasepanel.062e79",
+  "group": "Products and shop",
+  "section": "ProductPurchasePanel",
+  "def": "Increase quantity",
+  "vars": [],
+  "file": "src/components/shop/ProductPurchasePanel.tsx"
+ },
+ {
+  "key": "shop.productpurchasepanel.2d958b",
+  "group": "Products and shop",
+  "section": "ProductPurchasePanel",
+  "def": "Currently out of stock",
+  "vars": [],
+  "file": "src/components/shop/ProductPurchasePanel.tsx"
+ },
+ {
+  "key": "shop.productpurchasepanel.e9cdce",
+  "group": "Products and shop",
+  "section": "ProductPurchasePanel",
+  "def": "Add to Cart",
+  "vars": [],
+  "file": "src/components/shop/ProductPurchasePanel.tsx"
+ },
+ {
+  "key": "shop.productpurchasepanel.16c2c5",
+  "group": "Products and shop",
+  "section": "ProductPurchasePanel",
+  "def": "Buy Now",
+  "vars": [],
+  "file": "src/components/shop/ProductPurchasePanel.tsx"
+ },
+ {
+  "key": "shop.shopfilters.81d353",
+  "group": "Products and shop",
+  "section": "ShopFilters",
+  "def": "Search fragrances…",
+  "vars": [],
+  "file": "src/components/shop/ShopFilters.tsx"
+ },
+ {
+  "key": "shop.shopfilters.1fd266",
+  "group": "Products and shop",
+  "section": "ShopFilters",
+  "def": "All Categories",
+  "vars": [],
+  "file": "src/components/shop/ShopFilters.tsx"
+ },
+ {
+  "key": "shop.shopfilters.6a7208",
+  "group": "Products and shop",
+  "section": "ShopFilters",
+  "def": "All",
+  "vars": [],
+  "file": "src/components/shop/ShopFilters.tsx"
+ },
+ {
+  "key": "shop.shopfilters.682d5d",
+  "group": "Products and shop",
+  "section": "ShopFilters",
+  "def": "Sort: Newest",
+  "vars": [],
+  "file": "src/components/shop/ShopFilters.tsx"
+ },
+ {
+  "key": "shop.shopfilters.ed3d3a",
+  "group": "Products and shop",
+  "section": "ShopFilters",
+  "def": "Price: Low to High",
+  "vars": [],
+  "file": "src/components/shop/ShopFilters.tsx"
+ },
+ {
+  "key": "shop.shopfilters.c60097",
+  "group": "Products and shop",
+  "section": "ShopFilters",
+  "def": "Price: High to Low",
+  "vars": [],
+  "file": "src/components/shop/ShopFilters.tsx"
+ },
+ {
+  "key": "shop.shopfilters.d7fd54",
+  "group": "Products and shop",
+  "section": "ShopFilters",
+  "def": "Name: A–Z",
+  "vars": [],
+  "file": "src/components/shop/ShopFilters.tsx"
+ },
+ {
+  "key": "shop.wishlisttoggle.fe96c8",
+  "group": "Products and shop",
+  "section": "WishlistToggle",
+  "def": "Remove from wishlist",
+  "vars": [],
+  "file": "src/components/shop/WishlistToggle.tsx"
+ },
+ {
+  "key": "shop.wishlisttoggle.c7a159",
+  "group": "Products and shop",
+  "section": "WishlistToggle",
+  "def": "Add to wishlist",
+  "vars": [],
+  "file": "src/components/shop/WishlistToggle.tsx"
+ },
+ {
+  "key": "store.vendorproducttile.77a95e",
+  "group": "Other pages",
+  "section": "VendorProductTile",
+  "def": "Chat vendor to buy",
+  "vars": [],
+  "file": "src/components/store/VendorProductTile.tsx"
+ },
+ {
+  "key": "store.vendorproducttile.065885",
+  "group": "Other pages",
+  "section": "VendorProductTile",
+  "def": "Order online (far away)",
+  "vars": [],
+  "file": "src/components/store/VendorProductTile.tsx"
+ },
+ {
+  "key": "ui.passwordinput.e40123",
+  "group": "Other pages",
+  "section": "PasswordInput",
+  "def": "Hide password",
+  "vars": [],
+  "file": "src/components/ui/PasswordInput.tsx"
+ },
+ {
+  "key": "ui.passwordinput.044b85",
+  "group": "Other pages",
+  "section": "PasswordInput",
+  "def": "Show password",
+  "vars": [],
+  "file": "src/components/ui/PasswordInput.tsx"
+ },
+ {
+  "key": "ui.productcard.bc67a8",
+  "group": "Products and shop",
+  "section": "ProductCard",
+  "def": "Out of Stock",
+  "vars": [],
+  "file": "src/components/ui/ProductCard.tsx"
+ },
+ {
+  "key": "ui.productcard.0028d7",
+  "group": "Products and shop",
+  "section": "ProductCard",
+  "def": "Sale",
+  "vars": [],
+  "file": "src/components/ui/ProductCard.tsx"
+ },
+ {
+  "key": "ui.productcard.b277f9",
+  "group": "Products and shop",
+  "section": "ProductCard",
+  "def": "% OFF",
+  "vars": [],
+  "file": "src/components/ui/ProductCard.tsx"
+ },
+ {
+  "key": "ui.productcard.3f6605",
+  "group": "Products and shop",
+  "section": "ProductCard",
+  "def": "From",
+  "vars": [],
+  "file": "src/components/ui/ProductCard.tsx"
+ },
+ {
+  "key": "vendor.bvnninform.fb0690",
+  "group": "Vendor space",
+  "section": "BvnNinForm",
+  "def": "Could not save.",
+  "vars": [],
+  "file": "src/components/vendor/BvnNinForm.tsx"
+ },
+ {
+  "key": "vendor.bvnninform.fb69f0",
+  "group": "Vendor space",
+  "section": "BvnNinForm",
+  "def": "One more thing before your account is ready",
+  "vars": [],
+  "file": "src/components/vendor/BvnNinForm.tsx"
+ },
+ {
+  "key": "vendor.bvnninform.6fe01e",
+  "group": "Vendor space",
+  "section": "BvnNinForm",
+  "def": "Your collection account can't be created yet — we're required to link a BVN or NIN to it for compliance. Enter at least one below.",
+  "vars": [],
+  "file": "src/components/vendor/BvnNinForm.tsx"
+ },
+ {
+  "key": "vendor.bvnninform.c3caff",
+  "group": "Vendor space",
+  "section": "BvnNinForm",
+  "def": "BVN",
+  "vars": [],
+  "file": "src/components/vendor/BvnNinForm.tsx"
+ },
+ {
+  "key": "vendor.bvnninform.0be12d",
+  "group": "Vendor space",
+  "section": "BvnNinForm",
+  "def": "11-digit BVN",
+  "vars": [],
+  "file": "src/components/vendor/BvnNinForm.tsx"
+ },
+ {
+  "key": "vendor.bvnninform.4b9496",
+  "group": "Vendor space",
+  "section": "BvnNinForm",
+  "def": "NIN",
+  "vars": [],
+  "file": "src/components/vendor/BvnNinForm.tsx"
+ },
+ {
+  "key": "vendor.bvnninform.4de24e",
+  "group": "Vendor space",
+  "section": "BvnNinForm",
+  "def": "11-digit NIN",
+  "vars": [],
+  "file": "src/components/vendor/BvnNinForm.tsx"
+ },
+ {
+  "key": "vendor.bvnninform.5e9359",
+  "group": "Vendor space",
+  "section": "BvnNinForm",
+  "def": "At least one of these is required.",
+  "vars": [],
+  "file": "src/components/vendor/BvnNinForm.tsx"
+ },
+ {
+  "key": "vendor.bvnninform.56a228",
+  "group": "Vendor space",
+  "section": "BvnNinForm",
+  "def": "Saving…",
+  "vars": [],
+  "file": "src/components/vendor/BvnNinForm.tsx"
+ },
+ {
+  "key": "vendor.bvnninform.efc007",
+  "group": "Vendor space",
+  "section": "BvnNinForm",
+  "def": "Save",
+  "vars": [],
+  "file": "src/components/vendor/BvnNinForm.tsx"
+ },
+ {
+  "key": "vendor.copyaccountbutton.b7c3ca",
+  "group": "Vendor space",
+  "section": "CopyAccountButton",
+  "def": "Copied!",
+  "vars": [],
+  "file": "src/components/vendor/CopyAccountButton.tsx"
+ },
+ {
+  "key": "vendor.copyaccountbutton.ed1d59",
+  "group": "Vendor space",
+  "section": "CopyAccountButton",
+  "def": "Copy Account Number",
+  "vars": [],
+  "file": "src/components/vendor/CopyAccountButton.tsx"
+ },
+ {
+  "key": "vendor.copyaccountbutton.09ca55",
+  "group": "Vendor space",
+  "section": "CopyAccountButton",
+  "def": "Share",
+  "vars": [],
+  "file": "src/components/vendor/CopyAccountButton.tsx"
+ },
+ {
+  "key": "vendor.customerreceiptbutton.3a89d8",
+  "group": "Vendor space",
+  "section": "CustomerReceiptButton",
+  "def": "Royal Fragrance Receipt",
+  "vars": [],
+  "file": "src/components/vendor/CustomerReceiptButton.tsx"
+ },
+ {
+  "key": "vendor.customerreceiptbutton.6cda3a",
+  "group": "Vendor space",
+  "section": "CustomerReceiptButton",
+  "def": "Customer Receipt",
+  "vars": [],
+  "file": "src/components/vendor/CustomerReceiptButton.tsx"
+ },
+ {
+  "key": "vendor.customerreceiptbutton.bbfa77",
+  "group": "Vendor space",
+  "section": "CustomerReceiptButton",
+  "def": "Close",
+  "vars": [],
+  "file": "src/components/vendor/CustomerReceiptButton.tsx"
+ },
+ {
+  "key": "vendor.customerreceiptbutton.c07431",
+  "group": "Vendor space",
+  "section": "CustomerReceiptButton",
+  "def": "Royal Fragrance",
+  "vars": [],
+  "file": "src/components/vendor/CustomerReceiptButton.tsx"
+ },
+ {
+  "key": "vendor.customerreceiptbutton.779573",
+  "group": "Vendor space",
+  "section": "CustomerReceiptButton",
+  "def": "Purchase Receipt",
+  "vars": [],
+  "file": "src/components/vendor/CustomerReceiptButton.tsx"
+ },
+ {
+  "key": "vendor.customerreceiptbutton.5572ed",
+  "group": "Vendor space",
+  "section": "CustomerReceiptButton",
+  "def": "Receipt No.",
+  "vars": [],
+  "file": "src/components/vendor/CustomerReceiptButton.tsx"
+ },
+ {
+  "key": "vendor.customerreceiptbutton.eb9a4b",
+  "group": "Vendor space",
+  "section": "CustomerReceiptButton",
+  "def": "Date",
+  "vars": [],
+  "file": "src/components/vendor/CustomerReceiptButton.tsx"
+ },
+ {
+  "key": "vendor.customerreceiptbutton.6c82e6",
+  "group": "Vendor space",
+  "section": "CustomerReceiptButton",
+  "def": "Time",
+  "vars": [],
+  "file": "src/components/vendor/CustomerReceiptButton.tsx"
+ },
+ {
+  "key": "vendor.customerreceiptbutton.0e8574",
+  "group": "Vendor space",
+  "section": "CustomerReceiptButton",
+  "def": "Customer",
+  "vars": [],
+  "file": "src/components/vendor/CustomerReceiptButton.tsx"
+ },
+ {
+  "key": "vendor.customerreceiptbutton.e5d6ce",
+  "group": "Vendor space",
+  "section": "CustomerReceiptButton",
+  "def": "Served by",
+  "vars": [],
+  "file": "src/components/vendor/CustomerReceiptButton.tsx"
+ },
+ {
+  "key": "vendor.customerreceiptbutton.5b76d0",
+  "group": "Vendor space",
+  "section": "CustomerReceiptButton",
+  "def": "Payment Ref.",
+  "vars": [],
+  "file": "src/components/vendor/CustomerReceiptButton.tsx"
+ },
+ {
+  "key": "vendor.customerreceiptbutton.55f8eb",
+  "group": "Vendor space",
+  "section": "CustomerReceiptButton",
+  "def": "Description",
+  "vars": [],
+  "file": "src/components/vendor/CustomerReceiptButton.tsx"
+ },
+ {
+  "key": "vendor.customerreceiptbutton.1e5ff9",
+  "group": "Vendor space",
+  "section": "CustomerReceiptButton",
+  "def": "Qty",
+  "vars": [],
+  "file": "src/components/vendor/CustomerReceiptButton.tsx"
+ },
+ {
+  "key": "vendor.customerreceiptbutton.3e8248",
+  "group": "Vendor space",
+  "section": "CustomerReceiptButton",
+  "def": "Price",
+  "vars": [],
+  "file": "src/components/vendor/CustomerReceiptButton.tsx"
+ },
+ {
+  "key": "vendor.customerreceiptbutton.43dc85",
+  "group": "Vendor space",
+  "section": "CustomerReceiptButton",
+  "def": "Amount",
+  "vars": [],
+  "file": "src/components/vendor/CustomerReceiptButton.tsx"
+ },
+ {
+  "key": "vendor.customerreceiptbutton.220edb",
+  "group": "Vendor space",
+  "section": "CustomerReceiptButton",
+  "def": "Items purchased",
+  "vars": [],
+  "file": "src/components/vendor/CustomerReceiptButton.tsx"
+ },
+ {
+  "key": "vendor.customerreceiptbutton.b25928",
+  "group": "Vendor space",
+  "section": "CustomerReceiptButton",
+  "def": "Total",
+  "vars": [],
+  "file": "src/components/vendor/CustomerReceiptButton.tsx"
+ },
+ {
+  "key": "vendor.customerreceiptbutton.d39013",
+  "group": "Vendor space",
+  "section": "CustomerReceiptButton",
+  "def": "Amount paid",
+  "vars": [],
+  "file": "src/components/vendor/CustomerReceiptButton.tsx"
+ },
+ {
+  "key": "vendor.customerreceiptbutton.7da6b6",
+  "group": "Vendor space",
+  "section": "CustomerReceiptButton",
+  "def": "Thank you for shopping with Royal Fragrance.",
+  "vars": [],
+  "file": "src/components/vendor/CustomerReceiptButton.tsx"
+ },
+ {
+  "key": "vendor.customerreceiptbutton.3dce6f",
+  "group": "Vendor space",
+  "section": "CustomerReceiptButton",
+  "def": "May God replenish your source.",
+  "vars": [],
+  "file": "src/components/vendor/CustomerReceiptButton.tsx"
+ },
+ {
+  "key": "vendor.customerreceiptbutton.c915bd",
+  "group": "Vendor space",
+  "section": "CustomerReceiptButton",
+  "def": "Phone: 0704 021 8594",
+  "vars": [],
+  "file": "src/components/vendor/CustomerReceiptButton.tsx"
+ },
+ {
+  "key": "vendor.customerreceiptbutton.d802e5",
+  "group": "Vendor space",
+  "section": "CustomerReceiptButton",
+  "def": "Email: royalfragrancescent@gmail.com",
+  "vars": [],
+  "file": "src/components/vendor/CustomerReceiptButton.tsx"
+ },
+ {
+  "key": "vendor.customerreceiptbutton.28c5ed",
+  "group": "Vendor space",
+  "section": "CustomerReceiptButton",
+  "def": "royalfragrancegallery.com",
+  "vars": [],
+  "file": "src/components/vendor/CustomerReceiptButton.tsx"
+ },
+ {
+  "key": "vendor.customerreceiptbutton.0b1d6c",
+  "group": "Vendor space",
+  "section": "CustomerReceiptButton",
+  "def": "Preparing…",
+  "vars": [],
+  "file": "src/components/vendor/CustomerReceiptButton.tsx"
+ },
+ {
+  "key": "vendor.customerreceiptbutton.5e8529",
+  "group": "Vendor space",
+  "section": "CustomerReceiptButton",
+  "def": "Send to customer on WhatsApp",
+  "vars": [],
+  "file": "src/components/vendor/CustomerReceiptButton.tsx"
+ },
+ {
+  "key": "vendor.customerreceiptbutton.56a228",
+  "group": "Vendor space",
+  "section": "CustomerReceiptButton",
+  "def": "Saving…",
+  "vars": [],
+  "file": "src/components/vendor/CustomerReceiptButton.tsx"
+ },
+ {
+  "key": "vendor.customerreceiptbutton.50e19f",
+  "group": "Vendor space",
+  "section": "CustomerReceiptButton",
+  "def": "Image",
+  "vars": [],
+  "file": "src/components/vendor/CustomerReceiptButton.tsx"
+ },
+ {
+  "key": "vendor.customerreceiptbutton.d613d8",
+  "group": "Vendor space",
+  "section": "CustomerReceiptButton",
+  "def": "PDF",
+  "vars": [],
+  "file": "src/components/vendor/CustomerReceiptButton.tsx"
+ },
+ {
+  "key": "vendor.displaynameform.fb0690",
+  "group": "Vendor space",
+  "section": "DisplayNameForm",
+  "def": "Could not save.",
+  "vars": [],
+  "file": "src/components/vendor/DisplayNameForm.tsx"
+ },
+ {
+  "key": "vendor.displaynameform.9d4af6",
+  "group": "Vendor space",
+  "section": "DisplayNameForm",
+  "def": "Saved.",
+  "vars": [],
+  "file": "src/components/vendor/DisplayNameForm.tsx"
+ },
+ {
+  "key": "vendor.displaynameform.515c2f",
+  "group": "Vendor space",
+  "section": "DisplayNameForm",
+  "def": "e.g. Ada's Scents",
+  "vars": [],
+  "file": "src/components/vendor/DisplayNameForm.tsx"
+ },
+ {
+  "key": "vendor.displaynameform.56a228",
+  "group": "Vendor space",
+  "section": "DisplayNameForm",
+  "def": "Saving…",
+  "vars": [],
+  "file": "src/components/vendor/DisplayNameForm.tsx"
+ },
+ {
+  "key": "vendor.displaynameform.8ce686",
+  "group": "Vendor space",
+  "section": "DisplayNameForm",
+  "def": "Save name",
+  "vars": [],
+  "file": "src/components/vendor/DisplayNameForm.tsx"
+ },
+ {
+  "key": "vendor.handoverbutton.9d3245",
+  "group": "Vendor space",
+  "section": "HandoverButton",
+  "def": "Could not record delivery",
+  "vars": [],
+  "file": "src/components/vendor/HandoverButton.tsx"
+ },
+ {
+  "key": "vendor.handoverbutton.47d96e",
+  "group": "Vendor space",
+  "section": "HandoverButton",
+  "def": "Mark as Delivered",
+  "vars": [],
+  "file": "src/components/vendor/HandoverButton.tsx"
+ },
+ {
+  "key": "vendor.handoverbutton.268333",
+  "group": "Vendor space",
+  "section": "HandoverButton",
+  "def": "Deliver Goods to Customer",
+  "vars": [],
+  "file": "src/components/vendor/HandoverButton.tsx"
+ },
+ {
+  "key": "vendor.handoverbutton.f53c47",
+  "group": "Vendor space",
+  "section": "HandoverButton",
+  "def": "Recipient name",
+  "vars": [],
+  "file": "src/components/vendor/HandoverButton.tsx"
+ },
+ {
+  "key": "vendor.handoverbutton.fcedb6",
+  "group": "Vendor space",
+  "section": "HandoverButton",
+  "def": "Recipient phone",
+  "vars": [],
+  "file": "src/components/vendor/HandoverButton.tsx"
+ },
+ {
+  "key": "vendor.handoverbutton.86cefc",
+  "group": "Vendor space",
+  "section": "HandoverButton",
+  "def": "Personal Delivery",
+  "vars": [],
+  "file": "src/components/vendor/HandoverButton.tsx"
+ },
+ {
+  "key": "vendor.handoverbutton.6829ac",
+  "group": "Vendor space",
+  "section": "HandoverButton",
+  "def": "Customer Pickup",
+  "vars": [],
+  "file": "src/components/vendor/HandoverButton.tsx"
+ },
+ {
+  "key": "vendor.handoverbutton.e42aab",
+  "group": "Vendor space",
+  "section": "HandoverButton",
+  "def": "Courier Delivery",
+  "vars": [],
+  "file": "src/components/vendor/HandoverButton.tsx"
+ },
+ {
+  "key": "vendor.handoverbutton.7946d6",
+  "group": "Vendor space",
+  "section": "HandoverButton",
+  "def": "Transfer to Another Vendor",
+  "vars": [],
+  "file": "src/components/vendor/HandoverButton.tsx"
+ },
+ {
+  "key": "vendor.handoverbutton.d2571e",
+  "group": "Vendor space",
+  "section": "HandoverButton",
+  "def": "Transfer to Another Location",
+  "vars": [],
+  "file": "src/components/vendor/HandoverButton.tsx"
+ },
+ {
+  "key": "vendor.handoverbutton.4d56ca",
+  "group": "Vendor space",
+  "section": "HandoverButton",
+  "def": "Notes (optional)",
+  "vars": [],
+  "file": "src/components/vendor/HandoverButton.tsx"
+ },
+ {
+  "key": "vendor.handoverbutton.77dfd2",
+  "group": "Vendor space",
+  "section": "HandoverButton",
+  "def": "Cancel",
+  "vars": [],
+  "file": "src/components/vendor/HandoverButton.tsx"
+ },
+ {
+  "key": "vendor.handoverbutton.56a228",
+  "group": "Vendor space",
+  "section": "HandoverButton",
+  "def": "Saving…",
+  "vars": [],
+  "file": "src/components/vendor/HandoverButton.tsx"
+ },
+ {
+  "key": "vendor.handoverbutton.e6dee9",
+  "group": "Vendor space",
+  "section": "HandoverButton",
+  "def": "Confirm Delivery",
+  "vars": [],
+  "file": "src/components/vendor/HandoverButton.tsx"
+ },
+ {
+  "key": "vendor.linkgenerator.77a566",
+  "group": "Vendor space",
+  "section": "LinkGenerator",
+  "def": "Your vendor card",
+  "vars": [],
+  "file": "src/components/vendor/LinkGenerator.tsx"
+ },
+ {
+  "key": "vendor.linkgenerator.cf1772",
+  "group": "Vendor space",
+  "section": "LinkGenerator",
+  "def": "Post this card on your WhatsApp status or send it to chats. The caption carries your link, and when you paste your link anywhere, it shows up as this same card that people can tap.",
+  "vars": [],
+  "file": "src/components/vendor/LinkGenerator.tsx"
+ },
+ {
+  "key": "vendor.linkgenerator.4d324f",
+  "group": "Vendor space",
+  "section": "LinkGenerator",
+  "def": "Share card",
+  "vars": [],
+  "file": "src/components/vendor/LinkGenerator.tsx"
+ },
+ {
+  "key": "vendor.linkgenerator.0f1877",
+  "group": "Vendor space",
+  "section": "LinkGenerator",
+  "def": "Download card",
+  "vars": [],
+  "file": "src/components/vendor/LinkGenerator.tsx"
+ },
+ {
+  "key": "vendor.linkgenerator.4fc4d0",
+  "group": "Vendor space",
+  "section": "LinkGenerator",
+  "def": "Your personal link",
+  "vars": [],
+  "file": "src/components/vendor/LinkGenerator.tsx"
+ },
+ {
+  "key": "vendor.linkgenerator.b7c3ca",
+  "group": "Vendor space",
+  "section": "LinkGenerator",
+  "def": "Copied!",
+  "vars": [],
+  "file": "src/components/vendor/LinkGenerator.tsx"
+ },
+ {
+  "key": "vendor.linkgenerator.af74f7",
+  "group": "Vendor space",
+  "section": "LinkGenerator",
+  "def": "Copy",
+  "vars": [],
+  "file": "src/components/vendor/LinkGenerator.tsx"
+ },
+ {
+  "key": "vendor.linkgenerator.09ca55",
+  "group": "Vendor space",
+  "section": "LinkGenerator",
+  "def": "Share",
+  "vars": [],
+  "file": "src/components/vendor/LinkGenerator.tsx"
+ },
+ {
+  "key": "vendor.linkgenerator.88777f",
+  "group": "Vendor space",
+  "section": "LinkGenerator",
+  "def": "Link for a single product",
+  "vars": [],
+  "file": "src/components/vendor/LinkGenerator.tsx"
+ },
+ {
+  "key": "vendor.linkgenerator.191ca2",
+  "group": "Vendor space",
+  "section": "LinkGenerator",
+  "def": "Products on your link",
+  "vars": [],
+  "file": "src/components/vendor/LinkGenerator.tsx"
+ },
+ {
+  "key": "vendor.linkgenerator.314663",
+  "group": "Vendor space",
+  "section": "LinkGenerator",
+  "def": "There are no products in the shop yet.",
+  "vars": [],
+  "file": "src/components/vendor/LinkGenerator.tsx"
+ },
+ {
+  "key": "vendor.linkgenerator.12ab1b",
+  "group": "Vendor space",
+  "section": "LinkGenerator",
+  "def": "No products have been assigned to you yet, so your link has nothing to show. Once the team assigns products to you, they appear here and on your link automatically.",
+  "vars": [],
+  "file": "src/components/vendor/LinkGenerator.tsx"
+ },
+ {
+  "key": "vendor.linkgenerator.83a796",
+  "group": "Vendor space",
+  "section": "LinkGenerator",
+  "def": "Copy single-product link",
+  "vars": [],
+  "file": "src/components/vendor/LinkGenerator.tsx"
+ },
+ {
+  "key": "vendor.pendingapprovalscreen.9c4e51",
+  "group": "Vendor space",
+  "section": "PendingApprovalScreen",
+  "def": "Account Not Active",
+  "vars": [],
+  "file": "src/components/vendor/PendingApprovalScreen.tsx"
+ },
+ {
+  "key": "vendor.pendingapprovalscreen.8a07e6",
+  "group": "Vendor space",
+  "section": "PendingApprovalScreen",
+  "def": "Application Under Review",
+  "vars": [],
+  "file": "src/components/vendor/PendingApprovalScreen.tsx"
+ },
+ {
+  "key": "vendor.pendingapprovalscreen.e32187",
+  "group": "Vendor space",
+  "section": "PendingApprovalScreen",
+  "def": "Chat with us on WhatsApp",
+  "vars": [],
+  "file": "src/components/vendor/PendingApprovalScreen.tsx"
+ },
+ {
+  "key": "vendor.recordsalebutton.121299",
+  "group": "Vendor space",
+  "section": "RecordSaleButton",
+  "def": "Add more products",
+  "vars": [],
+  "file": "src/components/vendor/RecordSaleButton.tsx"
+ },
+ {
+  "key": "vendor.recordsalebutton.73380f",
+  "group": "Vendor space",
+  "section": "RecordSaleButton",
+  "def": "Record Sale",
+  "vars": [],
+  "file": "src/components/vendor/RecordSaleButton.tsx"
+ },
+ {
+  "key": "vendor.recordsalebutton.e2ed1f",
+  "group": "Vendor space",
+  "section": "RecordSaleButton",
+  "def": "Add at least one product.",
+  "vars": [],
+  "file": "src/components/vendor/RecordSaleButton.tsx"
+ },
+ {
+  "key": "vendor.recordsalebutton.174b21",
+  "group": "Vendor space",
+  "section": "RecordSaleButton",
+  "def": "Could not record sale",
+  "vars": [],
+  "file": "src/components/vendor/RecordSaleButton.tsx"
+ },
+ {
+  "key": "vendor.recordsalebutton.816c03",
+  "group": "Vendor space",
+  "section": "RecordSaleButton",
+  "def": "You can add more than one product to this payment. Their prices must add up to {v} or less. If it is less, the rest stays open so you can add the other products later.",
+  "vars": [
+   "v"
+  ],
+  "file": "src/components/vendor/RecordSaleButton.tsx"
+ },
+ {
+  "key": "vendor.recordsalebutton.cf9e8d",
+  "group": "Vendor space",
+  "section": "RecordSaleButton",
+  "def": "Select products from your inventory",
+  "vars": [],
+  "file": "src/components/vendor/RecordSaleButton.tsx"
+ },
+ {
+  "key": "vendor.recordsalebutton.609ea4",
+  "group": "Vendor space",
+  "section": "RecordSaleButton",
+  "def": "No inventory assigned to you yet.",
+  "vars": [],
+  "file": "src/components/vendor/RecordSaleButton.tsx"
+ },
+ {
+  "key": "vendor.recordsalebutton.9c10d8",
+  "group": "Vendor space",
+  "section": "RecordSaleButton",
+  "def": "{name}{v} — {available_quantity} available",
+  "vars": [
+   "name",
+   "v",
+   "available_quantity"
+  ],
+  "file": "src/components/vendor/RecordSaleButton.tsx"
+ },
+ {
+  "key": "vendor.recordsalebutton.ed163a",
+  "group": "Vendor space",
+  "section": "RecordSaleButton",
+  "def": "Price each",
+  "vars": [],
+  "file": "src/components/vendor/RecordSaleButton.tsx"
+ },
+ {
+  "key": "vendor.recordsalebutton.df5e39",
+  "group": "Vendor space",
+  "section": "RecordSaleButton",
+  "def": "Recorded total: {v}",
+  "vars": [
+   "v"
+  ],
+  "file": "src/components/vendor/RecordSaleButton.tsx"
+ },
+ {
+  "key": "vendor.recordsalebutton.207a09",
+  "group": "Vendor space",
+  "section": "RecordSaleButton",
+  "def": "Matches the payment",
+  "vars": [],
+  "file": "src/components/vendor/RecordSaleButton.tsx"
+ },
+ {
+  "key": "vendor.recordsalebutton.75d34d",
+  "group": "Vendor space",
+  "section": "RecordSaleButton",
+  "def": "Customer name (optional)",
+  "vars": [],
+  "file": "src/components/vendor/RecordSaleButton.tsx"
+ },
+ {
+  "key": "vendor.recordsalebutton.60d44f",
+  "group": "Vendor space",
+  "section": "RecordSaleButton",
+  "def": "Customer phone (optional)",
+  "vars": [],
+  "file": "src/components/vendor/RecordSaleButton.tsx"
+ },
+ {
+  "key": "vendor.recordsalebutton.4d56ca",
+  "group": "Vendor space",
+  "section": "RecordSaleButton",
+  "def": "Notes (optional)",
+  "vars": [],
+  "file": "src/components/vendor/RecordSaleButton.tsx"
+ },
+ {
+  "key": "vendor.recordsalebutton.77dfd2",
+  "group": "Vendor space",
+  "section": "RecordSaleButton",
+  "def": "Cancel",
+  "vars": [],
+  "file": "src/components/vendor/RecordSaleButton.tsx"
+ },
+ {
+  "key": "vendor.recordsalebutton.56a228",
+  "group": "Vendor space",
+  "section": "RecordSaleButton",
+  "def": "Saving…",
+  "vars": [],
+  "file": "src/components/vendor/RecordSaleButton.tsx"
+ },
+ {
+  "key": "vendor.recordsalebutton.21c047",
+  "group": "Vendor space",
+  "section": "RecordSaleButton",
+  "def": "Save Sale Record",
+  "vars": [],
+  "file": "src/components/vendor/RecordSaleButton.tsx"
+ },
+ {
+  "key": "vendor.transactionreceiptmodal.f6ce3b",
+  "group": "Vendor space",
+  "section": "TransactionReceiptModal",
+  "def": "Receipt",
+  "vars": [],
+  "file": "src/components/vendor/TransactionReceiptModal.tsx"
+ },
+ {
+  "key": "vendor.transactionreceiptmodal.bbfa77",
+  "group": "Vendor space",
+  "section": "TransactionReceiptModal",
+  "def": "Close",
+  "vars": [],
+  "file": "src/components/vendor/TransactionReceiptModal.tsx"
+ },
+ {
+  "key": "vendor.transactionreceiptmodal.c07431",
+  "group": "Vendor space",
+  "section": "TransactionReceiptModal",
+  "def": "Royal Fragrance",
+  "vars": [],
+  "file": "src/components/vendor/TransactionReceiptModal.tsx"
+ },
+ {
+  "key": "vendor.transactionreceiptmodal.abeb72",
+  "group": "Vendor space",
+  "section": "TransactionReceiptModal",
+  "def": "Payment Receipt",
+  "vars": [],
+  "file": "src/components/vendor/TransactionReceiptModal.tsx"
+ },
+ {
+  "key": "vendor.transactionreceiptmodal.db1c78",
+  "group": "Vendor space",
+  "section": "TransactionReceiptModal",
+  "def": "Reference",
+  "vars": [],
+  "file": "src/components/vendor/TransactionReceiptModal.tsx"
+ },
+ {
+  "key": "vendor.transactionreceiptmodal.eb9a4b",
+  "group": "Vendor space",
+  "section": "TransactionReceiptModal",
+  "def": "Date",
+  "vars": [],
+  "file": "src/components/vendor/TransactionReceiptModal.tsx"
+ },
+ {
+  "key": "vendor.transactionreceiptmodal.6c82e6",
+  "group": "Vendor space",
+  "section": "TransactionReceiptModal",
+  "def": "Time",
+  "vars": [],
+  "file": "src/components/vendor/TransactionReceiptModal.tsx"
+ },
+ {
+  "key": "vendor.transactionreceiptmodal.3f6605",
+  "group": "Vendor space",
+  "section": "TransactionReceiptModal",
+  "def": "From",
+  "vars": [],
+  "file": "src/components/vendor/TransactionReceiptModal.tsx"
+ },
+ {
+  "key": "vendor.transactionreceiptmodal.bae7d5",
+  "group": "Vendor space",
+  "section": "TransactionReceiptModal",
+  "def": "Status",
+  "vars": [],
+  "file": "src/components/vendor/TransactionReceiptModal.tsx"
+ },
+ {
+  "key": "vendor.transactionreceiptmodal.43dc85",
+  "group": "Vendor space",
+  "section": "TransactionReceiptModal",
+  "def": "Amount",
+  "vars": [],
+  "file": "src/components/vendor/TransactionReceiptModal.tsx"
+ },
+ {
+  "key": "vendor.transactionreceiptmodal.28c5ed",
+  "group": "Vendor space",
+  "section": "TransactionReceiptModal",
+  "def": "royalfragrancegallery.com",
+  "vars": [],
+  "file": "src/components/vendor/TransactionReceiptModal.tsx"
+ },
+ {
+  "key": "vendor.transactionreceiptmodal.56a228",
+  "group": "Vendor space",
+  "section": "TransactionReceiptModal",
+  "def": "Saving…",
+  "vars": [],
+  "file": "src/components/vendor/TransactionReceiptModal.tsx"
+ },
+ {
+  "key": "vendor.transactionreceiptmodal.50e19f",
+  "group": "Vendor space",
+  "section": "TransactionReceiptModal",
+  "def": "Image",
+  "vars": [],
+  "file": "src/components/vendor/TransactionReceiptModal.tsx"
+ },
+ {
+  "key": "vendor.transactionreceiptmodal.d613d8",
+  "group": "Vendor space",
+  "section": "TransactionReceiptModal",
+  "def": "PDF",
+  "vars": [],
+  "file": "src/components/vendor/TransactionReceiptModal.tsx"
+ },
+ {
+  "key": "vendor.transactionslist.615f25",
+  "group": "Vendor space",
+  "section": "TransactionsList",
+  "def": "No collections yet.",
+  "vars": [],
+  "file": "src/components/vendor/TransactionsList.tsx"
+ },
+ {
+  "key": "vendor.transactionslist.4a4997",
+  "group": "Vendor space",
+  "section": "TransactionsList",
+  "def": "From: {payer_name}",
+  "vars": [
+   "payer_name"
+  ],
+  "file": "src/components/vendor/TransactionsList.tsx"
+ },
+ {
+  "key": "vendor.transactionslist.80712f",
+  "group": "Vendor space",
+  "section": "TransactionsList",
+  "def": "Sale Recorded",
+  "vars": [],
+  "file": "src/components/vendor/TransactionsList.tsx"
+ },
+ {
+  "key": "vendor.transactionslist.79af6c",
+  "group": "Vendor space",
+  "section": "TransactionsList",
+  "def": "Unrecorded",
+  "vars": [],
+  "file": "src/components/vendor/TransactionsList.tsx"
+ },
+ {
+  "key": "vendor.transactionslist.98cec1",
+  "group": "Vendor space",
+  "section": "TransactionsList",
+  "def": "Ref: {provider_transaction_reference}",
+  "vars": [
+   "provider_transaction_reference"
+  ],
+  "file": "src/components/vendor/TransactionsList.tsx"
+ },
+ {
+  "key": "vendor.vendorapplicationform.e9e2e9",
+  "group": "Vendor space",
+  "section": "VendorApplicationForm",
+  "def": "BVN or NIN is compulsory. Please provide at least one.",
+  "vars": [],
+  "file": "src/components/vendor/VendorApplicationForm.tsx"
+ },
+ {
+  "key": "vendor.vendorapplicationform.dec5fb",
+  "group": "Vendor space",
+  "section": "VendorApplicationForm",
+  "def": "BVN must be exactly 11 digits.",
+  "vars": [],
+  "file": "src/components/vendor/VendorApplicationForm.tsx"
+ },
+ {
+  "key": "vendor.vendorapplicationform.1dfb21",
+  "group": "Vendor space",
+  "section": "VendorApplicationForm",
+  "def": "NIN must be exactly 11 digits.",
+  "vars": [],
+  "file": "src/components/vendor/VendorApplicationForm.tsx"
+ },
+ {
+  "key": "vendor.vendorapplicationform.ea66d7",
+  "group": "Vendor space",
+  "section": "VendorApplicationForm",
+  "def": "Please choose an option for STUDENT OR NOT.",
+  "vars": [],
+  "file": "src/components/vendor/VendorApplicationForm.tsx"
+ },
+ {
+  "key": "vendor.vendorapplicationform.9a3ea0",
+  "group": "Vendor space",
+  "section": "VendorApplicationForm",
+  "def": "Something went wrong. Please try again.",
+  "vars": [],
+  "file": "src/components/vendor/VendorApplicationForm.tsx"
+ },
+ {
+  "key": "vendor.vendorapplicationform.0a39ef",
+  "group": "Vendor space",
+  "section": "VendorApplicationForm",
+  "def": "Application Submitted",
+  "vars": [],
+  "file": "src/components/vendor/VendorApplicationForm.tsx"
+ },
+ {
+  "key": "vendor.vendorapplicationform.c5bb5a",
+  "group": "Vendor space",
+  "section": "VendorApplicationForm",
+  "def": "We’ll review your application and notify you once approved. Your dashboard stays locked until then.",
+  "vars": [],
+  "file": "src/components/vendor/VendorApplicationForm.tsx"
+ },
+ {
+  "key": "vendor.vendorapplicationform.39ebfa",
+  "group": "Vendor space",
+  "section": "VendorApplicationForm",
+  "def": "Just finished the form? Message the Royal Fragrance team on WhatsApp to let us know, or to ask any question.",
+  "vars": [],
+  "file": "src/components/vendor/VendorApplicationForm.tsx"
+ },
+ {
+  "key": "vendor.vendorapplicationform.a9993c",
+  "group": "Vendor space",
+  "section": "VendorApplicationForm",
+  "def": "Message us on WhatsApp",
+  "vars": [],
+  "file": "src/components/vendor/VendorApplicationForm.tsx"
+ },
+ {
+  "key": "vendor.vendorapplicationform.726b0f",
+  "group": "Vendor space",
+  "section": "VendorApplicationForm",
+  "def": "Go to sign in",
+  "vars": [],
+  "file": "src/components/vendor/VendorApplicationForm.tsx"
+ },
+ {
+  "key": "vendor.vendorapplicationform.84add5",
+  "group": "Vendor space",
+  "section": "VendorApplicationForm",
+  "def": "Email",
+  "vars": [],
+  "file": "src/components/vendor/VendorApplicationForm.tsx"
+ },
+ {
+  "key": "vendor.vendorapplicationform.3fa6f5",
+  "group": "Vendor space",
+  "section": "VendorApplicationForm",
+  "def": "Your email",
+  "vars": [],
+  "file": "src/components/vendor/VendorApplicationForm.tsx"
+ },
+ {
+  "key": "vendor.vendorapplicationform.0e194d",
+  "group": "Vendor space",
+  "section": "VendorApplicationForm",
+  "def": "Create a password for your vendor account",
+  "vars": [],
+  "file": "src/components/vendor/VendorApplicationForm.tsx"
+ },
+ {
+  "key": "vendor.vendorapplicationform.ae8a3b",
+  "group": "Vendor space",
+  "section": "VendorApplicationForm",
+  "def": "Other:",
+  "vars": [],
+  "file": "src/components/vendor/VendorApplicationForm.tsx"
+ },
+ {
+  "key": "vendor.vendorapplicationform.add0b6",
+  "group": "Vendor space",
+  "section": "VendorApplicationForm",
+  "def": "BVN or NIN",
+  "vars": [],
+  "file": "src/components/vendor/VendorApplicationForm.tsx"
+ },
+ {
+  "key": "vendor.vendorapplicationform.ed65fd",
+  "group": "Vendor space",
+  "section": "VendorApplicationForm",
+  "def": "Compulsory. Provide your 11-digit BVN or NIN (at least one). It is used to open your personal collection account for customer payments.",
+  "vars": [],
+  "file": "src/components/vendor/VendorApplicationForm.tsx"
+ },
+ {
+  "key": "vendor.vendorapplicationform.c3caff",
+  "group": "Vendor space",
+  "section": "VendorApplicationForm",
+  "def": "BVN",
+  "vars": [],
+  "file": "src/components/vendor/VendorApplicationForm.tsx"
+ },
+ {
+  "key": "vendor.vendorapplicationform.4b9496",
+  "group": "Vendor space",
+  "section": "VendorApplicationForm",
+  "def": "NIN",
+  "vars": [],
+  "file": "src/components/vendor/VendorApplicationForm.tsx"
+ },
+ {
+  "key": "vendor.vendorapplicationform.25bdf9",
+  "group": "Vendor space",
+  "section": "VendorApplicationForm",
+  "def": "Submitting…",
+  "vars": [],
+  "file": "src/components/vendor/VendorApplicationForm.tsx"
+ },
+ {
+  "key": "vendor.vendorapplicationform.f32663",
+  "group": "Vendor space",
+  "section": "VendorApplicationForm",
+  "def": "Submit Application",
+  "vars": [],
+  "file": "src/components/vendor/VendorApplicationForm.tsx"
+ },
+ {
+  "key": "vendor.vendorapplicationform.318599",
+  "group": "Vendor space",
+  "section": "VendorApplicationForm",
+  "def": "Have questions? Chat with our brand on WhatsApp",
+  "vars": [],
+  "file": "src/components/vendor/VendorApplicationForm.tsx"
+ },
+ {
+  "key": "vendor.vendorapplicationform.3ae5ff",
+  "group": "Vendor space",
+  "section": "VendorApplicationForm",
+  "def": "Your answer",
+  "vars": [],
+  "file": "src/components/vendor/VendorApplicationForm.tsx"
+ },
+ {
+  "key": "vendor.vendorinterestform.9a3ea0",
+  "group": "Vendor space",
+  "section": "VendorInterestForm",
+  "def": "Something went wrong. Please try again.",
+  "vars": [],
+  "file": "src/components/vendor/VendorInterestForm.tsx"
+ },
+ {
+  "key": "vendor.vendorinterestform.e80f3c",
+  "group": "Vendor space",
+  "section": "VendorInterestForm",
+  "def": "Check Your Email",
+  "vars": [],
+  "file": "src/components/vendor/VendorInterestForm.tsx"
+ },
+ {
+  "key": "vendor.vendorinterestform.88258b",
+  "group": "Vendor space",
+  "section": "VendorInterestForm",
+  "def": "We've sent an application link to",
+  "vars": [],
+  "file": "src/components/vendor/VendorInterestForm.tsx"
+ },
+ {
+  "key": "vendor.vendorinterestform.8c4bda",
+  "group": "Vendor space",
+  "section": "VendorInterestForm",
+  "def": ". Open it to fill in your details — the link works once, so keep this email safe.",
+  "vars": [],
+  "file": "src/components/vendor/VendorInterestForm.tsx"
+ },
+ {
+  "key": "vendor.vendorinterestform.89d317",
+  "group": "Vendor space",
+  "section": "VendorInterestForm",
+  "def": "Interested?",
+  "vars": [],
+  "file": "src/components/vendor/VendorInterestForm.tsx"
+ },
+ {
+  "key": "vendor.vendorinterestform.80fe19",
+  "group": "Vendor space",
+  "section": "VendorInterestForm",
+  "def": "Tell us you're interested and we'll send your application link by email — it only takes a moment.",
+  "vars": [],
+  "file": "src/components/vendor/VendorInterestForm.tsx"
+ },
+ {
+  "key": "vendor.vendorinterestform.e0f38d",
+  "group": "Vendor space",
+  "section": "VendorInterestForm",
+  "def": "I'm interested in becoming a Royal Fragrance vendor.",
+  "vars": [],
+  "file": "src/components/vendor/VendorInterestForm.tsx"
+ },
+ {
+  "key": "vendor.vendorinterestform.09ba55",
+  "group": "Vendor space",
+  "section": "VendorInterestForm",
+  "def": "Email Address",
+  "vars": [],
+  "file": "src/components/vendor/VendorInterestForm.tsx"
+ },
+ {
+  "key": "vendor.vendorinterestform.50e2b4",
+  "group": "Vendor space",
+  "section": "VendorInterestForm",
+  "def": "you@example.com",
+  "vars": [],
+  "file": "src/components/vendor/VendorInterestForm.tsx"
+ },
+ {
+  "key": "vendor.vendorinterestform.cf7655",
+  "group": "Vendor space",
+  "section": "VendorInterestForm",
+  "def": "Sending…",
+  "vars": [],
+  "file": "src/components/vendor/VendorInterestForm.tsx"
+ },
+ {
+  "key": "vendor.vendorinterestform.58ce7d",
+  "group": "Vendor space",
+  "section": "VendorInterestForm",
+  "def": "Send Me the Application Link",
+  "vars": [],
+  "file": "src/components/vendor/VendorInterestForm.tsx"
+ },
+ {
+  "key": "navbar.shop",
+  "group": "Menu and navigation",
+  "section": "Main menu",
+  "def": "Shop",
+  "vars": [],
+  "file": "src/components/layout/Navbar.tsx"
+ },
+ {
+  "key": "navbar.our_story",
+  "group": "Menu and navigation",
+  "section": "Main menu",
+  "def": "Our Story",
+  "vars": [],
+  "file": "src/components/layout/Navbar.tsx"
+ },
+ {
+  "key": "navbar.the_future",
+  "group": "Menu and navigation",
+  "section": "Main menu",
+  "def": "The Future",
+  "vars": [],
+  "file": "src/components/layout/Navbar.tsx"
+ },
+ {
+  "key": "navbar.become_a_vendor",
+  "group": "Menu and navigation",
+  "section": "Main menu",
+  "def": "Become a Vendor",
+  "vars": [],
+  "file": "src/components/layout/Navbar.tsx"
+ },
+ {
+  "key": "vendor.nav.overview",
+  "group": "Vendor space",
+  "section": "Vendor menu",
+  "def": "Overview",
+  "vars": [],
+  "file": "src/app/vendor/layout.tsx"
+ },
+ {
+  "key": "vendor.nav.collection_account",
+  "group": "Vendor space",
+  "section": "Vendor menu",
+  "def": "Collection Account",
+  "vars": [],
+  "file": "src/app/vendor/layout.tsx"
+ },
+ {
+  "key": "vendor.nav.transactions",
+  "group": "Vendor space",
+  "section": "Vendor menu",
+  "def": "Transactions",
+  "vars": [],
+  "file": "src/app/vendor/layout.tsx"
+ },
+ {
+  "key": "vendor.nav.sales",
+  "group": "Vendor space",
+  "section": "Vendor menu",
+  "def": "Sales",
+  "vars": [],
+  "file": "src/app/vendor/layout.tsx"
+ },
+ {
+  "key": "vendor.nav.inventory",
+  "group": "Vendor space",
+  "section": "Vendor menu",
+  "def": "Inventory",
+  "vars": [],
+  "file": "src/app/vendor/layout.tsx"
+ },
+ {
+  "key": "vendor.nav.deliveries_to_customers",
+  "group": "Vendor space",
+  "section": "Vendor menu",
+  "def": "Deliveries to Customers",
+  "vars": [],
+  "file": "src/app/vendor/layout.tsx"
+ },
+ {
+  "key": "vendor.nav.batch_delivery",
+  "group": "Vendor space",
+  "section": "Vendor menu",
+  "def": "Batch Delivery",
+  "vars": [],
+  "file": "src/app/vendor/layout.tsx"
+ },
+ {
+  "key": "vendor.nav.my_link",
+  "group": "Vendor space",
+  "section": "Vendor menu",
+  "def": "My Link",
+  "vars": [],
+  "file": "src/app/vendor/layout.tsx"
+ },
+ {
+  "key": "vendor.nav.earnings",
+  "group": "Vendor space",
+  "section": "Vendor menu",
+  "def": "Earnings",
+  "vars": [],
+  "file": "src/app/vendor/layout.tsx"
+ },
+ {
+  "key": "vendor.nav.profile",
+  "group": "Vendor space",
+  "section": "Vendor menu",
+  "def": "Profile",
+  "vars": [],
+  "file": "src/app/vendor/layout.tsx"
+ },
+ {
+  "key": "account.nav.overview",
+  "group": "Customer account",
+  "section": "Account menu",
+  "def": "Overview",
+  "vars": [],
+  "file": "src/components/account/MobileDashboardNav.tsx"
+ },
+ {
+  "key": "account.nav.orders",
+  "group": "Customer account",
+  "section": "Account menu",
+  "def": "Orders",
+  "vars": [],
+  "file": "src/components/account/MobileDashboardNav.tsx"
+ },
+ {
+  "key": "account.nav.collection",
+  "group": "Customer account",
+  "section": "Account menu",
+  "def": "Collection",
+  "vars": [],
+  "file": "src/components/account/MobileDashboardNav.tsx"
+ },
+ {
+  "key": "account.nav.wishlist",
+  "group": "Customer account",
+  "section": "Account menu",
+  "def": "Wishlist",
+  "vars": [],
+  "file": "src/components/account/MobileDashboardNav.tsx"
+ },
+ {
+  "key": "account.nav.scent_profile",
+  "group": "Customer account",
+  "section": "Account menu",
+  "def": "Scent Profile",
+  "vars": [],
+  "file": "src/components/account/MobileDashboardNav.tsx"
+ },
+ {
+  "key": "account.nav.addresses",
+  "group": "Customer account",
+  "section": "Account menu",
+  "def": "Addresses",
+  "vars": [],
+  "file": "src/components/account/MobileDashboardNav.tsx"
+ },
+ {
+  "key": "account.nav.notifications",
+  "group": "Customer account",
+  "section": "Account menu",
+  "def": "Notifications",
+  "vars": [],
+  "file": "src/components/account/MobileDashboardNav.tsx"
+ },
+ {
+  "key": "account.nav.account_settings",
+  "group": "Customer account",
+  "section": "Account menu",
+  "def": "Account Settings",
+  "vars": [],
+  "file": "src/components/account/MobileDashboardNav.tsx"
+ },
+ {
+  "key": "account.timeline.placed",
+  "group": "Customer account",
+  "section": "Order progress bar",
+  "def": "Placed",
+  "vars": [],
+  "file": "src/components/account/OrderTimeline.tsx"
+ },
+ {
+  "key": "account.timeline.confirmed",
+  "group": "Customer account",
+  "section": "Order progress bar",
+  "def": "Confirmed",
+  "vars": [],
+  "file": "src/components/account/OrderTimeline.tsx"
+ },
+ {
+  "key": "account.timeline.processing",
+  "group": "Customer account",
+  "section": "Order progress bar",
+  "def": "Processing",
+  "vars": [],
+  "file": "src/components/account/OrderTimeline.tsx"
+ },
+ {
+  "key": "account.timeline.out_for_delivery",
+  "group": "Customer account",
+  "section": "Order progress bar",
+  "def": "Out for Delivery",
+  "vars": [],
+  "file": "src/components/account/OrderTimeline.tsx"
+ },
+ {
+  "key": "account.timeline.delivered",
+  "group": "Customer account",
+  "section": "Order progress bar",
+  "def": "Delivered",
+  "vars": [],
+  "file": "src/components/account/OrderTimeline.tsx"
+ },
+ {
+  "key": "account.status.order_received",
+  "group": "Customer account",
+  "section": "Order status names",
+  "def": "Order Received",
+  "vars": [],
+  "file": "src/app/account/orders/page.tsx"
+ },
+ {
+  "key": "account.status.payment_confirmed",
+  "group": "Customer account",
+  "section": "Order status names",
+  "def": "Payment Confirmed",
+  "vars": [],
+  "file": "src/app/account/orders/page.tsx"
+ },
+ {
+  "key": "account.status.processing",
+  "group": "Customer account",
+  "section": "Order status names",
+  "def": "Processing",
+  "vars": [],
+  "file": "src/app/account/orders/page.tsx"
+ },
+ {
+  "key": "account.status.ready_for_delivery",
+  "group": "Customer account",
+  "section": "Order status names",
+  "def": "Ready for Delivery",
+  "vars": [],
+  "file": "src/app/account/orders/page.tsx"
+ },
+ {
+  "key": "account.status.out_for_delivery",
+  "group": "Customer account",
+  "section": "Order status names",
+  "def": "Out for Delivery",
+  "vars": [],
+  "file": "src/app/account/orders/page.tsx"
+ },
+ {
+  "key": "account.status.delivered",
+  "group": "Customer account",
+  "section": "Order status names",
+  "def": "Delivered",
+  "vars": [],
+  "file": "src/app/account/orders/page.tsx"
+ },
+ {
+  "key": "account.status.cancelled",
+  "group": "Customer account",
+  "section": "Order status names",
+  "def": "Cancelled",
+  "vars": [],
+  "file": "src/app/account/orders/page.tsx"
+ },
+ {
+  "key": "account.scent.woody",
+  "group": "Customer account",
+  "section": "Scent profile options",
+  "def": "Woody",
+  "vars": [],
+  "file": "src/components/account/ScentProfileQuiz.tsx"
+ },
+ {
+  "key": "account.scent.floral",
+  "group": "Customer account",
+  "section": "Scent profile options",
+  "def": "Floral",
+  "vars": [],
+  "file": "src/components/account/ScentProfileQuiz.tsx"
+ },
+ {
+  "key": "account.scent.fresh",
+  "group": "Customer account",
+  "section": "Scent profile options",
+  "def": "Fresh",
+  "vars": [],
+  "file": "src/components/account/ScentProfileQuiz.tsx"
+ },
+ {
+  "key": "account.scent.spicy",
+  "group": "Customer account",
+  "section": "Scent profile options",
+  "def": "Spicy",
+  "vars": [],
+  "file": "src/components/account/ScentProfileQuiz.tsx"
+ },
+ {
+  "key": "account.scent.sweet",
+  "group": "Customer account",
+  "section": "Scent profile options",
+  "def": "Sweet",
+  "vars": [],
+  "file": "src/components/account/ScentProfileQuiz.tsx"
+ },
+ {
+  "key": "account.scent.smoky",
+  "group": "Customer account",
+  "section": "Scent profile options",
+  "def": "Smoky",
+  "vars": [],
+  "file": "src/components/account/ScentProfileQuiz.tsx"
+ },
+ {
+  "key": "account.scent.oud",
+  "group": "Customer account",
+  "section": "Scent profile options",
+  "def": "Oud",
+  "vars": [],
+  "file": "src/components/account/ScentProfileQuiz.tsx"
+ },
+ {
+  "key": "account.scent.citrus",
+  "group": "Customer account",
+  "section": "Scent profile options",
+  "def": "Citrus",
+  "vars": [],
+  "file": "src/components/account/ScentProfileQuiz.tsx"
+ },
+ {
+  "key": "account.scent.everyday",
+  "group": "Customer account",
+  "section": "Scent profile options",
+  "def": "Everyday",
+  "vars": [],
+  "file": "src/components/account/ScentProfileQuiz.tsx"
+ },
+ {
+  "key": "account.scent.office",
+  "group": "Customer account",
+  "section": "Scent profile options",
+  "def": "Office",
+  "vars": [],
+  "file": "src/components/account/ScentProfileQuiz.tsx"
+ },
+ {
+  "key": "account.scent.dates",
+  "group": "Customer account",
+  "section": "Scent profile options",
+  "def": "Dates",
+  "vars": [],
+  "file": "src/components/account/ScentProfileQuiz.tsx"
+ },
+ {
+  "key": "account.scent.parties",
+  "group": "Customer account",
+  "section": "Scent profile options",
+  "def": "Parties",
+  "vars": [],
+  "file": "src/components/account/ScentProfileQuiz.tsx"
+ },
+ {
+  "key": "account.scent.special_occasions",
+  "group": "Customer account",
+  "section": "Scent profile options",
+  "def": "Special Occasions",
+  "vars": [],
+  "file": "src/components/account/ScentProfileQuiz.tsx"
+ },
+ {
+  "key": "account.scent.light",
+  "group": "Customer account",
+  "section": "Scent profile options",
+  "def": "Light",
+  "vars": [],
+  "file": "src/components/account/ScentProfileQuiz.tsx"
+ },
+ {
+  "key": "account.scent.moderate",
+  "group": "Customer account",
+  "section": "Scent profile options",
+  "def": "Moderate",
+  "vars": [],
+  "file": "src/components/account/ScentProfileQuiz.tsx"
+ },
+ {
+  "key": "account.scent.strong",
+  "group": "Customer account",
+  "section": "Scent profile options",
+  "def": "Strong",
+  "vars": [],
+  "file": "src/components/account/ScentProfileQuiz.tsx"
+ },
+ {
+  "key": "assistant.hi_i_m_queen_tell_me_what_kind_of_scent_you_re_a",
+  "group": "Shopping assistant",
+  "section": "First message",
+  "def": "Hi, I'm Queen. Tell me what kind of scent you're after — a note you love, an occasion, even a budget — and I'll find something from our collection for you.",
+  "vars": [],
+  "file": "src/components/assistant/AssistantWidget.tsx"
+ },
+ {
+  "key": "assistant.error",
+  "group": "Shopping assistant",
+  "section": "Error message",
+  "def": "Something went wrong on my end — please try again in a moment.",
+  "vars": [],
+  "file": "src/components/assistant/AssistantWidget.tsx"
+ },
+ {
+  "key": "vendor.transactionreceiptmodal.notprovided",
+  "group": "Vendor space",
+  "section": "TransactionReceiptModal",
+  "def": "Not provided",
+  "vars": [],
+  "file": "src/components/vendor/TransactionReceiptModal.tsx"
+ },
+ {
+  "key": "meta.account.title",
+  "group": "Page titles and descriptions (browser tab and Google)",
+  "section": "account",
+  "def": "My Royal Experience — Royal Fragrance",
+  "vars": [],
+  "file": "src/app/account/page.tsx"
+ },
+ {
+  "key": "meta.account.collection.title",
+  "group": "Page titles and descriptions (browser tab and Google)",
+  "section": "account.collection",
+  "def": "My Collection — Royal Fragrance",
+  "vars": [],
+  "file": "src/app/account/collection/page.tsx"
+ },
+ {
+  "key": "meta.account.orders.title",
+  "group": "Page titles and descriptions (browser tab and Google)",
+  "section": "account.orders",
+  "def": "My Orders — Royal Fragrance",
+  "vars": [],
+  "file": "src/app/account/orders/page.tsx"
+ },
+ {
+  "key": "meta.account.notifications.title",
+  "group": "Page titles and descriptions (browser tab and Google)",
+  "section": "account.notifications",
+  "def": "Notifications — Royal Fragrance",
+  "vars": [],
+  "file": "src/app/account/notifications/page.tsx"
+ },
+ {
+  "key": "meta.account.settings.title",
+  "group": "Page titles and descriptions (browser tab and Google)",
+  "section": "account.settings",
+  "def": "Account Settings — Royal Fragrance",
+  "vars": [],
+  "file": "src/app/account/settings/page.tsx"
+ },
+ {
+  "key": "meta.account.scentprofile.title",
+  "group": "Page titles and descriptions (browser tab and Google)",
+  "section": "account.scentprofile",
+  "def": "Scent Profile — Royal Fragrance",
+  "vars": [],
+  "file": "src/app/account/scent-profile/page.tsx"
+ },
+ {
+  "key": "meta.account.wishlist.title",
+  "group": "Page titles and descriptions (browser tab and Google)",
+  "section": "account.wishlist",
+  "def": "My Scent Wishlist — Royal Fragrance",
+  "vars": [],
+  "file": "src/app/account/wishlist/page.tsx"
+ },
+ {
+  "key": "meta.account.addresses.title",
+  "group": "Page titles and descriptions (browser tab and Google)",
+  "section": "account.addresses",
+  "def": "My Addresses — Royal Fragrance",
+  "vars": [],
+  "file": "src/app/account/addresses/page.tsx"
+ },
+ {
+  "key": "meta.checkout.title",
+  "group": "Page titles and descriptions (browser tab and Google)",
+  "section": "checkout",
+  "def": "Checkout — Royal Fragrance",
+  "vars": [],
+  "file": "src/app/checkout/page.tsx"
+ },
+ {
+  "key": "meta.orderconfirmation.title",
+  "group": "Page titles and descriptions (browser tab and Google)",
+  "section": "orderconfirmation",
+  "def": "Order Confirmation — Royal Fragrance",
+  "vars": [],
+  "file": "src/app/order-confirmation/page.tsx"
+ },
+ {
+  "key": "meta.combos.title",
+  "group": "Page titles and descriptions (browser tab and Google)",
+  "section": "combos",
+  "def": "Combos — Royal Fragrance",
+  "vars": [],
+  "file": "src/app/combos/page.tsx"
+ },
+ {
+  "key": "meta.combos.description",
+  "group": "Page titles and descriptions (browser tab and Google)",
+  "section": "combos",
+  "def": "Bundle deals on Royal Fragrance perfumes — save more when you buy together.",
+  "vars": [],
+  "file": "src/app/combos/page.tsx"
+ },
+ {
+  "key": "meta.store.code.more.title",
+  "group": "Page titles and descriptions (browser tab and Google)",
+  "section": "store.code.more",
+  "def": "More from Royal Fragrance",
+  "vars": [],
+  "file": "src/app/store/[code]/more/page.tsx"
+ },
+ {
+  "key": "meta.shop.title",
+  "group": "Page titles and descriptions (browser tab and Google)",
+  "section": "shop",
+  "def": "Shop",
+  "vars": [],
+  "file": "src/app/shop/page.tsx"
+ },
+ {
+  "key": "meta.shop.description",
+  "group": "Page titles and descriptions (browser tab and Google)",
+  "section": "shop",
+  "def": "Browse Royal Fragrance's full collection — Men's, Women's, Unisex, and Oud fragrances. Shop premium perfumes online across Nigeria with secure checkout and fast delivery.",
+  "vars": [],
+  "file": "src/app/shop/page.tsx"
+ },
+ {
+  "key": "meta.vendor.title",
+  "group": "Page titles and descriptions (browser tab and Google)",
+  "section": "vendor",
+  "def": "Vendor Overview — Royal Fragrance",
+  "vars": [],
+  "file": "src/app/vendor/page.tsx"
+ },
+ {
+  "key": "meta.vendor.handovers.title",
+  "group": "Page titles and descriptions (browser tab and Google)",
+  "section": "vendor.handovers",
+  "def": "Deliveries to Customers — Vendor — Royal Fragrance",
+  "vars": [],
+  "file": "src/app/vendor/handovers/page.tsx"
+ },
+ {
+  "key": "meta.vendor.sales.title",
+  "group": "Page titles and descriptions (browser tab and Google)",
+  "section": "vendor.sales",
+  "def": "Sales — Vendor — Royal Fragrance",
+  "vars": [],
+  "file": "src/app/vendor/sales/page.tsx"
+ },
+ {
+  "key": "meta.vendor.transactions.title",
+  "group": "Page titles and descriptions (browser tab and Google)",
+  "section": "vendor.transactions",
+  "def": "Transactions — Vendor — Royal Fragrance",
+  "vars": [],
+  "file": "src/app/vendor/transactions/page.tsx"
+ },
+ {
+  "key": "meta.vendor.profile.title",
+  "group": "Page titles and descriptions (browser tab and Google)",
+  "section": "vendor.profile",
+  "def": "My Profile — Vendor — Royal Fragrance",
+  "vars": [],
+  "file": "src/app/vendor/profile/page.tsx"
+ },
+ {
+  "key": "meta.vendor.earnings.title",
+  "group": "Page titles and descriptions (browser tab and Google)",
+  "section": "vendor.earnings",
+  "def": "Earnings — Vendor — Royal Fragrance",
+  "vars": [],
+  "file": "src/app/vendor/earnings/page.tsx"
+ },
+ {
+  "key": "meta.vendor.inventory.title",
+  "group": "Page titles and descriptions (browser tab and Google)",
+  "section": "vendor.inventory",
+  "def": "Inventory — Vendor — Royal Fragrance",
+  "vars": [],
+  "file": "src/app/vendor/inventory/page.tsx"
+ },
+ {
+  "key": "meta.vendor.collectionaccount.title",
+  "group": "Page titles and descriptions (browser tab and Google)",
+  "section": "vendor.collectionaccount",
+  "def": "Collection Account — Vendor — Royal Fragrance",
+  "vars": [],
+  "file": "src/app/vendor/collection-account/page.tsx"
+ },
+ {
+  "key": "meta.vendor.links.title",
+  "group": "Page titles and descriptions (browser tab and Google)",
+  "section": "vendor.links",
+  "def": "My Link — Vendor — Royal Fragrance",
+  "vars": [],
+  "file": "src/app/vendor/links/page.tsx"
+ },
+ {
+  "key": "meta.vendor.batches.title",
+  "group": "Page titles and descriptions (browser tab and Google)",
+  "section": "vendor.batches",
+  "def": "Batch Delivery — Vendor — Royal Fragrance",
+  "vars": [],
+  "file": "src/app/vendor/batches/page.tsx"
+ },
+ {
+  "key": "meta.becomeavendor.apply.title",
+  "group": "Page titles and descriptions (browser tab and Google)",
+  "section": "becomeavendor.apply",
+  "def": "Vendor Application — Royal Fragrance",
+  "vars": [],
+  "file": "src/app/become-a-vendor/apply/page.tsx"
+ }
+]

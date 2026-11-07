@@ -15,10 +15,15 @@ import { formatNaira } from "@/lib/utils/currency";
 import { OrderTimeline } from "@/components/account/OrderTimeline";
 import { LinkButton } from "@/components/ui/Button";
 import { Package, Sparkles, Heart } from "lucide-react";
+import { getT } from "@/lib/content/server";
 
-export const metadata = { title: "My Royal Experience — Royal Fragrance" };
+export async function generateMetadata() {
+  const _t = await getT();
+  return { title: _t("meta.account.title", "My Royal Experience — Royal Fragrance") 
+  };
+}
 
-export default async function AccountOverviewPage() {
+export default async function AccountOverviewPage() { const _t = await getT();
   const supabase = createClient();
   const {
     data: { user },
@@ -46,19 +51,19 @@ export default async function AccountOverviewPage() {
 
   const stats = [
     {
-      label: "Active Orders",
+      label: _t("account.c6aeac", "Active Orders"),
       value: activeOrdersCount,
       icon: Package,
       href: "/account/orders",
     },
     {
-      label: "My Collection",
+      label: _t("account.aa78fd", "My Collection"),
       value: collection.length,
       icon: Sparkles,
       href: "/account/collection",
     },
     {
-      label: "Wishlist",
+      label: _t("account.6ff331", "Wishlist"),
       value: wishlist.length,
       icon: Heart,
       href: "/account/wishlist",
@@ -72,12 +77,12 @@ export default async function AccountOverviewPage() {
         <div className="pointer-events-none absolute -right-16 -top-16 h-56 w-56 rounded-full bg-caramel/20 blur-[90px]" />
         <p className="font-display text-2xl">
           {activeOrder
-            ? "Your fragrance is on its way 🚚"
-            : "Ready to discover your next signature scent?"}
+            ? _t("account.5ace76", "Your fragrance is on its way 🚚")
+            : _t("account.dbb392", "Ready to discover your next signature scent?")}
         </p>
         <p className="mt-2 max-w-md text-sm text-cream/70">
           {profileSummary ??
-            "Complete your Scent Profile so we can recommend fragrances you'll actually love."}
+            _t("account.49137d", "Complete your Scent Profile so we can recommend fragrances you'll actually love.")}
         </p>
       </div>
 
@@ -107,15 +112,11 @@ export default async function AccountOverviewPage() {
       {activeOrder && (
         <div className="rounded-xl2 border border-espresso/10 bg-white/60 p-6">
           <div className="mb-4 flex items-center justify-between">
-            <h2 className="font-display text-lg text-espresso">
-              Active Order
-            </h2>
+            <h2 className="font-display text-lg text-espresso">{_t("account.3c3292", "Active Order")}</h2>
             <Link
               href="/account/orders"
               className="text-xs text-caramel underline"
-            >
-              View All Orders
-            </Link>
+            >{_t("account.02c898", "View All Orders")}</Link>
           </div>
           <p className="text-sm text-rich/70">
             {activeOrder.order_number} · {formatNaira(activeOrder.total)}
@@ -130,27 +131,19 @@ export default async function AccountOverviewPage() {
       <div className="rounded-xl2 border border-espresso/10 bg-white/60 p-6">
         <div className="mb-4 flex items-center justify-between">
           <div>
-            <h2 className="font-display text-lg text-espresso">
-              Your Fragrance Collection
-            </h2>
-            <p className="text-xs text-rich/50">
-              You own {collection.length} fragrance{collection.length !== 1 ? "s" : ""}
+            <h2 className="font-display text-lg text-espresso">{_t("account.44c20b", "Your Fragrance Collection")}</h2>
+            <p className="text-xs text-rich/50">{_t("account.ef0f44", "You own {length} fragrance{v}", { length: collection.length, v: collection.length !== 1 ? "s" : "" })}
             </p>
           </div>
           <Link
             href="/account/collection"
             className="text-xs text-caramel underline"
-          >
-            View Collection
-          </Link>
+          >{_t("account.8d3e56", "View Collection")}</Link>
         </div>
 
         {collection.length === 0 ? (
-          <p className="text-sm text-rich/50">
-            Your collection starts with your first order.{" "}
-            <Link href="/shop" className="text-caramel underline">
-              Shop fragrances
-            </Link>
+          <p className="text-sm text-rich/50">{_t("account.acf7f6", "Your collection starts with your first order.")}{" "}
+            <Link href="/shop" className="text-caramel underline">{_t("account.997020", "Shop fragrances")}</Link>
           </p>
         ) : (
           <div className="grid grid-cols-3 gap-3 sm:grid-cols-4 lg:grid-cols-6">
@@ -179,13 +172,11 @@ export default async function AccountOverviewPage() {
       {/* Recommended for you */}
       <div className="rounded-xl2 border border-espresso/10 bg-white/60 p-6">
         <div className="mb-4">
-          <h2 className="font-display text-lg text-espresso">
-            Recommended For You
-          </h2>
+          <h2 className="font-display text-lg text-espresso">{_t("account.1e386b", "Recommended For You")}</h2>
           <p className="text-xs text-rich/50">
             {profileSummary
-              ? "Based on your Scent Profile"
-              : "Popular picks to get you started"}
+              ? _t("account.777a76", "Based on your Scent Profile")
+              : _t("account.519f13", "Popular picks to get you started")}
           </p>
         </div>
         <div className="grid grid-cols-2 gap-3 sm:grid-cols-4">
@@ -207,9 +198,7 @@ export default async function AccountOverviewPage() {
         </div>
         {!profileSummary && (
           <div className="mt-4">
-            <LinkButton href="/account/scent-profile" size="sm" variant="outline" className="border-espresso/20 text-espresso">
-              Build Your Scent Profile
-            </LinkButton>
+            <LinkButton href="/account/scent-profile" size="sm" variant="outline" className="border-espresso/20 text-espresso">{_t("account.d3b554", "Build Your Scent Profile")}</LinkButton>
           </div>
         )}
       </div>
@@ -218,15 +207,11 @@ export default async function AccountOverviewPage() {
       {wishlist.length > 0 && (
         <div className="rounded-xl2 border border-espresso/10 bg-white/60 p-6">
           <div className="mb-4 flex items-center justify-between">
-            <h2 className="font-display text-lg text-espresso">
-              Your Scent Wishlist
-            </h2>
+            <h2 className="font-display text-lg text-espresso">{_t("account.a4ed2b", "Your Scent Wishlist")}</h2>
             <Link
               href="/account/wishlist"
               className="text-xs text-caramel underline"
-            >
-              View Wishlist
-            </Link>
+            >{_t("account.9c2bb0", "View Wishlist")}</Link>
           </div>
           <div className="grid grid-cols-3 gap-3 sm:grid-cols-4 lg:grid-cols-6">
             {wishlist.slice(0, 6).map((w: any) => (
@@ -238,7 +223,7 @@ export default async function AccountOverviewPage() {
                 <div className="relative aspect-square overflow-hidden rounded-xl bg-brand-100">
                   <BrandImage
                     src={w.products?.product_images?.[0]?.url}
-                    alt={w.products?.name ?? "Fragrance"}
+                    alt={w.products?.name ?? _t("account.ebf862", "Fragrance")}
                     className="object-cover transition group-hover:scale-105"
                   />
                 </div>

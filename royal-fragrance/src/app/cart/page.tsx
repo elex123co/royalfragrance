@@ -6,19 +6,18 @@ import { formatNaira } from "@/lib/utils/currency";
 import { LinkButton } from "@/components/ui/Button";
 import { BrandImage } from "@/components/ui/BrandImage";
 import { Trash2 } from "lucide-react";
+import { useT } from "@/lib/content/client";
 
-export default function CartPage() {
+export default function CartPage() { const _t = useT();
   const { items, removeItem, removeCombo, updateQuantity, subtotal } = useCart();
 
   if (items.length === 0) {
     return (
       <section className="mx-auto max-w-3xl px-5 py-32 text-center lg:px-8">
-        <h1 className="font-display text-3xl text-espresso">Your Cart is Empty</h1>
-        <p className="mt-3 text-rich/70">
-          Discover a fragrance that feels like you.
-        </p>
+        <h1 className="font-display text-3xl text-espresso">{_t("cart.5f9938", "Your Cart is Empty")}</h1>
+        <p className="mt-3 text-rich/70">{_t("cart.040bb8", "Discover a fragrance that feels like you.")}</p>
         <div className="mt-8">
-          <LinkButton href="/shop">Shop Fragrances</LinkButton>
+          <LinkButton href="/shop">{_t("cart.1a0913", "Shop Fragrances")}</LinkButton>
         </div>
       </section>
     );
@@ -38,7 +37,7 @@ export default function CartPage() {
   return (
     <section className="bg-cream py-16">
       <div className="mx-auto max-w-5xl px-5 lg:px-8">
-        <h1 className="mb-10 font-display text-3xl text-espresso">Your Cart</h1>
+        <h1 className="mb-10 font-display text-3xl text-espresso">{_t("cart.9bed3c", "Your Cart")}</h1>
 
         <div className="grid gap-10 lg:grid-cols-3">
           <div className="space-y-4 lg:col-span-2">
@@ -52,13 +51,13 @@ export default function CartPage() {
                 >
                   <div className="mb-2 flex items-start justify-between">
                     <div>
-                      <p className="text-xs uppercase tracking-widest text-caramel">Combo</p>
+                      <p className="text-xs uppercase tracking-widest text-caramel">{_t("cart.dcae58", "Combo")}</p>
                       <p className="font-display text-espresso">{lines[0]?.comboName}</p>
                     </div>
                     <button
                       onClick={() => removeCombo(comboId)}
                       className="text-rich/40 transition hover:text-red-600"
-                      aria-label="Remove combo"
+                      aria-label={_t("cart.b7567b", "Remove combo")}
                     >
                       <Trash2 size={16} />
                     </button>
@@ -69,7 +68,7 @@ export default function CartPage() {
                     ))}
                   </ul>
                   <div className="flex items-center justify-between text-sm">
-                    <span className="text-rich/60">Qty {quantity}</span>
+                    <span className="text-rich/60">{_t("cart.f068d1", "Qty {quantity}", { quantity })}</span>
                     <span className="font-display text-espresso">{formatNaira(comboTotal)}</span>
                   </div>
                 </div>
@@ -108,7 +107,7 @@ export default function CartPage() {
                     <button
                       onClick={() => removeItem(item.productId, item.variantId)}
                       className="text-rich/40 transition hover:text-red-600"
-                      aria-label="Remove item"
+                      aria-label={_t("cart.76ecba", "Remove item")}
                     >
                       <Trash2 size={16} />
                     </button>
@@ -154,25 +153,23 @@ export default function CartPage() {
           </div>
 
           <div className="h-fit rounded-xl2 border border-espresso/10 bg-white/60 p-6 shadow-premium-sm">
-            <h2 className="font-display text-lg text-espresso">Order Summary</h2>
+            <h2 className="font-display text-lg text-espresso">{_t("cart.c7df8a", "Order Summary")}</h2>
             <div className="mt-4 space-y-2 text-sm text-rich/80">
               <div className="flex justify-between">
-                <span>Products Subtotal</span>
+                <span>{_t("cart.04d2de", "Products Subtotal")}</span>
                 <span>{formatNaira(subtotal)}</span>
               </div>
               <div className="flex justify-between text-rich/50">
-                <span>Delivery Fee</span>
-                <span>Calculated at checkout</span>
+                <span>{_t("cart.9c12c6", "Delivery Fee")}</span>
+                <span>{_t("cart.04397e", "Calculated at checkout")}</span>
               </div>
             </div>
             <div className="mt-4 flex justify-between border-t border-espresso/10 pt-4 font-display text-espresso">
-              <span>Total</span>
+              <span>{_t("cart.b25928", "Total")}</span>
               <span>{formatNaira(subtotal)}</span>
             </div>
 
-            <LinkButton href="/checkout" className="mt-6 w-full">
-              Proceed to Checkout
-            </LinkButton>
+            <LinkButton href="/checkout" className="mt-6 w-full">{_t("cart.d2f4d4", "Proceed to Checkout")}</LinkButton>
           </div>
         </div>
       </div>

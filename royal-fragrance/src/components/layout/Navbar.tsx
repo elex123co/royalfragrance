@@ -20,6 +20,8 @@ import {
 } from "lucide-react";
 import { useCart } from "@/context/CartContext";
 import { createClient } from "@/lib/supabase/client";
+import { useT } from "@/lib/content/client";
+import { tl } from "@/lib/content/translate";
 
 const LOGO_URL =
   "https://res.cloudinary.com/dtchp470a/image/upload/v1788705368/WhatsApp_Image_2026-09-05_at_17.32.39__1_-removebg-preview_1_qaxnfw.png";
@@ -31,7 +33,7 @@ const links = [
   { href: "/become-a-vendor", label: "Become a Vendor", icon: Users },
 ];
 
-export default function Navbar() {
+export default function Navbar() { const _t = useT();
   const [open, setOpen] = useState(false);
   const [mounted, setMounted] = useState(false);
   const [loggedIn, setLoggedIn] = useState<boolean | null>(null); // null = still checking
@@ -73,13 +75,13 @@ export default function Navbar() {
           className="flex items-center gap-2 font-display text-xl tracking-wide text-espresso"
         >
           <span className="relative flex h-11 w-11 items-center justify-center rounded-full bg-leather p-1.5 shadow-sm ring-2 ring-caramel ring-offset-2 ring-offset-cream/20">
-            <Image src={LOGO_URL} alt="Royal Fragrance" width={36} height={36} className="h-full w-full object-contain" />
+            <Image src={LOGO_URL} alt={_t("layout.navbar.c07431", "Royal Fragrance")} width={36} height={36} className="h-full w-full object-contain" />
           </span>
         </Link>
         <button
           className="text-espresso"
           onClick={() => setOpen(false)}
-          aria-label="Close menu"
+          aria-label={_t("layout.navbar.6c9fc9", "Close menu")}
         >
           <X size={24} />
         </button>
@@ -100,7 +102,7 @@ export default function Navbar() {
                 }`}
               >
                 <Icon size={20} />
-                {label}
+                {tl(_t, "navbar", label)}
               </Link>
             );
           })}
@@ -112,33 +114,26 @@ export default function Navbar() {
               href="/dashboard"
               className="flex flex-col items-center gap-2 rounded-xl border border-espresso/15 py-4 text-sm font-medium text-espresso"
             >
-              <User size={20} />
-              My Account
-            </Link>
+              <User size={20} />{_t("layout.navbar.b51b2b", "My Account")}</Link>
           ) : (
             <>
               <Link
                 href="/login"
                 className="flex flex-col items-center gap-2 rounded-xl border border-espresso/15 py-4 text-sm font-medium text-espresso"
               >
-                <LogIn size={20} />
-                Login
-              </Link>
+                <LogIn size={20} />{_t("layout.navbar.4e5a28", "Login")}</Link>
               <Link
                 href="/register"
                 className="flex flex-col items-center gap-2 rounded-xl border border-caramel bg-caramel/10 py-4 text-sm font-medium text-espresso"
               >
-                <UserPlus size={20} />
-                Sign Up
-              </Link>
+                <UserPlus size={20} />{_t("layout.navbar.2ba402", "Sign Up")}</Link>
             </>
           )}
           <Link
             href="/cart"
             className="relative flex flex-col items-center gap-2 rounded-xl border border-espresso/15 py-4 text-sm font-medium text-espresso"
           >
-            <ShoppingBag size={20} />
-            Cart{itemCount > 0 ? ` (${itemCount})` : ""}
+            <ShoppingBag size={20} />{_t("layout.navbar.c8ded0", "Cart{v}", { v: itemCount > 0 ? ` (${itemCount})` : "" })}
           </Link>
         </div>
       </div>
@@ -161,7 +156,7 @@ export default function Navbar() {
           className="flex items-center gap-2 font-display text-xl tracking-wide text-espresso"
         >
           <span className="relative flex h-11 w-11 items-center justify-center rounded-full bg-leather p-1.5 shadow-sm ring-2 ring-caramel ring-offset-2 ring-offset-cream/20">
-            <Image src={LOGO_URL} alt="Royal Fragrance" width={36} height={36} className="h-full w-full object-contain" />
+            <Image src={LOGO_URL} alt={_t("layout.navbar.c07431", "Royal Fragrance")} width={36} height={36} className="h-full w-full object-contain" />
           </span>
         </Link>
 
@@ -176,7 +171,7 @@ export default function Navbar() {
                   : "text-sm font-medium tracking-wide text-rich transition hover:text-espresso"
               }
             >
-              {link.label}
+              {tl(_t, "navbar", link.label)}
             </Link>
           ))}
         </nav>
@@ -190,9 +185,7 @@ export default function Navbar() {
                   ? "text-sm font-medium text-cream/85 transition hover:text-cream"
                   : "text-sm font-medium text-rich transition hover:text-espresso"
               }
-            >
-              Login
-            </Link>
+            >{_t("layout.navbar.4e5a28", "Login")}</Link>
           )}
           {loggedIn === false && (
             <Link
@@ -202,14 +195,12 @@ export default function Navbar() {
                   ? "rounded-full border border-cream/40 px-4 py-1.5 text-sm font-medium text-cream transition hover:bg-cream/10"
                   : "rounded-full bg-espresso px-4 py-1.5 text-sm font-medium text-cream transition hover:bg-rich"
               }
-            >
-              Sign Up
-            </Link>
+            >{_t("layout.navbar.2ba402", "Sign Up")}</Link>
           )}
           {loggedIn && (
             <Link
               href="/dashboard"
-              aria-label="Account"
+              aria-label={_t("layout.navbar.85dfa3", "Account")}
               className={
                 isHome
                   ? "text-cream/85 transition hover:text-cream"
@@ -221,7 +212,7 @@ export default function Navbar() {
           )}
           <Link
             href="/cart"
-            aria-label="Cart"
+            aria-label={_t("layout.navbar.446568", "Cart")}
             className={
               isHome
                 ? "relative text-cream/85 transition hover:text-cream"
@@ -240,7 +231,7 @@ export default function Navbar() {
         <button
           className={isHome ? "text-cream md:hidden" : "text-espresso md:hidden"}
           onClick={() => setOpen(true)}
-          aria-label="Open menu"
+          aria-label={_t("layout.navbar.197101", "Open menu")}
         >
           <Menu size={24} />
         </button>

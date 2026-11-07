@@ -4,8 +4,9 @@ import { useState } from "react";
 import { useRouter } from "next/navigation";
 import { Button } from "@/components/ui/Button";
 import { updateOwnDisplayName } from "@/lib/actions/vendor-profile";
+import { useT } from "@/lib/content/client";
 
-export function DisplayNameForm({ initial }: { initial: string }) {
+export function DisplayNameForm({ initial }: { initial: string }) { const _t = useT();
   const router = useRouter();
   const [name, setName] = useState(initial);
   const [saving, setSaving] = useState(false);
@@ -18,10 +19,10 @@ export function DisplayNameForm({ initial }: { initial: string }) {
     const result = await updateOwnDisplayName(name);
     setSaving(false);
     if (!result.success) {
-      setMessage({ ok: false, text: result.error ?? "Could not save." });
+      setMessage({ ok: false, text: result.error ?? _t("vendor.displaynameform.fb0690", "Could not save.") });
       return;
     }
-    setMessage({ ok: true, text: "Saved." });
+    setMessage({ ok: true, text: _t("vendor.displaynameform.9d4af6", "Saved.") });
     router.refresh();
   }
 
@@ -31,14 +32,14 @@ export function DisplayNameForm({ initial }: { initial: string }) {
         value={name}
         onChange={(e) => setName(e.target.value)}
         maxLength={40}
-        placeholder="e.g. Ada's Scents"
+        placeholder={_t("vendor.displaynameform.515c2f", "e.g. Ada's Scents")}
         className="w-full rounded-lg border border-espresso/15 px-4 py-2.5 text-sm focus:border-caramel focus:outline-none"
       />
       {message && (
         <p className={`text-xs ${message.ok ? "text-green-700" : "text-red-600"}`}>{message.text}</p>
       )}
       <Button type="submit" size="sm" disabled={saving}>
-        {saving ? "Saving…" : "Save name"}
+        {saving ? _t("vendor.displaynameform.56a228", "Saving…") : _t("vendor.displaynameform.8ce686", "Save name")}
       </Button>
     </form>
   );

@@ -2,10 +2,15 @@ import { redirect } from "next/navigation";
 import { createClient } from "@/lib/supabase/server";
 import { getScentProfile, summarizeScentProfile } from "@/lib/data/account";
 import { ScentProfileQuiz } from "@/components/account/ScentProfileQuiz";
+import { getT } from "@/lib/content/server";
 
-export const metadata = { title: "Scent Profile — Royal Fragrance" };
+export async function generateMetadata() {
+  const _t = await getT();
+  return { title: _t("meta.account.scentprofile.title", "Scent Profile — Royal Fragrance") 
+  };
+}
 
-export default async function ScentProfilePage() {
+export default async function ScentProfilePage() { const _t = await getT();
   const supabase = createClient();
   const {
     data: { user },
@@ -17,19 +22,12 @@ export default async function ScentProfilePage() {
 
   return (
     <div>
-      <h1 className="mb-1 font-display text-2xl text-espresso">
-        Your Scent Profile
-      </h1>
-      <p className="mb-6 text-sm text-rich/60">
-        A few quick questions help us recommend fragrances you&rsquo;ll
-        actually love.
-      </p>
+      <h1 className="mb-1 font-display text-2xl text-espresso">{_t("account.scentprofile.08dec8", "Your Scent Profile")}</h1>
+      <p className="mb-6 text-sm text-rich/60">{_t("account.scentprofile.31c197", "A few quick questions help us recommend fragrances you’ll actually love.")}</p>
 
       {summary && (
         <div className="mb-8 rounded-xl2 bg-brand-gradient p-6 text-cream">
-          <p className="text-xs uppercase tracking-widest text-sand">
-            Your Profile
-          </p>
+          <p className="text-xs uppercase tracking-widest text-sand">{_t("account.scentprofile.21c7fe", "Your Profile")}</p>
           <p className="mt-2 font-display text-xl capitalize">{summary}</p>
         </div>
       )}

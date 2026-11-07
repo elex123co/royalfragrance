@@ -4,9 +4,9 @@ import { getT } from "@/lib/content/server";
 
 // lucide has no TikTok glyph, so it is drawn inline. Replace href once the
 // real TikTok link is supplied.
-function TikTokIcon({ size = 18, className = "" }: { size?: number; className?: string }) {
+async function TikTokIcon({ size = 18, className = "" }: { size?: number; className?: string }) { const _t = await getT();
   return (
-    <svg width={size} height={size} viewBox="0 0 24 24" fill="currentColor" className={className} aria-label="TikTok">
+    <svg width={size} height={size} viewBox="0 0 24 24" fill="currentColor" className={className} aria-label={_t("layout.footer.fc49f1", "TikTok")}>
       <path d="M16.6 2h-3.2v13.1a2.9 2.9 0 1 1-2.9-2.9c.3 0 .6 0 .9.1V9a6.1 6.1 0 1 0 5.2 6V8.8a7.4 7.4 0 0 0 4.3 1.4V7a4.3 4.3 0 0 1-4.3-5Z" />
     </svg>
   );
@@ -19,25 +19,24 @@ function telHref(phone: string) {
   return `tel:${digits}`;
 }
 
-export default async function Footer() {
+export default async function Footer() { const _t = await getT();
   const t = await getT();
   return (
     <footer className="bg-espresso text-cream">
       <div className="mx-auto grid max-w-7xl gap-10 px-5 py-16 lg:grid-cols-5 lg:px-8">
         <div>
           <div className="flex items-center gap-3">
-            <h3 className="font-display text-xl">
-              Royal <span className="text-caramel">Fragrance</span>
+            <h3 className="font-display text-xl">{_t("layout.footer.2c16ea", "Royal")}{" "}<span className="text-caramel">{_t("layout.footer.ebf862", "Fragrance")}</span>
             </h3>
           </div>
           <p className="mt-3 max-w-xs text-sm text-cream/70">
             {t("footer.about")}
           </p>
           <div className="mt-5 flex gap-4">
-            <a href="https://www.instagram.com/theroy_alfragrance" target="_blank" rel="noopener noreferrer" aria-label="Instagram">
+            <a href="https://www.instagram.com/theroy_alfragrance" target="_blank" rel="noopener noreferrer" aria-label={_t("layout.footer.5721bb", "Instagram")}>
               <Instagram size={18} className="text-cream/70 hover:text-caramel" />
             </a>
-            <a href="https://www.facebook.com/royal.fragrance.568989" target="_blank" rel="noopener noreferrer" aria-label="Facebook">
+            <a href="https://www.facebook.com/royal.fragrance.568989" target="_blank" rel="noopener noreferrer" aria-label={_t("layout.footer.82da67", "Facebook")}>
               <Facebook size={18} className="text-cream/70 hover:text-caramel" />
             </a>
             <TikTokIcon size={18} className="text-cream/70 hover:text-caramel" />

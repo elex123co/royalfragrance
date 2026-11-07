@@ -14,6 +14,7 @@ import {
   cleanWhatsapp,
 } from "@/lib/pickup";
 import { trackMetaEvent } from "@/components/analytics/MetaPixel";
+import { useT } from "@/lib/content/client";
 
 type Step = "customer" | "delivery" | "summary";
 
@@ -37,7 +38,7 @@ export function CheckoutForm({
   batches?: CheckoutBatch[];
   newUserDiscountEligible?: boolean;
   newUserDiscountPercentage?: number;
-}) {
+}) { const _t = useT();
   const { items, subtotal, clearCart } = useCart();
   const [step, setStep] = useState<Step>("customer");
   const [submitting, setSubmitting] = useState(false);
@@ -97,7 +98,7 @@ export function CheckoutForm({
   const discountAmount = promoStatus.applied ? promoStatus.discountAmount : autoDiscountAmount;
   const discountLabel = promoStatus.applied
     ? `Promo code "${promoStatus.code}"`
-    : "New customer discount";
+    : _t("checkout.checkoutform.141a52", "New customer discount");
   const total = subtotal + deliveryFee - discountAmount;
 
   async function handleApplyPromo() {
@@ -111,7 +112,7 @@ export function CheckoutForm({
     setApplyingPromo(false);
 
     if (!result.valid) {
-      setPromoStatus({ applied: false, error: result.error ?? "Invalid code." });
+      setPromoStatus({ applied: false, error: result.error ?? _t("checkout.checkoutform.2c65b2", "Invalid code.") });
       return;
     }
     setPromoStatus({
@@ -159,14 +160,14 @@ export function CheckoutForm({
       const json = await res.json();
 
       if (!res.ok) {
-        setError(json.error ?? "Something went wrong. Please try again.");
+        setError(json.error ?? _t("checkout.checkoutform.9a3ea0", "Something went wrong. Please try again."));
         return;
       }
 
       clearCart();
       window.location.href = json.authorizationUrl;
     } catch {
-      setError("Network error. Please check your connection and try again.");
+      setError(_t("checkout.checkoutform.46c60d", "Network error. Please check your connection and try again."));
     } finally {
       setSubmitting(false);
     }
@@ -174,9 +175,7 @@ export function CheckoutForm({
 
   if (items.length === 0) {
     return (
-      <p className="text-rich/70">
-        Your cart is empty. Add a fragrance before checking out.
-      </p>
+      <p className="text-rich/70">{_t("checkout.checkoutform.9583fb", "Your cart is empty. Add a fragrance before checking out.")}</p>
     );
   }
 
@@ -185,27 +184,24 @@ export function CheckoutForm({
       <StepIndicator step={step} />
 
       {newUserDiscountEligible && !promoStatus.applied && (
-        <div className="mt-6 rounded-xl bg-caramel/15 px-4 py-3 text-sm text-espresso">
-          You qualify for <strong>{newUserDiscountPercentage}% off</strong> as a new
-          customer — already applied to your total below.
-        </div>
+        <div className="mt-6 rounded-xl bg-caramel/15 px-4 py-3 text-sm text-espresso">{_t("checkout.checkoutform.db2d28", "You qualify for")}{" "}<strong>{_t("checkout.checkoutform.bdd274", "{newUserDiscountPercentage}% off", { newUserDiscountPercentage })}</strong>{" "}{_t("checkout.checkoutform.764fb4", "as a new customer — already applied to your total below.")}</div>
       )}
 
       {step === "customer" && (
         <div className="mt-8 space-y-4">
           <Field
-            label="Full Name"
+            label={_t("checkout.checkoutform.64346b", "Full Name")}
             value={customer.fullName}
             onChange={(v) => setCustomer((c) => ({ ...c, fullName: v }))}
           />
           <Field
-            label="Email"
+            label={_t("checkout.checkoutform.84add5", "Email")}
             type="email"
             value={customer.email}
             onChange={(v) => setCustomer((c) => ({ ...c, email: v }))}
           />
           <Field
-            label="Phone Number"
+            label={_t("checkout.checkoutform.ab25d6", "Phone Number")}
             value={customer.phone}
             onChange={(v) => setCustomer((c) => ({ ...c, phone: v }))}
           />
@@ -213,9 +209,7 @@ export function CheckoutForm({
             className="mt-4 w-full"
             disabled={!customer.fullName || !customer.email || !customer.phone}
             onClick={() => setStep("delivery")}
-          >
-            Continue to Delivery
-          </Button>
+          >{_t("checkout.checkoutform.026744", "Continue to Delivery")}</Button>
         </div>
       )}
 
@@ -223,31 +217,23 @@ export function CheckoutForm({
         <div className="mt-8 space-y-4">
           {batches.length > 0 && (
             <div className="rounded-xl border border-caramel/30 bg-caramel/10 p-4">
-              <p className="text-sm font-medium text-espresso">Share delivery with a batch</p>
-              <p className="mt-1 text-xs text-rich/70">
-                Customers in the same location split one delivery fee. If the batch takes too long, you can switch to
-                individual delivery from your order page.
-              </p>
+              <p className="text-sm font-medium text-espresso">{_t("checkout.checkoutform.f93d20", "Share delivery with a batch")}</p>
+              <p className="mt-1 text-xs text-rich/70">{_t("checkout.checkoutform.c5787c", "Customers in the same location split one delivery fee. If the batch takes too long, you can switch to individual delivery from your order page.")}</p>
               <select
                 value={batchId}
                 onChange={(e) => setBatchId(e.target.value)}
                 className="mt-3 w-full rounded-lg border border-espresso/15 bg-white px-4 py-2.5 text-sm focus:border-caramel focus:outline-none"
               >
-                <option value="">No batch: normal delivery</option>
+                <option value="">{_t("checkout.checkoutform.eeda02", "No batch: normal delivery")}</option>
                 {batches.map((b) => (
                   <option key={b.id} value={b.id}>
-                    {b.locationName}
-                    {b.label ? ` (${b.label})` : ""} — {formatNaira(b.share)} delivery, closes{" "}
-                    {new Date(b.closesAt).toLocaleDateString()}, {b.spotsLeft} order{b.spotsLeft === 1 ? "" : "s"} left
-                  </option>
+                    {_t("checkout.checkoutform.e59a43", "{locationName}{v} — {v2} delivery, closes {v3}, {spotsLeft} order{v4} left", { locationName: b.locationName, v: b.label ? ` (${b.label})` : "", v2: formatNaira(b.share), v3: new Date(b.closesAt).toLocaleDateString(), spotsLeft: b.spotsLeft, v4: b.spotsLeft === 1 ? "" : "s" })}</option>
                 ))}
               </select>
             </div>
           )}
           <div className={selectedBatch ? "hidden" : ""}>
-            <label className="mb-1.5 block text-sm font-medium text-espresso">
-              State
-            </label>
+            <label className="mb-1.5 block text-sm font-medium text-espresso">{_t("checkout.checkoutform.a72502", "State")}</label>
             <select
               value={delivery.zoneId}
               onChange={(e) =>
@@ -257,53 +243,46 @@ export function CheckoutForm({
             >
               {zones.map((z) => (
                 <option key={z.id} value={z.id}>
-                  {z.name} — {formatNaira(z.fee)} delivery
-                </option>
+                  {_t("checkout.checkoutform.e125c1", "{name} — {v} delivery", { name: z.name, v: formatNaira(z.fee) })}</option>
               ))}
             </select>
             <p className="mt-1.5 text-xs text-rich/60">
               {selectedZone?.state === "Lagos"
-                ? "Estimated delivery: 24–48 hours within Lagos."
-                : "Estimated delivery: 1–4 weeks outside Lagos — we aim to get it to you sooner, but it will never take longer than 4 weeks."}
+                ? _t("checkout.checkoutform.d817b6", "Estimated delivery: 24–48 hours within Lagos.")
+                : _t("checkout.checkoutform.879eca", "Estimated delivery: 1–4 weeks outside Lagos — we aim to get it to you sooner, but it will never take longer than 4 weeks.")}
             </p>
           </div>
           {pickupAvailable && (
             <div className="rounded-xl border border-espresso/10 bg-white p-4">
-              <p className="mb-2 text-sm font-medium text-espresso">How would you like to receive your order?</p>
+              <p className="mb-2 text-sm font-medium text-espresso">{_t("checkout.checkoutform.b16885", "How would you like to receive your order?")}</p>
               <label className="flex cursor-pointer items-start gap-2 py-1 text-sm text-rich/80">
                 <input type="radio" name="method" checked={!isPickup} onChange={() => setWantsPickup(false)} className="mt-1" />
-                <span>Deliver to my address ({formatNaira(selectedZone?.fee ?? 0)})</span>
+                <span>{_t("checkout.checkoutform.13da0f", "Deliver to my address ({v})", { v: formatNaira(selectedZone?.fee ?? 0) })}</span>
               </label>
               <label className="flex cursor-pointer items-start gap-2 py-1 text-sm text-rich/80">
                 <input type="radio" name="method" checked={isPickup} onChange={() => setWantsPickup(true)} className="mt-1" />
-                <span>
-                  Pick up at {PICKUP_LOCATION} ({formatNaira(PICKUP_FEE)})
-                  <span className="block text-xs text-rich/60">Available for Lagos only. Come to Ipaja to collect your order.</span>
+                <span>{_t("checkout.checkoutform.88de5c", "Pick up at {PICKUP_LOCATION} ({v})", { PICKUP_LOCATION, v: formatNaira(PICKUP_FEE) })}<span className="block text-xs text-rich/60">{_t("checkout.checkoutform.cfd1fd", "Available for Lagos only. Come to Ipaja to collect your order.")}</span>
                 </span>
               </label>
             </div>
           )}
           {isPickup ? (
             <div className="space-y-4">
-              <p className="rounded-lg bg-espresso/5 px-4 py-3 text-sm text-rich/80">
-                Pickup location: <strong>{PICKUP_LOCATION}</strong>. Pickup is available {PICKUP_DAYS_LABEL} only.
-              </p>
+              <p className="rounded-lg bg-espresso/5 px-4 py-3 text-sm text-rich/80">{_t("checkout.checkoutform.a25d3a", "Pickup location:")}{" "}<strong>{PICKUP_LOCATION}</strong>{_t("checkout.checkoutform.3a1df8", ". Pickup is available {PICKUP_DAYS_LABEL} only.", { PICKUP_DAYS_LABEL })}</p>
               <Field
-                label="WhatsApp Number (required)"
+                label={_t("checkout.checkoutform.d51552", "WhatsApp Number (required)")}
                 value={pickupWhatsapp}
                 onChange={setPickupWhatsapp}
                 type="tel"
               />
               <div>
-                <label className="mb-1.5 block text-sm font-medium text-espresso">
-                  Pickup Date (required)
-                </label>
+                <label className="mb-1.5 block text-sm font-medium text-espresso">{_t("checkout.checkoutform.dd1706", "Pickup Date (required)")}</label>
                 <select
                   value={pickupDate}
                   onChange={(e) => setPickupDate(e.target.value)}
                   className="w-full rounded-lg border border-espresso/15 px-4 py-2.5 text-sm focus:border-caramel focus:outline-none"
                 >
-                  <option value="">Choose a day</option>
+                  <option value="">{_t("checkout.checkoutform.2057df", "Choose a day")}</option>
                   {pickupDates.map((d) => (
                     <option key={d.value} value={d.value}>
                       {d.label}
@@ -313,19 +292,16 @@ export function CheckoutForm({
               </div>
             </div>
           ) : selectedBatch ? (
-            <p className="rounded-lg bg-espresso/5 px-4 py-3 text-sm text-rich/80">
-              Delivery location: <strong>{selectedBatch.locationName}</strong>. Your order will be delivered with this
-              batch.
-            </p>
+            <p className="rounded-lg bg-espresso/5 px-4 py-3 text-sm text-rich/80">{_t("checkout.checkoutform.294ed3", "Delivery location:")}{" "}<strong>{selectedBatch.locationName}</strong>{_t("checkout.checkoutform.05ab6c", ". Your order will be delivered with this batch.")}</p>
           ) : (
             <>
               <Field
-                label="City / Area"
+                label={_t("checkout.checkoutform.27e190", "City / Area")}
                 value={delivery.city}
                 onChange={(v) => setDelivery((d) => ({ ...d, city: v }))}
               />
               <Field
-                label="Full Delivery Address"
+                label={_t("checkout.checkoutform.b33a5d", "Full Delivery Address")}
                 value={delivery.address}
                 onChange={(v) => setDelivery((d) => ({ ...d, address: v }))}
               />
@@ -333,9 +309,7 @@ export function CheckoutForm({
           )}
 
           <div className="flex gap-3">
-            <Button variant="outline" className="border-espresso/20 text-espresso" onClick={() => setStep("customer")}>
-              Back
-            </Button>
+            <Button variant="outline" className="border-espresso/20 text-espresso" onClick={() => setStep("customer")}>{_t("checkout.checkoutform.b52b36", "Back")}</Button>
             <Button
               className="flex-1"
               disabled={
@@ -344,9 +318,7 @@ export function CheckoutForm({
                   : !selectedBatch && (!delivery.zoneId || !delivery.city || !delivery.address)
               }
               onClick={() => setStep("summary")}
-            >
-              Review Order
-            </Button>
+            >{_t("checkout.checkoutform.6776fe", "Review Order")}</Button>
           </div>
         </div>
       )}
@@ -368,14 +340,12 @@ export function CheckoutForm({
           </div>
 
           <div className="mt-4">
-            <label className="mb-1.5 block text-sm font-medium text-espresso">
-              Promo Code
-            </label>
+            <label className="mb-1.5 block text-sm font-medium text-espresso">{_t("checkout.checkoutform.d14f9f", "Promo Code")}</label>
             <div className="flex gap-2">
               <input
                 value={promoInput}
                 onChange={(e) => setPromoInput(e.target.value.toUpperCase())}
-                placeholder="Enter code"
+                placeholder={_t("checkout.checkoutform.ab45ae", "Enter code")}
                 disabled={promoStatus.applied}
                 className="flex-1 rounded-lg border border-espresso/15 px-4 py-2 text-sm uppercase focus:border-caramel focus:outline-none disabled:bg-espresso/5"
               />
@@ -387,9 +357,7 @@ export function CheckoutForm({
                     setPromoInput("");
                   }}
                   className="rounded-lg border border-espresso/20 px-4 text-sm text-espresso hover:bg-espresso/5"
-                >
-                  Remove
-                </button>
+                >{_t("checkout.checkoutform.e96390", "Remove")}</button>
               ) : (
                 <button
                   type="button"
@@ -397,16 +365,14 @@ export function CheckoutForm({
                   disabled={applyingPromo || !promoInput.trim()}
                   className="rounded-lg bg-espresso px-4 text-sm text-cream hover:bg-rich disabled:cursor-not-allowed disabled:opacity-40"
                 >
-                  {applyingPromo ? "Checking…" : "Apply"}
+                  {applyingPromo ? _t("checkout.checkoutform.820d60", "Checking…") : _t("checkout.checkoutform.cfea41", "Apply")}
                 </button>
               )}
             </div>
             {promoStatus.applied && (
-              <p className="mt-1.5 text-xs text-green-700">
-                "{promoStatus.code}" applied — {formatNaira(promoStatus.discountAmount)} off
-                {newUserDiscountEligible
+              <p className="mt-1.5 text-xs text-green-700">{_t("checkout.checkoutform.33f012", "\"{code}\" applied — {v} off{v2}", { code: promoStatus.code, v: formatNaira(promoStatus.discountAmount), v2: newUserDiscountEligible
                   ? " (replaces your automatic new-customer discount)"
-                  : ""}
+                  : "" })}
               </p>
             )}
             {!promoStatus.applied && "error" in promoStatus && promoStatus.error && (
@@ -416,7 +382,7 @@ export function CheckoutForm({
 
           <div className="mt-4 space-y-2 border-t border-espresso/10 pt-4 text-sm">
             <div className="flex justify-between text-rich/80">
-              <span>Product Subtotal</span>
+              <span>{_t("checkout.checkoutform.33b05b", "Product Subtotal")}</span>
               <span>{formatNaira(subtotal)}</span>
             </div>
             <div className="flex justify-between text-rich/80">
@@ -436,7 +402,7 @@ export function CheckoutForm({
               </div>
             )}
             <div className="flex justify-between border-t border-espresso/10 pt-2 font-display text-lg text-espresso">
-              <span>Total</span>
+              <span>{_t("checkout.checkoutform.b25928", "Total")}</span>
               <span>{formatNaira(total)}</span>
             </div>
           </div>
@@ -448,11 +414,9 @@ export function CheckoutForm({
           )}
 
           <div className="mt-6 flex gap-3">
-            <Button variant="outline" className="border-espresso/20 text-espresso" onClick={() => setStep("delivery")}>
-              Back
-            </Button>
+            <Button variant="outline" className="border-espresso/20 text-espresso" onClick={() => setStep("delivery")}>{_t("checkout.checkoutform.b52b36", "Back")}</Button>
             <Button className="flex-1" onClick={handlePay} disabled={submitting}>
-              {submitting ? "Redirecting to payment…" : `Pay ${formatNaira(total)}`}
+              {submitting ? _t("checkout.checkoutform.e25507", "Redirecting to payment…") : `Pay ${formatNaira(total)}`}
             </Button>
           </div>
         </div>
@@ -461,11 +425,11 @@ export function CheckoutForm({
   );
 }
 
-function StepIndicator({ step }: { step: Step }) {
+function StepIndicator({ step }: { step: Step }) { const _t = useT();
   const steps: { key: Step; label: string }[] = [
-    { key: "customer", label: "Your Info" },
-    { key: "delivery", label: "Delivery" },
-    { key: "summary", label: "Payment" },
+    { key: "customer", label: _t("checkout.checkoutform.d32bbe", "Your Info") },
+    { key: "delivery", label: _t("checkout.checkoutform.9631af", "Delivery") },
+    { key: "summary", label: _t("checkout.checkoutform.b41a92", "Payment") },
   ];
   const activeIndex = steps.findIndex((s) => s.key === step);
 

@@ -28,7 +28,7 @@ export default async function AdminContentPage() {
         </p>
       )}
       <ContentEditor
-        groups={[...CONTENT_GROUPS]}
+        groups={CONTENT_GROUPS.filter((g) => CONTENT_FIELDS.some((f) => f.group === g))}
         fields={CONTENT_FIELDS}
         overrides={overrides}
       />

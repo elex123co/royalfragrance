@@ -7,14 +7,19 @@ import { LinkButton } from "@/components/ui/Button";
 import { PurchaseTracker } from "@/components/analytics/PurchaseTracker";
 import { SwitchToIndividual } from "@/components/batches/SwitchToIndividual";
 import { CheckCircle2, Clock, MessageCircle, Users } from "lucide-react";
+import { getT } from "@/lib/content/server";
 
-export const metadata = { title: "Order Confirmation — Royal Fragrance" };
+export async function generateMetadata() {
+  const _t = await getT();
+  return { title: _t("meta.orderconfirmation.title", "Order Confirmation — Royal Fragrance") 
+  };
+}
 
 export default async function OrderConfirmationPage({
   searchParams,
 }: {
   searchParams: { order?: string };
-}) {
+}) { const _t = await getT();
   // Monnify appends its own ?paymentReference=... onto whatever redirect
   // URL we give it, without checking whether that URL already has a "?" —
   // producing a malformed "?order=X?paymentReference=Y" where everything
@@ -26,12 +31,10 @@ export default async function OrderConfirmationPage({
   if (!orderNumber) {
     return (
       <section className="mx-auto max-w-2xl px-5 py-32 text-center lg:px-8">
-        <h1 className="font-display text-3xl text-espresso">Order Not Found</h1>
-        <p className="mt-3 text-rich/70">
-          No order reference was provided.
-        </p>
+        <h1 className="font-display text-3xl text-espresso">{_t("orderconfirmation.4ba340", "Order Not Found")}</h1>
+        <p className="mt-3 text-rich/70">{_t("orderconfirmation.2582d6", "No order reference was provided.")}</p>
         <div className="mt-8">
-          <LinkButton href="/shop">Continue Shopping</LinkButton>
+          <LinkButton href="/shop">{_t("orderconfirmation.ce3017", "Continue Shopping")}</LinkButton>
         </div>
       </section>
     );
@@ -47,13 +50,12 @@ export default async function OrderConfirmationPage({
   if (!order) {
     return (
       <section className="mx-auto max-w-2xl px-5 py-32 text-center lg:px-8">
-        <h1 className="font-display text-3xl text-espresso">Order Not Found</h1>
-        <p className="mt-3 text-rich/70">
-          We couldn&rsquo;t find an order with reference{" "}
+        <h1 className="font-display text-3xl text-espresso">{_t("orderconfirmation.4ba340", "Order Not Found")}</h1>
+        <p className="mt-3 text-rich/70">{_t("orderconfirmation.7b20ef", "We couldn’t find an order with reference")}{" "}
           <span className="font-medium">{orderNumber}</span>.
         </p>
         <div className="mt-8">
-          <LinkButton href="/shop">Continue Shopping</LinkButton>
+          <LinkButton href="/shop">{_t("orderconfirmation.ce3017", "Continue Shopping")}</LinkButton>
         </div>
       </section>
     );
@@ -110,34 +112,33 @@ export default async function OrderConfirmationPage({
           )}
 
           <h1 className="mt-4 font-display text-2xl text-espresso">
-            {isPaid ? "Order Confirmed" : "Payment Pending"}
+            {isPaid ? _t("orderconfirmation.b357a2", "Order Confirmed") : _t("orderconfirmation.0ceada", "Payment Pending")}
           </h1>
-          <p className="mt-2 text-sm text-rich/70">
-            Order <span className="font-medium">{order.order_number}</span>
+          <p className="mt-2 text-sm text-rich/70">{_t("orderconfirmation.1d7577", "Order")}{" "}<span className="font-medium">{order.order_number}</span>
           </p>
 
           <div className="mt-8 space-y-2 rounded-xl border border-espresso/10 bg-cream/60 p-5 text-left text-sm">
             {order.order_items?.map((item: any) => (
               <div key={item.id} className="flex justify-between text-rich/80">
                 <span>
-                  {item.products?.name ?? "Product"} × {item.quantity}
+                  {item.products?.name ?? _t("orderconfirmation.dd3b86", "Product")} × {item.quantity}
                 </span>
                 <span>{formatNaira(item.unit_price * item.quantity)}</span>
               </div>
             ))}
             <div className="flex justify-between border-t border-espresso/10 pt-2 text-rich/80">
-              <span>Delivery Fee</span>
+              <span>{_t("orderconfirmation.9c12c6", "Delivery Fee")}</span>
               <span>{formatNaira(order.delivery_fee)}</span>
             </div>
             <div className="flex justify-between border-t border-espresso/10 pt-2 font-display text-espresso">
-              <span>Total Paid</span>
+              <span>{_t("orderconfirmation.6a151d", "Total Paid")}</span>
               <span>{formatNaira(order.total)}</span>
             </div>
           </div>
 
           <div className="mt-6 grid grid-cols-2 gap-3 text-left text-sm">
             <div>
-              <p className="text-rich/50">{order.delivery_method === "pickup" ? "Pickup Location" : "Delivery Address"}</p>
+              <p className="text-rich/50">{order.delivery_method === "pickup" ? _t("orderconfirmation.8dea76", "Pickup Location") : _t("orderconfirmation.1f6393", "Delivery Address")}</p>
               <p className="text-espresso">
                 {order.delivery_method === "pickup"
                   ? `Ipaja, Lagos${order.pickup_date ? ` on ${formatPickupDate(order.pickup_date)}` : ""}. We will message you on WhatsApp when it is ready.`
@@ -145,7 +146,7 @@ export default async function OrderConfirmationPage({
               </p>
             </div>
             <div>
-              <p className="text-rich/50">Order Status</p>
+              <p className="text-rich/50">{_t("orderconfirmation.a15b0b", "Order Status")}</p>
               <p className="capitalize text-espresso">
                 {order.order_status.replaceAll("_", " ")}
               </p>
@@ -155,18 +156,13 @@ export default async function OrderConfirmationPage({
           {order.batch_id && batchInfo && (
             <div className="mt-6 rounded-xl border border-espresso/10 bg-cream/60 p-4 text-left text-sm text-rich/80">
               {order.batch_switched_at ? (
-                <p>
-                  This order was switched to individual delivery.
-                  {Number(order.balance_due) > 0 &&
+                <p>{_t("orderconfirmation.258662", "This order was switched to individual delivery.{v}", { v: Number(order.balance_due) > 0 &&
                     (order.balance_settled
                       ? " Your balance has been settled."
-                      : ` Balance to pay: ${formatNaira(Number(order.balance_due))}.`)}
+                      : ` Balance to pay: ${formatNaira(Number(order.balance_due))}.`) })}
                 </p>
               ) : (
-                <p>
-                  Delivered in a shared batch for {batchInfo.locationName} (batch {batchInfo.status}). Your delivery
-                  share was {formatNaira(Number(order.batch_fee_share))}.
-                </p>
+                <p>{_t("orderconfirmation.8c39b6", "Delivered in a shared batch for {locationName} (batch {status}). Your delivery share was {v}.", { locationName: batchInfo.locationName, status: batchInfo.status, v: formatNaira(Number(order.batch_fee_share)) })}</p>
               )}
             </div>
           )}
@@ -181,12 +177,8 @@ export default async function OrderConfirmationPage({
 
           {isPaid && (whatsapp?.business_phone || whatsapp?.group_link) && (
             <div className="mt-6 rounded-xl border border-caramel/30 bg-caramel/10 p-5 text-left">
-              <p className="font-display text-base text-espresso">
-                Stay in touch on WhatsApp
-              </p>
-              <p className="mt-1 text-sm text-rich/70">
-                Get updates on your order, new arrivals, and exclusive offers.
-              </p>
+              <p className="font-display text-base text-espresso">{_t("orderconfirmation.e79a2f", "Stay in touch on WhatsApp")}</p>
+              <p className="mt-1 text-sm text-rich/70">{_t("orderconfirmation.2d187f", "Get updates on your order, new arrivals, and exclusive offers.")}</p>
               <div className="mt-3 flex flex-col gap-2 sm:flex-row">
                 {whatsapp?.business_phone && (
                   <a
@@ -195,8 +187,7 @@ export default async function OrderConfirmationPage({
                     rel="noopener noreferrer"
                     className="flex flex-1 items-center justify-center gap-2 rounded-full bg-espresso px-4 py-2.5 text-sm text-cream hover:bg-rich"
                   >
-                    <MessageCircle size={16} /> Chat With Us
-                  </a>
+                    <MessageCircle size={16} />{" "}{_t("orderconfirmation.4bb727", "Chat With Us")}</a>
                 )}
                 {whatsapp?.group_link && (
                   <a
@@ -209,15 +200,14 @@ export default async function OrderConfirmationPage({
                     rel="noopener noreferrer"
                     className="flex flex-1 items-center justify-center gap-2 rounded-full border border-espresso/20 px-4 py-2.5 text-sm text-espresso hover:bg-espresso/5"
                   >
-                    <Users size={16} /> Join Our Group
-                  </a>
+                    <Users size={16} />{" "}{_t("orderconfirmation.8b0c6f", "Join Our Group")}</a>
                 )}
               </div>
             </div>
           )}
 
           <div className="mt-8">
-            <LinkButton href="/shop">Continue Shopping</LinkButton>
+            <LinkButton href="/shop">{_t("orderconfirmation.ce3017", "Continue Shopping")}</LinkButton>
           </div>
         </div>
       </div>

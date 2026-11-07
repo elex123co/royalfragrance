@@ -3,6 +3,7 @@
 import { useState } from "react";
 import { formatNaira } from "@/lib/utils/currency";
 import { TransactionReceiptModal } from "./TransactionReceiptModal";
+import { useT } from "@/lib/content/client";
 
 interface Transaction {
   id: string;
@@ -20,14 +21,14 @@ export function TransactionsList({
 }: {
   transactions: Transaction[];
   recordedIds: Set<string>;
-}) {
+}) { const _t = useT();
   const [selected, setSelected] = useState<Transaction | null>(null);
 
   return (
     <>
       <div className="space-y-2">
         {transactions.length === 0 && (
-          <p className="text-sm text-rich/50">No collections yet.</p>
+          <p className="text-sm text-rich/50">{_t("vendor.transactionslist.615f25", "No collections yet.")}</p>
         )}
         {transactions.map((t) => (
           <button
@@ -39,7 +40,7 @@ export function TransactionsList({
               <div>
                 <span className="font-display text-espresso">{formatNaira(t.amount)}</span>
                 {t.payer_name && (
-                  <p className="text-xs text-rich/60">From: {t.payer_name}</p>
+                  <p className="text-xs text-rich/60">{_t("vendor.transactionslist.4a4997", "From: {payer_name}", { payer_name: t.payer_name })}</p>
                 )}
               </div>
               <span className="text-rich/50">
@@ -52,11 +53,10 @@ export function TransactionsList({
                     : "bg-amber-100 text-amber-700"
                 }`}
               >
-                {recordedIds.has(t.id) ? "Sale Recorded" : "Unrecorded"}
+                {recordedIds.has(t.id) ? _t("vendor.transactionslist.80712f", "Sale Recorded") : _t("vendor.transactionslist.79af6c", "Unrecorded")}
               </span>
             </div>
-            <p className="truncate text-xs text-rich/40">
-              Ref: {t.provider_transaction_reference}
+            <p className="truncate text-xs text-rich/40">{_t("vendor.transactionslist.98cec1", "Ref: {provider_transaction_reference}", { provider_transaction_reference: t.provider_transaction_reference })}
             </p>
           </button>
         ))}

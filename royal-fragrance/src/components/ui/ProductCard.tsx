@@ -3,14 +3,15 @@ import type { Product } from "@/lib/types/product";
 import { formatNaira } from "@/lib/utils/currency";
 import { discountLabel } from "@/lib/utils/discount";
 import { BrandImage } from "@/components/ui/BrandImage";
+import { getT } from "@/lib/content/server";
 
-export function ProductCard({
+export async function ProductCard({
   product,
   newUserDiscountPercent,
 }: {
   product: Product;
   newUserDiscountPercent?: number | null;
-}) {
+}) { const _t = await getT();
   const outOfStock = product.status === "out_of_stock";
   // When sizes are priced differently, show the lowest price as "From".
   const variantPrices = (product.variants ?? []).map((v) => v.price);
@@ -33,19 +34,15 @@ export function ProductCard({
 
         <div className="absolute left-3 top-3 flex flex-col items-start gap-1.5">
           {outOfStock && (
-            <span className="rounded-full bg-espresso/90 px-3 py-1 text-xs tracking-wide text-cream">
-              Out of Stock
-            </span>
+            <span className="rounded-full bg-espresso/90 px-3 py-1 text-xs tracking-wide text-cream">{_t("ui.productcard.bc67a8", "Out of Stock")}</span>
           )}
           {product.originalPrice && !outOfStock && (
             <span className="rounded-full bg-red-600 px-2 py-0.5 text-[9px] font-medium tracking-wide text-white shadow-sm">
-              {discountLabel(product.discountType ?? null, product.discountValue) ?? "Sale"}
+              {discountLabel(product.discountType ?? null, product.discountValue) ?? _t("ui.productcard.0028d7", "Sale")}
             </span>
           )}
           {newUserDiscountPercent && !outOfStock && (
-            <span className="rounded-full bg-espresso px-2 py-0.5 text-[9px] font-bold tracking-wide text-cream shadow-sm">
-              % OFF
-            </span>
+            <span className="rounded-full bg-espresso px-2 py-0.5 text-[9px] font-bold tracking-wide text-cream shadow-sm">{_t("ui.productcard.b277f9", "% OFF")}</span>
           )}
         </div>
 
@@ -56,7 +53,7 @@ export function ProductCard({
           <p className="truncate text-sm font-medium text-white">{product.name}</p>
           <div className="flex items-baseline gap-1.5">
             <span className="font-display text-sm text-white">
-              {hasPriceRange && <span className="mr-1 text-[10px] font-normal text-white/70">From</span>}
+              {hasPriceRange && <span className="mr-1 text-[10px] font-normal text-white/70">{_t("ui.productcard.3f6605", "From")}</span>}
               {formatNaira(hasPriceRange ? lowestPrice : product.price)}
             </span>
             {!hasPriceRange && product.originalPrice && (

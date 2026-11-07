@@ -7,6 +7,8 @@ import { CartProvider } from "@/context/CartContext";
 import { AssistantWidget } from "@/components/assistant/AssistantWidget";
 import { InstallPrompt } from "@/components/pwa/InstallPrompt";
 import { MetaPixel } from "@/components/analytics/MetaPixel";
+import { ContentProvider } from "@/lib/content/client";
+import { getOverrides } from "@/lib/content/server";
 
 const display = Playfair_Display({
   subsets: ["latin"],
@@ -83,11 +85,12 @@ export const viewport: Viewport = {
   themeColor: "#1E120C",
 };
 
-export default function RootLayout({
+export default async function RootLayout({
   children,
 }: {
   children: React.ReactNode;
 }) {
+  const overrides = await getOverrides();
   const organizationSchema = {
     "@context": "https://schema.org",
     "@type": "Organization",
@@ -109,13 +112,15 @@ export default function RootLayout({
       </head>
       <body>
         <MetaPixel />
-        <CartProvider>
-          <Navbar />
-          <main>{children}</main>
-          <Footer />
-          <AssistantWidget />
-          <InstallPrompt />
-        </CartProvider>
+        <ContentProvider overrides={overrides}>
+          <CartProvider>
+            <Navbar />
+            <main>{children}</main>
+            <Footer />
+            <AssistantWidget />
+            <InstallPrompt />
+          </CartProvider>
+        </ContentProvider>
       </body>
     </html>
   );

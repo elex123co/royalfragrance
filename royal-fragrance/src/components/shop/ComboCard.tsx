@@ -4,8 +4,9 @@ import { useCart } from "@/context/CartContext";
 import { formatNaira } from "@/lib/utils/currency";
 import { BrandImage } from "@/components/ui/BrandImage";
 import type { Combo } from "@/lib/data/combos";
+import { useT } from "@/lib/content/client";
 
-export function ComboCard({ combo }: { combo: Combo }) {
+export function ComboCard({ combo }: { combo: Combo }) { const _t = useT();
   const { addCombo } = useCart();
 
   const individualTotal = combo.items.reduce(
@@ -36,18 +37,17 @@ export function ComboCard({ combo }: { combo: Combo }) {
         {combo.image ? (
           <BrandImage src={combo.image} alt={combo.name} sizes="(max-width: 768px) 100vw, 33vw" />
         ) : (
-          <div className="flex h-full items-center justify-center text-4xl text-rich/30">No image</div>
+          <div className="flex h-full items-center justify-center text-4xl text-rich/30">{_t("shop.combocard.fc5e5b", "No image")}</div>
         )}
         {savings > 0 && (
-          <span className="absolute left-3 top-3 rounded-full bg-red-600 px-3 py-1 text-xs font-medium text-white shadow-sm">
-            Save {formatNaira(savings)}
+          <span className="absolute left-3 top-3 rounded-full bg-red-600 px-3 py-1 text-xs font-medium text-white shadow-sm">{_t("shop.combocard.634d43", "Save {v}", { v: formatNaira(savings) })}
           </span>
         )}
       </div>
       <div className="flex flex-1 flex-col gap-2 p-5">
         <h3 className="font-display text-lg text-espresso">{combo.name}</h3>
         {combo.description && <p className="text-sm text-rich/70">{combo.description}</p>}
-        <p className="text-xs uppercase tracking-widest text-caramel">Includes</p>
+        <p className="text-xs uppercase tracking-widest text-caramel">{_t("shop.combocard.db5497", "Includes")}</p>
         <ul className="text-sm text-rich/70">
           {combo.items.map((item, i) => (
             <li key={i}>
@@ -68,9 +68,7 @@ export function ComboCard({ combo }: { combo: Combo }) {
         <button
           onClick={handleAdd}
           className="mt-2 rounded-full bg-espresso px-4 py-2.5 text-sm text-cream hover:bg-rich"
-        >
-          Add Combo to Cart
-        </button>
+        >{_t("shop.combocard.4dbad7", "Add Combo to Cart")}</button>
       </div>
     </div>
   );

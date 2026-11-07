@@ -13,12 +13,13 @@ import { createClient } from "@/lib/supabase/server";
 import { getNotifications, getProfile } from "@/lib/data/account";
 import { LogoutButton, LogoutIconButton } from "@/components/account/LogoutButton";
 import { DashboardMobileNav } from "@/components/shared/DashboardMobileNav";
+import { getT } from "@/lib/content/server";
 
 export default async function AccountLayout({
   children,
 }: {
   children: React.ReactNode;
-}) {
+}) { const _t = await getT();
   const supabase = createClient();
   const {
     data: { user },
@@ -34,19 +35,19 @@ export default async function AccountLayout({
   const firstName = (profile?.name ?? "there").split(" ")[0];
 
   const navItems = [
-    { href: "/account", label: "Overview", icon: LayoutDashboard },
-    { href: "/account/orders", label: "My Orders", icon: Package },
-    { href: "/account/collection", label: "My Collection", icon: Sparkles },
-    { href: "/account/wishlist", label: "Wishlist", icon: Heart },
-    { href: "/account/scent-profile", label: "Scent Profile", icon: Sparkles },
-    { href: "/account/addresses", label: "Addresses", icon: MapPin },
+    { href: "/account", label: _t("account.layout.0efc2e", "Overview"), icon: LayoutDashboard },
+    { href: "/account/orders", label: _t("account.layout.db2821", "My Orders"), icon: Package },
+    { href: "/account/collection", label: _t("account.layout.aa78fd", "My Collection"), icon: Sparkles },
+    { href: "/account/wishlist", label: _t("account.layout.6ff331", "Wishlist"), icon: Heart },
+    { href: "/account/scent-profile", label: _t("account.layout.25543d", "Scent Profile"), icon: Sparkles },
+    { href: "/account/addresses", label: _t("account.layout.4ca7b9", "Addresses"), icon: MapPin },
     {
       href: "/account/notifications",
-      label: "Notifications",
+      label: _t("account.layout.753a22", "Notifications"),
       icon: Bell,
       badge: unreadCount,
     },
-    { href: "/account/settings", label: "Account Settings", icon: Settings },
+    { href: "/account/settings", label: _t("account.layout.e32707", "Account Settings"), icon: Settings },
   ];
 
   // A rendered icon element can cross the server→client prop boundary; a
@@ -62,11 +63,8 @@ export default async function AccountLayout({
       <div className="mx-auto flex min-h-[80vh] max-w-7xl gap-8 px-5 py-10 lg:px-8">
         <aside className="hidden w-64 shrink-0 lg:block">
           <div className="sticky top-24 rounded-xl2 bg-brand-gradient p-5 text-cream shadow-premium">
-            <span className="text-xs uppercase tracking-widest text-sand">
-              My Royal Experience
-            </span>
-            <p className="mb-6 mt-1 font-display text-lg">
-              Welcome back, {firstName}
+            <span className="text-xs uppercase tracking-widest text-sand">{_t("account.layout.699aee", "My Royal Experience")}</span>
+            <p className="mb-6 mt-1 font-display text-lg">{_t("account.layout.f27d6d", "Welcome back, {firstName}", { firstName })}
             </p>
 
             <nav className="space-y-1">
@@ -98,11 +96,8 @@ export default async function AccountLayout({
         <div className="min-w-0 flex-1 pb-20 lg:pb-0">
           <div className="mb-6 flex items-start justify-between rounded-xl2 bg-brand-gradient p-5 text-cream shadow-premium lg:hidden">
             <div>
-              <span className="text-xs uppercase tracking-widest text-sand">
-                My Royal Experience
-              </span>
-              <p className="mt-1 font-display text-xl">
-                Welcome back, {firstName}
+              <span className="text-xs uppercase tracking-widest text-sand">{_t("account.layout.699aee", "My Royal Experience")}</span>
+              <p className="mt-1 font-display text-xl">{_t("account.layout.f27d6d", "Welcome back, {firstName}", { firstName })}
               </p>
             </div>
             <LogoutIconButton />

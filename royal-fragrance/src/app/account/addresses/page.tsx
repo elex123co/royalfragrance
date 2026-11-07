@@ -3,10 +3,15 @@ import { createClient } from "@/lib/supabase/server";
 import { getAddresses } from "@/lib/data/account";
 import { AddressForm } from "@/components/account/AddressForm";
 import { DeleteAddressButton } from "@/components/account/DeleteAddressButton";
+import { getT } from "@/lib/content/server";
 
-export const metadata = { title: "My Addresses — Royal Fragrance" };
+export async function generateMetadata() {
+  const _t = await getT();
+  return { title: _t("meta.account.addresses.title", "My Addresses — Royal Fragrance") 
+  };
+}
 
-export default async function AddressesPage() {
+export default async function AddressesPage() { const _t = await getT();
   const supabase = createClient();
   const {
     data: { user },
@@ -17,11 +22,11 @@ export default async function AddressesPage() {
 
   return (
     <div>
-      <h1 className="mb-6 font-display text-2xl text-espresso">My Addresses</h1>
+      <h1 className="mb-6 font-display text-2xl text-espresso">{_t("account.addresses.b0239f", "My Addresses")}</h1>
 
       <div className="mb-6 space-y-3">
         {addresses.length === 0 && (
-          <p className="text-sm text-rich/50">No saved addresses yet.</p>
+          <p className="text-sm text-rich/50">{_t("account.addresses.b3742a", "No saved addresses yet.")}</p>
         )}
         {addresses.map((addr) => (
           <div
@@ -32,9 +37,7 @@ export default async function AddressesPage() {
               <div className="flex items-center gap-2">
                 <p className="font-display text-espresso">{addr.label}</p>
                 {addr.is_default && (
-                  <span className="rounded-full bg-caramel/20 px-2 py-0.5 text-[10px] text-caramel">
-                    Default
-                  </span>
+                  <span className="rounded-full bg-caramel/20 px-2 py-0.5 text-[10px] text-caramel">{_t("account.addresses.808d7d", "Default")}</span>
                 )}
               </div>
               <p className="mt-1 text-sm text-rich/70">

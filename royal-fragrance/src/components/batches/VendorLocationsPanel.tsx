@@ -3,6 +3,7 @@
 import { useState } from "react";
 import { useRouter } from "next/navigation";
 import { assignVendorBatchLocation } from "@/lib/actions/batches";
+import { useT } from "@/lib/content/client";
 
 interface VendorRow {
   userId: string;
@@ -18,7 +19,7 @@ export function VendorLocationsPanel({
 }: {
   vendors: VendorRow[];
   locations: { id: string; name: string }[];
-}) {
+}) { const _t = useT();
   const router = useRouter();
   const [savingId, setSavingId] = useState<string | null>(null);
   const [error, setError] = useState<string | null>(null);
@@ -28,21 +29,17 @@ export function VendorLocationsPanel({
     setError(null);
     const res = await assignVendorBatchLocation(userId, locationId || null);
     setSavingId(null);
-    if (!res.success) setError(res.error ?? "Could not save.");
+    if (!res.success) setError(res.error ?? _t("batches.vendorlocationspanel.fb0690", "Could not save."));
     else router.refresh();
   }
 
   return (
     <div className="rounded-xl2 border border-espresso/10 bg-white/60 p-5">
-      <h2 className="font-display text-lg text-espresso">Assign vendors to locations</h2>
-      <p className="mt-1 text-sm text-rich/60">
-        Pick the location each vendor serves (for example their campus). Customers ordering through that vendor&rsquo;s
-        link can join batches for that location only, and the vendor can only open batches there. Vendors with no
-        location have no batch delivery.
-      </p>
+      <h2 className="font-display text-lg text-espresso">{_t("batches.vendorlocationspanel.b8e91f", "Assign vendors to locations")}</h2>
+      <p className="mt-1 text-sm text-rich/60">{_t("batches.vendorlocationspanel.03d7ac", "Pick the location each vendor serves (for example their campus). Customers ordering through that vendor’s link can join batches for that location only, and the vendor can only open batches there. Vendors with no location have no batch delivery.")}</p>
       {error && <p className="mt-2 text-sm text-red-600">{error}</p>}
       {vendors.length === 0 ? (
-        <p className="mt-3 text-sm text-rich/60">No active vendors yet.</p>
+        <p className="mt-3 text-sm text-rich/60">{_t("batches.vendorlocationspanel.3f8262", "No active vendors yet.")}</p>
       ) : (
         <div className="mt-4 divide-y divide-espresso/5">
           {vendors.map((v) => (
@@ -60,7 +57,7 @@ export function VendorLocationsPanel({
                 onChange={(e) => change(v.userId, e.target.value)}
                 className="w-56 rounded-lg border border-espresso/15 px-3 py-1.5 text-sm"
               >
-                <option value="">No location</option>
+                <option value="">{_t("batches.vendorlocationspanel.9fb78f", "No location")}</option>
                 {locations.map((l) => (
                   <option key={l.id} value={l.id}>
                     {l.name}

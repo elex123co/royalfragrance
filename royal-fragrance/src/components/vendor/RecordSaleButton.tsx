@@ -4,6 +4,7 @@ import { useState } from "react";
 import { Button } from "@/components/ui/Button";
 import { recordVendorSale } from "@/lib/actions/vendor-sales";
 import { formatNaira } from "@/lib/utils/currency";
+import { useT } from "@/lib/content/client";
 
 interface InventoryLine {
   id: string;
@@ -32,15 +33,15 @@ export function RecordSaleButton({
   inventory: InventoryLine[];
   paymentAmount?: number;
   remaining?: number;
-}) {
+}) { const _t = useT();
   const [open, setOpen] = useState(false);
 
   return (
     <>
       <Button size="sm" onClick={() => setOpen(true)}>
         {remaining !== undefined && paymentAmount !== undefined && remaining < paymentAmount
-          ? "Add more products"
-          : "Record Sale"}
+          ? _t("vendor.recordsalebutton.121299", "Add more products")
+          : _t("vendor.recordsalebutton.73380f", "Record Sale")}
       </Button>
       {open && (
         <RecordSaleModal
@@ -64,7 +65,7 @@ function RecordSaleModal({
   inventory: InventoryLine[];
   remaining?: number;
   onClose: () => void;
-}) {
+}) { const _t = useT();
   const [lines, setLines] = useState<SaleLine[]>([]);
   const [customerName, setCustomerName] = useState("");
   const [customerPhone, setCustomerPhone] = useState("");
@@ -108,7 +109,7 @@ function RecordSaleModal({
 
   async function handleSubmit() {
     if (lines.length === 0) {
-      setError("Add at least one product.");
+      setError(_t("vendor.recordsalebutton.e2ed1f", "Add at least one product."));
       return;
     }
     const unpriced = lines.find((l) => !(l.price > 0));
@@ -141,7 +142,7 @@ function RecordSaleModal({
     setSubmitting(false);
 
     if (!result.success) {
-      setError(result.error ?? "Could not record sale");
+      setError(result.error ?? _t("vendor.recordsalebutton.174b21", "Could not record sale"));
       return;
     }
     onClose();
@@ -150,24 +151,16 @@ function RecordSaleModal({
   return (
     <div className="fixed inset-0 z-50 flex items-center justify-center bg-espresso/60 p-4">
       <div className="max-h-[90vh] w-full max-w-lg overflow-y-auto rounded-xl2 bg-cream p-6">
-        <h3 className="font-display text-lg text-espresso">Record Sale</h3>
+        <h3 className="font-display text-lg text-espresso">{_t("vendor.recordsalebutton.73380f", "Record Sale")}</h3>
         {remaining !== undefined && (
-          <p className="mt-1 text-xs text-rich/60">
-            You can add more than one product to this payment. Their prices must add up to{" "}
-            {formatNaira(remaining)} or less. If it is less, the rest stays open so you can add the
-            other products later.
-          </p>
+          <p className="mt-1 text-xs text-rich/60">{_t("vendor.recordsalebutton.816c03", "You can add more than one product to this payment. Their prices must add up to {v} or less. If it is less, the rest stays open so you can add the other products later.", { v: formatNaira(remaining) })}</p>
         )}
 
         <div className="mt-4">
-          <p className="mb-2 text-sm font-medium text-espresso">
-            Select products from your inventory
-          </p>
+          <p className="mb-2 text-sm font-medium text-espresso">{_t("vendor.recordsalebutton.cf9e8d", "Select products from your inventory")}</p>
           <div className="flex flex-wrap gap-2">
             {inventory.length === 0 && (
-              <p className="text-sm text-rich/50">
-                No inventory assigned to you yet.
-              </p>
+              <p className="text-sm text-rich/50">{_t("vendor.recordsalebutton.609ea4", "No inventory assigned to you yet.")}</p>
             )}
             {inventory.map((inv) => (
               <button
@@ -177,10 +170,7 @@ function RecordSaleModal({
                 disabled={inv.available_quantity <= 0}
                 className="rounded-full border border-espresso/20 px-3 py-1.5 text-xs text-espresso disabled:opacity-30"
               >
-                {inv.products?.name}
-                {inv.product_variants?.size ? ` (${inv.product_variants.size})` : ""} —{" "}
-                {inv.available_quantity} available
-              </button>
+                {_t("vendor.recordsalebutton.9c10d8", "{name}{v} — {available_quantity} available", { name: inv.products?.name, v: inv.product_variants?.size ? ` (${inv.product_variants.size})` : "", available_quantity: inv.available_quantity })}</button>
             ))}
           </div>
         </div>
@@ -199,7 +189,7 @@ function RecordSaleModal({
                 />
                 <input
                   type="number"
-                  placeholder="Price each"
+                  placeholder={_t("vendor.recordsalebutton.ed163a", "Price each")}
                   min={0}
                   value={line.price === 0 ? "" : line.price}
                   onChange={(e) => updateLine(i, { price: Number(e.target.value) })}
@@ -213,8 +203,7 @@ function RecordSaleModal({
                 </button>
               </div>
             ))}
-            <p className="text-right text-sm font-medium text-espresso">
-              Recorded total: {formatNaira(total)}
+            <p className="text-right text-sm font-medium text-espresso">{_t("vendor.recordsalebutton.df5e39", "Recorded total: {v}", { v: formatNaira(total) })}
               {remaining !== undefined && (
                 <span
                   className={`block text-xs font-normal ${
@@ -224,7 +213,7 @@ function RecordSaleModal({
                   {total > remaining
                     ? `${formatNaira(total - remaining)} over the payment`
                     : total === remaining
-                      ? "Matches the payment"
+                      ? _t("vendor.recordsalebutton.207a09", "Matches the payment")
                       : `${formatNaira(remaining - total)} of the payment still unmatched`}
                 </span>
               )}
@@ -234,20 +223,20 @@ function RecordSaleModal({
 
         <div className="mt-4 grid gap-3 sm:grid-cols-2">
           <input
-            placeholder="Customer name (optional)"
+            placeholder={_t("vendor.recordsalebutton.75d34d", "Customer name (optional)")}
             value={customerName}
             onChange={(e) => setCustomerName(e.target.value)}
             className="rounded-lg border border-espresso/15 px-3 py-2 text-sm"
           />
           <input
-            placeholder="Customer phone (optional)"
+            placeholder={_t("vendor.recordsalebutton.60d44f", "Customer phone (optional)")}
             value={customerPhone}
             onChange={(e) => setCustomerPhone(e.target.value)}
             className="rounded-lg border border-espresso/15 px-3 py-2 text-sm"
           />
         </div>
         <textarea
-          placeholder="Notes (optional)"
+          placeholder={_t("vendor.recordsalebutton.4d56ca", "Notes (optional)")}
           value={notes}
           onChange={(e) => setNotes(e.target.value)}
           className="mt-3 w-full rounded-lg border border-espresso/15 px-3 py-2 text-sm"
@@ -265,11 +254,9 @@ function RecordSaleModal({
             variant="outline"
             className="border-espresso/20 text-espresso"
             onClick={onClose}
-          >
-            Cancel
-          </Button>
+          >{_t("vendor.recordsalebutton.77dfd2", "Cancel")}</Button>
           <Button className="flex-1" onClick={handleSubmit} disabled={submitting}>
-            {submitting ? "Saving…" : "Save Sale Record"}
+            {submitting ? _t("vendor.recordsalebutton.56a228", "Saving…") : _t("vendor.recordsalebutton.21c047", "Save Sale Record")}
           </Button>
         </div>
       </div>

@@ -4,8 +4,13 @@ import { cookies } from "next/headers";
 import { createAdminClient } from "@/lib/supabase/server";
 import { getOpenBatches } from "@/lib/data/batches";
 import { CheckoutForm } from "@/components/checkout/CheckoutForm";
+import { getT } from "@/lib/content/server";
 
-export const metadata = { title: "Checkout — Royal Fragrance" };
+export async function generateMetadata() {
+  const _t = await getT();
+  return { title: _t("meta.checkout.title", "Checkout — Royal Fragrance") 
+  };
+}
 
 // Always fetch live data — new-customer discount eligibility must never be
 // served from a stale build-time snapshot.
@@ -25,7 +30,7 @@ async function getReferringVendorLocation(): Promise<string | null> {
   return data?.batch_location_id ?? null;
 }
 
-export default async function CheckoutPage() {
+export default async function CheckoutPage() { const _t = await getT();
   const vendorLocationId = await getReferringVendorLocation();
   const [zones, personalizedDiscount, batches] = await Promise.all([
     getDeliveryZones(),
@@ -38,7 +43,7 @@ export default async function CheckoutPage() {
   return (
     <section className="bg-cream py-16">
       <div className="mx-auto max-w-3xl px-5 lg:px-8">
-        <h1 className="mb-10 font-display text-3xl text-espresso">Checkout</h1>
+        <h1 className="mb-10 font-display text-3xl text-espresso">{_t("checkout.3ac8e9", "Checkout")}</h1>
         <CheckoutForm
           zones={zones}
           batches={batches.map((b) => ({

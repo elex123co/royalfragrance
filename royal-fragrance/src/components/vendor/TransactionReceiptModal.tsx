@@ -3,6 +3,7 @@
 import { useRef, useState } from "react";
 import { formatNaira } from "@/lib/utils/currency";
 import { Download, FileText, X } from "lucide-react";
+import { useT } from "@/lib/content/client";
 
 const LOGO_URL =
   "https://res.cloudinary.com/dtchp470a/image/upload/v1788705368/WhatsApp_Image_2026-09-05_at_17.32.39__1_-removebg-preview_1_qaxnfw.png";
@@ -23,7 +24,7 @@ export function TransactionReceiptModal({
 }: {
   transaction: Transaction;
   onClose: () => void;
-}) {
+}) { const _t = useT();
   const receiptRef = useRef<HTMLDivElement>(null);
   const [generating, setGenerating] = useState<"image" | "pdf" | null>(null);
 
@@ -81,8 +82,8 @@ export function TransactionReceiptModal({
     <div className="fixed inset-0 z-50 flex items-center justify-center bg-black/50 p-4">
       <div className="max-h-[90vh] w-full max-w-sm overflow-y-auto rounded-xl2 bg-white">
         <div className="flex items-center justify-between border-b border-espresso/10 p-4">
-          <p className="font-display text-espresso">Receipt</p>
-          <button onClick={onClose} aria-label="Close">
+          <p className="font-display text-espresso">{_t("vendor.transactionreceiptmodal.f6ce3b", "Receipt")}</p>
+          <button onClick={onClose} aria-label={_t("vendor.transactionreceiptmodal.bbfa77", "Close")}>
             <X size={20} className="text-rich/50" />
           </button>
         </div>
@@ -93,11 +94,9 @@ export function TransactionReceiptModal({
         <div ref={receiptRef} className="bg-white p-6" style={{ fontFamily: "sans-serif" }}>
           <div className="mb-4 flex flex-col items-center text-center">
             {/* eslint-disable-next-line @next/next/no-img-element */}
-            <img src={LOGO_URL} alt="Royal Fragrance" style={{ height: 48, width: 48 }} />
-            <p style={{ marginTop: 8, fontSize: 16, fontWeight: 700, color: "#1E120C" }}>
-              Royal Fragrance
-            </p>
-            <p style={{ fontSize: 11, color: "#70452F" }}>Payment Receipt</p>
+            <img src={LOGO_URL} alt={_t("vendor.transactionreceiptmodal.c07431", "Royal Fragrance")} style={{ height: 48, width: 48 }} />
+            <p style={{ marginTop: 8, fontSize: 16, fontWeight: 700, color: "#1E120C" }}>{_t("vendor.transactionreceiptmodal.c07431", "Royal Fragrance")}</p>
+            <p style={{ fontSize: 11, color: "#70452F" }}>{_t("vendor.transactionreceiptmodal.abeb72", "Payment Receipt")}</p>
           </div>
 
           <div
@@ -108,23 +107,21 @@ export function TransactionReceiptModal({
               margin: "12px 0",
             }}
           >
-            <Row label="Reference" value={transaction.provider_transaction_reference} />
-            <Row label="Date" value={dateStr} />
-            <Row label="Time" value={timeStr} />
-            <Row label="From" value={transaction.payer_name ?? "Not provided"} />
-            <Row label="Status" value={transaction.status} />
+            <Row label={_t("vendor.transactionreceiptmodal.db1c78", "Reference")} value={transaction.provider_transaction_reference} />
+            <Row label={_t("vendor.transactionreceiptmodal.eb9a4b", "Date")} value={dateStr} />
+            <Row label={_t("vendor.transactionreceiptmodal.6c82e6", "Time")} value={timeStr} />
+            <Row label={_t("vendor.transactionreceiptmodal.3f6605", "From")} value={transaction.payer_name ?? _t("vendor.transactionreceiptmodal.notprovided", "Not provided")} />
+            <Row label={_t("vendor.transactionreceiptmodal.bae7d5", "Status")} value={transaction.status} />
           </div>
 
           <div style={{ textAlign: "center", padding: "8px 0" }}>
-            <p style={{ fontSize: 11, color: "#70452F" }}>Amount</p>
+            <p style={{ fontSize: 11, color: "#70452F" }}>{_t("vendor.transactionreceiptmodal.43dc85", "Amount")}</p>
             <p style={{ fontSize: 24, fontWeight: 700, color: "#1E120C" }}>
               {formatNaira(transaction.amount)}
             </p>
           </div>
 
-          <p style={{ marginTop: 16, textAlign: "center", fontSize: 10, color: "#999" }}>
-            royalfragrancegallery.com
-          </p>
+          <p style={{ marginTop: 16, textAlign: "center", fontSize: 10, color: "#999" }}>{_t("vendor.transactionreceiptmodal.28c5ed", "royalfragrancegallery.com")}</p>
         </div>
 
         <div className="flex gap-2 border-t border-espresso/10 p-4">
@@ -133,14 +130,14 @@ export function TransactionReceiptModal({
             disabled={generating !== null}
             className="flex flex-1 items-center justify-center gap-2 rounded-full border border-espresso/20 px-4 py-2.5 text-sm text-espresso hover:bg-espresso/5 disabled:opacity-50"
           >
-            <Download size={16} /> {generating === "image" ? "Saving…" : "Image"}
+            <Download size={16} /> {generating === "image" ? _t("vendor.transactionreceiptmodal.56a228", "Saving…") : _t("vendor.transactionreceiptmodal.50e19f", "Image")}
           </button>
           <button
             onClick={downloadPdf}
             disabled={generating !== null}
             className="flex flex-1 items-center justify-center gap-2 rounded-full bg-espresso px-4 py-2.5 text-sm text-cream hover:bg-rich disabled:opacity-50"
           >
-            <FileText size={16} /> {generating === "pdf" ? "Saving…" : "PDF"}
+            <FileText size={16} /> {generating === "pdf" ? _t("vendor.transactionreceiptmodal.56a228", "Saving…") : _t("vendor.transactionreceiptmodal.d613d8", "PDF")}
           </button>
         </div>
       </div>

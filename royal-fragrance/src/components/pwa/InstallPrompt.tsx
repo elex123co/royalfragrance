@@ -2,6 +2,7 @@
 
 import { useEffect, useState } from "react";
 import { Download, X, Share } from "lucide-react";
+import { useT } from "@/lib/content/client";
 
 const DISMISS_KEY = "rf-install-dismissed-at";
 const DISMISS_DAYS = 7; // don't nag again for a week after a dismiss
@@ -26,7 +27,7 @@ function isStandalone() {
   );
 }
 
-export function InstallPrompt() {
+export function InstallPrompt() { const _t = useT();
   const [deferredPrompt, setDeferredPrompt] = useState<BeforeInstallPromptEvent | null>(null);
   const [showIosInstructions, setShowIosInstructions] = useState(false);
   const [visible, setVisible] = useState(false);
@@ -87,29 +88,21 @@ export function InstallPrompt() {
       </div>
 
       <div className="flex-1">
-        <p className="font-display text-sm text-espresso">Install Royal Fragrance</p>
+        <p className="font-display text-sm text-espresso">{_t("pwa.installprompt.7fa4d2", "Install Royal Fragrance")}</p>
         {showIosInstructions ? (
-          <p className="mt-1 text-xs text-rich/70">
-            Tap the Share icon, then "Add to Home Screen" for quick access
-            anytime.
-          </p>
+          <p className="mt-1 text-xs text-rich/70">{_t("pwa.installprompt.7026eb", "Tap the Share icon, then \"Add to Home Screen\" for quick access anytime.")}</p>
         ) : (
-          <p className="mt-1 text-xs text-rich/70">
-            Add Royal Fragrance to your home screen for quick access — no
-            app store needed.
-          </p>
+          <p className="mt-1 text-xs text-rich/70">{_t("pwa.installprompt.09102b", "Add Royal Fragrance to your home screen for quick access — no app store needed.")}</p>
         )}
         {!showIosInstructions && (
           <button
             onClick={handleInstall}
             className="mt-3 rounded-full bg-espresso px-4 py-1.5 text-xs font-medium text-cream transition hover:bg-rich"
-          >
-            Install
-          </button>
+          >{_t("pwa.installprompt.fd6c3e", "Install")}</button>
         )}
       </div>
 
-      <button onClick={dismiss} aria-label="Dismiss" className="text-rich/40 hover:text-espresso">
+      <button onClick={dismiss} aria-label={_t("pwa.installprompt.70afe9", "Dismiss")} className="text-rich/40 hover:text-espresso">
         <X size={16} />
       </button>
     </div>

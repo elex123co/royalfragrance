@@ -4,6 +4,8 @@ import { useState } from "react";
 import { useRouter } from "next/navigation";
 import { Button } from "@/components/ui/Button";
 import { saveScentProfile } from "@/lib/actions/customer";
+import { useT } from "@/lib/content/client";
+import { tl } from "@/lib/content/translate";
 
 const FAMILIES = ["Woody", "Floral", "Fresh", "Spicy", "Sweet", "Smoky", "Oud", "Citrus"];
 const OCCASIONS = ["Everyday", "Office", "Dates", "Parties", "Special Occasions"];
@@ -17,7 +19,7 @@ interface ScentProfileQuizProps {
   } | null;
 }
 
-export function ScentProfileQuiz({ initial }: ScentProfileQuizProps) {
+export function ScentProfileQuiz({ initial }: ScentProfileQuizProps) { const _t = useT();
   const router = useRouter();
   const [families, setFamilies] = useState<string[]>(
     initial?.preferred_families ?? []
@@ -51,9 +53,7 @@ export function ScentProfileQuiz({ initial }: ScentProfileQuizProps) {
   return (
     <form onSubmit={handleSubmit} className="space-y-8">
       <div>
-        <h3 className="mb-3 font-display text-lg text-espresso">
-          What kind of scents do you enjoy?
-        </h3>
+        <h3 className="mb-3 font-display text-lg text-espresso">{_t("account.scentprofilequiz.be2299", "What kind of scents do you enjoy?")}</h3>
         <div className="flex flex-wrap gap-2">
           {FAMILIES.map((f) => (
             <button
@@ -66,16 +66,14 @@ export function ScentProfileQuiz({ initial }: ScentProfileQuizProps) {
                   : "border-espresso/20 text-espresso hover:border-espresso"
               }`}
             >
-              {f}
+              {tl(_t, "account.scent", f)}
             </button>
           ))}
         </div>
       </div>
 
       <div>
-        <h3 className="mb-3 font-display text-lg text-espresso">
-          When do you mostly wear perfume?
-        </h3>
+        <h3 className="mb-3 font-display text-lg text-espresso">{_t("account.scentprofilequiz.f56e42", "When do you mostly wear perfume?")}</h3>
         <div className="flex flex-wrap gap-2">
           {OCCASIONS.map((o) => (
             <button
@@ -88,16 +86,14 @@ export function ScentProfileQuiz({ initial }: ScentProfileQuizProps) {
                   : "border-espresso/20 text-espresso hover:border-espresso"
               }`}
             >
-              {o}
+              {tl(_t, "account.scent", o)}
             </button>
           ))}
         </div>
       </div>
 
       <div>
-        <h3 className="mb-3 font-display text-lg text-espresso">
-          What intensity do you prefer?
-        </h3>
+        <h3 className="mb-3 font-display text-lg text-espresso">{_t("account.scentprofilequiz.088314", "What intensity do you prefer?")}</h3>
         <div className="flex flex-wrap gap-2">
           {INTENSITIES.map((i) => (
             <button
@@ -110,20 +106,18 @@ export function ScentProfileQuiz({ initial }: ScentProfileQuizProps) {
                   : "border-espresso/20 text-espresso hover:border-espresso"
               }`}
             >
-              {i}
+              {tl(_t, "account.scent", i)}
             </button>
           ))}
         </div>
       </div>
 
       {saved && (
-        <p className="text-sm text-green-700">
-          Saved — your recommendations have been updated.
-        </p>
+        <p className="text-sm text-green-700">{_t("account.scentprofilequiz.65692b", "Saved — your recommendations have been updated.")}</p>
       )}
 
       <Button type="submit" disabled={submitting || families.length === 0}>
-        {submitting ? "Saving…" : "Save My Scent Profile"}
+        {submitting ? _t("account.scentprofilequiz.56a228", "Saving…") : _t("account.scentprofilequiz.449bba", "Save My Scent Profile")}
       </Button>
     </form>
   );

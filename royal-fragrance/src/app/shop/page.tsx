@@ -9,12 +9,14 @@ import { getT } from "@/lib/content/server";
 
 const PRODUCTS_PER_PAGE = 12;
 
-export const metadata = {
-  title: "Shop",
-  description:
-    "Browse Royal Fragrance's full collection — Men's, Women's, Unisex, and Oud fragrances. Shop premium perfumes online across Nigeria with secure checkout and fast delivery.",
+export async function generateMetadata() {
+  const _t = await getT();
+  return {
+  title: _t("meta.shop.title", "Shop"),
+  description: _t("meta.shop.description", "Browse Royal Fragrance's full collection — Men's, Women's, Unisex, and Oud fragrances. Shop premium perfumes online across Nigeria with secure checkout and fast delivery."),
   alternates: { canonical: "https://royalfragrancegallery.com/shop" },
-};
+  };
+}
 
 // Always fetch live data — pricing, stock, and discounts change constantly,
 // and a stale build-time snapshot would show outdated products.

@@ -17,6 +17,8 @@ import { LogoutButton, LogoutIconButton } from "@/components/account/LogoutButto
 import { PendingApprovalScreen } from "@/components/vendor/PendingApprovalScreen";
 import { getBrandWhatsAppLink } from "@/lib/data/whatsapp";
 import { DashboardMobileNav } from "@/components/shared/DashboardMobileNav";
+import { getT } from "@/lib/content/server";
+import { tl } from "@/lib/content/translate";
 
 const physicalNavItems = [
   { href: "/vendor", label: "Overview", icon: LayoutDashboard },
@@ -46,7 +48,7 @@ export default async function VendorLayout({
   children,
 }: {
   children: React.ReactNode;
-}) {
+}) { const _t = await getT();
   const vendor = await getCurrentVendor();
   if (!vendor) redirect("/login?redirect=/vendor");
 
@@ -64,7 +66,10 @@ export default async function VendorLayout({
     );
   }
 
-  const navItems = vendor.vendor_type === "affiliate" ? affiliateNavItems : physicalNavItems;
+  const navItems = (vendor.vendor_type === "affiliate" ? affiliateNavItems : physicalNavItems).map((item) => ({
+    ...item,
+    label: tl(_t, "vendor.nav", item.label),
+  }));
 
   const mobileNavItems = navItems.map((item) => ({
     ...item,
@@ -76,8 +81,7 @@ export default async function VendorLayout({
       <div className="mx-auto flex min-h-[80vh] max-w-7xl gap-8 px-5 py-10 lg:px-8">
         <aside className="hidden w-64 shrink-0 lg:block">
           <div className="sticky top-24 rounded-xl2 bg-brand-gradient p-5 text-cream shadow-premium">
-            <span className="text-xs uppercase tracking-widest text-sand">
-              Vendor Workspace{vendor.vendor_type ? ` — ${vendor.vendor_type === "affiliate" ? "Ambassador" : "Physical"}` : ""}
+            <span className="text-xs uppercase tracking-widest text-sand">{_t("vendor.layout.db7f1f", "Vendor Workspace{v}", { v: vendor.vendor_type ? ` — ${vendor.vendor_type === "affiliate" ? "Ambassador" : "Physical"}` : "" })}
             </span>
             <p className="mt-1 font-display text-lg">{vendor.business_name}</p>
             {vendor.ambassador_level && (
@@ -111,9 +115,7 @@ export default async function VendorLayout({
         <div className="min-w-0 flex-1 pb-20 lg:pb-0">
           <div className="mb-6 flex items-start justify-between rounded-xl2 bg-brand-gradient p-5 text-cream shadow-premium lg:hidden">
             <div>
-              <span className="text-xs uppercase tracking-widest text-sand">
-                Vendor Workspace
-              </span>
+              <span className="text-xs uppercase tracking-widest text-sand">{_t("vendor.layout.c75627", "Vendor Workspace")}</span>
               <p className="mt-1 font-display text-xl">{vendor.business_name}</p>
             </div>
             <LogoutIconButton />

@@ -4,6 +4,7 @@ import { useState } from "react";
 import { useRouter } from "next/navigation";
 import { Button } from "@/components/ui/Button";
 import { updateProfile } from "@/lib/actions/customer";
+import { useT } from "@/lib/content/client";
 
 export function SettingsForm({
   initialName,
@@ -13,7 +14,7 @@ export function SettingsForm({
   initialName: string;
   initialPhone: string;
   email: string;
-}) {
+}) { const _t = useT();
   const router = useRouter();
   const [name, setName] = useState(initialName);
   const [phone, setPhone] = useState(initialPhone);
@@ -32,7 +33,7 @@ export function SettingsForm({
     setSubmitting(false);
 
     if (!result.success) {
-      setError(result.error ?? "Could not save changes. Please try again.");
+      setError(result.error ?? _t("account.settingsform.7f8cc5", "Could not save changes. Please try again."));
       return;
     }
     setSaved(true);
@@ -45,9 +46,7 @@ export function SettingsForm({
       className="max-w-md space-y-4 rounded-xl2 border border-espresso/10 bg-white/60 p-6"
     >
       <div>
-        <label className="mb-1.5 block text-sm font-medium text-espresso">
-          Full Name
-        </label>
+        <label className="mb-1.5 block text-sm font-medium text-espresso">{_t("account.settingsform.64346b", "Full Name")}</label>
         <input
           value={name}
           onChange={(e) => setName(e.target.value)}
@@ -55,22 +54,16 @@ export function SettingsForm({
         />
       </div>
       <div>
-        <label className="mb-1.5 block text-sm font-medium text-espresso">
-          Email
-        </label>
+        <label className="mb-1.5 block text-sm font-medium text-espresso">{_t("account.settingsform.84add5", "Email")}</label>
         <input
           value={email}
           disabled
           className="w-full rounded-lg border border-espresso/10 bg-espresso/5 px-4 py-2.5 text-sm text-rich/50"
         />
-        <p className="mt-1 text-xs text-rich/40">
-          Contact support to change your email.
-        </p>
+        <p className="mt-1 text-xs text-rich/40">{_t("account.settingsform.36142d", "Contact support to change your email.")}</p>
       </div>
       <div>
-        <label className="mb-1.5 block text-sm font-medium text-espresso">
-          Phone Number
-        </label>
+        <label className="mb-1.5 block text-sm font-medium text-espresso">{_t("account.settingsform.ab25d6", "Phone Number")}</label>
         <input
           value={phone}
           onChange={(e) => setPhone(e.target.value)}
@@ -78,7 +71,7 @@ export function SettingsForm({
         />
       </div>
 
-      {saved && <p className="text-sm text-green-700">Saved.</p>}
+      {saved && <p className="text-sm text-green-700">{_t("account.settingsform.9d4af6", "Saved.")}</p>}
       {error && (
         <p className="rounded-lg bg-red-50 px-4 py-2 text-sm text-red-700">
           {error}
@@ -86,7 +79,7 @@ export function SettingsForm({
       )}
 
       <Button type="submit" disabled={submitting}>
-        {submitting ? "Saving…" : "Save Changes"}
+        {submitting ? _t("account.settingsform.56a228", "Saving…") : _t("account.settingsform.fa2984", "Save Changes")}
       </Button>
     </form>
   );

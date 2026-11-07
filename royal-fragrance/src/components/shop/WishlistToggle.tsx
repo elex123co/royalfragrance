@@ -4,6 +4,7 @@ import { useState, useTransition } from "react";
 import { useRouter } from "next/navigation";
 import { Heart } from "lucide-react";
 import { toggleWishlist } from "@/lib/actions/customer";
+import { useT } from "@/lib/content/client";
 
 export function WishlistToggle({
   productId,
@@ -13,7 +14,7 @@ export function WishlistToggle({
   productId: string;
   initialWishlisted: boolean;
   isLoggedIn: boolean;
-}) {
+}) { const _t = useT();
   const router = useRouter();
   const [wishlisted, setWishlisted] = useState(initialWishlisted);
   const [isPending, startTransition] = useTransition();
@@ -39,7 +40,7 @@ export function WishlistToggle({
           ? "border-caramel bg-caramel text-espresso"
           : "border-espresso/20 text-espresso hover:border-espresso"
       }`}
-      aria-label={wishlisted ? "Remove from wishlist" : "Add to wishlist"}
+      aria-label={wishlisted ? _t("shop.wishlisttoggle.fe96c8", "Remove from wishlist") : _t("shop.wishlisttoggle.c7a159", "Add to wishlist")}
     >
       <Heart size={18} fill={wishlisted ? "currentColor" : "none"} />
     </button>

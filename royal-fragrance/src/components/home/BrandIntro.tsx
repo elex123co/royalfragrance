@@ -4,7 +4,7 @@ import { getT } from "@/lib/content/server";
 const WHO_WE_ARE_IMAGE_URL =
   "https://res.cloudinary.com/dtchp470a/image/upload/v1788708302/WhatsApp_Image_2026-09-06_at_16.24.36_k3guta.jpg";
 
-export async function BrandIntro() {
+export async function BrandIntro() { const _t = await getT();
   const t = await getT();
   return (
     <section className="bg-cream py-24">
@@ -12,7 +12,7 @@ export async function BrandIntro() {
         <div className="relative aspect-square overflow-hidden rounded-xl2 shadow-premium">
           <Image
             src={WHO_WE_ARE_IMAGE_URL}
-            alt="Royal Fragrance — curated collection"
+            alt={_t("home.brandintro.6979d6", "Royal Fragrance — curated collection")}
             fill
             className="object-cover"
           />

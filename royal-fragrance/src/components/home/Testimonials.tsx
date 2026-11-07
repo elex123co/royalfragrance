@@ -1,3 +1,4 @@
+import { getT } from "@/lib/content/server";
 export interface Testimonial {
   id: string;
   name: string;
@@ -11,23 +12,19 @@ export interface Testimonial {
  * fake reviews are hardcoded here. When empty, it renders nothing on the
  * public site.
  */
-export function Testimonials({
+export async function Testimonials({
   testimonials = [],
 }: {
   testimonials?: Testimonial[];
-}) {
+}) { const _t = await getT();
   if (testimonials.length === 0) return null;
 
   return (
     <section className="bg-brand-100/40 py-24">
       <div className="mx-auto max-w-7xl px-5 lg:px-8">
         <div className="mb-12 text-center">
-          <span className="text-xs uppercase tracking-[0.2em] text-caramel">
-            What People Say
-          </span>
-          <h2 className="mt-3 font-display text-3xl text-espresso sm:text-4xl">
-            Loved by Our Customers
-          </h2>
+          <span className="text-xs uppercase tracking-[0.2em] text-caramel">{_t("home.testimonials.9e1438", "What People Say")}</span>
+          <h2 className="mt-3 font-display text-3xl text-espresso sm:text-4xl">{_t("home.testimonials.8b40f0", "Loved by Our Customers")}</h2>
         </div>
 
         <div className="grid gap-6 md:grid-cols-3">

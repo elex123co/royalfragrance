@@ -2,6 +2,7 @@
 
 import { useState } from "react";
 import { Copy, MessageCircle, Download, Share2 } from "lucide-react";
+import { useT } from "@/lib/content/client";
 
 interface LinkProduct {
   id: string;
@@ -17,7 +18,7 @@ export function LinkGenerator({
   vendorCode: string;
   products: LinkProduct[];
   allProducts?: boolean;
-}) {
+}) { const _t = useT();
   const [copied, setCopied] = useState<string | null>(null);
 
   const siteUrl =
@@ -55,34 +56,27 @@ export function LinkGenerator({
   return (
     <div className="space-y-6">
       <div className="rounded-xl2 border border-espresso/10 bg-white/60 p-6">
-        <p className="mb-1 text-sm font-medium text-espresso">Your vendor card</p>
-        <p className="mb-3 text-xs text-rich/60">
-          Post this card on your WhatsApp status or send it to chats. The caption carries your link, and when you
-          paste your link anywhere, it shows up as this same card that people can tap.
-        </p>
+        <p className="mb-1 text-sm font-medium text-espresso">{_t("vendor.linkgenerator.77a566", "Your vendor card")}</p>
+        <p className="mb-3 text-xs text-rich/60">{_t("vendor.linkgenerator.cf1772", "Post this card on your WhatsApp status or send it to chats. The caption carries your link, and when you paste your link anywhere, it shows up as this same card that people can tap.")}</p>
         {/* eslint-disable-next-line @next/next/no-img-element */}
-        <img src={cardUrl} alt="Your vendor card" className="w-full max-w-xl rounded-xl border border-espresso/10" />
+        <img src={cardUrl} alt={_t("vendor.linkgenerator.77a566", "Your vendor card")} className="w-full max-w-xl rounded-xl border border-espresso/10" />
         <div className="mt-3 flex flex-wrap gap-2">
           <button
             onClick={shareCard}
             className="flex items-center gap-2 rounded-lg bg-green-600 px-4 py-2.5 text-sm text-white hover:bg-green-700"
           >
-            <Share2 size={14} /> Share card
-          </button>
+            <Share2 size={14} />{" "}{_t("vendor.linkgenerator.4d324f", "Share card")}</button>
           <a
             href={cardUrl}
             download={`royal-fragrance-${vendorCode}.png`}
             className="flex items-center gap-2 rounded-lg border border-espresso/20 px-4 py-2.5 text-sm text-espresso hover:bg-espresso/5"
           >
-            <Download size={14} /> Download card
-          </a>
+            <Download size={14} />{" "}{_t("vendor.linkgenerator.0f1877", "Download card")}</a>
         </div>
       </div>
 
       <div className="rounded-xl2 border border-espresso/10 bg-white/60 p-6">
-        <label className="mb-1.5 block text-sm font-medium text-espresso">
-          Your personal link
-        </label>
+        <label className="mb-1.5 block text-sm font-medium text-espresso">{_t("vendor.linkgenerator.4fc4d0", "Your personal link")}</label>
         <div className="flex flex-col gap-2 sm:flex-row">
           <input
             readOnly
@@ -94,7 +88,7 @@ export function LinkGenerator({
             className="flex items-center justify-center gap-2 rounded-lg bg-espresso px-4 py-2.5 text-sm text-cream hover:bg-rich"
           >
             <Copy size={14} />
-            {copied === "store" ? "Copied!" : "Copy"}
+            {copied === "store" ? _t("vendor.linkgenerator.b7c3ca", "Copied!") : _t("vendor.linkgenerator.af74f7", "Copy")}
           </button>
           <a
             href={`https://wa.me/?text=${whatsappText}`}
@@ -102,21 +96,19 @@ export function LinkGenerator({
             rel="noopener noreferrer"
             className="flex items-center justify-center gap-2 rounded-lg bg-green-600 px-4 py-2.5 text-sm text-white hover:bg-green-700"
           >
-            <MessageCircle size={14} />
-            Share
-          </a>
+            <MessageCircle size={14} />{_t("vendor.linkgenerator.09ca55", "Share")}</a>
         </div>
       </div>
 
       <div className="rounded-xl2 border border-espresso/10 bg-white/60 p-6">
         <h2 className="font-display text-lg text-espresso">
-          {allProducts ? "Link for a single product" : "Products on your link"}
+          {allProducts ? _t("vendor.linkgenerator.88777f", "Link for a single product") : _t("vendor.linkgenerator.191ca2", "Products on your link")}
         </h2>
         {products.length === 0 ? (
           <p className="mt-2 text-sm text-rich/60">
             {allProducts
-              ? "There are no products in the shop yet."
-              : "No products have been assigned to you yet, so your link has nothing to show. Once the team assigns products to you, they appear here and on your link automatically."}
+              ? _t("vendor.linkgenerator.314663", "There are no products in the shop yet.")
+              : _t("vendor.linkgenerator.12ab1b", "No products have been assigned to you yet, so your link has nothing to show. Once the team assigns products to you, they appear here and on your link automatically.")}
           </p>
         ) : (
           <ul className="mt-3 space-y-2">
@@ -133,7 +125,7 @@ export function LinkGenerator({
                     className="flex shrink-0 items-center gap-1.5 text-xs text-caramel hover:underline"
                   >
                     <Copy size={12} />
-                    {copied === p.id ? "Copied!" : "Copy single-product link"}
+                    {copied === p.id ? _t("vendor.linkgenerator.b7c3ca", "Copied!") : _t("vendor.linkgenerator.83a796", "Copy single-product link")}
                   </button>
                 </li>
               );

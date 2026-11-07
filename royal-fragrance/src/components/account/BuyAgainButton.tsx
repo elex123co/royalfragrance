@@ -2,6 +2,7 @@
 
 import { useRouter } from "next/navigation";
 import { useCart } from "@/context/CartContext";
+import { useT } from "@/lib/content/client";
 
 interface ReorderItem {
   productId: string;
@@ -13,7 +14,7 @@ interface ReorderItem {
   quantity: number;
 }
 
-export function BuyAgainButton({ items }: { items: ReorderItem[] }) {
+export function BuyAgainButton({ items }: { items: ReorderItem[] }) { const _t = useT();
   const { addItem } = useCart();
   const router = useRouter();
 
@@ -26,8 +27,6 @@ export function BuyAgainButton({ items }: { items: ReorderItem[] }) {
     <button
       onClick={handleClick}
       className="rounded-full border border-espresso/20 px-4 py-1.5 text-xs font-medium text-espresso transition hover:bg-espresso hover:text-cream"
-    >
-      Buy Again
-    </button>
+    >{_t("account.buyagainbutton.ed40fa", "Buy Again")}</button>
   );
 }

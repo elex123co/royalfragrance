@@ -2,11 +2,12 @@
 
 import { useState, forwardRef } from "react";
 import { Eye, EyeOff } from "lucide-react";
+import { useT } from "@/lib/content/client";
 
 export const PasswordInput = forwardRef<
   HTMLInputElement,
   React.InputHTMLAttributes<HTMLInputElement>
->(function PasswordInput({ className, ...props }, ref) {
+>(function PasswordInput({ className, ...props }, ref) { const _t = useT();
   const [visible, setVisible] = useState(false);
 
   return (
@@ -21,7 +22,7 @@ export const PasswordInput = forwardRef<
         type="button"
         onClick={() => setVisible((v) => !v)}
         className="absolute right-3 top-1/2 -translate-y-1/2 text-rich/40 hover:text-espresso"
-        aria-label={visible ? "Hide password" : "Show password"}
+        aria-label={visible ? _t("ui.passwordinput.e40123", "Hide password") : _t("ui.passwordinput.044b85", "Show password")}
         tabIndex={-1}
       >
         {visible ? <EyeOff size={18} /> : <Eye size={18} />}

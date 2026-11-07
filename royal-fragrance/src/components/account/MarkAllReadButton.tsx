@@ -3,8 +3,9 @@
 import { useTransition } from "react";
 import { useRouter } from "next/navigation";
 import { markAllNotificationsRead } from "@/lib/actions/customer";
+import { useT } from "@/lib/content/client";
 
-export function MarkAllReadButton() {
+export function MarkAllReadButton() { const _t = useT();
   const router = useRouter();
   const [isPending, startTransition] = useTransition();
 
@@ -18,8 +19,6 @@ export function MarkAllReadButton() {
         })
       }
       className="text-xs text-caramel underline"
-    >
-      Mark all as read
-    </button>
+    >{_t("account.markallreadbutton.1b8316", "Mark all as read")}</button>
   );
 }

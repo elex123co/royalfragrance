@@ -1,4 +1,8 @@
+"use client";
+
 import { Check } from "lucide-react";
+import { useT } from "@/lib/content/client";
+import { tl } from "@/lib/content/translate";
 
 const STEPS = [
   { key: "order_received", label: "Placed" },
@@ -9,6 +13,7 @@ const STEPS = [
 ];
 
 export function OrderTimeline({ status }: { status: string }) {
+  const _t = useT();
   const currentIndex = STEPS.findIndex((s) => s.key === status);
   const activeIndex = currentIndex === -1 ? 0 : currentIndex;
 
@@ -33,7 +38,7 @@ export function OrderTimeline({ status }: { status: string }) {
                 i <= activeIndex ? "text-espresso" : "text-espresso/40"
               }`}
             >
-              {step.label}
+              {tl(_t, "account.timeline", step.label)}
             </span>
           </div>
           {i < STEPS.length - 1 && (

@@ -3,6 +3,7 @@
 import { useRouter, useSearchParams, usePathname } from "next/navigation";
 import { useState } from "react";
 import { Search } from "lucide-react";
+import { useT } from "@/lib/content/client";
 
 interface Category {
   id: string;
@@ -10,7 +11,7 @@ interface Category {
   parent_category_id: string | null;
 }
 
-export function ShopFilters({ categories }: { categories: Category[] }) {
+export function ShopFilters({ categories }: { categories: Category[] }) { const _t = useT();
   const router = useRouter();
   const pathname = usePathname();
   const searchParams = useSearchParams();
@@ -53,7 +54,7 @@ export function ShopFilters({ categories }: { categories: Category[] }) {
         />
         <input
           type="text"
-          placeholder="Search fragrances…"
+          placeholder={_t("shop.shopfilters.81d353", "Search fragrances…")}
           value={query}
           onChange={(e) => setQuery(e.target.value)}
           className="w-full rounded-full border border-espresso/15 bg-white py-2 pl-9 pr-4 text-sm text-espresso focus:border-caramel focus:outline-none"
@@ -66,7 +67,7 @@ export function ShopFilters({ categories }: { categories: Category[] }) {
           onChange={(e) => handleCategoryChange(e.target.value)}
           className="rounded-full border border-espresso/15 bg-white px-4 py-2 text-sm text-espresso focus:border-caramel focus:outline-none"
         >
-          <option value="">All Categories</option>
+          <option value="">{_t("shop.shopfilters.1fd266", "All Categories")}</option>
           {topLevelCategories.map((c) => (
             <option key={c.id} value={c.id}>
               {c.name}
@@ -80,7 +81,7 @@ export function ShopFilters({ categories }: { categories: Category[] }) {
             onChange={(e) => updateParams({ subcategory: e.target.value })}
             className="rounded-full border border-caramel/40 bg-white px-4 py-2 text-sm text-espresso focus:border-caramel focus:outline-none"
           >
-            <option value="">All {topLevelCategories.find((c) => c.id === selectedCategory)?.name}</option>
+            <option value="">{_t("shop.shopfilters.6a7208", "All")}{" "}{topLevelCategories.find((c) => c.id === selectedCategory)?.name}</option>
             {subcategories.map((c) => (
               <option key={c.id} value={c.id}>
                 {c.name}
@@ -94,10 +95,10 @@ export function ShopFilters({ categories }: { categories: Category[] }) {
           onChange={(e) => updateParams({ sort: e.target.value })}
           className="rounded-full border border-espresso/15 bg-white px-4 py-2 text-sm text-espresso focus:border-caramel focus:outline-none"
         >
-          <option value="">Sort: Newest</option>
-          <option value="price-asc">Price: Low to High</option>
-          <option value="price-desc">Price: High to Low</option>
-          <option value="name">Name: A–Z</option>
+          <option value="">{_t("shop.shopfilters.682d5d", "Sort: Newest")}</option>
+          <option value="price-asc">{_t("shop.shopfilters.ed3d3a", "Price: Low to High")}</option>
+          <option value="price-desc">{_t("shop.shopfilters.c60097", "Price: High to Low")}</option>
+          <option value="name">{_t("shop.shopfilters.d7fd54", "Name: A–Z")}</option>
         </select>
       </div>
     </div>

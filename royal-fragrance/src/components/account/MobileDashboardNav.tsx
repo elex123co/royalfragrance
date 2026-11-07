@@ -15,6 +15,8 @@ import {
   Settings,
 } from "lucide-react";
 import { LogoutButton } from "@/components/account/LogoutButton";
+import { useT } from "@/lib/content/client";
+import { tl } from "@/lib/content/translate";
 
 const primaryTabs = [
   { href: "/account", label: "Overview", icon: LayoutDashboard },
@@ -30,7 +32,7 @@ const moreLinks = [
   { href: "/account/settings", label: "Account Settings", icon: Settings },
 ];
 
-export function MobileDashboardNav({ unreadCount }: { unreadCount: number }) {
+export function MobileDashboardNav({ unreadCount }: { unreadCount: number }) { const _t = useT();
   const pathname = usePathname();
   const [moreOpen, setMoreOpen] = useState(false);
 
@@ -48,8 +50,8 @@ export function MobileDashboardNav({ unreadCount }: { unreadCount: number }) {
             onClick={(e) => e.stopPropagation()}
           >
             <div className="mb-4 flex items-center justify-between">
-              <p className="font-display text-lg text-espresso">More</p>
-              <button onClick={() => setMoreOpen(false)} aria-label="Close">
+              <p className="font-display text-lg text-espresso">{_t("account.mobiledashboardnav.4bab2d", "More")}</p>
+              <button onClick={() => setMoreOpen(false)} aria-label={_t("account.mobiledashboardnav.bbfa77", "Close")}>
                 <X size={20} className="text-espresso" />
               </button>
             </div>
@@ -63,7 +65,7 @@ export function MobileDashboardNav({ unreadCount }: { unreadCount: number }) {
                 >
                   <span className="flex items-center gap-3">
                     <Icon size={18} />
-                    {label}
+                    {tl(_t, "account.nav", label)}
                   </span>
                   {label === "Notifications" && unreadCount > 0 && (
                     <span className="flex h-5 w-5 items-center justify-center rounded-full bg-caramel text-[10px] text-espresso">
@@ -92,7 +94,7 @@ export function MobileDashboardNav({ unreadCount }: { unreadCount: number }) {
               }`}
             >
               <Icon size={20} />
-              {label}
+              {tl(_t, "account.nav", label)}
             </Link>
           );
         })}
@@ -102,9 +104,7 @@ export function MobileDashboardNav({ unreadCount }: { unreadCount: number }) {
             isMoreActive ? "text-caramel" : "text-espresso/60"
           }`}
         >
-          <MoreHorizontal size={20} />
-          More
-          {unreadCount > 0 && (
+          <MoreHorizontal size={20} />{_t("account.mobiledashboardnav.4bab2d", "More")}{unreadCount > 0 && (
             <span className="absolute right-5 top-1 flex h-4 w-4 items-center justify-center rounded-full bg-caramel text-[9px] text-espresso">
               {unreadCount}
             </span>

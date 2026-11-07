@@ -3,8 +3,9 @@
 import { useState } from "react";
 import { Button } from "@/components/ui/Button";
 import { recordHandover } from "@/lib/actions/vendor-sales";
+import { useT } from "@/lib/content/client";
 
-export function HandoverButton({ saleId }: { saleId: string }) {
+export function HandoverButton({ saleId }: { saleId: string }) { const _t = useT();
   const [open, setOpen] = useState(false);
   const [recipientName, setRecipientName] = useState("");
   const [recipientPhone, setRecipientPhone] = useState("");
@@ -30,7 +31,7 @@ export function HandoverButton({ saleId }: { saleId: string }) {
     setSubmitting(false);
 
     if (!result.success) {
-      setError(result.error ?? "Could not record delivery");
+      setError(result.error ?? _t("vendor.handoverbutton.9d3245", "Could not record delivery"));
       return;
     }
     setOpen(false);
@@ -38,26 +39,22 @@ export function HandoverButton({ saleId }: { saleId: string }) {
 
   return (
     <>
-      <Button size="sm" variant="secondary" onClick={() => setOpen(true)}>
-        Mark as Delivered
-      </Button>
+      <Button size="sm" variant="secondary" onClick={() => setOpen(true)}>{_t("vendor.handoverbutton.47d96e", "Mark as Delivered")}</Button>
 
       {open && (
         <div className="fixed inset-0 z-50 flex items-center justify-center bg-espresso/60 p-4">
           <div className="w-full max-w-md rounded-xl2 bg-cream p-6">
-            <h3 className="font-display text-lg text-espresso">
-              Deliver Goods to Customer
-            </h3>
+            <h3 className="font-display text-lg text-espresso">{_t("vendor.handoverbutton.268333", "Deliver Goods to Customer")}</h3>
 
             <div className="mt-4 space-y-3">
               <input
-                placeholder="Recipient name"
+                placeholder={_t("vendor.handoverbutton.f53c47", "Recipient name")}
                 value={recipientName}
                 onChange={(e) => setRecipientName(e.target.value)}
                 className="w-full rounded-lg border border-espresso/15 px-3 py-2 text-sm"
               />
               <input
-                placeholder="Recipient phone"
+                placeholder={_t("vendor.handoverbutton.fcedb6", "Recipient phone")}
                 value={recipientPhone}
                 onChange={(e) => setRecipientPhone(e.target.value)}
                 className="w-full rounded-lg border border-espresso/15 px-3 py-2 text-sm"
@@ -67,14 +64,14 @@ export function HandoverButton({ saleId }: { saleId: string }) {
                 onChange={(e) => setMethod(e.target.value as any)}
                 className="w-full rounded-lg border border-espresso/15 px-3 py-2 text-sm"
               >
-                <option value="personal_delivery">Personal Delivery</option>
-                <option value="customer_pickup">Customer Pickup</option>
-                <option value="courier_delivery">Courier Delivery</option>
-                <option value="transfer_to_vendor">Transfer to Another Vendor</option>
-                <option value="transfer_to_location">Transfer to Another Location</option>
+                <option value="personal_delivery">{_t("vendor.handoverbutton.86cefc", "Personal Delivery")}</option>
+                <option value="customer_pickup">{_t("vendor.handoverbutton.6829ac", "Customer Pickup")}</option>
+                <option value="courier_delivery">{_t("vendor.handoverbutton.e42aab", "Courier Delivery")}</option>
+                <option value="transfer_to_vendor">{_t("vendor.handoverbutton.7946d6", "Transfer to Another Vendor")}</option>
+                <option value="transfer_to_location">{_t("vendor.handoverbutton.d2571e", "Transfer to Another Location")}</option>
               </select>
               <textarea
-                placeholder="Notes (optional)"
+                placeholder={_t("vendor.handoverbutton.4d56ca", "Notes (optional)")}
                 value={notes}
                 onChange={(e) => setNotes(e.target.value)}
                 rows={2}
@@ -93,15 +90,13 @@ export function HandoverButton({ saleId }: { saleId: string }) {
                 variant="outline"
                 className="border-espresso/20 text-espresso"
                 onClick={() => setOpen(false)}
-              >
-                Cancel
-              </Button>
+              >{_t("vendor.handoverbutton.77dfd2", "Cancel")}</Button>
               <Button
                 className="flex-1"
                 onClick={handleSubmit}
                 disabled={submitting || !recipientName || !recipientPhone}
               >
-                {submitting ? "Saving…" : "Confirm Delivery"}
+                {submitting ? _t("vendor.handoverbutton.56a228", "Saving…") : _t("vendor.handoverbutton.e6dee9", "Confirm Delivery")}
               </Button>
             </div>
           </div>

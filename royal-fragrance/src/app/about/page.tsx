@@ -16,7 +16,7 @@ export const dynamic = "force-dynamic";
 
 const valueIcons = [Gem, Heart, ShieldCheck];
 
-export default async function AboutPage() {
+export default async function AboutPage() { const _t = await getT();
   const t = await getT();
   const values = valueIcons.map((icon, i) => ({
     icon,
@@ -46,7 +46,7 @@ export default async function AboutPage() {
         <div className="relative aspect-square overflow-hidden rounded-xl2 shadow-premium">
           <Image
             src="https://res.cloudinary.com/dtchp470a/image/upload/v1788708302/WhatsApp_Image_2026-09-06_at_16.24.36_k3guta.jpg"
-            alt="Royal Fragrance — curated collection"
+            alt={_t("about.6979d6", "Royal Fragrance — curated collection")}
             fill
             className="object-cover"
           />

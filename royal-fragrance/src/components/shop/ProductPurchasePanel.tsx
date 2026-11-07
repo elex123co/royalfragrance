@@ -7,6 +7,7 @@ import { formatNaira } from "@/lib/utils/currency";
 import { useCart } from "@/context/CartContext";
 import { Button } from "@/components/ui/Button";
 import { trackMetaEvent } from "@/components/analytics/MetaPixel";
+import { useT } from "@/lib/content/client";
 
 export function ProductPurchasePanel({
   product,
@@ -16,7 +17,7 @@ export function ProductPurchasePanel({
   product: Product;
   whatsappPhone?: string | null;
   newUserDiscountPercent?: number | null;
-}) {
+}) { const _t = useT();
   const router = useRouter();
   const { addItem } = useCart();
   const hasVariants = (product.variants?.length ?? 0) > 0;
@@ -91,15 +92,12 @@ export function ProductPurchasePanel({
       {newUserDiscountPercent && !outOfStock && (
         <div className="mt-2">
           <span className="inline-block rounded-full bg-espresso px-3 py-1.5 text-sm font-bold tracking-wide text-cream shadow-sm">
-            {newUserDiscountPercent}% OFF — New Customers
-          </span>
+            {_t("shop.productpurchasepanel.e57769", "{newUserDiscountPercent}% OFF — New Customers", { newUserDiscountPercent })}</span>
           <p className="mt-1.5 text-sm text-rich/70">
             <span className="line-through text-rich/40">{formatNaira(price)}</span>{" "}
             <span className="font-bold text-red-600">
               {formatNaira(Math.round(price * (1 - newUserDiscountPercent / 100)))}
-            </span>{" "}
-            on your first order
-          </p>
+            </span>{" "}{_t("shop.productpurchasepanel.87be80", "on your first order")}</p>
         </div>
       )}
 
@@ -111,13 +109,13 @@ export function ProductPurchasePanel({
 
       {product.productType && (
         <p className="mt-3 text-sm text-rich/70">
-          <span className="text-rich/50">Type:</span> {product.productType}
+          <span className="text-rich/50">{_t("shop.productpurchasepanel.ee3fb1", "Type:")}</span> {product.productType}
         </p>
       )}
 
       {product.colors && product.colors.length > 0 && (
         <div className="mt-4">
-          <p className="mb-1.5 text-xs uppercase tracking-widest text-rich/50">Colors</p>
+          <p className="mb-1.5 text-xs uppercase tracking-widest text-rich/50">{_t("shop.productpurchasepanel.88d5e4", "Colors")}</p>
           <div className="flex flex-wrap gap-2">
             {product.colors.map((color) => (
               <span
@@ -133,7 +131,7 @@ export function ProductPurchasePanel({
 
       {hasVariants && (
         <div className="mt-5">
-          <p className="mb-2 text-sm font-medium text-espresso">Size</p>
+          <p className="mb-2 text-sm font-medium text-espresso">{_t("shop.productpurchasepanel.b71523", "Size")}</p>
           <div className="flex flex-wrap gap-2">
             {product.variants!.map((v) => (
               <button
@@ -160,7 +158,7 @@ export function ProductPurchasePanel({
             type="button"
             onClick={() => setQuantity((q) => Math.max(1, q - 1))}
             className="px-3 py-2 text-espresso"
-            aria-label="Decrease quantity"
+            aria-label={_t("shop.productpurchasepanel.6c02ab", "Decrease quantity")}
           >
             −
           </button>
@@ -169,14 +167,14 @@ export function ProductPurchasePanel({
             type="button"
             onClick={() => setQuantity((q) => q + 1)}
             className="px-3 py-2 text-espresso"
-            aria-label="Increase quantity"
+            aria-label={_t("shop.productpurchasepanel.062e79", "Increase quantity")}
           >
             +
           </button>
         </div>
 
         {outOfStock ? (
-          <span className="text-sm text-rich/60">Currently out of stock</span>
+          <span className="text-sm text-rich/60">{_t("shop.productpurchasepanel.2d958b", "Currently out of stock")}</span>
         ) : null}
       </div>
 
@@ -186,17 +184,13 @@ export function ProductPurchasePanel({
           size="lg"
           onClick={handleAddToCart}
           disabled={outOfStock}
-        >
-          Add to Cart
-        </Button>
+        >{_t("shop.productpurchasepanel.e9cdce", "Add to Cart")}</Button>
         <Button
           variant="secondary"
           size="lg"
           onClick={handleBuyNow}
           disabled={outOfStock}
-        >
-          Buy Now
-        </Button>
+        >{_t("shop.productpurchasepanel.16c2c5", "Buy Now")}</Button>
       </div>
     </div>
   );

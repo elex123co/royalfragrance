@@ -4,20 +4,24 @@ import { createAdminClient } from "@/lib/supabase/server";
 import { getAllProducts } from "@/lib/data/products";
 import { getActiveNewUserDiscountPercent } from "@/lib/data/new-user-discount";
 import { ProductCard } from "@/components/ui/ProductCard";
+import { getT } from "@/lib/content/server";
 
 export const dynamic = "force-dynamic";
 
-export const metadata = {
-  title: "More from Royal Fragrance",
+export async function generateMetadata() {
+  const _t = await getT();
+  return {
+  title: _t("meta.store.code.more.title", "More from Royal Fragrance"),
   robots: { index: false },
-};
+  };
+}
 
 /**
  * Every product the vendor does NOT have in stock. Middleware marks anyone
  * who opens this page, so they can join the vendor's location batch at
  * checkout and share one delivery fee with others.
  */
-export default async function VendorMoreProductsPage({ params }: { params: { code: string } }) {
+export default async function VendorMoreProductsPage({ params }: { params: { code: string } }) { const _t = await getT();
   const code = decodeURIComponent(params.code).toUpperCase();
   const admin = createAdminClient();
 
@@ -53,24 +57,20 @@ export default async function VendorMoreProductsPage({ params }: { params: { cod
     <section className="bg-cream py-12">
       <div className="mx-auto max-w-7xl px-5 lg:px-8">
         <div className="mb-8 text-center">
-          <span className="text-xs uppercase tracking-[0.2em] text-caramel">Royal Fragrance</span>
-          <h1 className="mt-2 font-display text-3xl text-espresso">More Perfumes</h1>
-          <p className="mx-auto mt-2 max-w-xl text-sm text-rich/70">
-            These are the perfumes {vendorName} does not have in stock.
-            {locationName
+          <span className="text-xs uppercase tracking-[0.2em] text-caramel">{_t("store.code.more.c07431", "Royal Fragrance")}</span>
+          <h1 className="mt-2 font-display text-3xl text-espresso">{_t("store.code.more.04b0c7", "More Perfumes")}</h1>
+          <p className="mx-auto mt-2 max-w-xl text-sm text-rich/70">{_t("store.code.more.681218", "These are the perfumes {vendorName} does not have in stock.{v}", { vendorName, v: locationName
               ? ` Order them here and share one delivery fee with other customers in ${locationName} by choosing batch delivery at checkout.`
-              : " Order them here with normal delivery."}
+              : " Order them here with normal delivery." })}
           </p>
           <Link
             href={`/store/${encodeURIComponent(code)}`}
             className="mt-3 inline-block text-sm text-caramel underline"
-          >
-            Back to {vendorName}&rsquo;s perfumes
-          </Link>
+          >{_t("store.code.more.4d99db", "Back to {vendorName}’s perfumes", { vendorName })}</Link>
         </div>
 
         {products.length === 0 ? (
-          <p className="text-center text-rich/60">There is nothing else to show right now.</p>
+          <p className="text-center text-rich/60">{_t("store.code.more.c4ab9d", "There is nothing else to show right now.")}</p>
         ) : (
           <div className="grid grid-cols-2 gap-5 sm:gap-6 lg:grid-cols-4">
             {products.map((product) => (

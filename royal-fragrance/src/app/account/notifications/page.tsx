@@ -3,10 +3,15 @@ import { redirect } from "next/navigation";
 import { createClient } from "@/lib/supabase/server";
 import { getNotifications } from "@/lib/data/account";
 import { MarkAllReadButton } from "@/components/account/MarkAllReadButton";
+import { getT } from "@/lib/content/server";
 
-export const metadata = { title: "Notifications — Royal Fragrance" };
+export async function generateMetadata() {
+  const _t = await getT();
+  return { title: _t("meta.account.notifications.title", "Notifications — Royal Fragrance") 
+  };
+}
 
-export default async function NotificationsPage() {
+export default async function NotificationsPage() { const _t = await getT();
   const supabase = createClient();
   const {
     data: { user },
@@ -19,12 +24,12 @@ export default async function NotificationsPage() {
   return (
     <div>
       <div className="mb-6 flex items-center justify-between">
-        <h1 className="font-display text-2xl text-espresso">Notifications</h1>
+        <h1 className="font-display text-2xl text-espresso">{_t("account.notifications.753a22", "Notifications")}</h1>
         {hasUnread && <MarkAllReadButton />}
       </div>
 
       {notifications.length === 0 ? (
-        <p className="text-sm text-rich/50">Nothing yet — check back soon.</p>
+        <p className="text-sm text-rich/50">{_t("account.notifications.82e599", "Nothing yet — check back soon.")}</p>
       ) : (
         <div className="space-y-2">
           {notifications.map((n) => {

@@ -6,6 +6,8 @@ import Link from "next/link";
 import { Sparkles, X, Send } from "lucide-react";
 import { formatNaira } from "@/lib/utils/currency";
 import { BrandImage } from "@/components/ui/BrandImage";
+import { useT } from "@/lib/content/client";
+import { tl } from "@/lib/content/translate";
 
 interface Product {
   id: string;
@@ -27,10 +29,10 @@ const GREETING: ChatMessage = {
     "Hi, I'm Queen. Tell me what kind of scent you're after — a note you love, an occasion, even a budget — and I'll find something from our collection for you.",
 };
 
-export function AssistantWidget() {
+export function AssistantWidget() { const _t = useT();
   const pathname = usePathname();
   const [open, setOpen] = useState(false);
-  const [messages, setMessages] = useState<ChatMessage[]>([GREETING]);
+  const [messages, setMessages] = useState<ChatMessage[]>([{ ...GREETING, content: tl(_t, "assistant", GREETING.content) }]);
   const [input, setInput] = useState("");
   const [loading, setLoading] = useState(false);
   const scrollRef = useRef<HTMLDivElement>(null);
@@ -78,7 +80,7 @@ export function AssistantWidget() {
         ...prev,
         {
           role: "assistant",
-          content: "Something went wrong on my end — please try again in a moment.",
+          content: _t("assistant.error", "Something went wrong on my end — please try again in a moment."),
         },
       ]);
     } finally {
@@ -93,9 +95,7 @@ export function AssistantWidget() {
           onClick={() => setOpen(true)}
           className="fixed bottom-5 right-5 z-40 flex items-center gap-2 rounded-full bg-espresso px-5 py-3 text-sm font-medium text-cream shadow-premium transition hover:bg-rich"
         >
-          <Sparkles size={18} />
-          Ask Queen
-        </button>
+          <Sparkles size={18} />{_t("assistant.assistantwidget.515819", "Ask Queen")}</button>
       )}
 
       {open && (
@@ -104,13 +104,11 @@ export function AssistantWidget() {
             <div className="flex items-center gap-2">
               <Sparkles size={18} className="text-caramel" />
               <div>
-                <p className="font-display text-sm leading-tight">Queen</p>
-                <p className="text-[10px] leading-tight text-cream/60">
-                  Royal Fragrance Concierge
-                </p>
+                <p className="font-display text-sm leading-tight">{_t("assistant.assistantwidget.6911ad", "Queen")}</p>
+                <p className="text-[10px] leading-tight text-cream/60">{_t("assistant.assistantwidget.c8a7eb", "Royal Fragrance Concierge")}</p>
               </div>
             </div>
-            <button onClick={() => setOpen(false)} aria-label="Close">
+            <button onClick={() => setOpen(false)} aria-label={_t("assistant.assistantwidget.bbfa77", "Close")}>
               <X size={20} />
             </button>
           </div>
@@ -149,9 +147,7 @@ export function AssistantWidget() {
             ))}
             {loading && (
               <div className="text-left">
-                <div className="inline-block rounded-2xl bg-white/80 px-4 py-2.5 text-sm text-rich/50">
-                  Queen is thinking…
-                </div>
+                <div className="inline-block rounded-2xl bg-white/80 px-4 py-2.5 text-sm text-rich/50">{_t("assistant.assistantwidget.3302ea", "Queen is thinking…")}</div>
               </div>
             )}
           </div>
@@ -160,14 +156,14 @@ export function AssistantWidget() {
             <input
               value={input}
               onChange={(e) => setInput(e.target.value)}
-              placeholder="Describe a scent you'd love…"
+              placeholder={_t("assistant.assistantwidget.26ab65", "Describe a scent you'd love…")}
               className="flex-1 rounded-full border border-espresso/15 bg-white px-4 py-2 text-sm focus:border-caramel focus:outline-none"
             />
             <button
               type="submit"
               disabled={loading || !input.trim()}
               className="flex h-9 w-9 shrink-0 items-center justify-center rounded-full bg-espresso text-cream disabled:opacity-40"
-              aria-label="Send"
+              aria-label={_t("assistant.assistantwidget.9bc257", "Send")}
             >
               <Send size={16} />
             </button>
