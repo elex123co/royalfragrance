@@ -1,6 +1,6 @@
 "use client";
 
-import { useState, useTransition } from "react";
+import { useEffect, useState, useTransition } from "react";
 import { useRouter } from "next/navigation";
 import { Trash2 } from "lucide-react";
 import {
@@ -31,16 +31,28 @@ export function VendorInventoryRow({
   const [error, setError] = useState<string | null>(null);
   const [pending, startTransition] = useTransition();
 
-  const changed = qty !== String(left);
+  useEffect(() => {
+    setQty(String(left));
+  }, [left]);
+
+  const changed = qty !== String(left) && qty.trim() !== "";
+
+  const [saved, setSaved] = useState<number | null>(null);
 
   function save() {
     setError(null);
+    setSaved(null);
+    if (qty.trim() === "" || !Number.isInteger(Number(qty)) || Number(qty) < 0) {
+      setError("Type the new quantity first (a whole number).");
+      return;
+    }
     startTransition(async () => {
       const res = await setVendorInventoryQuantity({
         inventoryId,
         quantity: Number(qty),
       });
       if (!res.success) return setError(res.error ?? "Could not save");
+      setSaved((res as any).quantity ?? Number(qty));
       router.refresh();
     });
   }
@@ -113,6 +125,9 @@ export function VendorInventoryRow({
           </button>
         )}
       </div>
+      {saved !== null && !error && (
+        <p className="w-full text-xs text-green-700">Saved. Quantity is now {saved}.</p>
+      )}
       {error && <p className="w-full text-xs text-red-700">{error}</p>}
     </div>
   );

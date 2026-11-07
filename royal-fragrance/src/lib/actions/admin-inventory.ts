@@ -176,13 +176,17 @@ export async function setVendorInventoryQuantity(input: {
   );
   const lines = rows ?? [];
   const previous = lines.reduce((sum, r: any) => sum + r.available_quantity, 0);
-  if (previous === input.quantity && lines.length <= 1) return { success: true };
+  if (previous === input.quantity && lines.length <= 1) {
+    return { success: true, quantity: previous };
+  }
 
-  const { error } = await supabase
+  const { data: updated, error } = await supabase
     .from("vendor_inventory")
     .update({ available_quantity: input.quantity, updated_at: new Date().toISOString() })
-    .eq("id", inv.id);
-  if (error) return { success: false, error: error.message };
+    .eq("id", inv.id)
+    .select("available_quantity")
+    .single();
+  if (error || !updated) return { success: false, error: error?.message ?? "Could not save" };
 
   const extras = lines.filter((r: any) => r.id !== inv.id).map((r: any) => r.id);
   if (extras.length > 0) {
@@ -205,7 +209,7 @@ export async function setVendorInventoryQuantity(input: {
   revalidatePath(`/admin/vendors/${inv.vendor_id}`);
   revalidatePath("/admin/vendors");
   revalidatePath("/vendor/inventory");
-  return { success: true };
+  return { success: true, quantity: updated.available_quantity as number };
 }
 
 /** Deletes a vendor's whole line for one product and size, whatever the quantity. */

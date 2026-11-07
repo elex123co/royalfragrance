@@ -102,7 +102,12 @@ export default async function AdminVendorDetailPage({
     if (m.movement_type === "stock_assigned") line.assigned += Number(m.quantity);
     if (m.movement_type === "sale_recorded") line.sold += Math.abs(Number(m.quantity));
   }
-  const inventoryLines = Array.from(lineMap.values());
+  // Assigned is worked out as sold + left, so the three numbers always agree.
+  // (Counting assignment records alone ignored corrections made later.)
+  const inventoryLines = Array.from(lineMap.values()).map((l: any) => ({
+    ...l,
+    assigned: l.left + l.sold,
+  }));
   const totalCollections = dashboard.transactions.reduce(
     (sum, t: any) => sum + Number(t.amount),
     0
