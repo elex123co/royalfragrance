@@ -1,32 +1,28 @@
 import { LinkButton } from "@/components/ui/Button";
+import { getT } from "@/lib/content/server";
 import { Wallet, PackageCheck, LineChart, Users } from "lucide-react";
 
-const perks = [
-  { icon: Wallet, label: "Dedicated collection account" },
-  { icon: LineChart, label: "Monitor incoming payments" },
-  { icon: PackageCheck, label: "Manage assigned inventory" },
-  { icon: Users, label: "Track deliveries to customers" },
-];
+const perkIcons = [Wallet, LineChart, PackageCheck, Users];
 
-export function BecomeVendor() {
+export async function BecomeVendor() {
+  const t = await getT();
+  const perks = perkIcons.map((icon, i) => ({ icon, label: t(`home.vendor.perk${i + 1}`) }));
   return (
     <section className="bg-rich py-24 text-cream">
       <div className="mx-auto grid max-w-7xl items-center gap-14 px-5 lg:grid-cols-2 lg:px-8">
         <div>
           <span className="text-xs uppercase tracking-[0.2em] text-sand">
-            Sales Partners
+            {t("home.vendor.label")}
           </span>
           <h2 className="mt-3 font-display text-3xl sm:text-4xl">
-            Become a Royal Fragrance Vendor
+            {t("home.vendor.title")}
           </h2>
           <p className="mt-6 max-w-lg text-cream/75">
-            Qualified vendors and sales partners can sell Royal Fragrance
-            products with their own personal dashboard — built to feel like a
-            modern financial and sales workspace.
+            {t("home.vendor.text")}
           </p>
           <div className="mt-10">
             <LinkButton href="/become-a-vendor" variant="secondary" size="lg">
-              Become a Vendor
+              {t("home.vendor.btn")}
             </LinkButton>
           </div>
         </div>

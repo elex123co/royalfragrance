@@ -1,13 +1,9 @@
 import { LinkButton } from "@/components/ui/Button";
+import { getT } from "@/lib/content/server";
 
-const pillars = [
-  "Creating original fragrances",
-  "Developing signature scents",
-  "Experimenting with fragrance concepts",
-  "Building a recognizable perfume identity",
-];
-
-export function FutureVision() {
+export async function FutureVision() {
+  const t = await getT();
+  const pillars = [1, 2, 3, 4].map((n) => t(`home.future.pillar${n}`));
   return (
     <section className="relative overflow-hidden bg-brand-gradient py-28 text-cream">
       <div className="pointer-events-none absolute inset-0 opacity-30">
@@ -17,15 +13,13 @@ export function FutureVision() {
 
       <div className="relative mx-auto max-w-4xl px-5 text-center lg:px-8">
         <span className="text-xs uppercase tracking-[0.2em] text-sand">
-          The Future of Royal Fragrance
+          {t("home.future.label")}
         </span>
         <h2 className="mt-4 font-display text-4xl leading-tight sm:text-5xl">
-          The Future Smells Different.
+          {t("home.future.title")}
         </h2>
         <p className="mx-auto mt-6 max-w-2xl text-cream/75">
-          We are not just building a store — we are building toward becoming
-          an original fragrance house. Every product we curate today informs
-          the scents we intend to create tomorrow.
+          {t("home.future.text")}
         </p>
 
         <div className="mx-auto mt-12 grid max-w-2xl gap-4 sm:grid-cols-2">
@@ -41,7 +35,7 @@ export function FutureVision() {
 
         <div className="mt-12">
           <LinkButton href="/future" variant="secondary" size="lg">
-            Discover Our Vision
+            {t("home.future.btn")}
           </LinkButton>
         </div>
       </div>

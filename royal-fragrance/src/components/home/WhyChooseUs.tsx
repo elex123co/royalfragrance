@@ -1,48 +1,24 @@
 import { Sparkles, ShieldCheck, Truck, TrendingUp, Gem } from "lucide-react";
+import { getT } from "@/lib/content/server";
 
-const items = [
-  {
-    icon: Gem,
-    title: "Carefully Selected Fragrances",
-    description:
-      "Every fragrance is chosen for character, quality, and lasting impression.",
-  },
-  {
-    icon: Sparkles,
-    title: "Premium Customer Experience",
-    description:
-      "From browsing to unboxing, every touchpoint is crafted to feel elevated.",
-  },
-  {
-    icon: ShieldCheck,
-    title: "Secure Ordering",
-    description:
-      "Payments are processed securely with verified, server-side confirmation.",
-  },
-  {
-    icon: Truck,
-    title: "Reliable Delivery",
-    description:
-      "Transparent delivery pricing and dependable fulfillment, every time.",
-  },
-  {
-    icon: TrendingUp,
-    title: "Growing Fragrance Innovation",
-    description:
-      "We're building toward original, signature fragrances made by us.",
-  },
-];
+const icons = [Gem, Sparkles, ShieldCheck, Truck, TrendingUp];
 
-export function WhyChooseUs() {
+export async function WhyChooseUs() {
+  const t = await getT();
+  const items = icons.map((icon, i) => ({
+    icon,
+    title: t(`home.why.${i + 1}.title`),
+    description: t(`home.why.${i + 1}.text`),
+  }));
   return (
     <section className="bg-cream py-24">
       <div className="mx-auto max-w-7xl px-5 lg:px-8">
         <div className="mb-12 text-center">
           <span className="text-xs uppercase tracking-[0.2em] text-caramel">
-            Why Royal Fragrance
+            {t("home.why.label")}
           </span>
           <h2 className="mt-3 font-display text-3xl text-espresso sm:text-4xl">
-            Built on Trust and Craft
+            {t("home.why.title")}
           </h2>
         </div>
 

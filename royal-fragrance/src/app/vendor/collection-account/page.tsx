@@ -1,11 +1,13 @@
 import { getCurrentVendor, getVendorDashboardData } from "@/lib/data/vendor";
 import { CopyAccountButton } from "@/components/vendor/CopyAccountButton";
 import { BvnNinForm } from "@/components/vendor/BvnNinForm";
+import { getT } from "@/lib/content/server";
 
 export const dynamic = "force-dynamic";
 export const metadata = { title: "Collection Account — Vendor — Royal Fragrance" };
 
 export default async function CollectionAccountPage() {
+  const t = await getT();
   const vendor = await getCurrentVendor();
   const { collectionAccount } = await getVendorDashboardData(vendor!.user_id);
   const hasBvnOrNin = !!(vendor as any)?.bvn || !!(vendor as any)?.nin;
@@ -54,8 +56,7 @@ export default async function CollectionAccountPage() {
           />
 
           <p className="mt-6 text-xs text-cream/50">
-            This is a sales collection account for receiving customer
-            payments — not a personal or standalone banking product.
+            {t("vendor.account.note")}
           </p>
         </div>
       )}

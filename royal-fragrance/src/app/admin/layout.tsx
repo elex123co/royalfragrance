@@ -14,6 +14,7 @@ import {
   Boxes,
   Banknote,
   Sparkles,
+  Type,
 } from "lucide-react";
 import { createClient } from "@/lib/supabase/server";
 import { LogoutButton, LogoutIconButton } from "@/components/account/LogoutButton";
@@ -32,6 +33,7 @@ const navItems = [
   { href: "/admin/batches", label: "Batch Delivery", icon: Boxes },
   { href: "/admin/promo-codes", label: "Promo Codes", icon: Percent },
   { href: "/admin/combos", label: "Combos", icon: Gift },
+  { href: "/admin/content", label: "Site Text", icon: Type },
   { href: "/admin/settings", label: "Settings", icon: Settings },
   { href: "/admin/newsletter", label: "Newsletter", icon: Mail },
 ];

@@ -1,41 +1,27 @@
 import { LinkButton } from "@/components/ui/Button";
 import { FlaskConical, Sparkles, Fingerprint, Rocket } from "lucide-react";
+import { getT } from "@/lib/content/server";
 
-export const metadata = {
-  title: "The Future of Royal Fragrance",
-  description:
-    "We're not just curating fragrances — we're building toward becoming an original perfume house with a signature scent identity of our own. Discover where Royal Fragrance is headed.",
-  alternates: { canonical: "https://royalfragrancegallery.com/future" },
-};
+export async function generateMetadata() {
+  const t = await getT();
+  return {
+    title: t("future.meta.title"),
+    description: t("future.meta.desc"),
+    alternates: { canonical: "https://royalfragrancegallery.com/future" },
+  };
+}
 
-const milestones = [
-  {
-    icon: FlaskConical,
-    title: "Developing Original Fragrances",
-    description:
-      "Moving from curating others' work to formulating scents of our own — from concept to bottle.",
-  },
-  {
-    icon: Sparkles,
-    title: "Signature Scent Collections",
-    description:
-      "Building a line that's unmistakably Royal Fragrance — not a copy of what already exists.",
-  },
-  {
-    icon: Fingerprint,
-    title: "A Recognizable Identity",
-    description:
-      "A brand you can identify by scent alone, the way perfume houses earn a following over decades.",
-  },
-  {
-    icon: Rocket,
-    title: "Beyond Retail",
-    description:
-      "From reselling exceptional fragrances to producing them — becoming a fragrance house in our own right.",
-  },
-];
+export const dynamic = "force-dynamic";
 
-export default function FuturePage() {
+const milestoneIcons = [FlaskConical, Sparkles, Fingerprint, Rocket];
+
+export default async function FuturePage() {
+  const t = await getT();
+  const milestones = milestoneIcons.map((icon, i) => ({
+    icon,
+    title: t(`future.road.${i + 1}.title`),
+    description: t(`future.road.${i + 1}.text`),
+  }));
   return (
     <section className="bg-cream">
       {/* Hero */}
@@ -47,15 +33,13 @@ export default function FuturePage() {
 
         <div className="relative mx-auto max-w-3xl px-5 text-center lg:px-8">
           <span className="text-xs uppercase tracking-[0.2em] text-sand">
-            The Future of Royal Fragrance
+            {t("future.hero.label")}
           </span>
           <h1 className="mt-4 font-display text-4xl leading-tight sm:text-5xl">
-            The Future Smells Different.
+            {t("future.hero.title")}
           </h1>
           <p className="mx-auto mt-6 max-w-xl text-cream/75">
-            We didn't set out to just sell fragrances. We set out to build a
-            fragrance house — and today's collection is only the first
-            chapter.
+            {t("future.hero.text")}
           </p>
         </div>
       </div>
@@ -63,18 +47,13 @@ export default function FuturePage() {
       {/* Why we're building this way */}
       <div className="mx-auto max-w-4xl px-5 py-24 text-center lg:px-8">
         <span className="text-xs uppercase tracking-[0.2em] text-caramel">
-          Why We Started Here
+          {t("future.why.label")}
         </span>
         <h2 className="mt-3 font-display text-3xl text-espresso sm:text-4xl">
-          Curation Before Creation
+          {t("future.why.title")}
         </h2>
         <p className="mx-auto mt-6 max-w-2xl text-rich/80">
-          Every great fragrance house started by understanding what makes a
-          scent unforgettable. That's what curating exceptional fragrances
-          has taught us — what people respond to, what they wear again and
-          again, and what they specifically ask us for more of. That
-          knowledge is the foundation we're building an original perfume
-          line on top of.
+          {t("future.why.text")}
         </p>
       </div>
 
@@ -83,10 +62,10 @@ export default function FuturePage() {
         <div className="mx-auto max-w-7xl px-5 lg:px-8">
           <div className="mb-12 text-center">
             <span className="text-xs uppercase tracking-[0.2em] text-caramel">
-              Where We're Headed
+              {t("future.road.label")}
             </span>
             <h2 className="mt-3 font-display text-3xl text-espresso sm:text-4xl">
-              The Road Ahead
+              {t("future.road.title")}
             </h2>
           </div>
 
@@ -101,7 +80,7 @@ export default function FuturePage() {
                 </div>
                 <div>
                   <p className="text-xs uppercase tracking-wide text-caramel">
-                    Chapter {i + 1}
+                    {t("future.road.chapter")} {i + 1}
                   </p>
                   <h3 className="mt-1 font-display text-lg text-espresso">
                     {title}
@@ -117,21 +96,20 @@ export default function FuturePage() {
       {/* Invitation */}
       <div className="bg-espresso py-24 text-center text-cream">
         <span className="text-xs uppercase tracking-[0.2em] text-sand">
-          Be Part of It
+          {t("future.join.label")}
         </span>
         <h2 className="mx-auto mt-3 max-w-xl font-display text-3xl sm:text-4xl">
-          Join Us From the Beginning
+          {t("future.join.title")}
         </h2>
         <p className="mx-auto mt-4 max-w-lg text-sm text-cream/70">
-          Every fragrance you buy today shapes what we create tomorrow.
-          Subscribe for updates, or become a vendor and grow alongside us.
+          {t("future.join.text")}
         </p>
         <div className="mt-8 flex justify-center gap-4">
           <LinkButton href="/shop" variant="secondary">
-            Shop the Collection
+            {t("future.join.btn1")}
           </LinkButton>
           <LinkButton href="/become-a-vendor" variant="outline">
-            Become a Vendor
+            {t("future.join.btn2")}
           </LinkButton>
         </div>
       </div>

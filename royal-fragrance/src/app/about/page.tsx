@@ -1,36 +1,28 @@
 import Image from "next/image";
 import { LinkButton } from "@/components/ui/Button";
 import { Gem, Heart, ShieldCheck } from "lucide-react";
+import { getT } from "@/lib/content/server";
 
-export const metadata = {
-  title: "Our Story",
-  description:
-    "Royal Fragrance began with a belief that a scent should feel like a signature. Discover who we are, what we curate today, and the fragrance house we're building for tomorrow.",
-  alternates: { canonical: "https://royalfragrancegallery.com/about" },
-};
+export async function generateMetadata() {
+  const t = await getT();
+  return {
+    title: t("about.meta.title"),
+    description: t("about.meta.desc"),
+    alternates: { canonical: "https://royalfragrancegallery.com/about" },
+  };
+}
 
-const values = [
-  {
-    icon: Gem,
-    title: "Curated, Not Mass-Produced",
-    description:
-      "Every fragrance we carry is chosen for character and staying power — not just shelf appeal.",
-  },
-  {
-    icon: Heart,
-    title: "Fragrance as Identity",
-    description:
-      "We believe a scent should feel personal — worn quietly, remembered loudly.",
-  },
-  {
-    icon: ShieldCheck,
-    title: "Trust, Built Order by Order",
-    description:
-      "Secure payments, transparent pricing, and dependable delivery — every single time.",
-  },
-];
+export const dynamic = "force-dynamic";
 
-export default function AboutPage() {
+const valueIcons = [Gem, Heart, ShieldCheck];
+
+export default async function AboutPage() {
+  const t = await getT();
+  const values = valueIcons.map((icon, i) => ({
+    icon,
+    title: t(`about.values.${i + 1}.title`),
+    description: t(`about.values.${i + 1}.text`),
+  }));
   return (
     <section className="bg-cream">
       {/* Hero */}
@@ -38,14 +30,13 @@ export default function AboutPage() {
         <div className="pointer-events-none absolute -left-32 top-0 h-72 w-72 rounded-full bg-caramel/20 blur-[100px]" />
         <div className="relative mx-auto max-w-3xl px-5 text-center lg:px-8">
           <span className="text-xs uppercase tracking-[0.2em] text-sand">
-            Our Story
+            {t("about.hero.label")}
           </span>
           <h1 className="mt-4 font-display text-4xl sm:text-5xl">
-            Fragrance, Chosen With Intention
+            {t("about.hero.title")}
           </h1>
           <p className="mx-auto mt-6 max-w-xl text-cream/75">
-            Royal Fragrance began with a simple belief: a scent should feel
-            like a signature, not an accessory.
+            {t("about.hero.text")}
           </p>
         </div>
       </div>
@@ -63,24 +54,13 @@ export default function AboutPage() {
 
         <div>
           <span className="text-xs uppercase tracking-[0.2em] text-caramel">
-            Who We Are
+            {t("about.who.label")}
           </span>
           <h2 className="mt-3 font-display text-3xl text-espresso sm:text-4xl">
-            More Than a Perfume Store
+            {t("about.who.title")}
           </h2>
-          <p className="mt-6 text-rich/80">
-            We're a fragrance brand built around discovery. Rather than
-            filling shelves with whatever sells fastest, we hand-select
-            fragrances for their character — the oud that lingers all day,
-            the musk that feels like skin, the scent that becomes someone's
-            signature.
-          </p>
-          <p className="mt-4 text-rich/80">
-            Every order is a chance to earn trust: fast, transparent
-            checkout, honest delivery pricing, and a fragrance that lives up
-            to its description. That's the standard we hold every product
-            to, today.
-          </p>
+          <p className="mt-6 text-rich/80">{t("about.who.p1")}</p>
+          <p className="mt-4 text-rich/80">{t("about.who.p2")}</p>
         </div>
       </div>
 
@@ -88,18 +68,13 @@ export default function AboutPage() {
       <div className="bg-brand-100/40 py-24">
         <div className="mx-auto max-w-4xl px-5 text-center lg:px-8">
           <span className="text-xs uppercase tracking-[0.2em] text-caramel">
-            Why Fragrance Matters
+            {t("about.matters.label")}
           </span>
           <h2 className="mt-3 font-display text-3xl text-espresso sm:text-4xl">
-            Scent Is Memory
+            {t("about.matters.title")}
           </h2>
           <p className="mx-auto mt-6 max-w-2xl text-rich/80">
-            Long after an outfit is forgotten, a fragrance lingers in
-            memory — in a room someone just left, a hug that lasted a second
-            too long, a first impression that outlasts the conversation. We
-            take that seriously. It's why we obsess over what we choose to
-            sell, and why we're building toward creating fragrances of our
-            own.
+            {t("about.matters.text")}
           </p>
         </div>
       </div>
@@ -108,10 +83,10 @@ export default function AboutPage() {
       <div className="mx-auto max-w-7xl px-5 py-24 lg:px-8">
         <div className="mb-12 text-center">
           <span className="text-xs uppercase tracking-[0.2em] text-caramel">
-            What Guides Us
+            {t("about.values.label")}
           </span>
           <h2 className="mt-3 font-display text-3xl text-espresso sm:text-4xl">
-            Our Values
+            {t("about.values.title")}
           </h2>
         </div>
 
@@ -134,17 +109,17 @@ export default function AboutPage() {
       {/* CTA */}
       <div className="bg-espresso py-20 text-center text-cream">
         <h2 className="font-display text-2xl sm:text-3xl">
-          The Present Is Only the Beginning
+          {t("about.cta.title")}
         </h2>
         <p className="mx-auto mt-3 max-w-xl text-sm text-cream/70">
-          Read about where we're headed next as a brand.
+          {t("about.cta.text")}
         </p>
         <div className="mt-8 flex justify-center gap-4">
           <LinkButton href="/future" variant="secondary">
-            Discover Our Vision
+            {t("about.cta.btn1")}
           </LinkButton>
           <LinkButton href="/shop" variant="outline">
-            Shop Fragrances
+            {t("about.cta.btn2")}
           </LinkButton>
         </div>
       </div>

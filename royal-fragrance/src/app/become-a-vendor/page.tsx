@@ -1,46 +1,28 @@
 import { VendorInterestForm } from "@/components/vendor/VendorInterestForm";
 import { getBrandWhatsAppLink } from "@/lib/data/whatsapp";
 import { Wallet, PackageCheck, LineChart, Users, Percent } from "lucide-react";
+import { getT } from "@/lib/content/server";
 
-export const metadata = {
-  title: "Become a Vendor",
-  description:
-    "Sell Royal Fragrance products through your own network. Earn 12% commission, get a personal vendor dashboard, track sales, manage inventory, and grow with a premium fragrance brand.",
-  alternates: { canonical: "https://royalfragrancegallery.com/become-a-vendor" },
-};
+export async function generateMetadata() {
+  const t = await getT();
+  return {
+    title: t("vendorpage.meta.title"),
+    description: t("vendorpage.meta.desc"),
+    alternates: { canonical: "https://royalfragrancegallery.com/become-a-vendor" },
+  };
+}
 
-const perks = [
-  {
-    icon: Percent,
-    title: "Earn 12% Commission",
-    description: "On every sale you record or every order through your personal link.",
-  },
-  {
-    icon: Wallet,
-    title: "Dedicated Collection Account",
-    description:
-      "Where supported by our payment provider, receive a personal account for customer payments.",
-  },
-  {
-    icon: LineChart,
-    title: "Monitor Payments Live",
-    description: "Every confirmed payment appears in your dashboard automatically.",
-  },
-  {
-    icon: PackageCheck,
-    title: "Manage Inventory",
-    description: "Track products assigned to you and what you have on hand.",
-  },
-  {
-    icon: Users,
-    title: "Track Deliveries",
-    description: "Record when products have been delivered to your customers.",
-  },
-];
+const perkIcons = [Percent, Wallet, LineChart, PackageCheck, Users];
 
 export const dynamic = "force-dynamic";
 
 export default async function BecomeVendorPage() {
+  const t = await getT();
+  const perks = perkIcons.map((icon, i) => ({
+    icon,
+    title: t(`vendorpage.perk${i + 1}.title`),
+    description: t(`vendorpage.perk${i + 1}.text`),
+  }));
   const whatsappLink = await getBrandWhatsAppLink(
     "Hello Royal Fragrance, I have a question about becoming a vendor."
   );
@@ -49,15 +31,13 @@ export default async function BecomeVendorPage() {
       <div className="mx-auto max-w-6xl px-5 lg:px-8">
         <div className="mb-14 text-center">
           <span className="text-xs uppercase tracking-[0.2em] text-caramel">
-            Sales Partners
+            {t("vendorpage.label")}
           </span>
           <h1 className="mt-3 font-display text-3xl text-espresso sm:text-4xl">
-            Become a Royal Fragrance Vendor
+            {t("vendorpage.title")}
           </h1>
           <p className="mx-auto mt-4 max-w-2xl text-rich/70">
-            Sell Royal Fragrance products through your own network — online,
-            on WhatsApp, or in person — and earn 12% commission on every
-            sale, with a dashboard built for real sales work.
+            {t("vendorpage.text")}
           </p>
         </div>
 
@@ -79,10 +59,7 @@ export default async function BecomeVendorPage() {
             </div>
 
             <p className="mt-6 text-sm text-rich/60">
-              Applications are reviewed by our team. Once approved, your
-              status changes from <strong>Pending Approval</strong> to{" "}
-              <strong>Active</strong> and full dashboard features unlock. Until
-              then, your dashboard stays locked.
+              {t("vendorpage.review")}
             </p>
             <a
               href={whatsappLink}
@@ -90,7 +67,7 @@ export default async function BecomeVendorPage() {
               rel="noopener noreferrer"
               className="mt-4 inline-block rounded-full border border-espresso/20 px-5 py-2.5 text-sm text-espresso hover:bg-espresso/5"
             >
-              Have questions? Chat with our brand on WhatsApp
+              {t("vendorpage.whatsapp")}
             </a>
           </div>
 

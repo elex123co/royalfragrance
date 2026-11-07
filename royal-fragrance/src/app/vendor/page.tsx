@@ -2,14 +2,16 @@ import Link from "next/link";
 import { getCurrentVendor, getVendorDashboardData } from "@/lib/data/vendor";
 import { createAdminClient } from "@/lib/supabase/server";
 import { formatNaira } from "@/lib/utils/currency";
+import { getT, type TFn } from "@/lib/content/server";
 
 export const metadata = { title: "Vendor Overview — Royal Fragrance" };
 
 export default async function VendorOverviewPage() {
+  const t = await getT();
   const vendor = await getCurrentVendor();
 
   if (vendor!.vendor_type === "affiliate") {
-    return <AffiliateOverview vendorId={vendor!.user_id} businessName={vendor!.business_name} />;
+    return <AffiliateOverview vendorId={vendor!.user_id} businessName={vendor!.business_name} t={t} />;
   }
 
   const data = await getVendorDashboardData(vendor!.user_id);
@@ -51,38 +53,38 @@ export default async function VendorOverviewPage() {
 
   const cards: { label: string; value: string | number; hint: string; href?: string }[] = [
     {
-      label: "My Earnings",
+      label: t("vendor.home.earnings.label"),
       value: formatNaira(totalEarned),
-      hint: "Your 12% commission on recorded sales. This is the money you have made.",
+      hint: t("vendor.home.earnings.hint"),
       href: "/vendor/earnings",
     },
     {
-      label: "Goods at Hand",
+      label: t("vendor.home.goods.label"),
       value: formatNaira(goodsValue),
       hint: `${goodsUnits} unit${goodsUnits === 1 ? "" : "s"} of stock with you now, valued at selling price.`,
       href: "/vendor/inventory",
     },
     {
-      label: "Payments Received",
+      label: t("vendor.home.received.label"),
       value: formatNaira(totalReceived),
-      hint: "All customer payments that landed in your collection account. This belongs to the company, not your earnings.",
+      hint: t("vendor.home.received.hint"),
       href: "/vendor/transactions",
     },
     {
-      label: "Received Today",
+      label: t("vendor.home.today.label"),
       value: formatNaira(receivedToday),
-      hint: "Customer payments received in your collection account today.",
+      hint: t("vendor.home.today.hint"),
     },
     {
-      label: "Pending Sale Records",
+      label: t("vendor.home.pending.label"),
       value: data.unrecordedTransactions.length,
-      hint: "Payments waiting to be matched to the products sold.",
+      hint: t("vendor.home.pending.hint"),
       href: "/vendor/transactions",
     },
     {
-      label: "Goods to Deliver",
+      label: t("vendor.home.deliver.label"),
       value: pendingHandovers,
-      hint: "Customers who have paid but have not yet received their perfume from you. Deliver it, then mark it as delivered.",
+      hint: t("vendor.home.deliver.hint"),
       href: "/vendor/handovers",
     },
   ];
@@ -90,7 +92,7 @@ export default async function VendorOverviewPage() {
   return (
     <div>
       <h1 className="mb-8 font-display text-2xl text-espresso">
-        Welcome, {vendor?.business_name}
+        {t("vendor.home.welcome", { name: vendor?.business_name ?? "" })}
       </h1>
 
       <div className="grid gap-4 sm:grid-cols-2 lg:grid-cols-3">
@@ -126,7 +128,7 @@ export default async function VendorOverviewPage() {
             {data.unrecordedTransactions.length > 1 ? "s" : ""} waiting to be
             matched to a sale.{" "}
             <a href="/vendor/transactions" className="underline">
-              Record now
+              {t("vendor.home.record")}
             </a>
           </p>
         </div>
@@ -138,9 +140,11 @@ export default async function VendorOverviewPage() {
 async function AffiliateOverview({
   vendorId,
   businessName,
+  t,
 }: {
   vendorId: string;
   businessName: string;
+  t: TFn;
 }) {
   const supabase = createAdminClient();
 
@@ -163,7 +167,7 @@ async function AffiliateOverview({
   return (
     <div>
       <h1 className="mb-8 font-display text-2xl text-espresso">
-        Welcome, {businessName}
+        {t("vendor.home.welcome", { name: businessName })}
       </h1>
 
       <div className="grid gap-4 sm:grid-cols-2">
@@ -177,9 +181,9 @@ async function AffiliateOverview({
 
       <div className="mt-8 rounded-xl2 border border-caramel/30 bg-caramel/10 p-5">
         <p className="text-sm text-espresso">
-          Share your link with customers. Every purchase made through it is credited to you.{" "}
+          {t("vendor.aff.share")}{" "}
           <Link href="/vendor/links" className="underline">
-            Get your link
+            {t("vendor.aff.link")}
           </Link>
         </p>
       </div>

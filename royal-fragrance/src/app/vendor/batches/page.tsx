@@ -2,11 +2,13 @@ import { getCurrentVendor } from "@/lib/data/vendor";
 import { getBatchLocations, getBatchesList, getBatchMembers } from "@/lib/data/batches";
 import { CreateBatchForm } from "@/components/batches/CreateBatchForm";
 import { BatchList } from "@/components/batches/BatchList";
+import { getT } from "@/lib/content/server";
 
 export const dynamic = "force-dynamic";
 export const metadata = { title: "Batch Delivery — Vendor — Royal Fragrance" };
 
 export default async function VendorBatchesPage() {
+  const t = await getT();
   const vendor = await getCurrentVendor();
   const [allLocations, batches] = await Promise.all([
     getBatchLocations(true),
@@ -18,15 +20,14 @@ export default async function VendorBatchesPage() {
   return (
     <div className="space-y-6">
       <div>
-        <h1 className="mb-1 font-display text-2xl text-espresso">Batch Delivery</h1>
+        <h1 className="mb-1 font-display text-2xl text-espresso">{t("vendor.batch.title")}</h1>
         <p className="text-sm text-rich/60">
-          Group customers from the same location so they share one delivery fee. Open a batch, and customers can join
-          it at checkout. Mark it delivered when the run is done.
+          {t("vendor.batch.text")}
         </p>
       </div>
       {locations.length === 0 ? (
         <p className="rounded-xl2 border border-espresso/10 bg-white/60 p-5 text-sm text-rich/70">
-          The admin has not assigned you a batch location yet. Once they do, you can open batches for it here.
+          {t("vendor.batch.nolocation")}
         </p>
       ) : (
         <>

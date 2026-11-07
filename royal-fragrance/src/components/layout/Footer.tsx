@@ -1,5 +1,6 @@
 import Link from "next/link";
 import { Instagram, Facebook, Phone, Mail, MapPin } from "lucide-react";
+import { getT } from "@/lib/content/server";
 
 // lucide has no TikTok glyph, so it is drawn inline. Replace href once the
 // real TikTok link is supplied.
@@ -11,7 +12,15 @@ function TikTokIcon({ size = 18, className = "" }: { size?: number; className?: 
   );
 }
 
-export default function Footer() {
+function telHref(phone: string) {
+  const digits = phone.replace(/[^\d+]/g, "");
+  if (digits.startsWith("+")) return `tel:${digits}`;
+  if (digits.startsWith("0")) return `tel:+234${digits.slice(1)}`;
+  return `tel:${digits}`;
+}
+
+export default async function Footer() {
+  const t = await getT();
   return (
     <footer className="bg-espresso text-cream">
       <div className="mx-auto grid max-w-7xl gap-10 px-5 py-16 lg:grid-cols-5 lg:px-8">
@@ -22,8 +31,7 @@ export default function Footer() {
             </h3>
           </div>
           <p className="mt-3 max-w-xs text-sm text-cream/70">
-            A luxury fragrance brand for today, and an original perfume house
-            in the making. More than a scent — a growing vision.
+            {t("footer.about")}
           </p>
           <div className="mt-5 flex gap-4">
             <a href="https://www.instagram.com/theroy_alfragrance" target="_blank" rel="noopener noreferrer" aria-label="Instagram">
@@ -38,63 +46,63 @@ export default function Footer() {
 
         <div>
           <h4 className="mb-4 text-sm font-semibold uppercase tracking-widest text-caramel">
-            Contact
+            {t("footer.contact.title")}
           </h4>
           <ul className="space-y-3 text-sm text-cream/70">
             <li className="flex items-start gap-2.5">
               <Phone size={15} className="mt-0.5 shrink-0 text-caramel" />
-              <a href="tel:+2347040218594" className="hover:text-cream">
-                0704 021 8594
+              <a href={telHref(t("footer.contact.phone"))} className="hover:text-cream">
+                {t("footer.contact.phone")}
               </a>
             </li>
             <li className="flex items-start gap-2.5">
               <Mail size={15} className="mt-0.5 shrink-0 text-caramel" />
               <a
-                href="mailto:royalfragrancescent@gmail.com"
+                href={`mailto:${t("footer.contact.email")}`}
                 className="break-all hover:text-cream"
               >
-                royalfragrancescent@gmail.com
+                {t("footer.contact.email")}
               </a>
             </li>
             <li className="flex items-start gap-2.5">
               <MapPin size={15} className="mt-0.5 shrink-0 text-caramel" />
-              <span>Abesan Estate, Ipaja, Lagos</span>
+              <span>{t("footer.contact.address")}</span>
             </li>
           </ul>
         </div>
 
         <FooterColumn
-          title="Shop"
+          title={t("footer.shop.title")}
           links={[
-            { href: "/shop", label: "All Fragrances" },
-            { href: "/shop?category=new-arrivals", label: "New Arrivals" },
-            { href: "/shop?category=best-sellers", label: "Best Sellers" },
-            { href: "/shop?category=gift-sets", label: "Gift Sets" },
+            { href: "/shop", label: t("footer.shop.1") },
+            { href: "/shop?category=new-arrivals", label: t("footer.shop.2") },
+            { href: "/shop?category=best-sellers", label: t("footer.shop.3") },
+            { href: "/shop?category=gift-sets", label: t("footer.shop.4") },
           ]}
         />
 
         <FooterColumn
-          title="Brand"
+          title={t("footer.brand.title")}
           links={[
-            { href: "/about", label: "Our Story" },
-            { href: "/future", label: "The Future of Royal Fragrance" },
-            { href: "/become-a-vendor", label: "Become a Vendor" },
+            { href: "/about", label: t("footer.brand.1") },
+            { href: "/future", label: t("footer.brand.2") },
+            { href: "/become-a-vendor", label: t("footer.brand.3") },
           ]}
         />
 
         <FooterColumn
-          title="Support"
+          title={t("footer.support.title")}
           links={[
-            { href: "/account", label: "My Account" },
-            { href: "/account/orders", label: "Track Order" },
-            { href: "/privacy", label: "Privacy Policy" },
-            { href: "/terms", label: "Terms & Conditions" },
+            { href: "/account", label: t("footer.support.1") },
+            { href: "/account/orders", label: t("footer.support.2") },
+            { href: "/privacy", label: t("footer.support.3") },
+            { href: "/terms", label: t("footer.support.4") },
           ]}
         />
       </div>
 
       <div className="border-t border-cream/10 px-5 py-6 text-center text-xs text-cream/50">
-        © {new Date().getFullYear()} Royal Fragrance. All rights reserved.
+        © {new Date().getFullYear()} {t("footer.copyright")}
       </div>
     </footer>
   );

@@ -5,6 +5,7 @@ import { getActiveNewUserDiscountPercent } from "@/lib/data/new-user-discount";
 import { ProductCard } from "@/components/ui/ProductCard";
 import { ShopFilters } from "@/components/shop/ShopFilters";
 import { Pagination } from "@/components/shop/Pagination";
+import { getT } from "@/lib/content/server";
 
 const PRODUCTS_PER_PAGE = 12;
 
@@ -32,6 +33,7 @@ interface ShopPageProps {
 }
 
 export default async function ShopPage({ searchParams }: ShopPageProps) {
+  const t = await getT();
   const [allProducts, realCategories, newUserDiscountPercent] = await Promise.all([
     getAllProducts(),
     getCategories(),
@@ -98,10 +100,10 @@ export default async function ShopPage({ searchParams }: ShopPageProps) {
       <div className="mx-auto max-w-7xl px-5 lg:px-8">
         <div className="mb-10 text-center">
           <span className="text-xs uppercase tracking-[0.2em] text-caramel">
-            The Collection
+            {t("shop.label")}
           </span>
           <h1 className="mt-3 font-display text-3xl text-espresso sm:text-4xl">
-            Shop All Fragrances
+            {t("shop.title")}
           </h1>
         </div>
 
@@ -111,7 +113,7 @@ export default async function ShopPage({ searchParams }: ShopPageProps) {
 
         {filtered.length === 0 ? (
           <p className="mt-16 text-center text-rich/60">
-            No fragrances match your filters. Try adjusting your search.
+            {t("shop.empty")}
           </p>
         ) : (
           <>
